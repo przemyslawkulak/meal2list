@@ -1,59 +1,80 @@
-# Meal2list
+# Meal2List
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.7.
+## Table of Contents
 
-## Development server
+- [Project Description](#project-description)
+- [Tech Stack](#tech-stack)
+- [Getting Started Locally](#getting-started-locally)
+- [Available Scripts](#available-scripts)
+- [Project Scope](#project-scope)
+- [Project Status](#project-status)
+- [License](#license)
 
-To start a local development server, run:
+## Project Description
 
-```bash
-ng serve
-```
+Meal2List is a web application designed to simplify the process of creating shopping lists. It automatically generates a list of ingredients from a provided recipe text while also allowing users to manually create and edit their lists. The application supports grouping items by predefined categories and marks each product based on its source (automatic, manually added, or modified). Secure user registration and login ensure that personal shopping lists are safely managed.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Tech Stack
 
-## Code scaffolding
+- **Frontend:** Angular 19, Angular Material, TypeScript 5
+- **Backend:** Supabase (PostgreSQL, user authentication)
+- **AI Integration:** Openrouter.ai for AI-driven ingredient extraction
+- **CI/CD & Hosting:** GitHub Actions, DigitalOcean
+- **Code Quality:** ESLint, Prettier, Husky, lint-staged
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Getting Started Locally
 
-```bash
-ng generate component component-name
-```
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd meal2list
+   ```
+2. **Ensure you are using the correct Node version: This project uses the Node version specified in the .nvmrc file. Currently it's 22.11.0.**
+   If you use nvm, run:
+   ```bash
+   nvm use
+   ```
+3. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+4. **Start the development server:**
+   ```bash
+   npm start
+   ```
+   The application will be available at [http://localhost:4200](http://localhost:4200).
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Available Scripts
 
-```bash
-ng generate --help
-```
+- `ng`: Angular CLI commands.
+- `start`: Runs the development server using `ng serve`.
+- `build`: Builds the project for production.
+- `watch`: Builds the project in watch mode.
+- `test`: Runs the unit tests.
+- `serve:ssr:meal2list`: Starts the server-side rendering version using Node.js.
+- `lint`: Runs ESLint to check code quality.
+- `format`: Formats the codebase using Prettier.
+- `format:check`: Checks code formatting.
 
-## Building
+## Project Scope
 
-To build the project run:
+Meal2List focuses on simplifying shopping list creation by:
 
-```bash
-ng build
-```
+- Automatically extracting ingredients from recipe text.
+- Allowing manual creation, editing, and deletion of shopping lists and individual products.
+- Grouping products by categories (e.g., dairy, vegetables, fruits, bread).
+- Providing secure user registration and login.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+**Out of Scope:**
 
-## Running unit tests
+- Importing recipes from URLs.
+- Rich multimedia support.
+- Social features such as sharing recipes or shopping lists.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Project Status
 
-```bash
-ng test
-```
+The project is in the MVP stage and under active development.
 
-## Running end-to-end tests
+## License
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+This project is licensed under the MIT License.

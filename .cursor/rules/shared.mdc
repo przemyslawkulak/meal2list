@@ -1,0 +1,132 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# AI Rules for {app-name}
+
+{project-description}
+
+## Tech Stack
+
+### Frontend
+- Angular 19: Provides dynamic, interactive components.
+- TypeScript 5: Offers static typing and modern IDE support.
+- Angular Material: Delivers a comprehensive UI component library.
+
+### Backend
+- Supabase: A complete backend solution featuring PostgreSQL, multi-language SDKs, and built-in authentication.
+
+### AI Integration
+- Openrouter.ai: Integrates with various AI models (OpenAI, Anthropic, Google, etc.) and allows control over API key limits.
+
+### CI/CD and Hosting
+- Github Actions: Automates continuous integration and deployment pipelines.
+- DigitalOcean: Hosts applications via Docker container images.
+
+### Code Quality Tools
+- ESLint with @angular-eslint/recommended and @typescript-eslint/recommended for code consistency.
+- Prettier for automatic formatting, configured in .prettierrc.json (semi: true, singleQuote: true, printWidth: 100).
+- Husky and lint-staged for enforcing code quality via Git hooks during pre-commit.
+
+## Project Structure
+
+When introducing changes, follow this Angular-centric directory layout:
+
+- `./src` - Source code
+  - `./src/app` - Main Angular modules and components.
+  - `./src/db` - Supabase clients and types
+  - `./src/types.ts` - Shared types for backend and frontend (Entities, DTOs)
+  - `./src/environments` - Environment configuration files.
+  - `./src/assets` - Static assets such as images and styles.
+- `./public` - Publicly accessible files - like favicon
+
+Update this section as needed for structural modifications.
+
+## Coding Practices
+
+### Guidelines for Clean Code
+
+- Use feedback from linters to improve the code when making changes.
+- Prioritize error handling and edge cases.
+- Handle errors and edge cases at the beginning of functions.
+- Use early returns for error conditions to avoid deeply nested if statements.
+- Place the happy path last in the function for improved readability.
+- Avoid unnecessary else statements; use if-return pattern instead.
+- Use guard clauses to handle preconditions and invalid states early.
+- Implement proper error logging and user-friendly error messages.
+- Consider using custom error types or error factories for consistent error handling.
+
+
+Example of catalog structure for Frontend code
+src/
+├── app/
+│   ├── core/                           # Singletony, Supabase, Interceptory
+│   │   ├── guards/
+│   │   │   └── auth.guard.ts
+│   │   ├── interceptors/
+│   │   │   └── error.interceptor.ts
+│   │   ├── supabase/                   # Integracja z Supabase
+│   │   │   ├── supabase.client.ts
+│   │   │   ├── supabase-auth.service.ts
+│   │   │   ├── posts.service.ts
+│   │   │   ├── profile.service.ts
+│   │   │   └── index.ts
+│   │   └── index.ts                    # re-export core elementów
+│
+│   ├── shared/                         # Reużywalne komponenty i funkcje
+│   │   ├── ui/                         # UI components (button, card, input, etc.)
+│   │   │   ├── button/
+│   │   │   │   ├── button.component.ts
+│   │   │   │   └── index.ts
+│   │   ├── pipes/
+│   │   │   └── date-format.pipe.ts
+│   │   ├── utils/                      # Funkcje pomocnicze
+│   │   │   └── array.helpers.ts
+│   │   └── index.ts
+│
+│   ├── features/                       # Główne funkcjonalności aplikacji
+│   │   ├── auth/
+│   │   │   ├── login/
+│   │   │   │   ├── login.page.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── register/
+│   │   │   │   ├── register.page.ts
+│   │   │   │   └── index.ts
+│   │   │   └── auth.routes.ts
+│   │
+│   │   ├── posts/
+│   │   │   ├── list/
+│   │   │   │   ├── post-list.page.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── detail/
+│   │   │   │   ├── post-detail.page.ts
+│   │   │   │   └── index.ts
+│   │   │   └── posts.routes.ts
+│   │
+│   │   ├── profile/
+│   │   │   ├── profile.page.ts
+│   │   │   └── index.ts
+│   │
+│   │   └── features.routes.ts          # Ewentualne agregowanie tras
+│
+│   ├── layout/                         # Struktura layoutu (np. shell, nav)
+│   │   ├── shell.component.ts
+│   │   └── index.ts
+│
+│   ├── app.routes.ts                   # Root routing
+│   └── config.ts                       # globalne configi (np. ENV aliasy)
+│
+├── assets/
+│   └── ...
+├── environments/
+│   ├── environment.ts
+│   └── environment.prod.ts
+├── main.ts                             # Bootstrap aplikacji
+└── index.html
+

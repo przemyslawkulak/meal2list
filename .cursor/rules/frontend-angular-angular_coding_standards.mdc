@@ -1,0 +1,37 @@
+---
+description: 
+globs: *.ts,*.html
+alwaysApply: false
+---
+## FRONTEND
+
+### Guidelines for ANGULAR
+
+#### ANGULAR_CODING_STANDARDS
+
+- Use standalone components, directives, and pipes instead of NgModules
+- Implement signals for state management instead of traditional RxJS-based approaches
+- Use the new inject function instead of constructor injection
+- Implement control flow with @if, @for, and @switch instead of *ngIf, *ngFor, etc.
+- Leverage functional guards and resolvers instead of class-based ones
+- Use the new deferrable views for improved loading states
+- Implement OnPush change detection strategy for improved performance
+- Use TypeScript decorators with explicit visibility modifiers (public, private)
+- Leverage Angular CLI for schematics and code generation
+- Implement proper lazy loading with loadComponent and loadChildren
+- New componenents always create in seperate folder with seperate html file fo template and scss file fo styling
+
+### Guidelines for Accessibility
+
+#### ARIA Best Practices
+
+- Use ARIA landmarks to identify regions of the page (main, navigation, search, etc.)
+- Apply appropriate ARIA roles to custom interface elements that lack semantic HTML equivalents
+- Set aria-expanded and aria-controls for expandable content like accordions and dropdowns
+- Use aria-live regions with appropriate politeness settings for dynamic content updates
+- Implement aria-hidden to hide decorative or duplicative content from screen readers
+- Apply aria-label or aria-labelledby for elements without visible text labels
+- Use aria-describedby to associate descriptive text with form inputs or complex elements
+- Implement aria-current for indicating the current item in a set, navigation, or process
+- Avoid redundant ARIA that duplicates the semantics of native HTML elements
+

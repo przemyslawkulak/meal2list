@@ -1,0 +1,30 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description:
+globs: *.ts,*.html,*.scss
+alwaysApply: false
+---
+
+## Frontend
+
+### General Guidelines
+
+- Use Angular 19 exclusively for building the entire application, including both static content and interactive components.
+- Leverage Angular Material as the sole UI framework to provide accessible, pre-designed components.
+- Follow Angular best practices, including modular architecture, dependency injection, and reactive programming with RxJS to build scalable applications.
+- Utilize TypeScript 5 for robust type safety and enhanced IDE support.
+
+### Guidelines for Styling
+
+- Rely exclusively on Angular Material’s styling system for consistency and accessibility.
+- For custom styles and overrides, use SCSS with modular files and Angular's built-in style encapsulation.
+- Employ Angular Material theming to define consistent color palettes and design language across the application.
+
+### Guidelines for Accessibility
+
+- Leverage Angular Material’s built-in accessibility features.
+- Ensure all interactive elements and custom components adhere to ARIA best practices by using appropriate roles, states, and properties.
