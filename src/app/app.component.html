@@ -1,9 +1,3 @@
 <div class="container">
-  <ng-container *ngIf="session; else loginTemplate">
-    <app-account [session]="session"></app-account>
-  </ng-container>
-
-  <ng-template #loginTemplate>
-    <app-login></app-login>
-  </ng-template>
+  <router-outlet />
 </div>

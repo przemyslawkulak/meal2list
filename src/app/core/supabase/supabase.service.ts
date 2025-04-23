@@ -15,17 +15,21 @@ export interface Profile {
   providedIn: 'root',
 })
 export class SupabaseService {
-  private supabase: SupabaseClient<Database>;
+  protected supabase: SupabaseClient<Database>;
   private _session: AuthSession | null = null;
 
   constructor(@Inject('APP_ENVIRONMENT') private environment: AppEnvironment) {
-    this.supabase = createBrowserClient(environment.supabaseUrl, environment.supabaseKey, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: false,
-      },
-    });
+    this.supabase = createBrowserClient<Database>(
+      environment.supabaseUrl,
+      environment.supabaseKey,
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: false,
+        },
+      }
+    );
   }
 
   // ... existing code ...

@@ -53,7 +53,7 @@ export class LoginComponent {
       if (error) throw error;
 
       // Redirect to home page or dashboard after successful login
-      await this.router.navigate(['/']);
+      await this.router.navigate(['/account']);
     } catch (error) {
       if (error instanceof Error) {
         alert(error.message);

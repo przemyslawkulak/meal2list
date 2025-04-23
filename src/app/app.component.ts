@@ -2,13 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { SupabaseService } from './core/supabase/supabase.service';
 import { AuthSession } from '@supabase/supabase-js';
 import { CommonModule } from '@angular/common';
-import { LoginComponent } from './auth/login/login.component';
-import { AccountComponent } from './auth/account/account.component';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, LoginComponent, AccountComponent],
+  imports: [CommonModule, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })

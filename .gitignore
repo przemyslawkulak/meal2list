@@ -5,12 +5,15 @@
 /tmp
 /out-tsc
 /bazel-out
-/environments/environment.ts
+\environments
+/Prompty
 
 # Node
 /node_modules
 npm-debug.log
 yarn-error.log
+
+.env
 
 # IDEs and editors
 .idea/
