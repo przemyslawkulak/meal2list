@@ -18,6 +18,7 @@ alwaysApply: true
 - Angular 19: Provides dynamic, interactive components.
 - TypeScript 5: Offers static typing and modern IDE support.
 - Angular Material: Delivers a comprehensive UI component library.
+- always use RXJx Never use a promises
 
 ### Backend
 - Supabase: A complete backend solution featuring PostgreSQL, multi-language SDKs, and built-in authentication.
