@@ -1,0 +1,25 @@
+<form [formGroup]="generationForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Recipe Text</mat-label>
+    <textarea
+      matInput
+      formControlName="recipe_text"
+      placeholder="Enter your recipe here..."
+      rows="10"
+    ></textarea>
+    <mat-error *ngIf="generationForm.get('recipe_text')?.errors?.['required']">
+      Recipe text is required
+    </mat-error>
+    <mat-error *ngIf="generationForm.get('recipe_text')?.errors?.['maxlength']">
+      Recipe text cannot exceed 5000 characters
+    </mat-error>
+  </mat-form-field>
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="generationForm.invalid || isLoading"
+  >
+    {{ isLoading ? 'Generating...' : 'Generate Shopping List' }}
+  </button>
+</form>

@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { AccountComponent } from './auth/account/account.component';
 import { authGuard, publicGuard } from './core/guards/auth.guard';
-import { ShoppingListGenerationComponent } from './features/shopping-list/shopping-list-generation/shopping-list-generation.component';
+import { ShoppingListGenerationComponent } from './features/generate/generation.component';
 
 export const routes: Routes = [
   {
