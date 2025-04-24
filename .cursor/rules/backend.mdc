@@ -15,7 +15,8 @@ alwaysApply: false
 - Use Zod schemas to validate data exchanged with the backend.
 - Use SupabaseClient type from `src/app/core/supabase/supabase.service.ts`, not from `@supabase/supabase-js`
 - always use RXJx Never use a promises
-- Always use services instead of ceating endpoints. The method should use rxjs and  Supabase Client SDK like this:
+- never use controller for supabase methods
+- Always use services instead of creating supabase database methods. The method should use rxjs and  Supabase Client SDK like this:
  CODE:
  ```
 

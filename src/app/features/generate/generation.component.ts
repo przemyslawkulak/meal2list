@@ -5,7 +5,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { GenerationController } from '../../core/controllers/generation.controller';
+import { GeneratedListResponseDto } from '../../../types';
+import { GenerationService } from '../../../services/generation/generation.service';
 
 @Component({
   selector: 'app-generation',
@@ -20,7 +21,7 @@ export class ShoppingListGenerationComponent {
 
   constructor(
     private fb: FormBuilder,
-    private generationController: GenerationController,
+    private generationService: GenerationService,
     private snackBar: MatSnackBar
   ) {
     this.generationForm = this.fb.group({
@@ -34,8 +35,8 @@ export class ShoppingListGenerationComponent {
     this.isLoading = true;
     const command = this.generationForm.value;
 
-    this.generationController.generateFromText(command).subscribe({
-      next: response => {
+    this.generationService.generateFromText(command).subscribe({
+      next: (response: GeneratedListResponseDto) => {
         this.isLoading = false;
         this.snackBar.open('Shopping list generated successfully!', 'Close', {
           duration: 3000,
@@ -43,7 +44,7 @@ export class ShoppingListGenerationComponent {
         // TODO: Handle the generated list (e.g., navigate to it or display it)
         console.log('Generated list:', response);
       },
-      error: error => {
+      error: (error: { message: string }) => {
         this.isLoading = false;
         this.snackBar.open(error.message || 'Failed to generate shopping list', 'Close', {
           duration: 5000,
