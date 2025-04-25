@@ -22,7 +22,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/account',
+    redirectTo: '/login',
     pathMatch: 'full',
   },
 ];
