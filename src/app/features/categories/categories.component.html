@@ -1,0 +1,9 @@
+@if (categories$ | async; as categories) {
+  <mat-list>
+    @for (category of categories; track category.id) {
+      <mat-list-item>{{ category.name }}</mat-list-item>
+    }
+  </mat-list>
+} @else {
+  <mat-spinner></mat-spinner>
+}

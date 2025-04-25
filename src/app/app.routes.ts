@@ -3,6 +3,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { AccountComponent } from './auth/account/account.component';
 import { authGuard, publicGuard } from './core/guards/auth.guard';
 import { ShoppingListGenerationComponent } from './features/generate/generation.component';
+import { CategoriesComponent } from './features/categories/categories.component';
 
 export const routes: Routes = [
   {
@@ -18,6 +19,11 @@ export const routes: Routes = [
   {
     path: 'generate',
     component: ShoppingListGenerationComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'categories', // TODO: to delete after testing categories
+    component: CategoriesComponent,
     canActivate: [authGuard],
   },
   {
