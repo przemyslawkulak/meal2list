@@ -34,7 +34,7 @@ export class CreateShoppingListComponent {
     private router: Router
   ) {
     this.shoppingListForm = this.fb.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required]], // TODO: add validation uniqueness name
       recipe_id: [''],
     });
   }

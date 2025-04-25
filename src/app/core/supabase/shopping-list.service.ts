@@ -1,6 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { Observable, from, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { Observable, from, map, catchError, throwError, of } from 'rxjs';
 import { CreateShoppingListCommand, ShoppingListResponseDto } from '../../../types';
 import { SupabaseService } from './supabase.service';
 import { AppEnvironment } from '../../app.config';
@@ -33,6 +32,44 @@ export class ShoppingListService extends SupabaseService {
       catchError(error => {
         console.error('Error creating shopping list:', error);
         return throwError(() => new Error('Failed to create shopping list'));
+      })
+    );
+  }
+
+  getShoppingListById(listId: string): Observable<ShoppingListResponseDto | null> {
+    return from(
+      this.supabase
+        .from('shopping_lists')
+        .select(
+          `
+          id,
+          name,
+          recipe_id,
+          created_at,
+          updated_at,
+          items:shopping_list_items(
+            id,
+            product_name,
+            quantity,
+            unit,
+            is_checked,
+            category_id,
+            created_at,
+            updated_at
+          )
+        `
+        )
+        .eq('id', listId)
+        .single()
+    ).pipe(
+      map(result => {
+        if (result.error) throw result.error;
+        if (!result.data) return null;
+        return result.data as ShoppingListResponseDto;
+      }),
+      catchError(error => {
+        console.error('Error fetching shopping list:', error);
+        return of(null);
       })
     );
   }
