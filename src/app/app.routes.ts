@@ -24,7 +24,6 @@ export const routes: Routes = [
   {
     path: 'categories', // TODO: to delete after testing categories
     component: CategoriesComponent,
-    canActivate: [authGuard],
   },
   {
     path: '',

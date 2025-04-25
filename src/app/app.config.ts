@@ -5,6 +5,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { environment } from '../environments/environment';
 import { routes } from './app.routes';
 import { provideRouter } from '@angular/router';
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 
 export interface AppEnvironment {
   production: boolean;
@@ -14,6 +15,7 @@ export interface AppEnvironment {
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideExperimentalZonelessChangeDetection(),
     provideAnimations(),
     provideHttpClient(),
     importProvidersFrom([MatNativeDateModule]),
