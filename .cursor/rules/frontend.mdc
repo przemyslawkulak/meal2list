@@ -17,6 +17,7 @@ alwaysApply: false
 - Leverage Angular Material as the sole UI framework to provide accessible, pre-designed components.
 - Follow Angular best practices, including modular architecture, dependency injection, and reactive programming with RxJS to build scalable applications.
 - Utilize TypeScript 5 for robust type safety and enhanced IDE support.
+- always divide components on three file with html, scss and ts
 
 ### Guidelines for Styling
 

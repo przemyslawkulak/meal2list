@@ -16,20 +16,25 @@ alwaysApply: false
 - Use SupabaseClient type from `src/app/core/supabase/supabase.service.ts`, not from `@supabase/supabase-js`
 - always use RXJx Never use a promises
 - never use controller for supabase methods
-- Always use services instead of creating supabase database methods. The method should use rxjs and  Supabase Client SDK like this:
+- Always use services instead of creating supabase database methods. New service should extend supabase service. The method should use rxjs and  Supabase Client SDK like this:
  CODE:
  ```
 
-constructor(private supabase: SupabaseService) {}
+@Injectable({
+  providedIn: 'root',
+})
+export class CategoryService extends SupabaseService {
+  constructor(@Inject('APP_ENVIRONMENT') environment: AppEnvironment) {
+    super(environment);
+  }
 
- getMeals(): Observable<any[]> {
-    return from(
-      this.supabase.from('meals').select('*')
-    ).pipe(
+  getCategories(): Observable<CategoryDto[]> {
+    return from(this.supabase.from('categories').select('id, name').order('name')).pipe(
       map(result => {
         if (result.error) throw result.error;
         return result.data;
       })
     );
-  } 
+  }
+}
   ```
