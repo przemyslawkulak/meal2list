@@ -4,6 +4,7 @@ import { AccountComponent } from './auth/account/account.component';
 import { authGuard, publicGuard } from './core/guards/auth.guard';
 import { ShoppingListGenerationComponent } from './features/generate/generation.component';
 import { CategoriesComponent } from './features/categories/categories.component';
+import { CreateShoppingListComponent } from './features/shopping-lists/create/create-shopping-list.component';
 
 export const routes: Routes = [
   {
@@ -24,6 +25,11 @@ export const routes: Routes = [
   {
     path: 'categories', // TODO: to delete after testing categories
     component: CategoriesComponent,
+  },
+  {
+    path: 'create-shopping-list', // TODO: to delete after testing
+    component: CreateShoppingListComponent,
+    title: 'Create Shopping List',
   },
   {
     path: '',
