@@ -4,6 +4,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Router } from '@angular/router';
 import { ShoppingListResponseDto } from '../../../../../types';
 
 @Component({
@@ -22,6 +23,8 @@ export class ShoppingListItemComponent {
   delete = output<ShoppingListResponseDto>();
   generate = output<ShoppingListResponseDto>();
 
+  constructor(private readonly router: Router) {}
+
   onDelete(event: Event): void {
     event.stopPropagation();
     this.delete.emit(this.list());
@@ -30,5 +33,9 @@ export class ShoppingListItemComponent {
   onGenerate(event: Event): void {
     event.stopPropagation();
     this.generate.emit(this.list());
+  }
+
+  openDetails() {
+    this.router.navigate(['/shopping-lists', this.list().id]);
   }
 }
