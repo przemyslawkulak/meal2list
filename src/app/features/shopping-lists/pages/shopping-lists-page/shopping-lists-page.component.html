@@ -1,0 +1,29 @@
+<mat-toolbar color="primary">
+  <span>Listy zakupowe</span>
+  <span class="spacer"></span>
+  <button mat-raised-button color="accent" (click)="openNew()">
+    <mat-icon>add</mat-icon>
+    Nowa lista
+  </button>
+</mat-toolbar>
+
+<div class="content">
+  @if (isLoading()) {
+    <div class="skeleton-container">
+      <ngx-skeleton-loader
+        *ngFor="let i of [1, 2, 3]"
+        [theme]="{ height: '60px', marginBottom: '16px' }"
+      ></ngx-skeleton-loader>
+    </div>
+  } @else {
+    <mat-nav-list role="list">
+      @for (list of lists(); track list.id) {
+        <app-shopping-list-item
+          [list]="list"
+          (delete)="openDelete($event)"
+          (generate)="onGenerate($event)"
+        />
+      }
+    </mat-nav-list>
+  }
+</div>

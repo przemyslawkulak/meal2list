@@ -1,0 +1,28 @@
+.list-item-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 8px 0;
+}
+
+.list-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.list-item-title {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.list-item-date {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.list-item-actions {
+  display: flex;
+  gap: 8px;
+} 

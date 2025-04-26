@@ -1,30 +1,23 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { AccountComponent } from './auth/account/account.component';
-import { authGuard, publicGuard } from './core/guards/auth.guard';
 import { CategoriesComponent } from './features/categories/categories.component';
-import { CreateShoppingListComponent } from './features/shopping-list/create/create-shopping-list.component';
 import { ShoppingListDetailComponent } from './features/shopping-list/detail/shopping-list-detail.component';
 
 export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    canActivate: [publicGuard],
+    // canActivate: [publicGuard],
   },
   {
     path: 'account',
     component: AccountComponent,
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
   },
   {
     path: 'categories', // TODO: to delete after testing categories
     component: CategoriesComponent,
-  },
-  {
-    path: 'create-shopping-list', // TODO: to delete after testing
-    component: CreateShoppingListComponent,
-    title: 'Create Shopping List',
   },
   {
     path: 'shopping-lists/:id', // TODO: to delete after testing
@@ -35,12 +28,20 @@ export const routes: Routes = [
     path: 'generate',
     loadComponent: () =>
       import('./features/lists/generate/generate-list.page').then(m => m.GenerateListPageComponent),
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
     title: 'Generate Shopping List',
   },
   {
+    path: 'lists',
+    loadComponent: () =>
+      import(
+        './features/shopping-lists/pages/shopping-lists-page/shopping-lists-page.component'
+      ).then(m => m.ShoppingListsPageComponent),
+    // canActivate: [authGuard]
+  },
+  {
     path: '',
-    redirectTo: '/login',
+    redirectTo: '/lists',
     pathMatch: 'full',
   },
 ];

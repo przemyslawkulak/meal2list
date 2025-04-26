@@ -54,6 +54,19 @@ export class ShoppingListService extends SupabaseService {
     );
   }
 
+  deleteShoppingList(id: string): Observable<void> {
+    return from(this.supabase.from('shopping_lists').delete().eq('id', id)).pipe(
+      map(result => {
+        if (result.error) throw result.error;
+        return;
+      }),
+      catchError(error => {
+        console.error('Error deleting shopping list:', error);
+        return throwError(() => new Error('Failed to delete shopping list'));
+      })
+    );
+  }
+
   getShoppingListById(listId: string): Observable<ShoppingListResponseDto | null> {
     return from(
       this.supabase
