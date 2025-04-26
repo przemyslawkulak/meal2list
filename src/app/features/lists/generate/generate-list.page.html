@@ -1,0 +1,16 @@
+<div class="generate-list-container">
+  <h1>Generate Shopping List from Recipe</h1>
+  <app-generation-form
+    [shoppingLists]="shoppingLists()"
+    (generate)="onGenerate($event)"
+    [class.generation-form--disabled]="isGenerating()"
+  >
+  </app-generation-form>
+
+  <app-generation-status
+    [status]="generationStatus()"
+    [items]="generatedItems()"
+    [errorMessage]="errorMessage()"
+  >
+  </app-generation-status>
+</div>

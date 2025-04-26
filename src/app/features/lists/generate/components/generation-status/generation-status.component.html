@@ -1,0 +1,37 @@
+<div class="generation-status" @fadeInOut>
+  @if (status() !== 'idle') {
+    <div class="generation-status__message">
+      @if (status() === 'generating' || status() === 'adding') {
+        <mat-spinner diameter="24"></mat-spinner>
+      }
+      @if (status() === 'completed') {
+        <mat-icon color="primary">check_circle</mat-icon>
+      }
+      @if (status() === 'error') {
+        <mat-icon color="warn">error</mat-icon>
+      }
+      <span>{{ statusMessages[status()] }}</span>
+    </div>
+  }
+
+  @if (status() === 'completed' && items().length > 0) {
+    <div class="generation-status__items" @fadeInOut>
+      <h3>Generated Items:</h3>
+      <ul>
+        @for (item of items(); track item.product_name) {
+          <li>
+            <span class="item-name">{{ item.product_name }}</span>
+            <span class="item-quantity"> {{ item.quantity }} {{ item.unit || 'pcs' }} </span>
+            <mat-icon class="auto-badge" matBadge="auto">local_grocery_store</mat-icon>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+
+  @if (status() === 'error' && errorMessage()) {
+    <div class="generation-status__error" @fadeInOut>
+      {{ errorMessage() }}
+    </div>
+  }
+</div>

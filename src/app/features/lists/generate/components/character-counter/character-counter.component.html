@@ -1,0 +1,6 @@
+<span class="character-counter" [class.character-counter--exceeded]="length() >= max()">
+  {{ length() }} / {{ max() }}
+  @if (length() >= max()) {
+    Maximum Character Count exceeded
+  }
+</span>

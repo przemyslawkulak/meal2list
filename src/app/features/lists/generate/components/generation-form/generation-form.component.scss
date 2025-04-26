@@ -1,0 +1,19 @@
+.generation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+
+  &__field {
+    width: 100%;
+  }
+
+  &__submit {
+    align-self: flex-start;
+  }
+
+  textarea {
+    min-height: 200px;
+    resize: vertical;
+  }
+} 
