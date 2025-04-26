@@ -1,8 +1,14 @@
 import { Injectable, Inject } from '@angular/core';
-import { AuthChangeEvent, AuthSession, Session, SupabaseClient, User } from '@supabase/supabase-js';
+import {
+  AuthChangeEvent,
+  AuthSession,
+  Session,
+  SupabaseClient,
+  User,
+  createClient,
+} from '@supabase/supabase-js';
 import { Database } from '../../../db/database.types';
 import { AppEnvironment } from '../../app.config';
-import { createBrowserClient } from '@supabase/ssr';
 
 export interface Profile {
   id?: string;
@@ -19,17 +25,13 @@ export class SupabaseService {
   private _session: AuthSession | null = null;
 
   constructor(@Inject('APP_ENVIRONMENT') private environment: AppEnvironment) {
-    this.supabase = createBrowserClient<Database>(
-      environment.supabaseUrl,
-      environment.supabaseKey,
-      {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: false,
-        },
-      }
-    );
+    this.supabase = createClient<Database>(environment.supabaseUrl, environment.supabaseKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: false,
+      },
+    });
   }
 
   // ... existing code ...
