@@ -12,6 +12,24 @@ export class ShoppingListService extends SupabaseService {
     super(environment);
   }
 
+  getShoppingLists(): Observable<ShoppingListResponseDto[]> {
+    return from(
+      this.supabase
+        .from('shopping_lists')
+        .select('id, name, recipe_id, created_at, updated_at')
+        .order('created_at', { ascending: false })
+    ).pipe(
+      map(result => {
+        if (result.error) throw result.error;
+        return result.data as ShoppingListResponseDto[];
+      }),
+      catchError(error => {
+        console.error('Error fetching shopping lists:', error);
+        return of([]);
+      })
+    );
+  }
+
   createShoppingList(command: CreateShoppingListCommand): Observable<ShoppingListResponseDto> {
     return from(
       this.supabase

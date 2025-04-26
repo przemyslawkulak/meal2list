@@ -50,7 +50,7 @@ Cel: Endpoint generacji listy zakupów na podstawie przekazanego tekstu przepisu
 1. Klient wysyła żądanie POST z JSON zawierającym recipe_text.
 2. Middleware autoryzacji (Supabase Auth) weryfikuje token dostępu.
 3. Walidacja danych wejściowych przy użyciu Zod: sprawdzenie, czy recipe_text jest obecny, niepusty i nie przekracza 5000 znaków.
-4. Wywołanie serwisu (`ShoppingListGenerationService`):
+4. Wywołanie serwisu (`GenerationService`):
    - Przetwarzanie recipe_text
    - Interakcja z zewnętrzną usługą (np. AI) lub użycie dedykowanego algorytmu do generacji listy
 5. Formatowanie wyniku w strukturę odpowiedzi zgodną z typami DTO.
@@ -79,7 +79,7 @@ Cel: Endpoint generacji listy zakupów na podstawie przekazanego tekstu przepisu
 
 1. Utworzenie nowego endpointu POST /generate-shopping-list w warstwie backendowej ( w dedykowanym serwisie).
 2. Opracowanie schematu walidacji wejścia przy użyciu Zod.
-3. Implementacja `ShoppingListGenerationService`, która:
+3. Implementacja `GenerationService`, która:
    - Przetwarza dane wejściowe
    - Integruje się z zewnętrzną usługą AI lub używa własnego algorytmu generacji
    - Formatuje wynik zgodnie z wymaganym typem odpowiedzi

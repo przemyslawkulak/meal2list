@@ -21,7 +21,6 @@ export class ShoppingListItemsService extends SupabaseService {
     items: CreateBatchShoppingListItemsCommand
   ): Observable<ShoppingListItemResponseDto[]> {
     const validationResult = batchShoppingListItemsSchema.safeParse(items);
-
     if (!validationResult.success) {
       return throwError(() => ({
         message: 'Invalid input data',

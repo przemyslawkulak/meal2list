@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Observable, from, map, catchError, throwError, of } from 'rxjs';
+import { Observable, from, map, catchError, throwError, of, delay } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { generateSchema } from '../../../schemas/generation.schema';
 import {
@@ -62,13 +62,36 @@ export class GenerationService extends SupabaseService {
         id: uuidv4(),
         product_name: 'Flour',
         quantity: 1,
-        unit: 'kg',
+        unit: 'litre',
         is_checked: false,
-        category_id: 'default-category',
+        source: 'auto',
+        category_id: 'd90c5734-6227-4ab8-9acf-d8796db27913',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       },
-    ]);
+      {
+        id: uuidv4(),
+        product_name: 'Sugar',
+        quantity: 1,
+        unit: 'kg',
+        is_checked: false,
+        source: 'manual',
+        category_id: 'd90c5734-6227-4ab8-9acf-d8796db27913',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+      {
+        id: uuidv4(),
+        product_name: 'Eggs',
+        quantity: 1,
+        unit: 'count',
+        is_checked: false,
+        source: 'modified',
+        category_id: 'd90c5734-6227-4ab8-9acf-d8796db27913',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+    ]).pipe(delay(2000)); // Add 2 seconds delay
   }
 
   private logGenerationError(error: unknown): Observable<void> {
