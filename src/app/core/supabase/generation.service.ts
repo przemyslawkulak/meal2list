@@ -2,14 +2,14 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, from, map, catchError, throwError, of } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
+import { generateSchema } from '../../../schemas/generation.schema';
 import {
+  CreateRecipeCommand,
   GeneratedListResponseDto,
   ShoppingListItemResponseDto,
-  CreateRecipeCommand,
-} from '../../types';
-import { SupabaseService } from '../../app/core/supabase/supabase.service';
-import { AppEnvironment } from '../../app/app.config';
-import { generateSchema } from '../../schemas/generation.schema';
+} from '../../../types';
+import { AppEnvironment } from '../../app.config';
+import { SupabaseService } from './supabase.service';
 
 @Injectable({
   providedIn: 'root',

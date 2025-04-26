@@ -1,6 +1,6 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { MatNativeDateModule } from '@angular/material/core';
 import { environment } from '../environments/environment';
 import { routes } from './app.routes';
@@ -17,7 +17,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),
     provideAnimations(),
-    provideHttpClient(),
+    provideHttpClient(withFetch()),
     importProvidersFrom([MatNativeDateModule]),
     provideRouter(routes),
     {

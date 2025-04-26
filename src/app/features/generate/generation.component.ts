@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GeneratedListResponseDto } from '../../../types';
-import { GenerationService } from '../../../services/generation/generation.service';
+import { GenerationService } from '../../core/supabase/generation.service';
 
 @Component({
   selector: 'app-generation',
