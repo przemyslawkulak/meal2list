@@ -16,14 +16,18 @@
       ></ngx-skeleton-loader>
     </div>
   } @else {
-    <mat-nav-list role="list">
-      @for (list of lists(); track list.id) {
-        <app-shopping-list-item
-          [list]="list"
-          (delete)="openDelete($event)"
-          (generate)="onGenerate($event)"
-        />
-      }
-    </mat-nav-list>
+    <mat-card>
+      <mat-card-content>
+        <mat-nav-list role="list">
+          @for (list of lists(); track list.id) {
+            <app-shopping-list-item
+              [list]="list"
+              (delete)="openDelete($event)"
+              (generate)="onGenerate($event)"
+            />
+          }
+        </mat-nav-list>
+      </mat-card-content>
+    </mat-card>
   }
 </div>
