@@ -1,0 +1,36 @@
+<mat-card [appearance]="appearance">
+  <mat-card-header *ngIf="showHeader">
+    <!-- Optional header content projected here -->
+    <ng-content select="[card-avatar]"></ng-content>
+    <mat-card-title>
+      <!-- Title content projected here or use Input -->
+      <ng-content select="[card-title]"></ng-content>
+      <span *ngIf="!hasProjectedTitle">{{ cardTitle }}</span>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <!-- Subtitle content projected here or use Input -->
+      <ng-content select="[card-subtitle]"></ng-content>
+      <span *ngIf="!hasProjectedSubtitle">{{ cardSubtitle }}</span>
+    </mat-card-subtitle>
+    <!-- Optional header actions projected here -->
+    <ng-content select="[card-header-actions]"></ng-content>
+  </mat-card-header>
+
+  <!-- Optional image content projected here -->
+  <ng-content select="[card-image]"></ng-content>
+
+  <mat-card-content>
+    <!-- Main card content projected here -->
+    <ng-content select="[card-content]"></ng-content>
+  </mat-card-content>
+
+  <mat-card-actions *ngIf="showActions" [align]="actionsAlign">
+    <!-- Action buttons projected here -->
+    <ng-content select="[card-actions]"></ng-content>
+  </mat-card-actions>
+
+  <mat-card-footer *ngIf="showFooter">
+    <!-- Footer content projected here -->
+    <ng-content select="[card-footer]"></ng-content>
+  </mat-card-footer>
+</mat-card>

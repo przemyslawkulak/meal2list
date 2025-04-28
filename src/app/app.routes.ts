@@ -44,4 +44,11 @@ export const routes: Routes = [
     redirectTo: '/lists',
     pathMatch: 'full',
   },
+  {
+    // Route for the component showcase page
+    path: 'kitchen-sink',
+    loadComponent: () =>
+      import('../pages/kitchen-sink/kitchen-sink.page').then(m => m.KitchenSinkPageComponent),
+    title: 'Kitchen Sink',
+  },
 ];

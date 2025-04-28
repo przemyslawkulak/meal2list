@@ -1,0 +1,246 @@
+<h1>Kitchen Sink - Component Showcase</h1>
+
+<section class="component-section">
+  <h2>Buttons (app-button)</h2>
+  <div class="button-row">
+    <app-button (buttonClick)="onButtonClick('Primary')">Primary</app-button>
+    <app-button color="accent" (buttonClick)="onButtonClick('Accent')">Accent</app-button>
+    <app-button color="warn" (buttonClick)="onButtonClick('Warn')">Warn</app-button>
+    <app-button [disabled]="true" (buttonClick)="onButtonClick('Disabled')">Disabled</app-button>
+  </div>
+  <div class="button-row">
+    <!-- Example projecting an icon -->
+    <app-button color="primary">
+      <mat-icon>favorite</mat-icon>
+      Icon Button
+    </app-button>
+    <!-- You can also use raw Material buttons -->
+    <button mat-stroked-button color="primary">Stroked</button>
+    <button mat-flat-button color="accent">Flat</button>
+    <button mat-icon-button aria-label="Example icon-button with a heart icon">
+      <mat-icon>favorite</mat-icon>
+    </button>
+  </div>
+</section>
+
+<mat-divider></mat-divider>
+
+<section class="component-section">
+  <h2>Inputs (app-input)</h2>
+  <div class="input-row">
+    <app-input
+      label="Name"
+      [control]="nameControl"
+      hint="Enter your full name"
+      [required]="true"
+    ></app-input>
+    <app-input
+      label="Email"
+      [control]="emailControl"
+      type="email"
+      appearance="fill"
+      hint="We need a valid email"
+      [required]="true"
+    ></app-input>
+    <app-input label="Disabled Input" [control]="disabledControl"></app-input>
+  </div>
+</section>
+
+<mat-divider></mat-divider>
+
+<section class="component-section">
+  <h2>Cards (app-card)</h2>
+  <div class="card-row">
+    <app-card appearance="outlined" cardTitle="Outlined Card" cardSubtitle="Basic card example">
+      <div card-content>
+        This is the main content area of the card. You can put any content here.
+      </div>
+      <div card-actions>
+        <button mat-button>Action 1</button>
+        <button mat-button>Action 2</button>
+      </div>
+    </app-card>
+
+    <app-card appearance="raised" [showHeader]="true" [showActions]="true">
+      <div card-avatar><mat-icon>account_circle</mat-icon></div>
+      <div card-title>Raised Card with Avatar</div>
+      <div card-subtitle>More complex card</div>
+      <div card-content>Using content projection for title, subtitle, and avatar.</div>
+      <div card-actions align="end">
+        <button mat-icon-button aria-label="Share button"><mat-icon>share</mat-icon></button>
+        <button mat-button>LEARN MORE</button>
+      </div>
+    </app-card>
+  </div>
+</section>
+
+<mat-divider></mat-divider>
+
+<section class="component-section">
+  <h2>Lists (app-list)</h2>
+  <div class="list-row">
+    <app-card appearance="outlined" cardTitle="List with Data Binding">
+      <div card-content>
+        <app-list [items]="listItems">
+          <!-- Define the template for each item -->
+          <ng-template let-item let-idx="index">
+            <div matListItemTitle>{{ idx + 1 }}. {{ item.name }}</div>
+            <div matListItemLine>Value: {{ item.value }}</div>
+            <button matListItemIcon mat-icon-button aria-label="More options">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </ng-template>
+        </app-list>
+      </div>
+    </app-card>
+
+    <app-card appearance="outlined" cardTitle="List with Content Projection (Static)">
+      <div card-content>
+        <app-list [dense]="true">
+          <!-- Project static items -->
+          <mat-list-item>
+            <mat-icon matListItemIcon>home</mat-icon>
+            <div matListItemTitle>Static Item 1</div>
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon matListItemIcon>info</mat-icon>
+            <div matListItemTitle>Static Item 2</div>
+            <div matListItemLine>With a secondary line</div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>
+            <mat-icon matListItemIcon>star</mat-icon>
+            <div matListItemTitle>Static Item 3</div>
+          </mat-list-item>
+        </app-list>
+      </div>
+    </app-card>
+  </div>
+</section>
+
+<mat-divider></mat-divider>
+
+<section class="component-section">
+  <h2>Typography</h2>
+  <p class="mat-display-large">Display Large</p>
+  <p class="mat-display-medium">Display Medium</p>
+  <p class="mat-display-small">Display Small</p>
+  <h1 class="mat-headline-large">Headline Large (h1)</h1>
+  <h2 class="mat-headline-medium">Headline Medium (h2)</h2>
+  <h3 class="mat-headline-small">Headline Small (h3)</h3>
+  <h4 class="mat-title-large">Title Large (h4)</h4>
+  <h5 class="mat-title-medium">Title Medium (h5)</h5>
+  <h6 class="mat-title-small">Title Small (h6)</h6>
+  <p class="mat-body-large">Body Large. Used for longer passages of text.</p>
+  <p class="mat-body-medium">Body Medium. Default body text.</p>
+  <p class="mat-body-small">Body Small. Used for captions or less important text.</p>
+  <p><a href="#">This is a link</a></p>
+  <p><button mat-button>Button Text (Label Large)</button></p>
+</section>
+
+<mat-divider></mat-divider>
+
+<section class="component-section">
+  <h2>Modal / Dialog</h2>
+  <app-button (buttonClick)="openDialog(simpleDialog)">Open Simple Dialog</app-button>
+
+  <ng-template #simpleDialog>
+    <h2 mat-dialog-title>Simple Dialog</h2>
+    <mat-dialog-content>
+      This is the content of the dialog. You can put forms or other components here.
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-raised-button color="primary" [mat-dialog-close]="true">OK</button>
+    </mat-dialog-actions>
+  </ng-template>
+</section>
+
+<mat-divider></mat-divider>
+
+<section class="component-section">
+  <h2>Form</h2>
+  <form [formGroup]="demoForm" (ngSubmit)="onFormSubmit()" class="demo-form">
+    <app-input
+      label="Address"
+      [control]="demoForm.controls.address"
+      hint="Optional address line"
+    ></app-input>
+
+    <app-input
+      label="City"
+      [control]="demoForm.controls.city"
+      hint="Required city"
+      [required]="true"
+    ></app-input>
+
+    <mat-checkbox formControlName="termsAccepted" color="primary"
+      >I accept the terms and conditions</mat-checkbox
+    >
+    <mat-error
+      *ngIf="demoForm.controls.termsAccepted.invalid && demoForm.controls.termsAccepted.touched"
+    >
+      You must accept the terms.
+    </mat-error>
+
+    <div class="form-actions">
+      <app-button type="submit" [disabled]="demoForm.invalid">Submit Form</app-button>
+      <button mat-stroked-button type="button" (click)="demoForm.reset()">Reset</button>
+    </div>
+  </form>
+</section>
+
+<mat-divider></mat-divider>
+
+<section class="component-section">
+  <h2>Navigation (Toolbar Example)</h2>
+  <mat-toolbar color="primary">
+    <button mat-icon-button aria-label="Menu icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Kitchen Sink Toolbar</span>
+    <span class="toolbar-spacer"></span>
+    <button mat-icon-button aria-label="Favorite icon">
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Share icon">
+      <mat-icon>share</mat-icon>
+    </button>
+  </mat-toolbar>
+  <p class="mat-body-small">
+    Note: Full navigation patterns (like Sidenav) are usually part of the main app layout, not
+    typically demonstrated *within* a page like this.
+  </p>
+</section>
+
+<mat-divider></mat-divider>
+
+<section class="component-section">
+  <h2>Feedback (Snackbar & Progress)</h2>
+  <div class="feedback-row">
+    <app-button (buttonClick)="showSnackbar()">Show Snackbar</app-button>
+
+    <div class="progress-indicators">
+      <span>Progress Spinner:</span>
+      <mat-progress-spinner
+        color="primary"
+        mode="indeterminate"
+        [diameter]="40"
+      ></mat-progress-spinner>
+      <span>Progress Bar:</span>
+      <mat-progress-bar color="accent" mode="indeterminate"></mat-progress-bar>
+    </div>
+  </div>
+</section>
+
+<mat-divider></mat-divider>
+
+<section class="component-section">
+  <h2>Layout</h2>
+  <p>
+    The layout of this kitchen sink page itself uses CSS Flexbox (see `kitchen-sink.page.scss`) to
+    arrange component sections and items within rows. Material Design emphasizes responsive grids
+    (often 4, 8, or 12 columns) and consistent spacing (typically 8dp increments).
+  </p>
+  <p>Components like Cards and Inputs here are set to be flexible within their rows.</p>
+</section>

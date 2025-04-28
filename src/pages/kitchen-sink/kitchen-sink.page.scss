@@ -1,0 +1,53 @@
+:host {
+  display: block;
+  padding: 24px;
+}
+
+h1 {
+  margin-bottom: 32px;
+}
+
+.component-section {
+  margin-bottom: 32px;
+
+  h2 {
+    margin-bottom: 16px;
+    color: var(--mat-h2-color); // Example using CSS variables if you set them up
+    // Or use a Material theme color
+    // color: mat.get-theme-color(theme, primary, default);
+  }
+}
+
+.button-row,
+.input-row,
+.card-row,
+.list-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; // Spacing between items
+  margin-bottom: 16px;
+}
+
+.input-row app-input {
+  flex: 1 1 250px; // Allow inputs to grow and shrink, base size 250px
+  min-width: 200px;
+}
+
+.card-row app-card,
+.list-row app-card {
+  flex: 1 1 350px; // Allow cards to grow/shrink, base size 350px
+  max-width: 500px;
+}
+
+// Target projected content within list if needed
+app-list {
+  // Example: style projected list items
+  // ::ng-deep mat-list-item {
+  //   background-color: whitesmoke;
+  // }
+}
+
+mat-divider {
+  margin-top: 32px;
+  margin-bottom: 32px;
+} 

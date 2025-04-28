@@ -1,0 +1,13 @@
+:host {
+  display: block;
+  // Add default styles based on Material Card recommendations
+  // Example: width constraints, margins
+}
+
+mat-card {
+  // Override default Material Card styles if needed
+}
+
+.app-card-header-image {
+  background-size: cover;
+} 
