@@ -1,28 +1,30 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Component, inject } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
 import { CategoryService } from '../../core/supabase/category.service';
-import { CategoryDto } from '../../../types';
-import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 // TODO: to delete after testing categories
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [CommonModule, MatProgressSpinnerModule, MatListModule],
+  imports: [
+    AsyncPipe,
+    MatListModule,
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatIconModule,
+    MatDividerModule,
+  ],
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.scss'],
 })
 export class CategoriesComponent {
-  categories$: Observable<CategoryDto[]>;
+  private readonly _categoryService = inject(CategoryService);
 
-  constructor(private categoryService: CategoryService) {
-    this.categories$ = this.categoryService.getCategories().pipe(
-      catchError(error => {
-        console.error('Error fetching categories:', error);
-        throw error;
-      })
-    );
-  }
+  readonly categories$ = this._categoryService.categories$;
+
+  constructor() {}
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Output, EventEmitter, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,7 +25,7 @@ import { ShoppingListResponseDto } from '../../../../../../types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GenerationFormComponent {
-  @Output() generate = new EventEmitter<{ listId: string; recipeText: string }>();
+  generate = output<{ listId: string; recipeText: string }>();
   shoppingLists = input.required<ShoppingListResponseDto[]>();
 
   readonly form: FormGroup;

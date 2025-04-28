@@ -1,6 +1,6 @@
 <!-- Default to a standard Material Button -->
 <!-- Inputs will control type (raised, stroked, flat), color, disabled state etc. -->
-<button mat-raised-button [color]="color" [disabled]="disabled" (click)="onClick($event)">
+<button mat-raised-button [color]="color()" [disabled]="disabled()" (click)="onClick($event)">
   <ng-content></ng-content>
   <!-- Allows projecting content like text or icons -->
 </button>

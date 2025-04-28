@@ -1,9 +1,25 @@
-@if (categories$ | async; as categories) {
-  <mat-list>
-    @for (category of categories; track category.id) {
-      <mat-list-item>{{ category.name }}</mat-list-item>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Kategorie</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    @if (categories$ | async; as categories) {
+      <mat-list>
+        @for (category of categories; track category.id) {
+          <mat-list-item>
+            <mat-icon matListItemIcon>category</mat-icon>
+            <span matListItemTitle>{{ category.name }}</span>
+          </mat-list-item>
+          @if (!$last) {
+            <mat-divider></mat-divider>
+          }
+        }
+      </mat-list>
+    } @else {
+      <div class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
     }
-  </mat-list>
-} @else {
-  <mat-spinner></mat-spinner>
-}
+  </mat-card-content>
+</mat-card>

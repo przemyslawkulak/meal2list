@@ -1,0 +1,25 @@
+<mat-toolbar color="primary">
+  @if (sidenavClosed$ | async) {
+    <app-mobile-menu-toggle (toggle)="sidenav.toggle()"></app-mobile-menu-toggle>
+  }
+  <mat-icon>receipt_long</mat-icon>
+  <span>meal2List</span>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <span>meal2List</span>
+
+  <mat-sidenav
+    #sidenav
+    [mode]="(isWeb$ | async) ? 'side' : 'over'"
+    [opened]="isWeb$ | async"
+    [disableClose]="true"
+    fixedInViewport
+  >
+    <app-nav-list [links]="navigationLinks"></app-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { ThemePalette } from '@angular/material/core';
@@ -15,24 +15,24 @@ export class ButtonComponent {
   /**
    * Specifies the Material theme color palette for the button.
    */
-  @Input() color: ThemePalette = 'primary';
+  color = input<ThemePalette>('primary');
 
   /**
    * Whether the button is disabled.
    */
-  @Input() disabled: boolean = false;
+  disabled = input<boolean>(false);
 
   /**
    * Event emitter for button click events.
    */
-  @Output() buttonClick = new EventEmitter<MouseEvent>();
+  buttonClick = output<MouseEvent>();
 
   /**
    * Handles the click event and emits it.
    * @param event The mouse event.
    */
   onClick(event: MouseEvent): void {
-    if (!this.disabled) {
+    if (!this.disabled()) {
       this.buttonClick.emit(event);
     }
   }

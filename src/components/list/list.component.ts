@@ -1,9 +1,9 @@
 import {
   Component,
-  Input,
   ChangeDetectionStrategy,
   ContentChild,
   TemplateRef,
+  input,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
@@ -23,12 +23,12 @@ export class ListComponent<T> {
    * Optional array of data items to render in the list.
    * Requires `itemTemplate` to be provided for rendering.
    */
-  @Input() items?: T[];
+  items = input<T[] | undefined>(undefined);
 
   /**
    * Whether the list should use dense styling.
    */
-  @Input() dense: boolean = false;
+  dense = input(false);
 
   /**
    * TemplateRef used to render each item when the `items` input is provided.

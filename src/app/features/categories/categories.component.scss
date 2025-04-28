@@ -1,4 +1,28 @@
 :host {
   display: block;
   padding: 1rem;
+}
+
+mat-card {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+mat-list {
+  padding: 0;
+}
+
+mat-list-item {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
 } 

@@ -159,3 +159,9 @@ export interface GeneratedListResponseDto {
 export interface GenerateShoppingListFromRecipeCommand {
   recipe_text: string;
 }
+
+export interface NavLink {
+  label: string;
+  path: string;
+  icon?: string;
+}

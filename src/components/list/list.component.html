@@ -1,8 +1,8 @@
 <!-- Basic Material List -->
 <!-- For more complex lists, consider using MatSelectionList or custom item templates -->
-<mat-list [attr.dense]="dense ? '' : null" role="list">
-  <ng-container *ngIf="items && itemTemplate; else projectedContent">
-    <mat-list-item *ngFor="let item of items; let i = index" role="listitem">
+<mat-list [attr.dense]="dense() ? '' : null" role="list">
+  <ng-container *ngIf="items() && itemTemplate; else projectedContent">
+    <mat-list-item *ngFor="let item of items(); let i = index" role="listitem">
       <!-- Render the provided template for each item -->
       <ng-container
         *ngTemplateOutlet="itemTemplate; context: { $implicit: item, index: i }"

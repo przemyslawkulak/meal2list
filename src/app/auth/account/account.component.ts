@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AuthSession } from '@supabase/supabase-js';
 import { Profile, SupabaseService } from '../../core/supabase/supabase.service';
@@ -25,7 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./account.component.scss'],
 })
 export class AccountComponent implements OnInit {
-  @Input() session!: AuthSession;
+  session = input.required<AuthSession>();
   loading = false;
   profile: Profile | null = null;
   avatarUrl: string | null = null;
@@ -63,7 +63,7 @@ export class AccountComponent implements OnInit {
   async getProfile() {
     try {
       this.loading = true;
-      const { user } = this.session;
+      const { user } = this.session();
       const { data: profile, error, status } = await this.supabase.getProfile(user);
       console.log(profile);
 
@@ -86,7 +86,7 @@ export class AccountComponent implements OnInit {
   async updateProfile(): Promise<void> {
     try {
       this.loading = true;
-      const { user } = this.session;
+      const { user } = this.session();
 
       const updates = {
         id: user.id,
@@ -114,7 +114,7 @@ export class AccountComponent implements OnInit {
         throw new Error('No file selected');
       }
       const fileExt = file.name.split('.').pop();
-      const filePath = `${this.session.user.id}-${Math.random()}.${fileExt}`;
+      const filePath = `${this.session().user.id}-${Math.random()}.${fileExt}`;
 
       await this.supabase.uploadAvatar(filePath, file);
 

@@ -1,19 +1,19 @@
-<mat-form-field [appearance]="appearance" [color]="color">
-  <mat-label>{{ label }}</mat-label>
+<mat-form-field [appearance]="appearance()" [color]="color()">
+  <mat-label>{{ label() }}</mat-label>
   <input
     matInput
-    [type]="type"
-    [placeholder]="placeholder"
-    [formControl]="control"
-    [required]="required"
-    [readonly]="readonly"
+    [type]="type()"
+    [placeholder]="placeholder()"
+    [formControl]="control()"
+    [required]="required()"
+    [readonly]="readonly()"
   />
   <!-- Optional: Add hints and errors -->
-  <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
-  <mat-error *ngIf="control.invalid && (control.dirty || control.touched)">
+  <mat-hint *ngIf="hint()">{{ hint() }}</mat-hint>
+  <mat-error *ngIf="control().invalid && (control().dirty || control().touched)">
     <!-- Basic error message, can be customized further -->
-    <ng-container *ngIf="control.errors?.['required']">{{ label }} is required.</ng-container>
-    <ng-container *ngIf="control.errors?.['email']">Invalid email format.</ng-container>
+    <ng-container *ngIf="control().errors?.['required']">{{ label() }} is required.</ng-container>
+    <ng-container *ngIf="control().errors?.['email']">Invalid email format.</ng-container>
     <!-- Add more specific error messages as needed -->
   </mat-error>
 </mat-form-field>

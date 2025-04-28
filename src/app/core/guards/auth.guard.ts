@@ -3,14 +3,15 @@ import { CanActivateFn, Router } from '@angular/router';
 import { SupabaseService } from '../supabase/supabase.service';
 
 export const authGuard: CanActivateFn = () => {
-  const supabase = inject(SupabaseService);
   const router = inject(Router);
+  const supabase = inject(SupabaseService);
 
-  if (supabase.session) {
-    return true;
+  if (!supabase.session) {
+    router.navigate(['/login']);
+    return false;
   }
 
-  return router.createUrlTree(['/account']);
+  return true;
 };
 
 export const publicGuard: CanActivateFn = () => {

@@ -1,24 +1,32 @@
-import { Injectable, Inject } from '@angular/core';
-import { Observable, from } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { CategoryDto } from '../../../types';
+import { Injectable } from '@angular/core';
+import { from } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 import { SupabaseService } from './supabase.service';
-import { AppEnvironment } from '../../app.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoryService extends SupabaseService {
-  constructor(@Inject('APP_ENVIRONMENT') environment: AppEnvironment) {
-    super(environment);
+  private readonly _categories$ = from(
+    this.supabase.from('categories').select('id, name').order('name')
+  ).pipe(
+    map(response => {
+      if (response.error) throw response.error;
+      return response.data;
+    }),
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
+
+  get categories$() {
+    return this._categories$;
   }
 
-  getCategories(): Observable<CategoryDto[]> {
-    return from(this.supabase.from('categories').select('id, name').order('name')).pipe(
-      map(result => {
-        if (result.error) throw result.error;
-        return result.data;
-      })
-    );
+  preload() {
+    this._categories$.subscribe({
+      error: error => {
+        console.error('Failed to preload categories:', error);
+        // Here we could inject MatSnackBar and show error message
+      },
+    });
   }
 }

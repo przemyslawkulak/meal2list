@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -25,15 +25,15 @@ export class InputComponent /* implements ControlValueAccessor */ {
   // but for simple wrappers, passing the FormControl directly via @Input might be simpler.
   // Choose the approach based on your needs. For now, we use direct FormControl binding.
 
-  @Input({ required: true }) control!: FormControl; // Pass the FormControl directly
-  @Input() label: string = '';
-  @Input() placeholder: string = '';
-  @Input() type: string = 'text'; // e.g., text, password, email, number
-  @Input() appearance: MatFormFieldAppearance = 'outline'; // or 'fill'
-  @Input() color: ThemePalette = 'primary';
-  @Input() hint: string = '';
-  @Input() required: boolean = false;
-  @Input() readonly: boolean = false;
+  control = input.required<FormControl>();
+  label = input('');
+  placeholder = input('');
+  type = input<string>('text');
+  appearance = input<MatFormFieldAppearance>('outline');
+  color = input<ThemePalette>('primary');
+  hint = input('');
+  required = input(false);
+  readonly = input(false);
 
   // Implementation for ControlValueAccessor (if needed)
   // onChange: any = () => {};
