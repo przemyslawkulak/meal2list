@@ -4,8 +4,19 @@ import { AccountComponent } from './auth/account/account.component';
 import { CategoriesComponent } from './features/categories/categories.component';
 import { ShoppingListDetailComponent } from './features/shopping-list/detail/shopping-list-detail.component';
 import { ShellComponent } from './layout/shell/shell.component';
+import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 
 export const routes: Routes = [
+  {
+    path: 'auth',
+    component: AuthLayoutComponent,
+    loadChildren: () => import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES),
+  },
+  {
+    path: '',
+    redirectTo: 'auth/login',
+    pathMatch: 'full',
+  },
   {
     path: 'login',
     component: LoginComponent,
