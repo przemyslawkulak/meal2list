@@ -7,8 +7,8 @@ import {
   User,
   createClient,
 } from '@supabase/supabase-js';
-import { Database } from '../../../db/database.types';
-import { AppEnvironment } from '../../app.config';
+import { Database } from '@db/database.types';
+import { AppEnvironment } from '@app/app.config';
 
 export interface Profile {
   id?: string;

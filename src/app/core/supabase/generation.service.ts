@@ -2,15 +2,15 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, from, map, catchError, throwError } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
-import { generateSchema } from '../../../schemas/generation.schema';
+import { generateSchema } from '@schemas/generation.schema';
 import {
   CreateRecipeCommand,
   GeneratedListResponseDto,
   ShoppingListItemResponseDto,
 } from '../../../types';
-import { AppEnvironment } from '../../app.config';
-import { SupabaseService } from './supabase.service';
-import { OpenrouterService } from '../openai/openai.service';
+import { AppEnvironment } from '@app/app.config';
+import { SupabaseService } from '@core/supabase/supabase.service';
+import { OpenrouterService } from '@core/openai/openai.service';
 
 @Injectable({
   providedIn: 'root',

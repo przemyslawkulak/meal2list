@@ -1,12 +1,12 @@
 import { Injectable, Inject } from '@angular/core';
 import { from, Observable, map, catchError, throwError } from 'rxjs';
-import { SupabaseService } from './supabase.service';
+import { SupabaseService } from '@core/supabase/supabase.service';
 import type {
   CreateBatchShoppingListItemsCommand,
   ShoppingListItemResponseDto,
 } from '../../../types';
-import { AppEnvironment } from '../../app.config';
-import { batchShoppingListItemsSchema } from '../../../schemas/shopping-list-item.schema';
+import { AppEnvironment } from '@app/app.config';
+import { batchShoppingListItemsSchema } from '@schemas/shopping-list-item.schema';
 
 @Injectable({
   providedIn: 'root',

@@ -9,10 +9,10 @@ import { RouterOutlet } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { CategoryService } from '../../core/supabase/category.service';
-import { NavListComponent } from '../nav-list/nav-list.component';
-import { MobileMenuToggleComponent } from '../mobile-menu-toggle/mobile-menu-toggle.component';
-import { NavLink } from '../../../types';
+import { CategoryService } from '@core/supabase/category.service';
+import { NavListComponent } from '@app/layout/nav-list/nav-list.component';
+import { MobileMenuToggleComponent } from '@app/layout/mobile-menu-toggle/mobile-menu-toggle.component';
+import { NavLink } from '@types';
 
 @Component({
   selector: 'app-shell',

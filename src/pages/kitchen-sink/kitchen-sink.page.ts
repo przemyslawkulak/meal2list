@@ -16,10 +16,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field'; // Needed for mat-error
 
 // Custom Components
-import { ButtonComponent } from '../../components/button/button.component';
-import { InputComponent } from '../../components/input/input.component';
-import { CardComponent } from '../../components/card/card.component';
-import { ListComponent } from '../../components/list/list.component';
+import { ButtonComponent } from '@components/button/button.component';
+import { InputComponent } from '@components/input/input.component';
+import { CardComponent } from '@components/card/card.component';
+import { ListComponent } from '@components/list/list.component';
 
 interface ListItem {
   id: number;

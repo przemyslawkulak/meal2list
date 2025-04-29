@@ -1,8 +1,8 @@
 import { Injectable, Inject } from '@angular/core';
 import { Observable, from, map, catchError, throwError, of } from 'rxjs';
-import { CreateShoppingListCommand, ShoppingListResponseDto } from '../../../types';
-import { SupabaseService } from './supabase.service';
-import { AppEnvironment } from '../../app.config';
+import { CreateShoppingListCommand, ShoppingListResponseDto } from '@types';
+import { SupabaseService } from '@core/supabase/supabase.service';
+import { AppEnvironment } from '@app/app.config';
 
 @Injectable({
   providedIn: 'root',

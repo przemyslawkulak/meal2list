@@ -1,7 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
-
-import type { Database } from './database.types';
-import { environment } from '../environments/environment';
+import type { Database } from '@db/database.types';
+import { environment } from '@env/environment';
 
 const supabaseUrl = environment.supabaseUrl;
 const supabaseAnonKey = environment.supabaseKey;

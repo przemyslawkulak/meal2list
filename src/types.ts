@@ -3,7 +3,7 @@
   This file defines the TypeScript types for the API based on the database models and API plan.
 */
 
-import type { Database } from './db/database.types';
+import type { Database } from '@db/database.types';
 
 // ----------------------------
 // Authentication DTOs and Commands

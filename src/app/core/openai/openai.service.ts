@@ -1,5 +1,5 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { SupabaseService } from '../supabase/supabase.service';
+import { SupabaseService } from '@core/supabase/supabase.service';
 import { Observable, from, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import {
@@ -12,7 +12,7 @@ import {
   OpenrouterError,
   ChatCompletionRequest,
 } from './openai.models';
-import { SupabaseError } from '../../../types';
+import { SupabaseError } from '@types';
 
 @Injectable({
   providedIn: 'root',
