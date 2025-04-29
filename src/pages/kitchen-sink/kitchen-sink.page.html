@@ -177,11 +177,9 @@
     <mat-checkbox formControlName="termsAccepted" color="primary"
       >I accept the terms and conditions</mat-checkbox
     >
-    <mat-error
-      *ngIf="demoForm.controls.termsAccepted.invalid && demoForm.controls.termsAccepted.touched"
-    >
-      You must accept the terms.
-    </mat-error>
+    @if (demoForm.controls.termsAccepted.invalid && demoForm.controls.termsAccepted.touched) {
+    <mat-error> You must accept the terms. </mat-error>
+    }
 
     <div class="form-actions">
       <app-button type="submit" [disabled]="demoForm.invalid">Submit Form</app-button>

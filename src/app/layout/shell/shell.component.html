@@ -1,14 +1,32 @@
-<mat-toolbar color="primary">
-  @if (sidenavClosed$ | async) {
-    <app-mobile-menu-toggle (toggle)="sidenav.toggle()"></app-mobile-menu-toggle>
-  }
-  <mat-icon>receipt_long</mat-icon>
-  <span>meal2List</span>
+<mat-toolbar color="primary" class="toolbar">
+  <div class="toolbar-left">
+    @if (sidenavClosed$ | async) {
+      <app-mobile-menu-toggle (menuToggled)="sidenav.toggle()"></app-mobile-menu-toggle>
+    }
+    <mat-icon>receipt_long</mat-icon>
+    <span>meal2List</span>
+  </div>
+
+  <div class="toolbar-right">
+    @if (isAuthenticated$ | async) {
+      <span class="user-email">
+        <mat-icon>email</mat-icon>
+        {{ (currentUser$ | async)?.email }}
+      </span>
+      <button mat-button (click)="onLogout()">
+        <mat-icon>logout</mat-icon>
+        <span>Wyloguj się</span>
+      </button>
+    } @else {
+      <a mat-button routerLink="/auth/login">
+        <mat-icon>login</mat-icon>
+        Zaloguj się
+      </a>
+    }
+  </div>
 </mat-toolbar>
 
 <mat-sidenav-container>
-  <span>meal2List</span>
-
   <mat-sidenav
     #sidenav
     [mode]="(isWeb$ | async) ? 'side' : 'over'"
@@ -16,7 +34,7 @@
     [disableClose]="true"
     fixedInViewport
   >
-    <app-nav-list [links]="navigationLinks"></app-nav-list>
+    <app-nav-list [links]="navigationLinks" />
   </mat-sidenav>
 
   <mat-sidenav-content>

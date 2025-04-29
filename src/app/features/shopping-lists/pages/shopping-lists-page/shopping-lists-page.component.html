@@ -10,10 +10,11 @@
 <div class="content">
   @if (isLoading()) {
     <div class="skeleton-container">
-      <ngx-skeleton-loader
-        *ngFor="let i of [1, 2, 3]"
-        [theme]="{ height: '60px', marginBottom: '16px' }"
-      ></ngx-skeleton-loader>
+      @for (i of [1, 2, 3]; track i) {
+        <ngx-skeleton-loader
+          [theme]="{ height: '60px', marginBottom: '16px' }"
+        ></ngx-skeleton-loader>
+      }
     </div>
   } @else {
     <mat-card>

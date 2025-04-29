@@ -7,34 +7,34 @@
       <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
         <input matInput type="email" formControlName="email" required />
-        <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
-          Email jest wymagany
-        </mat-error>
-        <mat-error *ngIf="registerForm.get('email')?.hasError('email')">
-          Nieprawidłowy format adresu email
-        </mat-error>
+        @if (registerForm.get('email')?.hasError('required')) {
+          <mat-error> Email jest wymagany </mat-error>
+        }
+        @if (registerForm.get('email')?.hasError('email')) {
+          <mat-error> Nieprawidłowy format adresu email </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Hasło</mat-label>
         <input matInput type="password" formControlName="password" required />
-        <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
-          Hasło jest wymagane
-        </mat-error>
-        <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">
-          Hasło musi mieć minimum 8 znaków
-        </mat-error>
+        @if (registerForm.get('password')?.hasError('required')) {
+          <mat-error> Hasło jest wymagane </mat-error>
+        }
+        @if (registerForm.get('password')?.hasError('minlength')) {
+          <mat-error> Hasło musi mieć minimum 8 znaków </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Potwierdź hasło</mat-label>
         <input matInput type="password" formControlName="confirmPassword" required />
-        <mat-error *ngIf="registerForm.get('confirmPassword')?.hasError('required')">
-          Potwierdzenie hasła jest wymagane
-        </mat-error>
-        <mat-error *ngIf="registerForm.get('confirmPassword')?.hasError('passwordMismatch')">
-          Hasła nie są identyczne
-        </mat-error>
+        @if (registerForm.get('confirmPassword')?.hasError('required')) {
+          <mat-error> Potwierdzenie hasła jest wymagane </mat-error>
+        }
+        @if (registerForm.get('confirmPassword')?.hasError('passwordMismatch')) {
+          <mat-error> Hasła nie są identyczne </mat-error>
+        }
       </mat-form-field>
 
       <div class="actions">

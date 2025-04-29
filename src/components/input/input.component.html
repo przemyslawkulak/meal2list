@@ -9,11 +9,19 @@
     [readonly]="readonly()"
   />
   <!-- Optional: Add hints and errors -->
-  <mat-hint *ngIf="hint()">{{ hint() }}</mat-hint>
-  <mat-error *ngIf="control().invalid && (control().dirty || control().touched)">
-    <!-- Basic error message, can be customized further -->
-    <ng-container *ngIf="control().errors?.['required']">{{ label() }} is required.</ng-container>
-    <ng-container *ngIf="control().errors?.['email']">Invalid email format.</ng-container>
-    <!-- Add more specific error messages as needed -->
-  </mat-error>
+  @if (hint()) {
+    <mat-hint>{{ hint() }}</mat-hint>
+  }
+  @if (control().invalid && (control().dirty || control().touched)) {
+    <mat-error>
+      <!-- Basic error message, can be customized further -->
+      @if (control().errors?.['required']) {
+        {{ label() }} is required.
+      }
+      @if (control().errors?.['email']) {
+        Invalid email format.
+      }
+      <!-- Add more specific error messages as needed -->
+    </mat-error>
+  }
 </mat-form-field>

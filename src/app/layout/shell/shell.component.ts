@@ -10,6 +10,7 @@ import { AsyncPipe } from '@angular/common';
 import { map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { CategoryService } from '@core/supabase/category.service';
+import { AuthService } from '@core/supabase/auth.service';
 import { NavListComponent } from '@app/layout/nav-list/nav-list.component';
 import { MobileMenuToggleComponent } from '@app/layout/mobile-menu-toggle/mobile-menu-toggle.component';
 import { NavLink } from '@types';
@@ -35,6 +36,7 @@ import { NavLink } from '@types';
 export class ShellComponent implements OnInit {
   private readonly _breakpointObserver = inject(BreakpointObserver);
   private readonly _categoryService = inject(CategoryService);
+  private readonly _authService = inject(AuthService);
 
   readonly isWeb$: Observable<boolean> = this._breakpointObserver.observe(Breakpoints.Web).pipe(
     map(result => result.matches ?? false),
@@ -48,6 +50,8 @@ export class ShellComponent implements OnInit {
   readonly sidenavClosed$ = this.isWeb$.pipe(map(isWeb => !isWeb));
 
   readonly categories$ = this._categoryService.categories$;
+  readonly currentUser$ = this._authService.currentUser$;
+  readonly isAuthenticated$ = this._authService.isAuthenticated$;
 
   readonly navigationLinks: NavLink[] = [
     { label: 'Listy zakupowe', path: '/lists', icon: 'list' },
@@ -58,5 +62,9 @@ export class ShellComponent implements OnInit {
 
   ngOnInit(): void {
     this._categoryService.preload();
+  }
+
+  onLogout(): void {
+    this._authService.logout().subscribe();
   }
 }

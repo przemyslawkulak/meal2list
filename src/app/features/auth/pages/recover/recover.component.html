@@ -10,12 +10,12 @@
       <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
         <input matInput type="email" formControlName="email" required />
-        <mat-error *ngIf="recoveryForm.get('email')?.hasError('required')">
-          Email jest wymagany
-        </mat-error>
-        <mat-error *ngIf="recoveryForm.get('email')?.hasError('email')">
-          Nieprawidłowy format adresu email
-        </mat-error>
+        @if (recoveryForm.get('email')?.hasError('required')) {
+          <mat-error> Email jest wymagany </mat-error>
+        }
+        @if (recoveryForm.get('email')?.hasError('email')) {
+          <mat-error> Nieprawidłowy format adresu email </mat-error>
+        }
       </mat-form-field>
 
       <div class="actions">
