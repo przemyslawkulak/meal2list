@@ -1,0 +1,177 @@
+Rule Name: supabase-auth
+Description:
+# Supabase Auth Integration for Angular (no SSR)
+
+Implement client-side Supabase authentication in an Angular 19 application, keeping credentials in environment files and using Angular best practices (services, functional guards, interceptors, RxJS, DI).
+
+## Prerequisites
+- Angular 19
+- TypeScript 5
+- @supabase/supabase-js
+- RxJS (no Promises for app logic)
+- Angular Material (for UI, optional here)
+
+## 1. Store Credentials in environment.ts
+src/environments/environment.ts
+```typescript
+export const environment = {
+  production: false,
+  supabaseUrl: 'https://YOUR_SUPABASE_PROJECT_URL',
+  supabaseKey: 'YOUR_SUPABASE_ANON_KEY'
+};
+```
+src/environments/environment.prod.ts
+```typescript
+export const environment = {
+  production: true,
+  supabaseUrl: 'https://YOUR_SUPABASE_PROJECT_URL',
+  supabaseKey: 'YOUR_SUPABASE_ANON_KEY'
+};
+```
+
+## 2. Create a Supabase Client Wrapper
+src/app/core/supabase/supabase.client.ts
+```typescript
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { environment } from '../../../environments/environment';
+
+export const supabaseClient: SupabaseClient =
+  createClient(environment.supabaseUrl, environment.supabaseKey);
+```
+
+## 3. AuthService for Session Management
+src/app/core/supabase/auth.service.ts
+```typescript
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, from } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { supabaseClient } from './supabase.client';
+import type { Session, User } from '@supabase/supabase-js';
+
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+  private sessionSubject = new BehaviorSubject<Session | null>(null);
+  session$ = this.sessionSubject.asObservable();
+  private userSubject = new BehaviorSubject<User | null>(null);
+  user$ = this.userSubject.asObservable();
+
+  constructor() {
+    supabaseClient.auth.getSession().then(({ data }) => {
+      this.sessionSubject.next(data.session);
+      this.userSubject.next(data.session?.user ?? null);
+    });
+    supabaseClient.auth.onAuthStateChange((_event, session) => {
+      this.sessionSubject.next(session);
+      this.userSubject.next(session?.user ?? null);
+    });
+  }
+
+  signUp(email: string, password: string) {
+    return from(supabaseClient.auth.signUp({ email, password })).pipe(
+      tap(({ data, error }) => {
+        if (error) throw error;
+        this.sessionSubject.next(data.session);
+        this.userSubject.next(data.user);
+      })
+    );
+  }
+
+  signIn(email: string, password: string) {
+    return from(supabaseClient.auth.signInWithPassword({ email, password })).pipe(
+      tap(({ data, error }) => {
+        if (error) throw error;
+        this.sessionSubject.next(data.session);
+        this.userSubject.next(data.user);
+      })
+    );
+  }
+
+  signOut() {
+    return from(supabaseClient.auth.signOut()).pipe(
+      tap(({ error }) => {
+        if (error) throw error;
+        this.sessionSubject.next(null);
+        this.userSubject.next(null);
+      })
+    );
+  }
+}
+```
+
+## 4. Protect Routes with a Functional Guard
+src/app/core/guards/auth.guard.ts
+```typescript
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../supabase/auth.service';
+import { map, take } from 'rxjs/operators';
+
+export const authGuard: CanActivateFn = () => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+
+  return auth.user$.pipe(
+    take(1),
+    map(user => (user ? true : router.createUrlTree(['/auth/login'])))
+  );
+};
+```
+Usage in route definitions:
+```typescript
+import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
+
+export const routes: Routes = [
+  {
+    path: 'protected',
+    loadChildren: () =>
+      import('./features/protected/protected.module').then(m => m.ProtectedModule),
+    canActivate: [authGuard]
+  },
+  // other routes…
+];
+```
+
+## 5. Optionally Attach JWT to API Calls (Interceptor)
+src/app/core/interceptors/auth.interceptor.ts
+```typescript
+import { Injectable } from '@angular/core';
+import {
+  HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
+} from '@angular/common/http';
+import { Observable, firstValueFrom } from 'rxjs';
+import { AuthService } from '../supabase/auth.service';
+
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+  constructor(private auth: AuthService) {}
+
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    return firstValueFrom(this.auth.session$).then(session => {
+      if (!session?.access_token) return next.handle(req);
+      const authReq = req.clone({
+        setHeaders: { Authorization: `Bearer ${session.access_token}` }
+      });
+      return next.handle(authReq).toPromise();
+    }) as unknown as Observable<HttpEvent<any>>;
+  }
+}
+```
+Register in AppModule:
+```typescript
+providers: [
+  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+]
+```
+
+## 6. Usage in Components
+- Inject `AuthService` to observe `user$` or call `signIn`/`signUp`/`signOut`.
+- Protect routes by applying `canActivate: [authGuard]`.
+
+## Security & Best Practices
+- Do not expose keys elsewhere.
+- Handle errors with guard clauses in services and components.
+- Write unit tests for AuthService and functional guard (mock `supabaseClient`).
+- Use early returns and guard clauses.
+- Ensure environment files aren’t checked into source with real keys.
+```end_cursor_rules_context```
