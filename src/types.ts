@@ -165,3 +165,9 @@ export interface NavLink {
   path: string;
   icon?: string;
 }
+
+export interface SupabaseError {
+  message: string;
+  status?: number;
+  name?: string;
+}

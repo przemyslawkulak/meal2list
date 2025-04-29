@@ -5,6 +5,7 @@
 - [Project Description](#project-description)
 - [Tech Stack](#tech-stack)
 - [Getting Started Locally](#getting-started-locally)
+- [Running Supabase Edge Functions Locally](#running-supabase-edge-functions-locally)
 - [Available Scripts](#available-scripts)
 - [Project Scope](#project-scope)
 - [Project Status](#project-status)
@@ -38,11 +39,43 @@ Meal2List is a web application designed to simplify the process of creating shop
    ```bash
    npm install
    ```
-4. **Start the development server:**
+4. **Set up environment variables:**
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Then edit `.env` and add your OpenAI API key.
+
+5. **Start the development server:**
    ```bash
    npm start
    ```
    The application will be available at [http://localhost:4200](http://localhost:4200).
+
+## Running Supabase Edge Functions Locally
+
+1. **Install Supabase CLI** (if not already installed):
+
+   ```bash
+   npm install -g supabase
+   ```
+
+2. **Ensure your .env file contains the required API keys:**
+
+   ```plaintext
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
+
+3. **Start the Edge Functions locally:**
+
+   ```bash
+   supabase functions serve --env-file ./.env --no-verify-jwt
+   ```
+
+   This will start the Edge Functions server locally, allowing you to test the functions without deploying them.
+
+   The `--no-verify-jwt` flag disables JWT verification for local development. Do not use this flag in production.
 
 ## Available Scripts
 

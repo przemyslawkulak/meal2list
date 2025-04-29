@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Observable, from, map, catchError, throwError, of, delay } from 'rxjs';
+import { Observable, from, map, catchError, throwError } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { generateSchema } from '../../../schemas/generation.schema';
 import {
@@ -10,13 +10,58 @@ import {
 } from '../../../types';
 import { AppEnvironment } from '../../app.config';
 import { SupabaseService } from './supabase.service';
+import { OpenrouterService } from '../openai/openai.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GenerationService extends SupabaseService {
-  constructor(@Inject('APP_ENVIRONMENT') environment: AppEnvironment) {
+  constructor(
+    @Inject('APP_ENVIRONMENT') environment: AppEnvironment,
+    private openrouterService: OpenrouterService
+  ) {
     super(environment);
+    this.setupOpenRouter();
+  }
+
+  private setupOpenRouter(): void {
+    this.openrouterService.setModel('gpt-4o-mini', {
+      temperature: 0.7,
+      top_p: 1,
+    });
+
+    this.openrouterService.setSystemMessage(
+      'You are a helpful assistant that analyzes recipe text and extracts ingredients with their quantities and units. ' +
+        'Return the ingredients list in a structured JSON format with product_name, quantity, and unit for each item.'
+    );
+
+    this.openrouterService.setResponseFormat({
+      type: 'json_schema',
+      json_schema: {
+        name: 'ShoppingListItems',
+        strict: true,
+        schema: {
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            items: {
+              type: 'array',
+              items: {
+                type: 'object',
+                additionalProperties: false,
+                required: ['product_name', 'quantity', 'unit'],
+                properties: {
+                  product_name: { type: 'string' },
+                  quantity: { type: 'number' },
+                  unit: { type: 'string' },
+                },
+              },
+            },
+          },
+          required: ['items'],
+        },
+      },
+    });
   }
 
   generateFromText(command: CreateRecipeCommand): Observable<GeneratedListResponseDto> {
@@ -55,43 +100,35 @@ export class GenerationService extends SupabaseService {
 
   private processRecipeText(recipeText: string): Observable<ShoppingListItemResponseDto[]> {
     console.log('Processing recipe text:', recipeText);
-    // TODO: Implement AI or algorithm-based processing
-    // This is a placeholder implementation
-    return of([
-      {
-        id: uuidv4(),
-        product_name: 'Flour',
-        quantity: 1,
-        unit: 'litre',
-        is_checked: false,
-        source: 'auto',
-        category_id: 'd90c5734-6227-4ab8-9acf-d8796db27913',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      },
-      {
-        id: uuidv4(),
-        product_name: 'Sugar',
-        quantity: 1,
-        unit: 'kg',
-        is_checked: false,
-        source: 'manual',
-        category_id: 'd90c5734-6227-4ab8-9acf-d8796db27913',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      },
-      {
-        id: uuidv4(),
-        product_name: 'Eggs',
-        quantity: 1,
-        unit: 'count',
-        is_checked: false,
-        source: 'modified',
-        category_id: 'd90c5734-6227-4ab8-9acf-d8796db27913',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      },
-    ]).pipe(delay(2000)); // Add 2 seconds delay
+
+    return this.openrouterService.sendChatMessage(recipeText).pipe(
+      map(response => {
+        const responseData = JSON.parse(response.data as string) as {
+          items: Array<{ product_name: string; quantity: number; unit: string }>;
+        };
+        const items = responseData.items;
+
+        return items.map(item => ({
+          id: uuidv4(),
+          product_name: item.product_name,
+          quantity: item.quantity,
+          unit: item.unit,
+          is_checked: false,
+          source: 'auto',
+          category_id: 'd90c5734-6227-4ab8-9acf-d8796db27913',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        }));
+      }),
+      catchError(error => {
+        console.error('Error processing recipe:', error);
+        return throwError(() => ({
+          message: 'Failed to process recipe text',
+          statusCode: 500,
+          error,
+        }));
+      })
+    );
   }
 
   private logGenerationError(error: unknown): Observable<void> {

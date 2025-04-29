@@ -108,7 +108,7 @@ export class ShoppingListsPageComponent implements OnInit {
     this.shoppingListService
       .getShoppingLists()
       .pipe(
-        delay(1000),
+        delay(300),
         tap(lists => this.lists.set(lists)),
         catchError(error => {
           console.error('Error loading shopping lists:', error);

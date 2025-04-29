@@ -24,7 +24,7 @@ alwaysApply: true
 - Supabase: A complete backend solution featuring PostgreSQL, multi-language SDKs, and built-in authentication.
 
 ### AI Integration
-- Openrouter.ai: Integrates with various AI models (OpenAI, Anthropic, Google, etc.) and allows control over API key limits.
+- Openrouter.ai: Integrates with various AI models (OpenAI, Anthropic, Google, etc.) and allows control over API key limits. Handled by Edge Function in Supabase
 
 ### CI/CD and Hosting
 - Github Actions: Automates continuous integration and deployment pipelines.
