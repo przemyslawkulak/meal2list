@@ -22,6 +22,9 @@ Meal2List is a web application designed to simplify the process of creating shop
 - **AI Integration:** Openrouter.ai for AI-driven ingredient extraction
 - **CI/CD & Hosting:** GitHub Actions, DigitalOcean
 - **Code Quality:** ESLint, Prettier, Husky, lint-staged
+- **Testing:**
+  - **Unit Tests:** Jest for Angular services and components
+  - **E2E Tests:** Playwright for browser automation and end-to-end testing
 
 ## Getting Started Locally
 

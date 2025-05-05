@@ -34,3 +34,23 @@ Code Quality Tools:
 - lint-staged dla sprawdzania tylko zmienionych plików
   - Uruchamia ESLint i Prettier na plikach .ts/.html
   - Automatyczne formatowanie i sprawdzanie przed commitem
+
+Testing - Kompleksowe rozwiązania do testowania aplikacji:
+
+- Testy jednostkowe:
+
+  - Jest jako główny framework testowy dla testowania komponentów i usług Angular
+  - Pokrycie kodu testami jednostkowymi na poziomie ≥ 80%
+  - Każdy commit w CI jest weryfikowany przez testy jednostkowe
+
+- Testy end-to-end (E2E):
+
+  - Playwright do automatyzacji testów w przeglądarce i testowania całej aplikacji
+  - Scenariusze testowe obejmujące kluczowe ścieżki użytkownika
+  - Testy uruchamiane po zakończeniu sprintów i przed releasem
+
+- Narzędzia dodatkowe:
+  - Lighthouse CI do testów wydajnościowych
+  - axe-core do testów dostępności
+  - Postman + Newman do testowania API
+  - OWASP ZAP do testów bezpieczeństwa
