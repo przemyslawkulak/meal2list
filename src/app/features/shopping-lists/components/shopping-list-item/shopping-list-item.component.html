@@ -1,6 +1,10 @@
-<mat-list-item role="listitem">
+<mat-list-item role="listitem" [attr.data-testid]="'shopping-list-item-' + list().id">
   <div class="list-item-content">
-    <div class="list-item-text" (click)="openDetails()">
+    <div
+      class="list-item-text"
+      (click)="openDetails()"
+      [attr.data-testid]="'shopping-list-details-link-' + list().id"
+    >
       <span class="list-item-title">{{ list().name }}</span>
       <span class="list-item-date"
         >Utworzono: {{ list().created_at | date: 'dd.MM.yyyy HH:mm' }}</span
@@ -24,6 +28,7 @@
         [attr.aria-label]="'Usuń listę'"
         tabindex="0"
         (click)="onDelete($event)"
+        [attr.data-testid]="'delete-list-button-' + list().id"
       >
         <mat-icon>delete</mat-icon>
       </button>

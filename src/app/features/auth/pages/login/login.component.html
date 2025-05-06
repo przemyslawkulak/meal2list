@@ -6,9 +6,9 @@
   <mat-card-content>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" [class.loading]="isLoading">
       <div class="form-container">
-        <mat-form-field appearance="outline" data-testid="email-input">
+        <mat-form-field appearance="outline">
           <mat-label>Email</mat-label>
-          <input matInput type="email" formControlName="email" required />
+          <input matInput type="email" formControlName="email" data-testid="email-input" required />
           @if (hasError('email', 'required')) {
             <mat-error>Email is required</mat-error>
           }
@@ -19,7 +19,13 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Password</mat-label>
-          <input matInput type="password" formControlName="password" required />
+          <input
+            matInput
+            type="password"
+            data-testid="password-input"
+            formControlName="password"
+            required
+          />
           @if (hasError('password', 'required')) {
             <mat-error>Password is required</mat-error>
           }
@@ -40,6 +46,7 @@
             color="primary"
             type="submit"
             [disabled]="loginForm.invalid || isLoading"
+            data-testid="login-button"
           >
             @if (!isLoading) {
               <span>Login</span>

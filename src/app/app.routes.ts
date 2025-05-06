@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { ShoppingListDetailComponent } from './features/shopping-list/detail/shopping-list-detail.component';
 import { ShellComponent } from './layout/shell/shell.component';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 import { authGuard } from './core/guards/auth.guard';
+import { ShoppingListDetailComponent } from './features/shopping-lists/pages/detail/shopping-list-detail.component';
 
 export const routes: Routes = [
   {

@@ -4,7 +4,13 @@
   <mat-dialog-content>
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Nazwa listy</mat-label>
-      <input matInput formControlName="name" placeholder="Np. Zakupy na weekend" required />
+      <input
+        matInput
+        formControlName="name"
+        placeholder="Np. Zakupy na weekend"
+        required
+        data-testid="new-list-name-input"
+      />
       @if (hasRequiredError()) {
         <mat-error>Nazwa jest wymagana</mat-error>
       }
@@ -15,8 +21,16 @@
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
-    <button mat-button type="button" (click)="onCancel()">Anuluj</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!formValid()">
+    <button mat-button type="button" (click)="onCancel()" data-testid="cancel-new-list-button">
+      Anuluj
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="!formValid()"
+      data-testid="create-list-submit-button"
+    >
       Utwórz
     </button>
   </mat-dialog-actions>

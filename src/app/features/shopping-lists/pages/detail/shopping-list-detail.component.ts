@@ -6,8 +6,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { Observable, catchError, map, of, startWith, switchMap } from 'rxjs';
-import { ShoppingListService } from '../../../core/supabase/shopping-list.service';
-import { ShoppingListResponseDto } from '../../../../types';
+import { ShoppingListService } from '@app/core/supabase/shopping-list.service';
+import { ShoppingListResponseDto } from '@types';
 
 interface ShoppingListState {
   loading: boolean;

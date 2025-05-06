@@ -1,16 +1,18 @@
 @if (shoppingListState$ | async; as state) {
   @if (state.loading) {
-    <mat-spinner></mat-spinner>
+    <mat-spinner data-testid="loading-spinner"></mat-spinner>
   } @else if (state.data) {
-    <mat-card>
+    <mat-card data-testid="shopping-list-details-container">
       <mat-card-header>
-        <mat-card-title>{{ state.data.name }}</mat-card-title>
+        <mat-card-title data-testid="shopping-list-title">
+          {{ state.data.name }}
+        </mat-card-title>
         <mat-card-subtitle>Created: {{ state.data.created_at | date }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <mat-list>
+        <mat-list data-testid="shopping-list-items">
           @for (item of state.data.items; track item.id) {
-            <mat-list-item>
+            <mat-list-item [attr.data-testid]="'list-item-' + item.id">
               <mat-checkbox [checked]="item.is_checked">
                 {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
               </mat-checkbox>
