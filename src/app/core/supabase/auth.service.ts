@@ -25,7 +25,7 @@ export class AuthService extends SupabaseService {
   }
 
   private initializeAuth(): void {
-    // Check for existing session
+    // Check for existing sessions
     this.supabase.auth.getSession().then(({ data: { session } }) => {
       this.currentUserSubject.next(session?.user ?? null);
 
