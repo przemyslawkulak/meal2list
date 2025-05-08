@@ -5,7 +5,6 @@
 /tmp
 /out-tsc
 /bazel-out
-\environments
 /Prompty
 
 # Node
@@ -52,3 +51,5 @@ Thumbs.db
 
 # Playwright authentication
 playwright/.auth
+src/environments/environment.test.ts
+src/environments/environment.ts

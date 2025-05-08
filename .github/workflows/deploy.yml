@@ -1,0 +1,33 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create environment file
+        run: |
+          cp src/environments/environment.template.ts src/environments/environment.ts
+          sed -i "s|\${SUPABASE_URL}|${{ secrets.SUPABASE_URL }}|g" src/environments/environment.ts
+          sed -i "s|\${SUPABASE_KEY}|${{ secrets.SUPABASE_KEY }}|g" src/environments/environment.ts
+
+      - name: Build
+        run: npm run build --configuration=production
+
+      # Add your deployment steps here
