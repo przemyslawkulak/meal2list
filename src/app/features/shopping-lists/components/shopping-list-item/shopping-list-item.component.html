@@ -1,15 +1,17 @@
 <mat-list-item role="listitem" [attr.data-testid]="'shopping-list-item-' + list().id">
   <div class="list-item-content">
-    <div
+    <button
       class="list-item-text"
       (click)="openDetails()"
+      (keyup.enter)="openDetails()"
       [attr.data-testid]="'shopping-list-details-link-' + list().id"
+      [attr.aria-label]="'Otwórz szczegóły listy ' + list().name"
     >
       <span class="list-item-title">{{ list().name }}</span>
       <span class="list-item-date"
         >Utworzono: {{ list().created_at | date: 'dd.MM.yyyy HH:mm' }}</span
       >
-    </div>
+    </button>
     <div class="list-item-actions">
       <button
         mat-icon-button
