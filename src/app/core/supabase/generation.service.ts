@@ -12,6 +12,8 @@ import { AppEnvironment } from '@app/app.config';
 import { SupabaseService } from '@core/supabase/supabase.service';
 import { OpenrouterService } from '@core/openai/openai.service';
 
+const DEFAULT_CATEGORY_ID = 'a746a400-7bb3-49a7-83cb-2b807da2cc1a';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -115,7 +117,7 @@ export class GenerationService extends SupabaseService {
           unit: item.unit,
           is_checked: false,
           source: 'auto',
-          category_id: 'd90c5734-6227-4ab8-9acf-d8796db27913',
+          category_id: DEFAULT_CATEGORY_ID,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         }));
