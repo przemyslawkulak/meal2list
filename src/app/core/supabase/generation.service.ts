@@ -70,7 +70,11 @@ export class GenerationService extends SupabaseService {
     const validationResult = generateSchema.safeParse(command);
 
     if (!validationResult.success) {
-      return throwError(() => ({ message: 'Invalid input data', statusCode: 400 }));
+      return throwError(() => ({
+        message: `Invalid input data `,
+        statusCode: 400,
+        errors: validationResult.error.format(),
+      }));
     }
 
     return this.processRecipeText(command.recipe_text).pipe(
