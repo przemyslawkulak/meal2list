@@ -13,7 +13,9 @@ import {
   ShoppingListResponseDto,
   CreateShoppingListItemCommand,
   CreateRecipeCommand,
+  CategoryDto,
 } from '../../../../types';
+import { CategoryService } from '@app/core/supabase/category.service';
 
 @Component({
   selector: 'app-generate-list-page',
@@ -28,6 +30,14 @@ export class GenerateListPageComponent {
   private readonly shoppingListService = inject(ShoppingListService);
   private readonly shoppingListItemsService = inject(ShoppingListItemsService);
   private readonly router = inject(Router);
+  private readonly _categoryService = inject(CategoryService);
+
+  constructor() {
+    // Load shopping lists on component init
+    this.loadShoppingLists();
+    // Subscribe to categories
+    this._categoryService.categories$.subscribe(categories => this.categories.set(categories));
+  }
 
   // Signals for state management
   shoppingLists = signal<ShoppingListResponseDto[]>([]);
@@ -35,11 +45,7 @@ export class GenerateListPageComponent {
   generationStatus = signal<'idle' | 'generating' | 'adding' | 'completed' | 'error'>('idle');
   generatedItems = signal<CreateShoppingListItemCommand[]>([]);
   errorMessage = signal<string | null>(null);
-
-  constructor() {
-    // Load shopping lists on component init
-    this.loadShoppingLists();
-  }
+  categories = signal<CategoryDto[]>([]);
 
   private loadShoppingLists(): void {
     this.shoppingListService
@@ -59,7 +65,7 @@ export class GenerateListPageComponent {
     };
 
     this.generationService
-      .generateFromText(command)
+      .generateFromText(command, this.categories(), 'pl')
       .pipe(
         map(result => ({
           ...result,

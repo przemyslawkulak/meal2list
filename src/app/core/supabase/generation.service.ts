@@ -4,6 +4,7 @@ import { Observable, from, map, catchError, throwError } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { generateSchema } from '@schemas/generation.schema';
 import {
+  CategoryDto,
   CreateRecipeCommand,
   GeneratedListResponseDto,
   ShoppingListItemResponseDto,
@@ -12,7 +13,72 @@ import { AppEnvironment } from '@app/app.config';
 import { SupabaseService } from '@core/supabase/supabase.service';
 import { OpenrouterService } from '@core/openai/openai.service';
 
-const DEFAULT_CATEGORY_ID = 'a746a400-7bb3-49a7-83cb-2b807da2cc1a';
+const SYSTEM_MESSAGE = (
+  categoryList: CategoryDto[],
+  language: string
+) => `You are an intelligent assistant specializing in recipe analysis and ingredient extraction. Your task is to analyze recipe text and extract ingredients along with their quantities and units. You will then structure this information into a JSON format.
+
+Here is the list of predefined categories for ingredients:
+<category_list>
+${categoryList.map(category => `<category id="${category.id}">${category.name}</category>`).join('\n')}
+</category_list>
+
+Please provide your response in the following language:
+<language>
+${language}
+</language>
+
+When analyzing the recipe, follow these steps:
+
+1. Carefully read through the entire recipe text.
+2. Identify all ingredients mentioned in the recipe.
+3. For each ingredient, determine:
+   a. Product name
+   b. Quantity (must be a positive number)
+   c. Unit of measurement (use "sztuka" as the default if not specified)
+   d. Category (assign each ingredient to one of the predefined categories)
+
+4. Structure the extracted information into a JSON format.
+
+Before providing the final output, perform your analysis inside <ingredient_analysis> tags. In this section:
+- List all ingredients found in the recipe text.
+- For each ingredient, write out your reasoning for determining the product name, quantity, unit, and category.
+- Double-check that all ingredients have been accounted for and properly categorized.
+
+It's okay for this section to be quite long, as we want thorough reasoning for each ingredient.
+
+Ensure that:
+- All units and products are assigned to appropriate categories
+- Each product has a positive quantity
+- Each product is assigned a category
+- The default unit "sztuka" is used when no unit is specified
+
+The final output should be a JSON array of objects, where each object represents an ingredient and contains the following fields:
+- product_name: string
+- quantity: positive number
+- category: string (from the predefined list)
+- unit: string (default to "sztuka" if not specified)
+
+Example of the expected JSON structure (use generic placeholders):
+
+<response >
+[
+  {
+    "product_name": "Example Product 1",
+    "quantity": 1,
+    "category_id": "a746a400-7bb3-49a7-83cb-2b807da2cc1a",
+    "unit": "sztuka"
+  },
+  {
+    "product_name": "Example Product 2",
+    "quantity": 2.5,
+    "category_id": "a746a400-7bb3-49a7-83cb-2b807da2cc1a",
+    "unit": "Example Unit"
+  }
+]
+</response>
+
+Now, please analyze the given recipe text and provide the structured JSON output of ingredients.`;
 
 @Injectable({
   providedIn: 'root',
@@ -28,14 +94,9 @@ export class GenerationService extends SupabaseService {
 
   private setupOpenRouter(): void {
     this.openrouterService.setModel('gpt-4o-mini', {
-      temperature: 0.7,
+      temperature: 0.5,
       top_p: 1,
     });
-
-    this.openrouterService.setSystemMessage(
-      'You are a helpful assistant that analyzes recipe text and extracts ingredients with their quantities and units. ' +
-        'Return the ingredients list in a structured JSON format with product_name, quantity, and unit for each item.'
-    );
 
     this.openrouterService.setResponseFormat({
       type: 'json_schema',
@@ -51,11 +112,12 @@ export class GenerationService extends SupabaseService {
               items: {
                 type: 'object',
                 additionalProperties: false,
-                required: ['product_name', 'quantity', 'unit'],
+                required: ['product_name', 'quantity', 'unit', 'category_id'],
                 properties: {
                   product_name: { type: 'string' },
                   quantity: { type: 'number' },
                   unit: { type: 'string' },
+                  category_id: { type: 'string' },
                 },
               },
             },
@@ -66,7 +128,11 @@ export class GenerationService extends SupabaseService {
     });
   }
 
-  generateFromText(command: CreateRecipeCommand): Observable<GeneratedListResponseDto> {
+  generateFromText(
+    command: CreateRecipeCommand,
+    category_list: CategoryDto[],
+    language: string
+  ): Observable<GeneratedListResponseDto> {
     const validationResult = generateSchema.safeParse(command);
 
     if (!validationResult.success) {
@@ -78,6 +144,7 @@ export class GenerationService extends SupabaseService {
         errors: validationResult.error.format(),
       }));
     }
+    this.openrouterService.setSystemMessage(SYSTEM_MESSAGE(category_list, language));
 
     return this.processRecipeText(command.recipe_text).pipe(
       map(items => ({
@@ -107,12 +174,15 @@ export class GenerationService extends SupabaseService {
   }
 
   private processRecipeText(recipeText: string): Observable<ShoppingListItemResponseDto[]> {
-    console.log('Processing recipe text:', recipeText);
-
     return this.openrouterService.sendChatMessage(recipeText).pipe(
       map(response => {
         const responseData = JSON.parse(response.data as string) as {
-          items: Array<{ product_name: string; quantity: number; unit: string }>;
+          items: Array<{
+            product_name: string;
+            quantity: number;
+            unit: string;
+            category_id: string;
+          }>;
         };
         const items = responseData.items;
 
@@ -123,7 +193,7 @@ export class GenerationService extends SupabaseService {
           unit: item.unit,
           is_checked: false,
           source: 'auto',
-          category_id: DEFAULT_CATEGORY_ID,
+          category_id: item.category_id,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         }));
