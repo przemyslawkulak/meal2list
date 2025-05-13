@@ -28,7 +28,28 @@
   >
     <mat-tab label="Popularne">
       <div class="items-list">
-        @if (filteredItems().length === 0) {
+        @if (searchTerm() && !itemExists(searchTerm())) {
+          <div class="custom-item-row" data-testid="custom-item-row">
+            <div class="item-info">
+              <app-category-icon
+                [categoryName]="getDefaultCategoryName()"
+                [matTooltip]="getDefaultCategoryName()"
+              ></app-category-icon>
+              <span>{{ searchTerm() }}</span>
+            </div>
+            <div class="item-actions">
+              <app-button
+                color="primary"
+                (buttonClick)="addCustomItem(searchTerm())"
+                data-testid="add-custom-item"
+              >
+                <mat-icon>add</mat-icon>
+              </app-button>
+            </div>
+          </div>
+        }
+
+        @if (filteredItems().length === 0 && !searchTerm()) {
           <p class="no-items-message">Nie znaleziono produktów.</p>
         } @else {
           @for (item of filteredItems(); track item.name) {

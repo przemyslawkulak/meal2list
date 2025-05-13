@@ -91,6 +91,42 @@ export class AddItemDialogComponent {
     this.activeTab.set(tab);
   }
 
+  // Check if the item already exists in the list of popular items
+  itemExists(name: string): boolean {
+    if (!name || !name.trim()) return false;
+    return this.popularItems.some(item => item.name.toLowerCase() === name.toLowerCase().trim());
+  }
+
+  // Get the default category name for custom items
+  getDefaultCategoryName(): string {
+    return DEFAULT_CATEGORY_NAMES.DEFAULT_CATEGORY;
+  }
+
+  // Get the default category ID for custom items
+  getDefaultCategoryId(): string {
+    const defaultCategory = this.data.categories.find(
+      category => category.name === DEFAULT_CATEGORY_NAMES.DEFAULT_CATEGORY
+    );
+    return defaultCategory?.id || this.data.categories[0]?.id || '';
+  }
+
+  // Add a custom item with the name from the search input
+  addCustomItem(name: string): void {
+    if (!name || !name.trim()) return;
+
+    const newItem: NewShoppingListItem = {
+      productName: name.trim(),
+      quantity: DEFAULT_ITEM_VALUES.DEFAULT_QUANTITY,
+      unit: DEFAULT_ITEM_VALUES.DEFAULT_UNIT,
+      category_id: this.getDefaultCategoryId(),
+    };
+
+    this.itemAdded.emit(newItem);
+    this.snackBar.open(`Dodano ${name.trim()} do listy`, 'OK', {
+      duration: 2000,
+    });
+  }
+
   addItem(product: PopularItem): void {
     const newItem: NewShoppingListItem = {
       productName: product.name,

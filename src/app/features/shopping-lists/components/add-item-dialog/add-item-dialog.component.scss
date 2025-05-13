@@ -1,4 +1,5 @@
 @use '@angular/material' as mat;
+@use 'sass:map';
 
 .dialog-container {
   padding: 0;
@@ -78,6 +79,39 @@ mat-tab-group {
           height: 18px;
         }
       }
+    }
+  }
+  
+  .custom-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    background-color: rgba(0, 0, 0, 0.02);
+    border-left: 4px solid map.get(mat.$spring-green-palette, 400);
+    margin-bottom: 12px;
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .item-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      
+      span {
+        font-size: 1rem;
+        font-weight: 500;
+      }
+    }
+    
+    .item-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
   }
   
