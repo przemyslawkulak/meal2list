@@ -29,9 +29,9 @@
 <mat-sidenav-container>
   <mat-sidenav
     #sidenav
-    [mode]="(isWeb$ | async) ? 'side' : 'over'"
-    [opened]="isWeb$ | async"
-    [disableClose]="true"
+    [mode]="(sidenavMode$ | async) ?? 'over'"
+    [opened]="(isWeb$ | async) ?? false"
+    [disableClose]="false"
     fixedInViewport
   >
     <app-nav-list [links]="navigationLinks" />
