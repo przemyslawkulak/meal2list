@@ -6,7 +6,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CategoryService } from '../../core/supabase/category.service';
-// TODO: to delete after testing categories
+import { CategoryIconComponent } from '../../shared/ui/category-icon/category-icon.component';
+
 @Component({
   selector: 'app-categories',
   standalone: true,
@@ -17,13 +18,13 @@ import { CategoryService } from '../../core/supabase/category.service';
     MatCardModule,
     MatIconModule,
     MatDividerModule,
+    CategoryIconComponent,
   ],
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.scss'],
 })
 export class CategoriesComponent {
   private readonly _categoryService = inject(CategoryService);
-
   readonly categories$ = this._categoryService.categories$;
 
   constructor() {}

@@ -24,11 +24,11 @@
                   {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
                 </mat-checkbox>
                 <div class="item-actions">
-                  <mat-chip-set>
-                    <mat-chip [attr.data-testid]="'category-chip-' + item.id" color="accent">
-                      {{ getCategoryName(item.category_id, state.categories) }}
-                    </mat-chip>
-                  </mat-chip-set>
+                  <app-category-icon
+                    [categoryName]="getCategoryName(item.category_id, state.categories)"
+                    [attr.data-testid]="'category-icon-' + item.id"
+                    [matTooltip]="getCategoryName(item.category_id, state.categories)"
+                  ></app-category-icon>
                   <button
                     mat-icon-button
                     color="warn"
@@ -60,11 +60,11 @@
                 {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
               </mat-checkbox>
               <div class="item-actions">
-                <mat-chip-set>
-                  <mat-chip [attr.data-testid]="'category-chip-' + item.id" color="accent">
-                    {{ getCategoryName(item.category_id, state.categories) }}
-                  </mat-chip>
-                </mat-chip-set>
+                <app-category-icon
+                  [categoryName]="getCategoryName(item.category_id, state.categories)"
+                  [attr.data-testid]="'category-icon-' + item.id"
+                  [matTooltip]="getCategoryName(item.category_id, state.categories)"
+                ></app-category-icon>
                 <button
                   mat-icon-button
                   color="warn"

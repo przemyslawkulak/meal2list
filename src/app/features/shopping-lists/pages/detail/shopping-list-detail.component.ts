@@ -8,6 +8,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { DatePipe } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { CategoryIconComponent } from '@app/shared/ui/category-icon/category-icon.component';
 import {
   catchError,
   map,
@@ -38,6 +40,8 @@ import { HttpErrorResponse } from '@angular/common/http';
     MatIconModule,
     MatButtonModule,
     DatePipe,
+    MatTooltipModule,
+    CategoryIconComponent,
   ],
   templateUrl: './shopping-list-detail.component.html',
   styleUrls: ['./shopping-list-detail.component.scss'],

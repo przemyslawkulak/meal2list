@@ -36,6 +36,6 @@ export class ShoppingListItemComponent {
   }
 
   openDetails() {
-    this.router.navigate(['/shopping-lists', this.list().id]);
+    this.router.navigate(['/lists', this.list().id]);
   }
 }

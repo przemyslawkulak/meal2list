@@ -8,6 +8,22 @@
   .checked-items-list {
     margin: 16px auto 0;
     max-width: 800px;
+    opacity: 0.5;
+    
+    .mat-mdc-list-item {
+      background-color: rgba(0, 0, 0, 0.02);
+      
+      &:hover {
+        opacity: 0.9;
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+    }
+
+    .item-actions {
+      button[mat-icon-button] {
+        background-color: rgba(244, 67, 54, 0.05);
+      }
+    }
   }
 }
 
@@ -20,7 +36,8 @@ mat-list-item {
   margin: 8px 0;
   
   &.checked-item {
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: rgba(0, 0, 0, 0.02);
+    color: rgba(0, 0, 0, 0.7);
     
     ::ng-deep .mdc-checkbox__background {
       background-color: map.get(mat.$green-palette, 400) !important;
@@ -36,15 +53,49 @@ mat-list-item {
   width: 100%;
   padding: 8px 0;
 
-  mat-checkbox {
-    flex: 1;
+  .item-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    app-category-icon {
+      color: var(--mat-accent-500);
+      font-size: 1.2rem;
+      opacity: 0.7;
+    }
+
+    button[mat-icon-button] {
+      background-color: rgba(244, 67, 54, 0.1);
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: var(--mat-warn-500);
+        color: white;
+        transform: scale(1.05);
+      }
+
+      mat-icon {
+        font-size: 1.2rem;
+        width: 1.2rem;
+        height: 1.2rem;
+      }
+    }
   }
 }
 
-.item-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.checked-items-list {
+  margin-top: 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding-top: 16px;
+
+  .checked-item {
+    text-decoration: line-through;
+    text-decoration-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
+mat-spinner {
+  margin: 20px auto;
 }
 
 :host ::ng-deep {

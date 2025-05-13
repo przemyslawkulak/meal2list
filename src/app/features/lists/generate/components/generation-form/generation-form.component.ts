@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -35,6 +35,13 @@ export class GenerationFormComponent {
     this.form = this.fb.group({
       listId: ['', Validators.required],
       recipeText: ['', [Validators.required, Validators.maxLength(this.maxLength)]],
+    });
+
+    effect(() => {
+      const lists = this.shoppingLists();
+      if (lists.length > 0 && !this.form.get('listId')?.value) {
+        this.form.patchValue({ listId: lists[0].id });
+      }
     });
   }
 

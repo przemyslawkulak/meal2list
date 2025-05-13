@@ -26,7 +26,7 @@ export const routes: Routes = [
           import('./features/categories/categories.component').then(m => m.CategoriesComponent),
       },
       {
-        path: 'shopping-lists/:id', // TODO: to delete after testing
+        path: 'lists/:id', // TODO: to delete after testing
         component: ShoppingListDetailComponent,
         title: 'Shopping List Details',
       },
