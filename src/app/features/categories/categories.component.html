@@ -8,7 +8,7 @@
       <mat-list>
         @for (category of categories; track category.id) {
           <mat-list-item>
-            <mat-icon matListItemIcon>category</mat-icon>
+            <app-category-icon matListItemIcon [categoryName]="category.name"></app-category-icon>
             <span matListItemTitle>{{ category.name }}</span>
           </mat-list-item>
           @if (!$last) {

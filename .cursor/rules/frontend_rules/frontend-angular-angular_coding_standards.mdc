@@ -1,0 +1,134 @@
+---
+description: 
+globs: *.ts,*.html
+alwaysApply: false
+---
+---
+description:
+globs: *.ts,*.html,*.scss
+alwaysApply: false
+---
+
+## Frontend
+
+### General Guidelines
+
+- Use Angular 19 exclusively for building the entire application, including both static content and interactive components.
+- Leverage Angular Material as the sole UI framework to provide accessible, pre-designed components.
+- Follow Angular best practices, including dependency injection, and reactive programming with RxJS to build scalable applications.
+- Utilize TypeScript 5 for robust type safety and enhanced IDE support.
+- Always use standalone components.
+- Always use Signals where possible for state management and change detection.
+- Utilize Angular's built-in control flow syntax (`@if`, `@for`, `@switch`). Avoid using the older structural directives (`*ngIf`, `*ngFor`, `*ngSwitch`).
+- Use `viewChild` and `contentChild` (and their plural counterparts `viewChildren`, `contentChildren`) Signals-based queries instead of decorator-based queries.
+- Always divide components on three file with html, scss and ts
+
+### Guidelines for Styling
+
+- Rely exclusively on Angular Material's styling system for consistency and accessibility.
+- For custom styles and overrides, use SCSS with modular files and Angular's built-in style encapsulation.
+- Employ Angular Material theming to define consistent color palettes and design language across the application.
+
+### Guidelines for Accessibility
+
+- Leverage Angular Material's built-in accessibility features.
+- Ensure all interactive elements and custom components adhere to ARIA best practices by using appropriate roles, states, and properties.
+
+TITLE: Creating Injectable Service in Angular
+DESCRIPTION: This TypeScript code demonstrates how to create a service in Angular that can be injected using dependency injection.
+LANGUAGE: typescript
+CODE:
+```
+@Injectable({
+    providedIn: 'root'
+})
+class UserService {
+    // methods to retrieve and return data
+}
+```
+
+----------------------------------------
+
+TITLE: Using Signals in Angular Components
+DESCRIPTION: This snippet demonstrates how to use signals and computed signals within an Angular component.
+LANGUAGE: typescript
+CODE:
+```
+@Component({/* ... */})
+export class UserProfile {
+  isTrial = signal(false);
+  isTrialExpired = signal(false);
+  showTrialDuration = computed(() => this.isTrial() && !this.isTrialExpired());
+
+  activateTrial() {
+    this.isTrial.set(true);
+  }
+}
+```
+
+----------------------------------------
+
+TITLE: Displaying Validation Errors in Angular Template-Driven Forms
+DESCRIPTION: Shows how to display validation error messages in an Angular template-driven form using control states.
+LANGUAGE: html
+CODE:
+```
+<label for="name">Name</label>
+<input id="name" class="form-control" formControlName="name" required >
+
+@if (name.invalid && (name.dirty || name.touched)) {
+  <div class="alert alert-danger">
+    @if (name.errors?.['required']) {
+      <div>Name is required.</div>
+    }
+    @if (name.errors?.['minlength']) {
+      <div>Name must be at least 4 characters long.</div>
+    }
+  </div>
+}
+```
+
+----------------------------------------
+
+TITLE: Linking FormGroup and FormControls to Form in Angular
+DESCRIPTION: Links FormGroup to a form using [formGroup] directive and FormControls to inputs using formControlName directive.
+LANGUAGE: angular-html
+CODE:
+```
+<form [formGroup]="profileForm">
+  <label>
+    Name
+    <input type="text" formControlName="name" />
+  </label>
+  <label>
+    Email
+    <input type="email" formControlName="email" />
+  </label>
+  <button type="submit">Submit</button>
+</form>
+```
+
+----------------------------------------
+
+TITLE: Using Contextual Variables with @for in Angular
+DESCRIPTION: Demonstrates how to alias contextual variables in @for blocks.
+LANGUAGE: angular-html
+CODE:
+```
+@for (item of items; track item.id; let idx = $index, e = $even) {
+  <p>Item #{{ idx }}: {{ item.name }}</p>
+}
+```
+
+----------------------------------------
+
+TITLE: Using @defer with Interaction Trigger
+DESCRIPTION: Example showing how to use template reference variables with the interaction trigger for deferred content loading.
+LANGUAGE: angular-html
+CODE:
+```
+<div #greeting>Hello!</div>
+@defer (on interaction(greeting)) {
+  <greetings-cmp />
+}
+```

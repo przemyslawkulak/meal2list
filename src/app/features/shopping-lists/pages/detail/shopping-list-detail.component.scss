@@ -1,6 +1,31 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+
 :host {
   display: block;
   padding: 16px;
+  padding-bottom: 80px;
+
+  .checked-items-list {
+    margin: 16px auto 0;
+    max-width: 800px;
+    opacity: 0.5;
+    
+    .mat-mdc-list-item {
+      background-color: rgba(0, 0, 0, 0.02);
+      
+      &:hover {
+        opacity: 0.9;
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+    }
+
+    .item-actions {
+      button[mat-icon-button] {
+        background-color: rgba(244, 67, 54, 0.05);
+      }
+    }
+  }
 }
 
 mat-card {
@@ -10,4 +35,129 @@ mat-card {
 
 mat-list-item {
   margin: 8px 0;
+  
+  &.checked-item {
+    background-color: rgba(0, 0, 0, 0.02);
+    color: rgba(0, 0, 0, 0.7);
+    
+    ::ng-deep .mdc-checkbox__background {
+      background-color: map.get(mat.$green-palette, 400) !important;
+      border-color: map.get(mat.$green-palette, 400) !important;
+    }
+  }
+}
+
+.item-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 8px 0;
+
+  .item-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    app-category-icon {
+      color: var(--mat-accent-500);
+      font-size: 1.2rem;
+      opacity: 0.7;
+    }
+
+    button[mat-icon-button] {
+      background-color: rgba(244, 67, 54, 0.1);
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: var(--mat-warn-500);
+        color: white;
+        transform: scale(1.05);
+      }
+
+      mat-icon {
+        font-size: 1.2rem;
+        width: 1.2rem;
+        height: 1.2rem;
+      }
+    }
+  }
+}
+
+.checked-items-list {
+  margin-top: 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding-top: 16px;
+
+  .checked-item {
+    text-decoration: line-through;
+    text-decoration-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
+mat-spinner {
+  margin: 20px auto;
+}
+
+.sticky-add-button {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  
+  button[mat-fab] {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+:host ::ng-deep {
+  .add-item-dialog {
+    .mat-mdc-dialog-container {
+      padding: 0;
+    }
+  }
+
+  .mat-mdc-list-item {
+    height: auto;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                 0 2px 4px -1px rgba(0, 0, 0, 0.06),
+                 0 1px 8px 0 rgba(0, 0, 0, 0.04);
+      outline: none;
+    }
+  }
+
+  .mat-mdc-checkbox {
+    margin-right: 16px;
+  }
+
+  .mat-mdc-chip {
+    margin: 0;
+  }
+  
+  .checked-item .mat-mdc-checkbox .mdc-checkbox__native-control:checked {
+    + .mdc-checkbox__background {
+      background-color: map.get(mat.$green-palette, 400) !important;
+      border-color: map.get(mat.$green-palette, 400) !important;
+    }
+  }
 } 

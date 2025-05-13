@@ -1,0 +1,152 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+.dialog-container {
+  padding: 0;
+  height: 90vh;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  
+  h2 {
+    margin: 0;
+    font-weight: 500;
+  }
+}
+
+.search-container {
+  padding: 0 16px 8px;
+  
+  .search-field {
+    width: 100%;
+  }
+}
+
+mat-tab-group {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.items-list {
+  padding: 8px 16px;
+  overflow-y: auto;
+  height: calc(90vh - 160px); /* Account for header, search, and tabs */
+  
+  .item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+    
+    .item-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      
+      span {
+        font-size: 1rem;
+      }
+    }
+    
+    .item-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      
+      button[mat-mini-fab] {
+        width: 36px;
+        height: 36px;
+        line-height: 36px;
+        
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+  }
+  
+  .custom-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    background-color: rgba(0, 0, 0, 0.02);
+    border-left: 4px solid map.get(mat.$spring-green-palette, 400);
+    margin-bottom: 12px;
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .item-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      
+      span {
+        font-size: 1rem;
+        font-weight: 500;
+      }
+    }
+    
+    .item-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+  
+  .no-items-message {
+    text-align: center;
+    padding: 24px;
+    color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100% - 48px);
+  }
+}
+
+:host ::ng-deep {
+  .mat-mdc-tab-body-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .mat-mdc-tab-body {
+    display: flex !important;
+    flex-direction: column;
+    flex: 1;
+  }
+  
+  .mat-mdc-tab-body-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+  }
+  
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+} 

@@ -38,16 +38,30 @@ export class ShellComponent implements OnInit {
   private readonly _categoryService = inject(CategoryService);
   private readonly _authService = inject(AuthService);
 
-  readonly isWeb$: Observable<boolean> = this._breakpointObserver.observe(Breakpoints.Web).pipe(
-    map(result => result.matches ?? false),
-    shareReplay(1)
-  );
+  readonly isWeb$: Observable<boolean> = this._breakpointObserver
+    .observe([Breakpoints.Large, Breakpoints.XLarge])
+    .pipe(
+      map(result => result.matches),
+      shareReplay(1)
+    );
+
+  readonly isTabletOrMobile$: Observable<boolean> = this._breakpointObserver
+    .observe([
+      Breakpoints.Small,
+      Breakpoints.Medium,
+      Breakpoints.HandsetLandscape,
+      Breakpoints.HandsetPortrait,
+    ])
+    .pipe(
+      map(result => result.matches),
+      shareReplay(1)
+    );
 
   readonly sidenavMode$: Observable<'over' | 'side'> = this.isWeb$.pipe(
-    map(isHandset => (isHandset ? 'over' : 'side') as 'over' | 'side')
+    map(isWeb => (isWeb ? 'side' : 'over'))
   );
 
-  readonly sidenavClosed$ = this.isWeb$.pipe(map(isWeb => !isWeb));
+  readonly sidenavClosed$ = this.isTabletOrMobile$;
 
   readonly categories$ = this._categoryService.categories$;
   readonly currentUser$ = this._authService.currentUser$;

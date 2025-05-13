@@ -84,7 +84,7 @@ export class GenerateListPageComponent {
         tap(() => {
           this.generationStatus.set('completed');
           // Navigate to the shopping list detail page
-          this.router.navigate(['/shopping-lists', data.listId]);
+          this.router.navigate(['/lists', data.listId]);
         }),
         catchError(error => {
           this.errorMessage.set(error instanceof Error ? error.message : 'Generation failed');

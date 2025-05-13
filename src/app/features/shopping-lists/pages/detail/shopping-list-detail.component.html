@@ -1,4 +1,4 @@
-@if (shoppingListState$ | async; as state) {
+@if (shoppingListState(); as state) {
   @if (state.loading) {
     <mat-spinner data-testid="loading-spinner"></mat-spinner>
   } @else if (state.data) {
@@ -11,16 +11,89 @@
       </mat-card-header>
       <mat-card-content>
         <mat-list data-testid="shopping-list-items">
-          @for (item of state.data.items; track item.id) {
-            <mat-list-item [attr.data-testid]="'list-item-' + item.id">
-              <mat-checkbox [checked]="item.is_checked">
-                {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
-              </mat-checkbox>
+          @for (item of state.uncheckedItems; track item.id) {
+            <mat-list-item
+              [attr.data-testid]="'list-item-' + item.id"
+              [class.checked-item]="item.is_checked"
+            >
+              <div class="item-container">
+                <mat-checkbox
+                  [checked]="item.is_checked"
+                  (change)="toggleItemChecked(item.id, item.is_checked)"
+                >
+                  {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
+                </mat-checkbox>
+                <div class="item-actions">
+                  <app-category-icon
+                    [categoryName]="getCategoryName(item.category_id, state.categories)"
+                    [attr.data-testid]="'category-icon-' + item.id"
+                    [matTooltip]="getCategoryName(item.category_id, state.categories)"
+                  ></app-category-icon>
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="deleteItem(item.id)"
+                    [attr.data-testid]="'delete-item-' + item.id"
+                    aria-label="Delete item"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
             </mat-list-item>
           }
         </mat-list>
       </mat-card-content>
     </mat-card>
+    @if (state.checkedItems.length) {
+      <mat-list class="checked-items-list" data-testid="checked-items-list">
+        @for (item of state.checkedItems; track item.id) {
+          <mat-list-item
+            [attr.data-testid]="'checked-item-' + item.id"
+            [class.checked-item]="item.is_checked"
+          >
+            <div class="item-container">
+              <mat-checkbox
+                [checked]="item.is_checked"
+                (change)="toggleItemChecked(item.id, item.is_checked)"
+              >
+                {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
+              </mat-checkbox>
+              <div class="item-actions">
+                <app-category-icon
+                  [categoryName]="getCategoryName(item.category_id, state.categories)"
+                  [attr.data-testid]="'category-icon-' + item.id"
+                  [matTooltip]="getCategoryName(item.category_id, state.categories)"
+                ></app-category-icon>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="deleteItem(item.id)"
+                  [attr.data-testid]="'delete-item-' + item.id"
+                  aria-label="Delete item"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </mat-list-item>
+        }
+      </mat-list>
+    }
+
+    <!-- Sticky Add Button -->
+    <div class="sticky-add-button">
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="openAddItemDialog()"
+        data-testid="add-item-button"
+        aria-label="Add product to shopping list"
+      >
+        <mat-icon>add</mat-icon>
+        Dodaj produkt
+      </button>
+    </div>
   } @else {
     <mat-card>
       <mat-card-content>
