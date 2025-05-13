@@ -4,6 +4,7 @@
 :host {
   display: block;
   padding: 16px;
+  padding-bottom: 80px;
 
   .checked-items-list {
     margin: 16px auto 0;
@@ -98,7 +99,37 @@ mat-spinner {
   margin: 20px auto;
 }
 
+.sticky-add-button {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  
+  button[mat-fab] {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
 :host ::ng-deep {
+  .add-item-dialog {
+    .mat-mdc-dialog-container {
+      padding: 0;
+    }
+  }
+
   .mat-mdc-list-item {
     height: auto;
     padding: 8px 16px;

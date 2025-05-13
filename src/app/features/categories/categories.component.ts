@@ -6,7 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CategoryService } from '../../core/supabase/category.service';
-import { CategoryIconComponent } from '../../shared/ui/category-icon/category-icon.component';
+import { CategoryIconComponent } from '../../shared/category-icon/category-icon.component';
 
 @Component({
   selector: 'app-categories',

@@ -7,9 +7,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { CategoryIconComponent } from '@app/shared/ui/category-icon/category-icon.component';
+import { CategoryIconComponent } from '@app/shared/category-icon/category-icon.component';
 import {
   catchError,
   map,
@@ -27,6 +28,7 @@ import { ShoppingListItemsService } from '@app/core/supabase/shopping-list-items
 import { CategoryService } from '@app/core/supabase/category.service';
 import { ShoppingListResponseDto, CategoryDto, ShoppingListItemResponseDto } from '@types';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AddItemDialogComponent } from '../../components/add-item-dialog/add-item-dialog.component';
 
 @Component({
   selector: 'app-shopping-list-detail',
@@ -39,6 +41,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     MatChipsModule,
     MatIconModule,
     MatButtonModule,
+    MatDialogModule,
     DatePipe,
     MatTooltipModule,
     CategoryIconComponent,
@@ -85,7 +88,8 @@ export class ShoppingListDetailComponent implements OnDestroy {
     private route: ActivatedRoute,
     private shoppingListService: ShoppingListService,
     private shoppingListItemsService: ShoppingListItemsService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private dialog: MatDialog
   ) {
     const shoppingList$ = this.route.params.pipe(
       map(params => params['id']),
@@ -113,6 +117,86 @@ export class ShoppingListDetailComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  /**
+   * Opens the dialog to add a new item to the shopping list
+   */
+  openAddItemDialog(): void {
+    const currentList = this.shoppingList();
+    if (!currentList) return;
+
+    const dialogRef = this.dialog.open(AddItemDialogComponent, {
+      width: '100%',
+      maxWidth: '600px',
+      height: '90vh',
+      data: {
+        listId: currentList.id,
+        categories: this.categories(),
+      },
+      panelClass: 'add-item-dialog',
+    });
+
+    // Get a reference to the component instance
+    const componentInstance = dialogRef.componentInstance;
+
+    // Subscribe to items added while the dialog is open
+    componentInstance.itemAdded.subscribe(newItemData => {
+      this.shoppingListItemsService
+        .addShoppingListItem({
+          shopping_list_id: currentList.id,
+          product_name: newItemData.productName,
+          quantity: newItemData.quantity,
+          unit: newItemData.unit,
+          category_id: newItemData.category_id,
+          is_checked: false,
+        })
+        .pipe(
+          takeUntil(this.destroy$),
+          map(newItem => ({ newItem, currentList })),
+          catchError(error => {
+            this.handleError('Error adding item:', error);
+            return of(null);
+          })
+        )
+        .subscribe(result => {
+          if (result) {
+            this.addItemToLocalShoppingList(result.newItem, result.currentList);
+          }
+        });
+    });
+
+    // Also handle items from dialog close (for addItemAndClose)
+    dialogRef
+      .afterClosed()
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap(result => {
+          if (!result) return of(null);
+
+          return this.shoppingListItemsService
+            .addShoppingListItem({
+              shopping_list_id: currentList.id,
+              product_name: result.productName,
+              quantity: result.quantity,
+              unit: result.unit,
+              category_id: result.category_id,
+              is_checked: false,
+            })
+            .pipe(
+              map(newItem => ({ newItem, currentList })),
+              catchError(error => {
+                this.handleError('Error adding item:', error);
+                return of(null);
+              })
+            );
+        })
+      )
+      .subscribe(result => {
+        if (result) {
+          this.addItemToLocalShoppingList(result.newItem, result.currentList);
+        }
+      });
   }
 
   /**
@@ -192,6 +276,19 @@ export class ShoppingListDetailComponent implements OnDestroy {
     );
 
     this.shoppingList.set({ ...currentList, items: updatedItems });
+  }
+
+  /**
+   * Adds a new item to the local shopping list state
+   */
+  private addItemToLocalShoppingList(
+    newItem: ShoppingListItemResponseDto,
+    currentList: ShoppingListResponseDto
+  ): void {
+    this.shoppingList.set({
+      ...currentList,
+      items: [...(currentList.items || []), newItem],
+    });
   }
 
   /**

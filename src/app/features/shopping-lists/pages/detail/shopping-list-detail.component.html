@@ -80,6 +80,20 @@
         }
       </mat-list>
     }
+
+    <!-- Sticky Add Button -->
+    <div class="sticky-add-button">
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="openAddItemDialog()"
+        data-testid="add-item-button"
+        aria-label="Add product to shopping list"
+      >
+        <mat-icon>add</mat-icon>
+        Dodaj produkt
+      </button>
+    </div>
   } @else {
     <mat-card>
       <mat-card-content>
