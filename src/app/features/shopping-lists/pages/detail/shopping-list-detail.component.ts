@@ -18,11 +18,13 @@ import {
   tap,
   takeUntil,
   Subject,
+  Observable,
 } from 'rxjs';
 import { ShoppingListService } from '@app/core/supabase/shopping-list.service';
 import { ShoppingListItemsService } from '@app/core/supabase/shopping-list-items.service';
 import { CategoryService } from '@app/core/supabase/category.service';
-import { ShoppingListResponseDto, CategoryDto } from '@types';
+import { ShoppingListResponseDto, CategoryDto, ShoppingListItemResponseDto } from '@types';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-shopping-list-detail',
@@ -48,11 +50,31 @@ export class ShoppingListDetailComponent implements OnDestroy {
   shoppingList = signal<ShoppingListResponseDto | null>(null);
   categories = signal<CategoryDto[]>([]);
 
-  // Computed signal for the combined state
+  // Computed signal for sorted items - unchecked at top, checked at bottom (sorted by category)
+  sortedItems = computed(() => {
+    const list = this.shoppingList();
+    if (!list?.items) return [];
+
+    // Split items into checked and unchecked
+    const uncheckedItems = list.items.filter(item => !item.is_checked);
+    const checkedItems = list.items.filter(item => item.is_checked);
+
+    // Sort both groups by category and combine
+    return [...this.sortItemsByCategory(uncheckedItems), ...this.sortItemsByCategory(checkedItems)];
+  });
+
+  // Computed signals derived from sorted items
+  uncheckedItems = computed(() => this.sortedItems().filter(item => !item.is_checked));
+  checkedItems = computed(() => this.sortedItems().filter(item => item.is_checked));
+
+  // Combined state for template consumption
   shoppingListState = computed(() => ({
     loading: this.loading(),
     data: this.shoppingList(),
     categories: this.categories(),
+    sortedItems: this.sortedItems(),
+    uncheckedItems: this.uncheckedItems(),
+    checkedItems: this.checkedItems(),
   }));
 
   constructor(
@@ -66,16 +88,12 @@ export class ShoppingListDetailComponent implements OnDestroy {
       switchMap(id =>
         this.shoppingListService.getShoppingListById(id).pipe(
           map(data => ({ loading: false, data })),
-          catchError(error => {
-            console.error('Error loading shopping list:', error);
-            return of({ loading: false, data: null });
-          }),
+          catchError(error => this.handleError('Error loading shopping list:', error)),
           startWith({ loading: true, data: null })
         )
       )
     );
 
-    // Subscribe to data streams and update signals
     combineLatest([shoppingList$, this.categoryService.categories$])
       .pipe(
         takeUntil(this.destroy$),
@@ -93,8 +111,51 @@ export class ShoppingListDetailComponent implements OnDestroy {
     this.destroy$.complete();
   }
 
+  /**
+   * Sorts items by category with 'Others' always at the end
+   */
+  private sortItemsByCategory(items: ShoppingListItemResponseDto[]): ShoppingListItemResponseDto[] {
+    const categories = this.categories();
+    return [...items].sort((a, b) => {
+      const categoryA = this.getCategoryName(a.category_id, categories);
+      const categoryB = this.getCategoryName(b.category_id, categories);
+
+      // Handle 'Others' case to sort it last
+      if (categoryA === 'Others' && categoryB !== 'Others') return 1;
+      if (categoryA !== 'Others' && categoryB === 'Others') return -1;
+
+      return categoryA.localeCompare(categoryB);
+    });
+  }
+
+  /**
+   * Standard error handler for HTTP operations
+   */
+  private handleError(
+    message: string,
+    error: HttpErrorResponse
+  ): Observable<{ loading: boolean; data: null }> {
+    console.error(message, error);
+    return of({ loading: false, data: null });
+  }
+
   getCategoryName(categoryId: string, categories: CategoryDto[]): string {
     return categories.find(cat => cat.id === categoryId)?.name || 'Others';
+  }
+
+  toggleItemChecked(itemId: string, currentState: boolean): void {
+    const currentList = this.shoppingList();
+    if (!currentList?.items) return;
+
+    this.shoppingListItemsService
+      .updateShoppingListItem(itemId, { is_checked: !currentState })
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(error => this.handleError('Error updating item:', error))
+      )
+      .subscribe(() => {
+        this.updateLocalShoppingListItem(itemId, { is_checked: !currentState });
+      });
   }
 
   deleteItem(itemId: string): void {
@@ -105,23 +166,40 @@ export class ShoppingListDetailComponent implements OnDestroy {
       .deleteShoppingListItem(itemId)
       .pipe(
         takeUntil(this.destroy$),
-        catchError(error => {
-          console.error('Error deleting item:', error);
-          return of(null);
-        })
+        catchError(error => this.handleError('Error deleting item:', error))
       )
       .subscribe(() => {
-        // Update local state by removing the deleted item
-        const updatedData: ShoppingListResponseDto = {
-          id: currentList.id,
-          name: currentList.name,
-          recipe_id: currentList.recipe_id,
-          created_at: currentList.created_at,
-          updated_at: currentList.updated_at,
-          items: currentList.items!.filter(item => item.id !== itemId),
-        };
-
-        this.shoppingList.set(updatedData);
+        this.removeItemFromLocalShoppingList(itemId);
       });
+  }
+
+  /**
+   * Updates a shopping list item property in the local state
+   */
+  private updateLocalShoppingListItem(
+    itemId: string,
+    updates: Partial<ShoppingListItemResponseDto>
+  ): void {
+    const currentList = this.shoppingList();
+    if (!currentList?.items) return;
+
+    const updatedItems = currentList.items.map(item =>
+      item.id === itemId ? { ...item, ...updates } : item
+    );
+
+    this.shoppingList.set({ ...currentList, items: updatedItems });
+  }
+
+  /**
+   * Removes an item from the local shopping list state
+   */
+  private removeItemFromLocalShoppingList(itemId: string): void {
+    const currentList = this.shoppingList();
+    if (!currentList?.items) return;
+
+    this.shoppingList.set({
+      ...currentList,
+      items: currentList.items.filter(item => item.id !== itemId),
+    });
   }
 }

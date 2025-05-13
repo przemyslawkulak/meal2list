@@ -1,6 +1,14 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+
 :host {
   display: block;
   padding: 16px;
+
+  .checked-items-list {
+    margin: 16px auto 0;
+    max-width: 800px;
+  }
 }
 
 mat-card {
@@ -10,6 +18,15 @@ mat-card {
 
 mat-list-item {
   margin: 8px 0;
+  
+  &.checked-item {
+    background-color: rgba(0, 0, 0, 0.03);
+    
+    ::ng-deep .mdc-checkbox__background {
+      background-color: map.get(mat.$green-palette, 400) !important;
+      border-color: map.get(mat.$green-palette, 400) !important;
+    }
+  }
 }
 
 .item-container {
@@ -34,6 +51,17 @@ mat-list-item {
   .mat-mdc-list-item {
     height: auto;
     padding: 8px 16px;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                 0 2px 4px -1px rgba(0, 0, 0, 0.06),
+                 0 1px 8px 0 rgba(0, 0, 0, 0.04);
+      outline: none;
+    }
   }
 
   .mat-mdc-checkbox {
@@ -42,5 +70,12 @@ mat-list-item {
 
   .mat-mdc-chip {
     margin: 0;
+  }
+  
+  .checked-item .mat-mdc-checkbox .mdc-checkbox__native-control:checked {
+    + .mdc-checkbox__background {
+      background-color: map.get(mat.$green-palette, 400) !important;
+      border-color: map.get(mat.$green-palette, 400) !important;
+    }
   }
 } 

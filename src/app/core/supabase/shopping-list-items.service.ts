@@ -57,6 +57,33 @@ export class ShoppingListItemsService extends SupabaseService {
     );
   }
 
+  updateShoppingListItem(
+    itemId: string,
+    updates: Partial<ShoppingListItemResponseDto>
+  ): Observable<ShoppingListItemResponseDto> {
+    return from(
+      this.supabase
+        .from('shopping_list_items')
+        .update(updates)
+        .eq('id', itemId)
+        .select('id, product_name, quantity, unit, is_checked, category_id, created_at, updated_at')
+        .single()
+    ).pipe(
+      map(result => {
+        if (result.error) throw result.error;
+        return result.data as ShoppingListItemResponseDto;
+      }),
+      catchError(error => {
+        console.error('Error updating shopping list item:', error);
+        return throwError(() => ({
+          message: 'Failed to update shopping list item',
+          statusCode: 500,
+          error,
+        }));
+      })
+    );
+  }
+
   deleteShoppingListItem(itemId: string): Observable<void> {
     return from(this.supabase.from('shopping_list_items').delete().eq('id', itemId)).pipe(
       map(result => {
