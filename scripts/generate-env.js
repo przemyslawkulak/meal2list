@@ -13,4 +13,3 @@ export const environment: AppEnvironment = {
 
 fs.writeFileSync('src/environments/environment.ts', content);
 console.log('Generated src/environments/environment.ts');
-console.log(content);
