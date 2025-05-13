@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --open",
     "start:test": "cross-env NODE_ENV=test ng serve --configuration=test",
     "generate-env": "node scripts/generate-env.js",
     "build": "npm run generate-env && ng build",

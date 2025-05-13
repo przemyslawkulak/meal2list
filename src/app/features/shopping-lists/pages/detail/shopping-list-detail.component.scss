@@ -10,4 +10,37 @@ mat-card {
 
 mat-list-item {
   margin: 8px 0;
+}
+
+.item-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 8px 0;
+
+  mat-checkbox {
+    flex: 1;
+  }
+}
+
+.item-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+:host ::ng-deep {
+  .mat-mdc-list-item {
+    height: auto;
+    padding: 8px 16px;
+  }
+
+  .mat-mdc-checkbox {
+    margin-right: 16px;
+  }
+
+  .mat-mdc-chip {
+    margin: 0;
+  }
 } 

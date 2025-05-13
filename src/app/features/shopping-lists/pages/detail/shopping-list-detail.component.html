@@ -1,4 +1,4 @@
-@if (shoppingListState$ | async; as state) {
+@if (shoppingListState(); as state) {
   @if (state.loading) {
     <mat-spinner data-testid="loading-spinner"></mat-spinner>
   } @else if (state.data) {
@@ -13,9 +13,27 @@
         <mat-list data-testid="shopping-list-items">
           @for (item of state.data.items; track item.id) {
             <mat-list-item [attr.data-testid]="'list-item-' + item.id">
-              <mat-checkbox [checked]="item.is_checked">
-                {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
-              </mat-checkbox>
+              <div class="item-container">
+                <mat-checkbox [checked]="item.is_checked">
+                  {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
+                </mat-checkbox>
+                <div class="item-actions">
+                  <mat-chip-set>
+                    <mat-chip [attr.data-testid]="'category-chip-' + item.id" color="accent">
+                      {{ getCategoryName(item.category_id, state.categories) }}
+                    </mat-chip>
+                  </mat-chip-set>
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="deleteItem(item.id)"
+                    [attr.data-testid]="'delete-item-' + item.id"
+                    aria-label="Delete item"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
             </mat-list-item>
           }
         </mat-list>
