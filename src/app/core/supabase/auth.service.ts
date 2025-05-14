@@ -45,6 +45,25 @@ export class AuthService extends SupabaseService {
     });
   }
 
+  signUp(email: string, password: string): Observable<User> {
+    return from(this.supabase.auth.signUp({ email, password })).pipe(
+      map((response: AuthResponse) => {
+        if (response.error) throw response.error;
+        const user = response.data.user;
+        if (!user) throw new Error('No user returned from auth response');
+        return user;
+      }),
+      catchError(error => {
+        console.error('Registration error:', error);
+        this.snackBar.open(this.getErrorMessage(error), 'Close', {
+          duration: 5000,
+          panelClass: ['error-snackbar'],
+        });
+        throw error;
+      })
+    );
+  }
+
   login(email: string, password: string): Observable<User> {
     return from(this.signInWithPassword(email, password)).pipe(
       map((response: AuthResponse) => {
@@ -93,6 +112,8 @@ export class AuthService extends SupabaseService {
           return 'Invalid email or password';
         case 'Email not confirmed':
           return 'Please confirm your email address';
+        case 'User already registered':
+          return 'Email jest już zarejestrowany';
         default:
           return error.message;
       }

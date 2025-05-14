@@ -12,7 +12,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { AuthService } from '../../../../core/supabase/auth.service';
+import { User } from '@supabase/supabase-js';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -24,6 +32,7 @@ import { RouterLink } from '@angular/router';
     MatInputModule,
     MatButtonModule,
     MatCardModule,
+    MatProgressSpinnerModule,
     RouterLink,
   ],
   templateUrl: './register.component.html',
@@ -31,8 +40,14 @@ import { RouterLink } from '@angular/router';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
+  loading = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {
     this.registerForm = this.fb.group(
       {
         email: ['', [Validators.required, Validators.email]],
@@ -57,8 +72,49 @@ export class RegisterComponent {
 
   onSubmit(): void {
     if (this.registerForm.valid) {
-      // Form submission will be handled later
-      console.log(this.registerForm.value);
+      this.loading = true;
+      const { email, password } = this.registerForm.value;
+
+      this.signUp(email, password)
+        .pipe(finalize(() => (this.loading = false)))
+        .subscribe({
+          next: () => {
+            this.snackBar.open(
+              'Rejestracja zakończona powodzeniem. Możesz się teraz zalogować.',
+              'OK',
+              {
+                duration: 5000,
+              }
+            );
+            this.router.navigate(['/auth/login']);
+          },
+          error: error => {
+            console.error('Registration error:', error);
+            this.snackBar.open(this.getErrorMessage(error), 'OK', {
+              duration: 5000,
+              panelClass: ['error-snackbar'],
+            });
+          },
+        });
     }
+  }
+
+  private signUp(email: string, password: string): Observable<User> {
+    // Use the signUp method from AuthService
+    return this.authService.signUp(email, password);
+  }
+
+  private getErrorMessage(error: HttpErrorResponse): string {
+    if (error?.message) {
+      switch (error.message) {
+        case 'User already registered':
+          return 'Email jest już zarejestrowany';
+        case 'Password should be at least 8 characters':
+          return 'Hasło musi mieć co najmniej 8 znaków';
+        default:
+          return error.message;
+      }
+    }
+    return 'Wystąpił błąd podczas rejestracji. Spróbuj ponownie.';
   }
 }

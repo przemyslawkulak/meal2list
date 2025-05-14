@@ -38,8 +38,18 @@
       </mat-form-field>
 
       <div class="actions">
-        <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">
-          Zarejestruj się
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="registerForm.invalid || loading"
+        >
+          @if (loading) {
+            <mat-spinner diameter="20" class="spinner"></mat-spinner>
+            Rejestracja...
+          } @else {
+            Zarejestruj się
+          }
         </button>
         <a mat-button routerLink="/auth/login">Masz już konto? Zaloguj się</a>
       </div>
