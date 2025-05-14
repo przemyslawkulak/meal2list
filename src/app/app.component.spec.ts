@@ -1,6 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import { SupabaseService } from './core/supabase/supabase.service';
+
+// Create a mock for SupabaseService
+const supabaseServiceMock = {
+  authChanges: jest.fn().mockImplementation(callback => {
+    // Call the callback with null event and null session
+    callback(null, null);
+    // Return an unsubscribe function that does nothing
+    return { data: { subscription: { unsubscribe: () => {} } } };
+  }),
+};
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -15,6 +26,7 @@ describe('AppComponent', () => {
             supabaseKey: 'mock-key',
           },
         },
+        { provide: SupabaseService, useValue: supabaseServiceMock },
       ],
     }).compileComponents();
   });

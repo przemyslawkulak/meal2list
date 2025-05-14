@@ -63,7 +63,7 @@ export interface UpdateRecipeCommand {
 
 export type ShoppingListResponseDto = Pick<
   Database['public']['Tables']['shopping_lists']['Row'],
-  'id' | 'name' | 'recipe_id' | 'created_at' | 'updated_at'
+  'id' | 'name' | 'recipe_id' | 'created_at' | 'updated_at' | 'user_id'
 > & {
   items?: ShoppingListItemResponseDto[];
 };
@@ -71,10 +71,12 @@ export type ShoppingListResponseDto = Pick<
 export interface CreateShoppingListCommand {
   name: string;
   recipe_id?: string;
+  // user_id is automatically set by the backend
 }
 
 export interface UpdateShoppingListCommand {
   name: string;
+  // user_id is automatically set by the backend
 }
 
 // ----------------------------
