@@ -1,6 +1,10 @@
 import { Injectable, Inject } from '@angular/core';
-import { Observable, from, map, catchError, throwError, of } from 'rxjs';
-import { CreateShoppingListCommand, ShoppingListResponseDto } from '@types';
+import { Observable, map, catchError, throwError, of, switchMap } from 'rxjs';
+import {
+  CreateShoppingListCommand,
+  ShoppingListResponseDto,
+  UpdateShoppingListCommand,
+} from '@types';
 import { SupabaseService } from '@core/supabase/supabase.service';
 import { AppEnvironment } from '@app/app.config';
 
@@ -13,12 +17,14 @@ export class ShoppingListService extends SupabaseService {
   }
 
   getShoppingLists(): Observable<ShoppingListResponseDto[]> {
-    return from(
-      this.supabase
-        .from('shopping_lists')
-        .select('id, name, recipe_id, created_at, updated_at')
-        .order('created_at', { ascending: false })
-    ).pipe(
+    return this.getUserId().pipe(
+      switchMap(userId =>
+        this.supabase
+          .from('shopping_lists')
+          .select('id, name, recipe_id, created_at, updated_at, user_id')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false })
+      ),
       map(result => {
         if (result.error) throw result.error;
         return result.data as ShoppingListResponseDto[];
@@ -31,18 +37,20 @@ export class ShoppingListService extends SupabaseService {
   }
 
   createShoppingList(command: CreateShoppingListCommand): Observable<ShoppingListResponseDto> {
-    return from(
-      this.supabase
-        .from('shopping_lists')
-        .insert([
-          {
-            name: command.name,
-            recipe_id: command.recipe_id || null,
-          },
-        ])
-        .select('id, name, recipe_id, created_at, updated_at')
-        .single()
-    ).pipe(
+    return this.getUserId().pipe(
+      switchMap(userId =>
+        this.supabase
+          .from('shopping_lists')
+          .insert([
+            {
+              name: command.name,
+              recipe_id: command.recipe_id || null,
+              user_id: userId,
+            },
+          ])
+          .select('id, name, recipe_id, created_at, updated_at, user_id')
+          .single()
+      ),
       map(result => {
         if (result.error) throw result.error;
         return result.data;
@@ -55,7 +63,10 @@ export class ShoppingListService extends SupabaseService {
   }
 
   deleteShoppingList(id: string): Observable<void> {
-    return from(this.supabase.from('shopping_lists').delete().eq('id', id)).pipe(
+    return this.getUserId().pipe(
+      switchMap(userId =>
+        this.supabase.from('shopping_lists').delete().eq('id', id).eq('user_id', userId)
+      ),
       map(result => {
         if (result.error) throw result.error;
         return;
@@ -67,32 +78,60 @@ export class ShoppingListService extends SupabaseService {
     );
   }
 
+  updateShoppingList(
+    id: string,
+    updates: UpdateShoppingListCommand
+  ): Observable<ShoppingListResponseDto> {
+    return this.getUserId().pipe(
+      switchMap(userId =>
+        this.supabase
+          .from('shopping_lists')
+          .update(updates)
+          .eq('id', id)
+          .eq('user_id', userId)
+          .select('id, name, recipe_id, created_at, updated_at, user_id')
+          .single()
+      ),
+      map(result => {
+        if (result.error) throw result.error;
+        return result.data;
+      }),
+      catchError(error => {
+        console.error('Error updating shopping list:', error);
+        return throwError(() => new Error('Failed to update shopping list'));
+      })
+    );
+  }
+
   getShoppingListById(listId: string): Observable<ShoppingListResponseDto | null> {
-    return from(
-      this.supabase
-        .from('shopping_lists')
-        .select(
-          `
-          id,
-          name,
-          recipe_id,
-          created_at,
-          updated_at,
-          items:shopping_list_items(
+    return this.getUserId().pipe(
+      switchMap(userId =>
+        this.supabase
+          .from('shopping_lists')
+          .select(
+            `
             id,
-            product_name,
-            quantity,
-            unit,
-            is_checked,
-            category_id,
+            name,
+            recipe_id,
             created_at,
-            updated_at
+            updated_at,
+            user_id,
+            items:shopping_list_items(
+              id,
+              product_name,
+              quantity,
+              unit,
+              is_checked,
+              category_id,
+              created_at,
+              updated_at
+            )
+          `
           )
-        `
-        )
-        .eq('id', listId)
-        .single()
-    ).pipe(
+          .eq('id', listId)
+          .eq('user_id', userId)
+          .single()
+      ),
       map(result => {
         if (result.error) throw result.error;
         if (!result.data) return null;

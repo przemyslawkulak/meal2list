@@ -9,6 +9,8 @@ import {
 } from '@supabase/supabase-js';
 import { Database } from '@db/database.types';
 import { AppEnvironment } from '@app/app.config';
+import { from, Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 
 export interface Profile {
   id?: string;
@@ -23,6 +25,7 @@ export interface Profile {
 export class SupabaseService {
   protected supabase: SupabaseClient<Database>;
   private _session: AuthSession | null = null;
+  private _userId$: Observable<string>;
 
   constructor(@Inject('APP_ENVIRONMENT') private environment: AppEnvironment) {
     this.supabase = createClient<Database>(environment.supabaseUrl, environment.supabaseKey, {
@@ -32,14 +35,24 @@ export class SupabaseService {
         detectSessionInUrl: false,
       },
     });
+    this._userId$ = from(this.supabase.auth.getUser()).pipe(
+      map(({ data: { user } }) => {
+        if (!user) {
+          throw new Error('User not authenticated');
+        }
+        return user.id;
+      }),
+      shareReplay({ bufferSize: 1, refCount: true })
+    );
   }
 
-  // ... existing code ...
-  // Remove or replace the admin API call
+  getUserId(): Observable<string> {
+    return this._userId$;
+  }
+
   async getUsers() {
     return this.supabase.from('profiles').select('*');
   }
-  // ... existing code ...
 
   async initializeUsers() {
     const { data, error } = await this.supabase.auth.admin.listUsers();

@@ -62,6 +62,7 @@ export class AddItemDialogComponent {
 
   searchTerm = signal('');
   activeTab = signal(TABS.POPULAR);
+  selectedItems = signal<NewShoppingListItem[]>([]);
 
   get listId(): string {
     return this.data.listId;
@@ -121,6 +122,7 @@ export class AddItemDialogComponent {
       category_id: this.getDefaultCategoryId(),
     };
 
+    this.selectedItems.update(items => [...items, newItem]);
     this.itemAdded.emit(newItem);
     this.snackBar.open(`Dodano ${name.trim()} do listy`, 'OK', {
       duration: 2000,
@@ -135,6 +137,7 @@ export class AddItemDialogComponent {
       category_id: product.category_id,
     };
 
+    this.selectedItems.update(items => [...items, newItem]);
     this.itemAdded.emit(newItem);
     this.snackBar.open(`Dodano ${product.name} do listy`, 'OK', {
       duration: 2000,
@@ -149,7 +152,8 @@ export class AddItemDialogComponent {
       category_id: product.category_id,
     };
 
-    this.dialogRef.close(newItem);
+    this.selectedItems.update(items => [...items, newItem]);
+    this.dialogRef.close(this.selectedItems());
   }
 
   getCategoryName(categoryId: string): string {

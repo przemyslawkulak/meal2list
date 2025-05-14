@@ -4,5 +4,5 @@ export const DEFAULT_ITEM_VALUES = {
 };
 
 export const DEFAULT_CATEGORY_NAMES = {
-  DEFAULT_CATEGORY: 'Others',
+  DEFAULT_CATEGORY: 'Other',
 };

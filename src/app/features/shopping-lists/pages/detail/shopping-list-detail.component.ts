@@ -141,62 +141,43 @@ export class ShoppingListDetailComponent implements OnDestroy {
     const componentInstance = dialogRef.componentInstance;
 
     // Subscribe to items added while the dialog is open
-    componentInstance.itemAdded.subscribe(newItemData => {
-      this.shoppingListItemsService
-        .addShoppingListItem({
-          shopping_list_id: currentList.id,
-          product_name: newItemData.productName,
-          quantity: newItemData.quantity,
-          unit: newItemData.unit,
-          category_id: newItemData.category_id,
-          is_checked: false,
-        })
-        .pipe(
-          takeUntil(this.destroy$),
-          map(newItem => ({ newItem, currentList })),
-          catchError(error => {
-            this.handleError('Error adding item:', error);
-            return of(null);
-          })
-        )
-        .subscribe(result => {
-          if (result) {
-            this.addItemToLocalShoppingList(result.newItem, result.currentList);
-          }
-        });
-    });
-
-    // Also handle items from dialog close (for addItemAndClose)
-    dialogRef
-      .afterClosed()
+    componentInstance.itemAdded
       .pipe(
         takeUntil(this.destroy$),
-        switchMap(result => {
-          if (!result) return of(null);
-
-          return this.shoppingListItemsService
+        switchMap(newItemData =>
+          this.shoppingListItemsService
             .addShoppingListItem({
               shopping_list_id: currentList.id,
-              product_name: result.productName,
-              quantity: result.quantity,
-              unit: result.unit,
-              category_id: result.category_id,
+              product_name: newItemData.productName,
+              quantity: newItemData.quantity,
+              unit: newItemData.unit,
+              category_id: newItemData.category_id,
               is_checked: false,
             })
             .pipe(
-              map(newItem => ({ newItem, currentList })),
+              map(newItem => ({ newItem })),
               catchError(error => {
                 this.handleError('Error adding item:', error);
                 return of(null);
               })
-            );
-        })
+            )
+        )
       )
       .subscribe(result => {
         if (result) {
-          this.addItemToLocalShoppingList(result.newItem, result.currentList);
+          const latestList = this.shoppingList();
+          if (!latestList) return;
+
+          const updatedList = {
+            ...latestList,
+            items: [...(latestList.items || []), result.newItem],
+          };
+          this.shoppingList.set(updatedList);
         }
       });
+
+    // Also handle items from dialog close
+    dialogRef.afterClosed().subscribe();
   }
 
   /**
@@ -276,19 +257,6 @@ export class ShoppingListDetailComponent implements OnDestroy {
     );
 
     this.shoppingList.set({ ...currentList, items: updatedItems });
-  }
-
-  /**
-   * Adds a new item to the local shopping list state
-   */
-  private addItemToLocalShoppingList(
-    newItem: ShoppingListItemResponseDto,
-    currentList: ShoppingListResponseDto
-  ): void {
-    this.shoppingList.set({
-      ...currentList,
-      items: [...(currentList.items || []), newItem],
-    });
   }
 
   /**
