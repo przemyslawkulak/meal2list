@@ -251,7 +251,9 @@ describe('LoginComponent', () => {
       );
 
       expect(errorElement).toBeTruthy();
-      expect(errorElement.nativeElement.textContent).toContain('valid email');
+      expect(errorElement.nativeElement.textContent).toContain(
+        'Proszę podać prawidłowy adres email'
+      );
     });
 
     it('should display password validation error when password is too short', () => {
@@ -264,7 +266,9 @@ describe('LoginComponent', () => {
       );
 
       expect(errorElement).toBeTruthy();
-      expect(errorElement.nativeElement.textContent).toContain('at least 6 characters');
+      expect(errorElement.nativeElement.textContent).toContain(
+        'Hasło musi mieć co najmniej 6 znaków'
+      );
     });
 
     it('should display auth error when authError is set', () => {
