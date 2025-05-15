@@ -1,10 +1,17 @@
 <mat-toolbar color="primary">
   <span>Listy zakupowe</span>
   <span class="spacer"></span>
-  <button mat-raised-button color="accent" (click)="openNew()" data-testid="create-new-list-button">
-    <mat-icon>add</mat-icon>
-    Nowa lista
-  </button>
+  @if (!isLoading() && lists().length > 0) {
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="openNew()"
+      data-testid="create-new-list-button"
+    >
+      <mat-icon>add</mat-icon>
+      Nowa lista
+    </button>
+  }
 </mat-toolbar>
 
 <div class="content">
@@ -20,12 +27,23 @@
     <mat-card>
       <mat-card-content>
         <mat-nav-list role="list" data-testid="shopping-lists-container">
-          @for (list of lists(); track list.id) {
-            <app-shopping-list-item
-              [list]="list"
-              (delete)="openDelete($event)"
-              (generate)="onGenerate($event)"
-            />
+          @if (lists().length === 0) {
+            <div class="empty-state">
+              <mat-icon class="empty-state-icon">list_alt</mat-icon>
+              <p class="empty-state-text">Nie masz jeszcze żadnych list zakupowych</p>
+              <button mat-raised-button color="primary" (click)="openNew()">
+                <mat-icon>add</mat-icon>
+                Utwórz pierwszą listę
+              </button>
+            </div>
+          } @else {
+            @for (list of lists(); track list.id) {
+              <app-shopping-list-item
+                [list]="list"
+                (delete)="openDelete($event)"
+                (generate)="onGenerate($event)"
+              />
+            }
           }
         </mat-nav-list>
       </mat-card-content>

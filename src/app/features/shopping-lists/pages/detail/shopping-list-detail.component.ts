@@ -8,7 +8,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
+import { DatePipe, CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CategoryIconComponent } from '@app/shared/category-icon/category-icon.component';
 import {
@@ -43,6 +43,7 @@ import { AddItemDialogComponent } from '../../components/add-item-dialog/add-ite
     MatButtonModule,
     MatDialogModule,
     DatePipe,
+    CommonModule,
     MatTooltipModule,
     CategoryIconComponent,
   ],
@@ -152,6 +153,7 @@ export class ShoppingListDetailComponent implements OnDestroy {
               quantity: newItemData.quantity,
               unit: newItemData.unit,
               category_id: newItemData.category_id,
+              source: 'manual',
               is_checked: false,
             })
             .pipe(

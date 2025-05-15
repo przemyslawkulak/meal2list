@@ -123,6 +123,7 @@ export class ShoppingListService extends SupabaseService {
               unit,
               is_checked,
               category_id,
+              source,
               created_at,
               updated_at
             )

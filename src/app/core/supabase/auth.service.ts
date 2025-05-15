@@ -31,7 +31,7 @@ export class AuthService extends SupabaseService {
 
       // If we have a session, navigate to lists
       if (session?.user) {
-        this.router.navigate(['/generate']);
+        this.router.navigate(['/lists']);
       }
 
       // Setup auth state change subscription
@@ -78,7 +78,7 @@ export class AuthService extends SupabaseService {
       }),
       tap(() => {
         this.snackBar.open('Logged in successfully', 'Close', { duration: 3000 });
-        this.router.navigate(['/generate']);
+        this.router.navigate(['/lists']);
       }),
       catchError(error => {
         console.error('Login error:', error);

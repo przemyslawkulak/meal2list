@@ -29,6 +29,17 @@
                     [attr.data-testid]="'category-icon-' + item.id"
                     [matTooltip]="getCategoryName(item.category_id, state.categories)"
                   ></app-category-icon>
+                  <mat-chip
+                    [attr.data-testid]="'source-chip-' + item.id"
+                    [matTooltip]="'Source: ' + item.source"
+                    [ngClass]="{
+                      'source-auto': item.source === 'auto',
+                      'source-manual': item.source === 'manual',
+                      'source-modified': item.source === 'modified',
+                    }"
+                  >
+                    {{ item.source }}
+                  </mat-chip>
                   <button
                     mat-icon-button
                     color="warn"
@@ -65,6 +76,17 @@
                   [attr.data-testid]="'category-icon-' + item.id"
                   [matTooltip]="getCategoryName(item.category_id, state.categories)"
                 ></app-category-icon>
+                <mat-chip
+                  [attr.data-testid]="'source-chip-' + item.id"
+                  [matTooltip]="'Source: ' + item.source"
+                  [ngClass]="{
+                    'source-auto': item.source === 'auto',
+                    'source-manual': item.source === 'manual',
+                    'source-modified': item.source === 'modified',
+                  }"
+                >
+                  {{ item.source }}
+                </mat-chip>
                 <button
                   mat-icon-button
                   color="warn"

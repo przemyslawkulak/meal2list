@@ -57,7 +57,7 @@ mat-list-item {
   .item-actions {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 8px;
 
     app-category-icon {
       color: var(--mat-accent-500);
@@ -79,6 +79,28 @@ mat-list-item {
         font-size: 1.2rem;
         width: 1.2rem;
         height: 1.2rem;
+      }
+    }
+
+    mat-chip {
+      font-size: 12px;
+      height: 24px;
+      min-height: 24px;
+      padding: 0 8px;
+
+      &.source-auto {
+        background-color: #E3F2FD; // Blue 50
+        color: #1976D2; // Blue 700
+      }
+
+      &.source-manual {
+        background-color: #E8F5E9; // Green 50
+        color: #388E3C; // Green 700
+      }
+
+      &.source-modified {
+        background-color: #FFEBEE; // Red 50
+        color: #D32F2F; // Red 700
       }
     }
   }
