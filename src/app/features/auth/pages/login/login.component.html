@@ -1,6 +1,6 @@
 <mat-card class="login-card">
   <mat-card-header>
-    <mat-card-title>Login</mat-card-title>
+    <mat-card-title>Logowanie</mat-card-title>
   </mat-card-header>
 
   <mat-card-content>
@@ -10,15 +10,15 @@
           <mat-label>Email</mat-label>
           <input matInput type="email" formControlName="email" data-testid="email-input" required />
           @if (hasError('email', 'required')) {
-            <mat-error>Email is required</mat-error>
+            <mat-error>Email jest wymagany</mat-error>
           }
           @if (hasError('email', 'email')) {
-            <mat-error>Please enter a valid email address</mat-error>
+            <mat-error>Proszę podać prawidłowy adres email</mat-error>
           }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Password</mat-label>
+          <mat-label>Hasło</mat-label>
           <input
             matInput
             type="password"
@@ -27,10 +27,10 @@
             required
           />
           @if (hasError('password', 'required')) {
-            <mat-error>Password is required</mat-error>
+            <mat-error>Hasło jest wymagane</mat-error>
           }
           @if (hasError('password', 'minlength')) {
-            <mat-error>Password must be at least 6 characters</mat-error>
+            <mat-error>Hasło musi mieć co najmniej 6 znaków</mat-error>
           }
         </mat-form-field>
 
@@ -49,7 +49,7 @@
             data-testid="login-button"
           >
             @if (!isLoading) {
-              <span>Login</span>
+              <span>Zaloguj się</span>
             } @else {
               <mat-spinner diameter="20"></mat-spinner>
             }

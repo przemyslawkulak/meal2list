@@ -1,32 +1,32 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="generation-form">
   <mat-form-field appearance="fill" class="generation-form__field">
-    <mat-label>Select Shopping List</mat-label>
+    <mat-label>Wybierz listę zakupów</mat-label>
     <mat-select formControlName="listId">
       @for (list of shoppingLists(); track list.id) {
         <mat-option [value]="list.id">{{ list.name }}</mat-option>
       }
     </mat-select>
     @if (form.get('listId')?.errors?.['required']) {
-      <mat-error> Please select a shopping list </mat-error>
+      <mat-error>Proszę wybrać listę zakupów</mat-error>
     }
   </mat-form-field>
 
   <mat-form-field appearance="fill" class="generation-form__field">
-    <mat-label>Recipe Text</mat-label>
+    <mat-label>Tekst przepisu</mat-label>
     <textarea
       matInput
       formControlName="recipeText"
       [maxLength]="maxLength"
       rows="10"
-      placeholder="Paste your recipe here..."
+      placeholder="Wklej tutaj swój przepis..."
     >
     </textarea>
     <app-character-counter [length]="textLength" [max]="maxLength"> </app-character-counter>
     @if (form.get('recipeText')?.errors?.['required']) {
-      <mat-error> Recipe text is required </mat-error>
+      <mat-error>Tekst przepisu jest wymagany</mat-error>
     }
     @if (form.get('recipeText')?.errors?.['maxlength']) {
-      <mat-error> Recipe text cannot exceed {{ maxLength }} characters </mat-error>
+      <mat-error>Tekst przepisu nie może przekraczać {{ maxLength }} znaków</mat-error>
     }
   </mat-form-field>
 
@@ -37,6 +37,6 @@
     [disabled]="!form.valid || form.pristine"
     class="generation-form__submit"
   >
-    Generate Shopping List
+    Generuj listę zakupów
   </button>
 </form>

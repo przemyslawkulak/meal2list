@@ -16,12 +16,12 @@
 
   @if (status() === 'completed' && items().length > 0) {
     <div class="generation-status__items" @fadeInOut>
-      <h3>Generated Items:</h3>
+      <h3>Wygenerowane produkty:</h3>
       <ul>
         @for (item of items(); track item.product_name) {
           <li>
             <span class="item-name">{{ item.product_name }}</span>
-            <span class="item-quantity"> {{ item.quantity }} {{ item.unit || 'pcs' }} </span>
+            <span class="item-quantity"> {{ item.quantity }} {{ item.unit || 'szt' }} </span>
             <mat-icon class="auto-badge" matBadge="auto">local_grocery_store</mat-icon>
           </li>
         }

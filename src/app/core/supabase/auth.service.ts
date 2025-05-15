@@ -109,15 +109,15 @@ export class AuthService extends SupabaseService {
     if (error.message) {
       switch (error.message) {
         case 'Invalid login credentials':
-          return 'Invalid email or password';
+          return 'Nieprawidłowy email lub hasło';
         case 'Email not confirmed':
-          return 'Please confirm your email address';
+          return 'Proszę potwierdzić adres email';
         case 'User already registered':
           return 'Email jest już zarejestrowany';
         default:
           return error.message;
       }
     }
-    return 'An unexpected error occurred';
+    return 'Wystąpił nieoczekiwany błąd';
   }
 }

@@ -7,7 +7,7 @@
         <mat-card-title data-testid="shopping-list-title">
           {{ state.data.name }}
         </mat-card-title>
-        <mat-card-subtitle>Created: {{ state.data.created_at | date }}</mat-card-subtitle>
+        <mat-card-subtitle>Utworzono: {{ state.data.created_at | date }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <mat-list data-testid="shopping-list-items">
@@ -119,7 +119,7 @@
   } @else {
     <mat-card>
       <mat-card-content>
-        <p>Shopping list not found</p>
+        <p>Nie znaleziono listy zakupów</p>
       </mat-card-content>
     </mat-card>
   }

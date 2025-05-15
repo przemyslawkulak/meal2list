@@ -32,9 +32,9 @@ export class GenerationStatusComponent {
 
   protected readonly statusMessages = {
     idle: '',
-    generating: 'Analyzing recipe and generating items...',
-    adding: 'Adding items to your shopping list...',
-    completed: 'Items have been added to your list!',
-    error: 'An error occurred',
+    generating: 'Analizowanie przepisu i generowanie produktów...',
+    adding: 'Dodawanie produktów do listy zakupów...',
+    completed: 'Produkty zostały dodane do Twojej listy!',
+    error: 'Wystąpił błąd',
   };
 }
