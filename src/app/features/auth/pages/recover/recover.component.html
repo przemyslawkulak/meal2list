@@ -1,28 +1,44 @@
-<mat-card>
+<mat-card class="recovery-card">
   <mat-card-header>
     <mat-card-title>Odzyskiwanie hasła</mat-card-title>
   </mat-card-header>
+
   <mat-card-content>
     <p class="description">
       Podaj adres email powiązany z Twoim kontem. Wyślemy Ci link do zresetowania hasła.
     </p>
     <form [formGroup]="recoveryForm" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="fill">
         <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" required />
-        @if (recoveryForm.get('email')?.hasError('required')) {
-          <mat-error> Email jest wymagany </mat-error>
-        }
-        @if (recoveryForm.get('email')?.hasError('email')) {
-          <mat-error> Nieprawidłowy format adresu email </mat-error>
+        <input matInput type="email" formControlName="email" required [readonly]="submitted()" />
+        @if (recoveryForm.get('email')?.touched) {
+          @if (recoveryForm.get('email')?.hasError('required')) {
+            <mat-error>Email jest wymagany</mat-error>
+          }
+          @if (recoveryForm.get('email')?.hasError('email')) {
+            <mat-error>Nieprawidłowy format adresu email</mat-error>
+          }
         }
       </mat-form-field>
 
       <div class="actions">
-        <button mat-raised-button color="primary" type="submit" [disabled]="recoveryForm.invalid">
-          Wyślij link resetujący
+        <button mat-stroked-button type="button" routerLink="/auth/login">
+          Powrót do logowania
         </button>
-        <a mat-button routerLink="/auth/login">Powrót do logowania</a>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="recoveryForm.invalid || loading() || submitted()"
+        >
+          @if (loading()) {
+            Wysyłanie...
+          } @else if (submitted()) {
+            Wysłano
+          } @else {
+            Wyślij link resetujący
+          }
+        </button>
       </div>
     </form>
   </mat-card-content>

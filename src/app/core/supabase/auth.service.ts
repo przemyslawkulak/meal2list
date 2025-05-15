@@ -105,6 +105,64 @@ export class AuthService extends SupabaseService {
     );
   }
 
+  resetPassword(email: string): Observable<void> {
+    return from(
+      this.supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/reset-password`,
+      })
+    ).pipe(
+      map(() => void 0),
+      catchError(error => {
+        console.error('Reset password error:', error);
+        this.snackBar.open(this.getErrorMessage(error), 'Close', {
+          duration: 5000,
+          panelClass: ['error-snackbar'],
+        });
+        throw error;
+      })
+    );
+  }
+
+  handleResetToken(fragment: string): Observable<void> {
+    const hashParams = new URLSearchParams(fragment);
+    const accessToken = hashParams.get('access_token');
+
+    if (!accessToken) {
+      throw new Error('No access token found');
+    }
+
+    return from(
+      this.supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: hashParams.get('refresh_token') || '',
+      })
+    ).pipe(
+      map(() => void 0),
+      catchError(error => {
+        console.error('Handle reset token error:', error);
+        this.snackBar.open(this.getErrorMessage(error), 'Close', {
+          duration: 5000,
+          panelClass: ['error-snackbar'],
+        });
+        throw error;
+      })
+    );
+  }
+
+  updatePassword(newPassword: string): Observable<void> {
+    return from(this.supabase.auth.updateUser({ password: newPassword })).pipe(
+      map(() => void 0),
+      catchError(error => {
+        console.error('Update password error:', error);
+        this.snackBar.open(this.getErrorMessage(error), 'Close', {
+          duration: 5000,
+          panelClass: ['error-snackbar'],
+        });
+        throw error;
+      })
+    );
+  }
+
   private getErrorMessage(error: { message?: string }): string {
     if (error.message) {
       switch (error.message) {
@@ -114,6 +172,10 @@ export class AuthService extends SupabaseService {
           return 'Proszę potwierdzić adres email';
         case 'User already registered':
           return 'Email jest już zarejestrowany';
+        case 'No access token found':
+          return 'Nieprawidłowy link resetowania hasła';
+        case 'JWT expired':
+          return 'Link resetowania hasła wygasł';
         default:
           return error.message;
       }

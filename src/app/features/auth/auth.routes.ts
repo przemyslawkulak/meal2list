@@ -16,6 +16,11 @@ export const AUTH_ROUTES: Routes = [
       import('./pages/recover/recover.component').then(m => m.PasswordRecoveryComponent),
   },
   {
+    path: 'reset-password',
+    loadComponent: () =>
+      import('./pages/reset-password/reset-password.component').then(m => m.ResetPasswordComponent),
+  },
+  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full',
