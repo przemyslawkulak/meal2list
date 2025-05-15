@@ -71,7 +71,7 @@ export class ShellComponent implements OnInit {
     { label: 'Listy zakupowe', path: '/lists', icon: 'list' },
     { label: 'Generuj listę', path: '/generate', icon: 'add_shopping_cart' },
     { label: 'Kategorie', path: '/categories', icon: 'category' },
-    { label: 'Kitchen Sink', path: '/kitchen-sink', icon: 'kitchen' },
+    // { label: 'Kitchen Sink', path: '/kitchen-sink', icon: 'kitchen' },
   ];
 
   ngOnInit(): void {
