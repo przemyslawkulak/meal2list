@@ -10,6 +10,7 @@
 - [Project Scope](#project-scope)
 - [Project Status](#project-status)
 - [License](#license)
+- [Project Roadmap](#project-roadmap)
 
 ## Project Description
 
@@ -101,11 +102,34 @@ Meal2List focuses on simplifying shopping list creation by:
 - Grouping products by categories (e.g., dairy, vegetables, fruits, bread).
 - Providing secure user registration and login.
 
-**Out of Scope:**
+## Project Roadmap
 
-- Importing recipes from URLs.
-- Rich multimedia support.
-- Social features such as sharing recipes or shopping lists.
+The following outlines the planned development phases and key features for Meal2List. Check off items as they are completed:
+
+### Phase 0: Immediate User Experience (UX) Enhancements
+
+- [ ] **Mobile Views & Navigation Improvements:** Ensure the application is fully responsive and intuitive to use on mobile devices, enhancing overall accessibility and ease of navigation.
+
+### Phase 1: Strengthening Core Functionality & Data Foundation
+
+- [ ] **Standardized Product Database:** Implement a standardized list of products in the database, with the ability for users or administrators to add new items. This will improve data consistency and categorization.
+- [ ] **Standardized Quantities:** Introduce standardized units of measurement (e.g., pieces, grams, ml) to replace ambiguous terms like "pinches" or "cups," ensuring clarity and enabling better product management.
+- [ ] **AI Generation Review Screen:** Develop an intermediary screen after AI-based ingredient extraction. This will allow users to review, edit quantities/units, and exclude items (especially common household staples like spices, oil) before they are added to the shopping list.
+- [ ] **Recipe Saving & Quick-Add:** Enhance the recipe saving feature to allow users to easily select a saved recipe to automatically generate a shopping list, streamlining the process.
+
+### Phase 2: Further UX Enhancements & Operational Needs
+
+- [ ] **Product Combination:** Implement logic to combine identical products on the shopping list, even if added from different sources or with different initial units (e.g., "2 tomatoes" manually added + "500g tomatoes" from a recipe should intelligently merge).
+- [ ] **User-Specific Generation Limits:** Introduce a system to manage API usage, such as a weekly limit on the number of recipes a user can process for ingredient extraction (e.g., 10 recipes per week).
+
+### Phase 3: Expanding Scope (Post-MVP Features)
+
+- [ ] **Recipe Cataloging & Tagging:** Allow users to organize their saved recipes with categories or tags for easier browsing and retrieval.
+- [ ] **Recipe Import from URL:** Develop a feature to scrape recipe details directly from a provided website URL, automatically populating the ingredient extraction field.
+- [ ] **Social Features:** Implement social functionalities such as sharing recipes and shopping lists, potentially with collaborative features and notifications.
+- [ ] **Recipe Calendar/Meal Planning:** Introduce a calendar feature to help users plan their meals by assigning recipes to specific dates.
+- [ ] **Rich Multimedia Support:** Integrate support for images or other multimedia content related to recipes (e.g., dish photos, user uploads).
+- [ ] **Gamification:** Introduce gamification elements (e.g., points, badges, challenges) to enhance user engagement and motivation.
 
 ## Project Status
 
