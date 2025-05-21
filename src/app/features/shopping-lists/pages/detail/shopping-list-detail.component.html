@@ -20,6 +20,9 @@
                 <mat-checkbox
                   [checked]="item.is_checked"
                   (change)="toggleItemChecked(item.id, item.is_checked)"
+                  [matTooltip]="item.product_name + ' - ' + item.quantity + ' ' + item.unit"
+                  matTooltipPosition="above"
+                  [matTooltipShowDelay]="300"
                 >
                   {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
                 </mat-checkbox>
@@ -28,10 +31,12 @@
                     [categoryName]="getCategoryName(item.category_id, state.categories)"
                     [attr.data-testid]="'category-icon-' + item.id"
                     [matTooltip]="getCategoryName(item.category_id, state.categories)"
+                    matTooltipPosition="above"
                   ></app-category-icon>
                   <mat-chip
                     [attr.data-testid]="'source-chip-' + item.id"
                     [matTooltip]="'Source: ' + item.source"
+                    matTooltipPosition="above"
                     [ngClass]="{
                       'source-auto': item.source === 'auto',
                       'source-manual': item.source === 'manual',
@@ -67,6 +72,9 @@
               <mat-checkbox
                 [checked]="item.is_checked"
                 (change)="toggleItemChecked(item.id, item.is_checked)"
+                [matTooltip]="item.product_name + ' - ' + item.quantity + ' ' + item.unit"
+                matTooltipPosition="above"
+                [matTooltipShowDelay]="300"
               >
                 {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
               </mat-checkbox>
@@ -75,10 +83,12 @@
                   [categoryName]="getCategoryName(item.category_id, state.categories)"
                   [attr.data-testid]="'category-icon-' + item.id"
                   [matTooltip]="getCategoryName(item.category_id, state.categories)"
+                  matTooltipPosition="above"
                 ></app-category-icon>
                 <mat-chip
                   [attr.data-testid]="'source-chip-' + item.id"
                   [matTooltip]="'Source: ' + item.source"
+                  matTooltipPosition="above"
                   [ngClass]="{
                     'source-auto': item.source === 'auto',
                     'source-manual': item.source === 'manual',
