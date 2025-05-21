@@ -1,21 +1,22 @@
-<mat-toolbar color="primary" class="toolbar">
+<mat-toolbar class="toolbar">
   <div class="toolbar-left">
-    @if (sidenavClosed$ | async) {
-      <app-mobile-menu-toggle (menuToggled)="sidenav.toggle()"></app-mobile-menu-toggle>
-    }
-    <mat-icon>receipt_long</mat-icon>
+    <mat-icon>restaurant</mat-icon>
     <span>meal2List</span>
   </div>
 
   <div class="toolbar-right">
     @if (isAuthenticated$ | async) {
-      <span class="user-email">
-        <mat-icon>email</mat-icon>
-        {{ (currentUser$ | async)?.email }}
-      </span>
+      @if (!(isTabletOrMobile$ | async)) {
+        <span class="user-email">
+          <mat-icon>email</mat-icon>
+          {{ (currentUser$ | async)?.email }}
+        </span>
+      }
       <button mat-button (click)="onLogout()">
         <mat-icon>logout</mat-icon>
-        <span>Wyloguj się</span>
+        @if (!(isTabletOrMobile$ | async)) {
+          <span>Wyloguj się</span>
+        }
       </button>
     } @else {
       <a mat-button routerLink="/auth/login">
@@ -26,18 +27,39 @@
   </div>
 </mat-toolbar>
 
-<mat-sidenav-container>
-  <mat-sidenav
-    #sidenav
-    [mode]="(sidenavMode$ | async) ?? 'over'"
-    [opened]="(isWeb$ | async) ?? false"
-    [disableClose]="false"
-    fixedInViewport
-  >
-    <app-nav-list [links]="navigationLinks" />
-  </mat-sidenav>
+<mat-sidenav-container [hasBackdrop]="false">
+  @if (!(isTabletOrMobile$ | async)) {
+    <mat-sidenav
+      #sidenav
+      [mode]="(sidenavMode$ | async) ?? 'side'"
+      [opened]="(isWeb$ | async) ?? false"
+      [disableClose]="false"
+    >
+      <app-nav-list [links]="desktopNavigationLinks" />
+    </mat-sidenav>
+  }
 
   <mat-sidenav-content>
-    <router-outlet></router-outlet>
+    <div [class.mobile-content-wrapper]="isTabletOrMobile$ | async">
+      <router-outlet></router-outlet>
+    </div>
+
+    @if (isTabletOrMobile$ | async) {
+      <nav mat-tab-nav-bar class="bottom-nav" [tabPanel]="tabPanel">
+        @for (link of navigationLinks; track link) {
+          <a
+            mat-tab-link
+            [routerLink]="link.path"
+            routerLinkActive
+            #rla="routerLinkActive"
+            [active]="rla.isActive"
+          >
+            <mat-icon>{{ link.icon }}</mat-icon>
+            <span>{{ link.label }}</span>
+          </a>
+        }
+      </nav>
+      <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+    }
   </mat-sidenav-content>
 </mat-sidenav-container>

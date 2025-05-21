@@ -19,4 +19,5 @@ alwaysApply: false
 - Implement the css prop for one-off styling needs
 - Use the & character for nesting selectors
 - Leverage the keyframes helper for animations
+- for responsivness use _mixins.scss file instead of @media query
 

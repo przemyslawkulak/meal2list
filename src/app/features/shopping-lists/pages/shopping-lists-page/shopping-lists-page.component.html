@@ -1,6 +1,5 @@
-<mat-toolbar color="primary">
-  <span>Listy zakupowe</span>
-  <span class="spacer"></span>
+<div class="page-header">
+  <span class="page-title">Listy zakupowe</span>
   @if (!isLoading() && lists().length > 0) {
     <button
       mat-raised-button
@@ -12,7 +11,7 @@
       Nowa lista
     </button>
   }
-</mat-toolbar>
+</div>
 
 <div class="content">
   @if (isLoading()) {

@@ -1,0 +1,28 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+// Breakpoint mixins
+@mixin mobile-only {
+  @include mat.layout-bp(xs) {
+    @content;
+  }
+}
+
+@mixin tablet-only {
+  @include mat.layout-bp(sm) {
+    @content;
+  }
+}
+
+@mixin mobile-tablet {
+  @media (max-width: 1279px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: 1280px) {
+    @content;
+  }
+} 

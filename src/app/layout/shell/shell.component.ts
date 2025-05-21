@@ -5,15 +5,15 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { CategoryService } from '@core/supabase/category.service';
 import { AuthService } from '@core/supabase/auth.service';
 import { NavListComponent } from '@app/layout/nav-list/nav-list.component';
-import { MobileMenuToggleComponent } from '@app/layout/mobile-menu-toggle/mobile-menu-toggle.component';
 import { NavLink } from '@types';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-shell',
@@ -25,9 +25,11 @@ import { NavLink } from '@types';
     MatListModule,
     MatButtonModule,
     RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
     AsyncPipe,
     NavListComponent,
-    MobileMenuToggleComponent,
+    MatTabsModule,
   ],
   templateUrl: './shell.component.html',
   styleUrls: ['./shell.component.scss'],
@@ -48,17 +50,20 @@ export class ShellComponent implements OnInit {
   readonly isTabletOrMobile$: Observable<boolean> = this._breakpointObserver
     .observe([
       Breakpoints.Small,
+      Breakpoints.XSmall,
       Breakpoints.Medium,
       Breakpoints.HandsetLandscape,
       Breakpoints.HandsetPortrait,
+      Breakpoints.TabletLandscape,
+      Breakpoints.TabletPortrait,
     ])
     .pipe(
       map(result => result.matches),
       shareReplay(1)
     );
 
-  readonly sidenavMode$: Observable<'over' | 'side'> = this.isWeb$.pipe(
-    map(isWeb => (isWeb ? 'side' : 'over'))
+  readonly sidenavMode$: Observable<'over' | 'side' | 'push'> = this.isWeb$.pipe(
+    map(isWeb => (isWeb ? 'over' : 'over'))
   );
 
   readonly sidenavClosed$ = this.isTabletOrMobile$;
@@ -68,10 +73,16 @@ export class ShellComponent implements OnInit {
   readonly isAuthenticated$ = this._authService.isAuthenticated$;
 
   readonly navigationLinks: NavLink[] = [
-    { label: 'Listy zakupowe', path: '/lists', icon: 'list' },
-    { label: 'Generuj listę', path: '/generate', icon: 'add_shopping_cart' },
-    { label: 'Kategorie', path: '/categories', icon: 'category' },
-    // { label: 'Kitchen Sink', path: '/kitchen-sink', icon: 'kitchen' },
+    { label: 'Listy zakupowe', path: '/lists', icon: 'view_list' },
+    { label: 'Generuj listę', path: '/generate', icon: 'auto_fix_high' },
+    { label: 'Kategorie', path: '/categories', icon: 'widgets' },
+    { label: 'Ustawienia', path: '/settings', icon: 'settings' },
+  ];
+
+  readonly desktopNavigationLinks: NavLink[] = [
+    { label: 'Listy zakupowe', path: '/lists', icon: 'view_list' },
+    { label: 'Generuj listę', path: '/generate', icon: 'auto_fix_high' },
+    { label: 'Kategorie', path: '/categories', icon: 'widgets' },
   ];
 
   ngOnInit(): void {

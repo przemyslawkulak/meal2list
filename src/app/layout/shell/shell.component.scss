@@ -1,3 +1,6 @@
+@use '@angular/material' as mat;
+@use '../../../_mixins.scss' as mixins;
+
 :host {
   display: block;
   height: 100vh;
@@ -11,12 +14,15 @@ mat-toolbar {
   z-index: 2;
   height: 64px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.87);
+  padding: 0 20px;
+  box-sizing: border-box;
 
   mat-icon {
     margin-right: 8px;
   }
 
-  @media (max-width: 599px) {
+  @include mixins.mobile-tablet {
     height: 56px;
   }
 }
@@ -25,9 +31,6 @@ mat-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 2;
 
   &-left, &-right {
     display: flex;
@@ -39,14 +42,16 @@ mat-toolbar {
     display: flex;
     align-items: center;
     gap: 4px;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(0, 0, 0, 0.87);
     
     mat-icon {
       font-size: 20px;
       height: 20px;
       width: 20px;
+      color: rgba(0, 0, 0, 0.54);
     }
   }
+  
 }
 
 mat-sidenav-container {
@@ -57,7 +62,7 @@ mat-sidenav-container {
   right: 0;
   height: calc(100vh - 64px);
 
-  @media (max-width: 959px) {
+  @include mixins.mobile-tablet {
     top: 56px;
     height: calc(100vh - 56px);
   }
@@ -66,24 +71,25 @@ mat-sidenav-container {
 mat-sidenav {
   width: 250px;
   border-right: 1px solid rgba(0, 0, 0, 0.12);
-  margin-top: 64px;
-  height: calc(100% - 64px) !important;
 
-  @media (max-width: 959px) {
-    margin-top: 56px;
+  app-nav-list {
+    padding-top: 8px;
+  }
+
+  @include mixins.mobile-tablet {
     height: calc(100% - 56px) !important;
   }
 }
 
 mat-sidenav-content {
-  padding: 20px;
   width: 100%;
-  
-  @media (min-width: 1280px) {
-    margin-left: 0 !important;
+
+  @include mixins.desktop {
+    margin-left: 125px;;
   }
+
   
-  @media (max-width: 1279px) {
+  @include mixins.mobile-tablet {
     margin-left: 0 !important;
     width: 100vw;
   }
@@ -98,4 +104,41 @@ main {
   height: calc(100% - 64px);
   box-sizing: border-box;
   overflow-y: auto;
+}
+
+.mobile-content-wrapper {
+  padding-bottom: 56px;
+  height: calc(100vh - 112px); /* Adjusted to account for both top and bottom bars */
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 16px;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+
+  .mat-mdc-tab-link {
+    height: 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0 !important;
+    flex-grow: 1;
+    padding: 6px 0 !important;
+
+    mat-icon {
+      margin-bottom: 2px;
+    }
+
+    span {
+      font-size: 0.75rem;
+      line-height: 1;
+    }
+  }
 } 

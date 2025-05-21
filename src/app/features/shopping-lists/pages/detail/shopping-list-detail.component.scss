@@ -1,5 +1,6 @@
 @use '@angular/material' as mat;
 @use 'sass:map';
+@use '../../../../../_mixins.scss' as mixins;
 
 :host {
   display: block;
@@ -129,6 +130,10 @@ mat-spinner {
   z-index: 1000;
   display: flex;
   justify-content: center;
+  
+  @include mixins.mobile-tablet {
+    bottom: 76px; /* Position above the bottom navigation bar (56px height + 20px padding) */
+  }
   
   button[mat-fab] {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
