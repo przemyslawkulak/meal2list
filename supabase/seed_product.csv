@@ -1,0 +1,1351 @@
+name,default_category_id,is_common
+Piwo,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Wódka,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Wino Czerwone,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Wino Białe,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Likier Wiśniowy,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Piwo Jasne,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Piwo Ciemne,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Piwo Pszeniczne,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Piwo Porter,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Piwo Niepasteryzowane,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Wódka Czysta,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Wódka Żołądkowa,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Wódka Cytrynowa,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Wódka Żubrówka,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Wódka Wiśniowa,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Nalewka Wiśniowa,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Nalewka Malinowa,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Nalewka Pigwowa,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Nalewka Orzechowa,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Nalewka Miętowa,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Wino Czerwone Wytrawne,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Wino Czerwone Półwytrawne,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Wino Czerwone Słodkie,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Wino Białe Wytrawne,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Wino Białe Półwytrawne,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Wino Białe Słodkie,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Wino Różowe,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Wino Musujące,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Wino Grzane,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Wino Owocowe,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Miód Pitny Dwójniak,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Miód Pitny Trójniak,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Miód Pitny Czwórniak,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Miód Pitny Półtorak,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Likier Jajeczny,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Likier Kawowy,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Likier Czekoladowy,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Likier Orzechowy,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Piwo Smakowe,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Cydr,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Brandy,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Koniak,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Gin,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Rum,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Whisky,4d4b17bb-6e2a-43e2-803b-bac956a1ebdb,true
+Mąka Pszenna Tortowa,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Mąka Pszenna,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Mąka Pszenna Chlebowa,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Mąka Żytnia,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Mąka Orkiszowa,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Mąka Gryczana,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Mąka Kukurydziana,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Mąka Ziemniaczana,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Drożdże Świeże,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Drożdże Suche,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Cukier,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Cukier Puder,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Cukier Wanilinowy,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Cukier Trzcinowy,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Cukier Brązowy,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Proszek do Pieczenia,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Soda Oczyszczona,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Kakao,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Kakao Bez Cukru,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Budyń,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Budyń Czekoladowy,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Budyń Śmietankowy,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Kisiel Truskawkowy,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Kisiel Wiśniowy,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Galaretka,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Aromat do ciasta,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Rodzynki,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Orzechy Włoskie,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Migdały,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Wiórki Kokosowe,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Mak Niebieski,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Masa Makowa,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Masa Krówkowa,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Polewa Czekoladowa,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Posypka do ciasta,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Lukier,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Żelatyna,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Przyprawa do Piernika,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Skórka Pomarańczowa,f5fb9a37-ec43-46a5-b77b-ca3b2ef276c8,true
+Pieczywo,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Chleb,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Bułki,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Bagietki,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Rogale,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Chleb Pszenny,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Chleb Żytni,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Chleb Mieszany,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Chleb Razowy,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Chleb Wieloziarnisty,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Chleb Tostowy,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Chleb Orkiszowy,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Chleb Graham,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Chleb Bezglutenowy,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Chleb na Zakwasie,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Bułka Kajzerka,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Bułka Grahamka,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Bułka Wrocławska,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Bułka Poznańska,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Bułka Tarta,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Bułka Maślana,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Bułka Wieloziarnista,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Bułka Żytnia,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Bułka z Ziarnami,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Bagietka Pszenna,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Bagietka Czosnkowa,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Bagietka Ziołowa,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Rogal Maślany,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Rogal z Makiem,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Chałka,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Precel,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Obwarzanek,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Pumpernikiel,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Ciabatta,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Focaccia,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Pita,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Tortilla,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Maca,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Podpłomyk,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Pieczywo Chrupkie,646173e6-8f7a-49f8-ba52-65f7563f55ae,true
+Konserwy,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Przetwory Warzywne,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Przetwory Owocowe,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Przetwory Mięsne,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Przetwory Rybne,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Kukurydza Konserwowa,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Groszek Konserwowy,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Fasola Konserwowa,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Fasola Czerwona,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Fasola Biała,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Ciecierzyca,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Soczewica Konserwowa,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Pomidory Krojone,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Pomidory Całe,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Koncentrat Pomidorowy,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Ogórki Konserwowe,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Papryka Konserwowa,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Pieczarki Marynowane,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Buraczki Tarte,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Kapusta Kiszona,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Sałatka Wielowarzywna,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Paprykarz Szczeciński,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Tuńczyk w Oleju,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Tuńczyk w Sosie Własnym,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Śledź w Oleju,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Śledź w Pomidorach,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Makrela w Oleju,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Szprotki w Oleju,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Szprotki w Sosie Pomidorowym,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Sardynki w Oleju,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Konserwa Turystyczna,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Konserwa Mielonka,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Pasztet Drobiowy,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Pasztet Wieprzowy,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Gulasz Angielski,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Ananas w Syropie,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Brzoskwinie w Syropie,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Gruszki w Syropie,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Mandarynki w Syropie,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Kompot Wieloowocowy,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Fasolka po Bretońsku,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Flaczki w Rosole,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Pulpety w Sosie Pomidorowym,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Klopsiki w Sosie,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Gołąbki w Sosie Pomidorowym,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Leczo,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Bigos,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Kaszanka,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Pasztet z Dziczyzny,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Pasztet z Gęsi,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Mortadela,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Szynka Konserwowa,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Karkówka Konserwowa,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Łosoś w Oleju,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Łosoś w Sosie Własnym,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Dorsz w Oleju,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Dorsz w Pomidorach,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Filety Śledziowe w Oleju,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Filety Śledziowe w Sosie Pomidorowym,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Rolmopsy,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Sałatka z Tuńczyka,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Sałatka z Makrelą,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Marchewka z Groszkiem,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Marchewka Mini,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Kalafior Konserwowy,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Brokuły Konserwowe,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Szparagi Konserwowe,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Oliwki Zielone,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Oliwki Czarne,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Kapary,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Kukurydza Baby,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Seler Konserwowy,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Morele w Syropie,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Śliwki w Syropie,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Wiśnie w Syropie,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Czereśnie w Syropie,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Mango w Syropie,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Koktajl Owocowy,72441d3e-ef97-4da0-bca4-e24b269987fb,true
+Artykuły Dziecięce,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Żywność dla Dzieci,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Pielęgnacja Dziecka,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Higiena Dziecięca,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Akcesoria Dziecięce,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Mleko Modyfikowane,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Mleko Początkowe,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Mleko Następne,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Mleko Junior,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Kaszka Mleczna,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Kaszka Bezmleczna,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Kaszka Ryżowa,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Kaszka Kukurydziana,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Kaszka Wielozbożowa,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Kaszka Pszenna,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Obiadek w Słoiczku,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Zupka w Słoiczku,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Deserek Owocowy,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Deserek Mleczny,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Sok Jabłkowy,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Sok Marchewkowy,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Sok Wieloowocowy,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Herbatka dla Dzieci,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Ciasteczka dla Dzieci,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Chrupki Kukurydziane,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Pieluchy Jednorazowe,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Pieluchy Wielorazowe,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Pieluchy dla Noworodka,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Pieluchy Mini,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Pieluchy Midi,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Pieluchy Maxi,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Pieluchy Junior,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Chusteczki Nawilżane,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Chusteczki do Przewijania,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Podkłady do Przewijania,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Szampon dla Dzieci,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Płyn do Kąpieli,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Oliwka dla Dzieci,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Krem Przeciwsłoneczny,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Krem na Odparzenia,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Krem Ochronny,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Balsam dla Dzieci,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Mydło dla Dzieci,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Żel do Mycia,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Pasta do Zębów dla Dzieci,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Butelka dla Niemowląt,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Smoczek do Butelki,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Smoczek Uspokajający,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Kubek Niekapek,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Łyżeczka dla Dzieci,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Talerzyk dla Dzieci,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Miseczka dla Dzieci,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Śliniaczek,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Podgrzewacz do Butelek,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Sterylizator,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Szczoteczka do Zębów,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Szczotka do Włosów,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Grzebień dla Dzieci,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Nożyczki do Paznokci,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Termometr dla Dzieci,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Aspirator do Nosa,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Okład Żelowy,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Gryzak dla Niemowląt,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Laktator,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Wkładki Laktacyjne,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Zabezpieczenie do Gniazdek,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Zabezpieczenie do Szafek,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Zabezpieczenie Narożników,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Bramka Ochronna,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Elektroniczna Niania,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Monitor Oddechu,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Kamizelka Odblaskowa,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Lampka Nocna,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Nakładka na Sedes,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Mata Antypoślizgowa,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Książeczka dla Dzieci,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Grzechotka,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Karuzela nad Łóżeczko,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Mata Edukacyjna,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Klocki dla Niemowląt,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Maskotka Sensoryczna,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Pozytywka,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Układanka Edukacyjna,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Piłka Sensoryczna,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Zabawka do Kąpieli,6d04f495-5631-4062-b17a-c04dec28bde5,true
+Środki Czystości,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Środki do Prania,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Środki do Mycia,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Środki Dezynfekujące,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Akcesoria do Sprzątania,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Proszek do Prania,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Żel do Prania,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Kapsułki do Prania,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Płyn do Prania,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Płyn do Płukania,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Odplamiacz,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Wybielacz,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Płyn do Naczyń,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Tabletki do Zmywarki,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Nabłyszczacz do Zmywarki,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Sól do Zmywarki,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Mleczko do Czyszczenia,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Płyn do Mycia Szyb,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Odtłuszczacz,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Środek do Czyszczenia Piekarnika,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Środek do Czyszczenia Mikrofalówki,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Środek do Czyszczenia Lodówki,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Płyn do WC,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Kostka do WC,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Żel do WC,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Środek do Udrażniania Rur,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Płyn do Mycia Kabiny Prysznicowej,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Środek do Czyszczenia Fugi,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Środek do Czyszczenia Kamienia,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Środek do Czyszczenia Pleśni,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Odświeżacz do Łazienki,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Płyn do Paneli,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Płyn do Drewna,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Płyn do Parkietu,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Płyn do Płytek,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Płyn Uniwersalny do Podłóg,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Pasta do Mebli,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Środek do Czyszczenia Dywanów,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Środek do Czyszczenia Tapicerki,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Środek do Pielęgnacji Skóry,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Środek Antystatyczny,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Ściereczki z Mikrofibry,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Gąbki do Mycia,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Zmywaki Kuchenne,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Druciaki,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Szczotka do Podłogi,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Mop,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Wiadro,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Szufelka ze Zmiotką,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Rękawice Gumowe,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Miotła,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Odświeżacz Powietrza,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Odświeżacz w Sprayu,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Odświeżacz Elektryczny,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Wkłady do Odświeżacza,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Saszetki Zapachowe,abb99d81-fde6-4c71-ae3a-d1958f8addcd,true
+Kawa,7636b591-fd78-4006-be72-220e84fe3c72,true
+Herbata,7636b591-fd78-4006-be72-220e84fe3c72,true
+Napoje Kawowe,7636b591-fd78-4006-be72-220e84fe3c72,true
+Napoje Herbaciane,7636b591-fd78-4006-be72-220e84fe3c72,true
+Dodatki do Kawy i Herbaty,7636b591-fd78-4006-be72-220e84fe3c72,true
+Kawa Mielona,7636b591-fd78-4006-be72-220e84fe3c72,true
+Kawa Ziarnista,7636b591-fd78-4006-be72-220e84fe3c72,true
+Kawa Rozpuszczalna,7636b591-fd78-4006-be72-220e84fe3c72,true
+Kawa Bezkofeinowa,7636b591-fd78-4006-be72-220e84fe3c72,true
+Kawa w Kapsułkach,7636b591-fd78-4006-be72-220e84fe3c72,true
+Kawa w Saszetkach,7636b591-fd78-4006-be72-220e84fe3c72,true
+Kawa Zbożowa,7636b591-fd78-4006-be72-220e84fe3c72,true
+Kawa Arabica,7636b591-fd78-4006-be72-220e84fe3c72,true
+Kawa Robusta,7636b591-fd78-4006-be72-220e84fe3c72,true
+Mieszanka Kaw,7636b591-fd78-4006-be72-220e84fe3c72,true
+Herbata Czarna,7636b591-fd78-4006-be72-220e84fe3c72,true
+Herbata Zielona,7636b591-fd78-4006-be72-220e84fe3c72,true
+Herbata Czerwona,7636b591-fd78-4006-be72-220e84fe3c72,true
+Herbata Biała,7636b591-fd78-4006-be72-220e84fe3c72,true
+Herbata Owocowa,7636b591-fd78-4006-be72-220e84fe3c72,true
+Herbata Ziołowa,7636b591-fd78-4006-be72-220e84fe3c72,true
+Herbata Miętowa,7636b591-fd78-4006-be72-220e84fe3c72,true
+Herbata Rumiankowa,7636b591-fd78-4006-be72-220e84fe3c72,true
+Herbata Malinowa,7636b591-fd78-4006-be72-220e84fe3c72,true
+Herbata Earl Grey,7636b591-fd78-4006-be72-220e84fe3c72,true
+Cappuccino,7636b591-fd78-4006-be72-220e84fe3c72,true
+Latte,7636b591-fd78-4006-be72-220e84fe3c72,true
+Kawa Mrożona,7636b591-fd78-4006-be72-220e84fe3c72,true
+Herbata Mrożona,7636b591-fd78-4006-be72-220e84fe3c72,true
+Napój Czekoladowy,7636b591-fd78-4006-be72-220e84fe3c72,true
+Mleko do Kawy,7636b591-fd78-4006-be72-220e84fe3c72,true
+Śmietanka do Kawy,7636b591-fd78-4006-be72-220e84fe3c72,true
+Cukier do Kawy,7636b591-fd78-4006-be72-220e84fe3c72,true
+Syrop do Kawy,7636b591-fd78-4006-be72-220e84fe3c72,true
+Miód do Herbaty,7636b591-fd78-4006-be72-220e84fe3c72,true
+Cytryna do Herbaty,7636b591-fd78-4006-be72-220e84fe3c72,true
+Imbir do Herbaty,7636b591-fd78-4006-be72-220e84fe3c72,true
+Filtry do Kawy,7636b591-fd78-4006-be72-220e84fe3c72,true
+Zaparzacz do Herbaty,7636b591-fd78-4006-be72-220e84fe3c72,true
+Sitko do Herbaty,7636b591-fd78-4006-be72-220e84fe3c72,true
+Nabiał,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Jaja,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Produkty Mleczne,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Sery,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Masło i Margaryna,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Mleko 2%,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Mleko 3.2%,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Mleko 0.5%,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Mleko UHT,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Mleko Świeże,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Mleko bez Laktozy,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Mleko Kozie,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Mleko w Proszku,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Mleko Zagęszczone,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Mleko Skondensowane,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Śmietana 12%,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Śmietana 18%,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Śmietana 30%,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Śmietana Kwaśna,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Śmietanka Kremówka,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Śmietanka UHT,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Śmietanka bez Laktozy,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Gouda,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Edamski,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Morski,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Złoty,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Salami,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Tylżycki,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Ementaler,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Wędzony,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Królewski,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Mazdamer,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Biały,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Twaróg Tłusty,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Twaróg Półtłusty,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Twaróg Chudy,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Serek Wiejski,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Serek Homogenizowany,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Mielony,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Twarożek ze Szczypiorkiem,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Twarożek z Rzodkiewką,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Serek do Smarowania,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Pleśniowy Błękitny,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Camembert,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Brie,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Pleśniowy z Zieloną Pleśnią,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Kozi,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Owczy,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Wędzony Góralski,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Ser Parmezan,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Masło Extra,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Masło Osełka,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Masło Klarowane,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Masło bez Laktozy,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Margaryna Kubkowa,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Margaryna do Pieczenia,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Mix Maślany,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Smalec,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Jogurt Naturalny,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Jogurt Grecki,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Jogurt Owocowy,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Jogurt Pitny,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Kefir,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Maślanka,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Zsiadłe Mleko,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Napój Jogurtowy,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Jogurt bez Laktozy,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Jogurt Typu Skyr,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Jaja Kurze,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Jaja Przepiórcze,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Jaja z Wolnego Wybiegu,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Jaja Ekologiczne,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Jaja Kacze,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Jaja Gęsie,555a69e3-61fc-47c2-80e3-716e8349099a,true
+Produkty Zbożowe,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Makarony,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Ryż,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Kasze,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Mąki i Produkty do Pieczenia,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Spaghetti,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Fusilli,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Penne,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Tagliatelle,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Makaron Nitki,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Conchiglie,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Makaron Kolanka,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Cannelloni,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Makaron do Zupy,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Makaron Razowy,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Makaron Bezglutenowy,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Makaron Jajeczny,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Farfalle,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Lasagne,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Makaron Ryżowy,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Ryż Biały,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Ryż Brązowy,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Ryż Jaśminowy,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Ryż Basmati,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Ryż Parboiled,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Ryż do Sushi,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Ryż Dziki,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Ryż Czerwony,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Ryż Arborio,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Ryż Czarny,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Kasza Gryczana,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Kasza Jęczmienna,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Kasza Jaglana,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Kasza Manna,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Kasza Pęczak,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Kasza Kuskus,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Kasza Bulgur,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Kasza Orkiszowa,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Kasza Kukurydziana,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Kasza Quinoa,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Mąka Owsiana,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Mąka Razowa,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Mąka do Pizzy,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Mąka Bezglutenowa,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Groch Łuskany,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Groch Żółty,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Soczewica Czerwona,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Soczewica Zielona,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Fasola Mung,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Bób Suszony,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Fasola Adzuki,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Morele Suszone,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Śliwki Suszone,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Żurawina Suszona,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Figi Suszone,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Daktyle,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Orzechy Laskowe,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Pestki Dyni,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Sól Kuchenna,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Pieprz Czarny,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Cukier Biały,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Przyprawa do Kurczaka,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Przyprawa do Ziemniaków,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Zioła Prowansalskie,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Liść Laurowy,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Ziele Angielskie,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Majeranek,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Płatki Owsiane,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Płatki Kukurydziane,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Musli,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Granola,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Otręby Pszenne,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Płatki Jaglane,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Płatki Żytnie,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Płatki Jęczmienne,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Płatki Ryżowe,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Płatki Gryczane,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Skrobia Kukurydziana,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Aromaty do Ciast,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Posypki do Ciast,a3a6c282-6661-435e-920c-65782c4ec60a,true
+Baterie i Akumulatory,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Oświetlenie,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Akcesoria Komputerowe,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Akcesoria GSM,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Sprzęt Audio,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Baterie AA,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Baterie AAA,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Bateria 9V,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Baterie Pastylkowe,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Akumulatory AA,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Akumulatory AAA,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Powerbank,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Ładowarka do Akumulatorów,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Przedłużacz,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Rozgałęźnik Elektryczny,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Żarówka LED,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Żarówka Energooszczędna,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Świetlówka,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Latarka,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Lampka Biurkowa,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Taśma LED,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Żarówka Smart,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Kabel USB,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Ładowarka Sieciowa,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Ładowarka Samochodowa,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Słuchawki,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Etui na Telefon,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Szkło Ochronne,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Uchwyt do Telefonu,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Karta Pamięci,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Selfie Stick,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Mysz Komputerowa,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Klawiatura,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Pendrive,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Podkładka pod Mysz,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Kabel HDMI,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Kamera Internetowa,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Głośniki Komputerowe,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Hub USB,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Słuchawki z Mikrofonem,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Adapter USB,e7579fa7-e0a3-4074-8df0-ca843390b907,true
+Podstawowe Środki,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Leki bez Recepty,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Środki Opatrunkowe,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Higiena i Dezynfekcja,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Sprzęt Medyczny,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Paracetamol,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Ibuprofen,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Aspiryna,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Lek na Gardło,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Tabletki od Bólu Głowy,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Lek na Przeziębienie,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Lek na Kaszel,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Krople do Nosa,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Elektrolity,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Węgiel Aktywny,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Plastry Opatrunkowe,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Bandaż Elastyczny,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Gaza Jałowa,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Kompresy Jałowe,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Plaster w Rolce,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Opatrunek na Rany,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Przylepiec,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Opaska Dziana,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Chusta Trójkątna,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Opatrunek na Oparzenia,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Woda Utleniona,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Płyn do Dezynfekcji,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Spirytus Salicylowy,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Jodyna,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Rękawiczki Jednorazowe,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Chusteczki Antyseptyczne,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Żel Antybakteryjny,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Maseczki Ochronne,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Spray Odkażający,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Płyn Fizjologiczny,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Termometr,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Ciśnieniomierz,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Nożyczki,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Pęseta,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Koc Termiczny,c2247506-9f7e-446a-b27e-22f87716cb93,true
+Ryby Świeże,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Ryby Mrożone,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Owoce Morza,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Ryby Wędzone,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Łosoś Świeży,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Pstrąg Świeży,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Dorsz Świeży,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Karp Świeży,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Halibut Świeży,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Sandacz Świeży,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Tilapia Świeża,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Okoń Świeży,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Leszcz Świeży,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Sum Świeży,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Łosoś Mrożony,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Dorsz Mrożony,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Mintaj Mrożony,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Morszczuk Mrożony,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Panga Mrożona,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Halibut Mrożony,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Miruna Mrożona,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Sola Mrożona,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Tuńczyk Mrożony,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Makrela Mrożona,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Krewetki,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Małże,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Kalmary,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Ośmiornice,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Homary,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Kraby,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Langustynki,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Omułki,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Ostrygi,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Przegrzebki,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Łosoś Wędzony,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Pstrąg Wędzony,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Makrela Wędzona,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Śledź Wędzony,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Szproty Wędzone,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Węgorz Wędzony,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Halibut Wędzony,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Karp Wędzony,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Dorsz Wędzony,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Sum Wędzony,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Śledź w Śmietanie,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Śledź po Kaszubsku,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Sałatka Rybna,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Pasta Rybna,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Kawior,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Ikra,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Matjas,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Anchois,f1c856be-3c9e-472c-bd34-bf5836e6c252,true
+Karma dla Psów,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Karma dla Kotów,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Akcesoria dla Zwierząt,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Higiena Zwierząt,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Zabawki dla Zwierząt,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Karma Sucha dla Psa,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Karma Mokra dla Psa,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Przysmaki dla Psa,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Karma Specjalistyczna dla Psa,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Karma dla Szczeniąt,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Gryzaki dla Psa,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Karma Lecznicza dla Psa,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Karma dla Psa Seniora,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Karma Sucha dla Kota,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Karma Mokra dla Kota,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Przysmaki dla Kota,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Karma Specjalistyczna dla Kota,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Karma dla Kociąt,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Karma Lecznicza dla Kota,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Karma dla Kota Seniora,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Pasta dla Kota,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Kuweta dla Kota,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Żwirek dla Kota,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Smycz dla Psa,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Obroża dla Psa,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Szelki dla Psa,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Miska dla Zwierząt,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Legowisko dla Zwierząt,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Drapak dla Kota,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Transporter dla Zwierząt,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Szczotka dla Zwierząt,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Szampon dla Psa,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Szampon dla Kota,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Odżywka dla Zwierząt,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Spray Pielęgnacyjny,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Preparat na Pchły,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Preparat na Kleszcze,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Podkłady Higieniczne,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Worki na Odchody,8d28b29b-96ab-4f1e-9628-22e01bc523b0,true
+Mrożonki,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Lody,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Dania Gotowe,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Warzywa Mrożone,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Owoce Mrożone,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Mieszanka Warzywna,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Brokuły Mrożone,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Kalafior Mrożony,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Marchewka Mrożona,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Groszek Mrożony,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Fasolka Szparagowa,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Szpinak Mrożony,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Kukurydza Mrożona,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Włoszczyzna Mrożona,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Warzywa na Patelnię,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Mieszanka Chińska,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Kalafior z Brokułami,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Bukiet Warzyw,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Warzywa Grillowe,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Truskawki Mrożone,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Maliny Mrożone,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Jagody Mrożone,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Wiśnie Mrożone,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Czarne Porzeczki,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Mieszanka Owocowa,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Borówki Mrożone,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Śliwki Mrożone,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Mango Mrożone,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Owoce Leśne,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Pizza Mrożona,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Frytki Mrożone,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Pierogi Ruskie,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Pierogi z Mięsem,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Pierogi z Kapustą,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Kluski Śląskie,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Kopytka,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Pyzy z Mięsem,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Placki Ziemniaczane,2cbf4d43-2dc8-45c9-beec-dea8f4165e98,true
+Knedle ze Śliwkami,878da8e7-b2ac-4124-a882-660d232b3682,true
+Naleśniki z Serem,878da8e7-b2ac-4124-a882-660d232b3682,true
+Kotlet Schabowy,878da8e7-b2ac-4124-a882-660d232b3682,true
+Kotlet Mielony,878da8e7-b2ac-4124-a882-660d232b3682,true
+Kotlet de Volaille,878da8e7-b2ac-4124-a882-660d232b3682,true
+Gulasz Wieprzowy,878da8e7-b2ac-4124-a882-660d232b3682,true
+Klopsy w Sosie,878da8e7-b2ac-4124-a882-660d232b3682,true
+Pieczeń Rzymska,878da8e7-b2ac-4124-a882-660d232b3682,true
+Kurczak w Sosie,878da8e7-b2ac-4124-a882-660d232b3682,true
+Wątróbka Drobiowa,878da8e7-b2ac-4124-a882-660d232b3682,true
+Kapusta Zasmażana,878da8e7-b2ac-4124-a882-660d232b3682,true
+Golonka w Sosie,878da8e7-b2ac-4124-a882-660d232b3682,true
+Karkówka w Sosie,878da8e7-b2ac-4124-a882-660d232b3682,true
+Żeberka w Sosie,878da8e7-b2ac-4124-a882-660d232b3682,true
+Schab w Sosie,878da8e7-b2ac-4124-a882-660d232b3682,true
+Polędwiczki w Sosie,878da8e7-b2ac-4124-a882-660d232b3682,true
+Ryba po Grecku,878da8e7-b2ac-4124-a882-660d232b3682,true
+Ryba w Sosie Pomidorowym,878da8e7-b2ac-4124-a882-660d232b3682,true
+Ryba Panierowana,878da8e7-b2ac-4124-a882-660d232b3682,true
+Paluszki Rybne,878da8e7-b2ac-4124-a882-660d232b3682,true
+Pasta z Makreli,878da8e7-b2ac-4124-a882-660d232b3682,true
+Tuńczyk w Sosie,878da8e7-b2ac-4124-a882-660d232b3682,true
+Kotlet Sojowy,878da8e7-b2ac-4124-a882-660d232b3682,true
+Kotlet z Kalafiora,878da8e7-b2ac-4124-a882-660d232b3682,true
+Kotlet z Soczewicy,878da8e7-b2ac-4124-a882-660d232b3682,true
+Gulasz Warzywny,878da8e7-b2ac-4124-a882-660d232b3682,true
+Leczo Wegetariańskie,878da8e7-b2ac-4124-a882-660d232b3682,true
+Papryka Faszerowana,878da8e7-b2ac-4124-a882-660d232b3682,true
+Cukinia Faszerowana,878da8e7-b2ac-4124-a882-660d232b3682,true
+Lasagne Wegetariańska,878da8e7-b2ac-4124-a882-660d232b3682,true
+Risotto z Warzywami,878da8e7-b2ac-4124-a882-660d232b3682,true
+Makaron z Warzywami,878da8e7-b2ac-4124-a882-660d232b3682,true
+Zupa Błyskawiczna,878da8e7-b2ac-4124-a882-660d232b3682,true
+Makaron Instant,878da8e7-b2ac-4124-a882-660d232b3682,true
+Danie Błyskawiczne z Makaronem,878da8e7-b2ac-4124-a882-660d232b3682,true
+Danie Błyskawiczne z Ryżem,878da8e7-b2ac-4124-a882-660d232b3682,true
+Zupa Chińska,878da8e7-b2ac-4124-a882-660d232b3682,true
+Puree Ziemniaczane,878da8e7-b2ac-4124-a882-660d232b3682,true
+Kasza Błyskawiczna,878da8e7-b2ac-4124-a882-660d232b3682,true
+Ryż Błyskawiczny,878da8e7-b2ac-4124-a882-660d232b3682,true
+Danie Jednogarnkowe,878da8e7-b2ac-4124-a882-660d232b3682,true
+Zupa Instant w Kubku,878da8e7-b2ac-4124-a882-660d232b3682,true
+Sos Pieczeniowy,878da8e7-b2ac-4124-a882-660d232b3682,true
+Sos Pomidorowy,878da8e7-b2ac-4124-a882-660d232b3682,true
+Sos Grzybowy,878da8e7-b2ac-4124-a882-660d232b3682,true
+Sos Czosnkowy,878da8e7-b2ac-4124-a882-660d232b3682,true
+Sos Koperkowy,878da8e7-b2ac-4124-a882-660d232b3682,true
+Surówka z Marchwi,878da8e7-b2ac-4124-a882-660d232b3682,true
+Surówka z Kapusty,878da8e7-b2ac-4124-a882-660d232b3682,true
+Mizeria,878da8e7-b2ac-4124-a882-660d232b3682,true
+Sałatka Jarzynowa,878da8e7-b2ac-4124-a882-660d232b3682,true
+Sałatka Colesław,878da8e7-b2ac-4124-a882-660d232b3682,true
+Artykuły Gospodarstwa Domowego,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Artykuły Ogrodnicze,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Narzędzia,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Dekoracje,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Oświetlenie Domu i Ogrodu,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Worki na Śmieci,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Ręczniki Papierowe,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Folia Aluminiowa,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Folia Spożywcza,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Papier do Pieczenia,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Wiaderko,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Ziemia Uniwersalna,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Nasiona,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Nawóz,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Doniczki,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Konewka,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Sekator,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Rękawice Ogrodnicze,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Wąż Ogrodowy,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Zraszacz,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Kora Ogrodowa,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Śrubokręt,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Młotek,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Kombinerki,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Klucze,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Miarka,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Poziomnica,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Wiertła,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Taśma Malarska,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Pędzel,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Wałek Malarski,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Świece,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Doniczki Ozdobne,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Ramki na Zdjęcia,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Poduszki Dekoracyjne,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Wazony,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Figurki Ozdobne,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Lampiony,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Ozdoby Świąteczne,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Koce Dekoracyjne,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Zasłony,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Żarówki,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Lampy Ogrodowe,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Lampki Solarne,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Reflektory Zewnętrzne,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Lampki Choinkowe,e6096238-0d12-42a5-a9db-8f13fb3229e7,true
+Owoce i Warzywa,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Ziemniaki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Marchew,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Cebula,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Czosnek,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Pietruszka Korzeń,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Seler Korzeń,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Por,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Burak Czerwony,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Cebula Czerwona,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Cebula Biała,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Pomidory,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Pomidory Malinowe,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Pomidory Koktajlowe,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Pomidory Śliwkowe,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Pomidory na Gałązce,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Papryka Czerwona,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Papryka Żółta,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Papryka Zielona,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Papryka Pomarańczowa,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Papryka Chili,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Kapusta Biała,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Kapusta Czerwona,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Kapusta Pekińska,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Kapusta Włoska,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Brokuł,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Kalafior,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Kalarepa,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Brukselka,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Jarmuż,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Sałata Lodowa,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Sałata Masłowa,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Sałata Rzymska,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Rukola,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Roszponka,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Szpinak,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Botwina,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Szczypiorek,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Koper,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Pietruszka Natka,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Fasola Szparagowa Zielona,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Fasola Szparagowa Żółta,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Groch Zielony,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Bób,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Groszek Zielony,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Fasolka Zwykła,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Soczewica Kiełki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Ciecierzyca Kiełki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Fasola Mung Kiełki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Soja Kiełki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Ogórek,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Ogórek Gruntowy,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Ogórek Szklarniowy,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Ogórek Małosolny,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Ogórek Kiszony,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Dynia,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Dynia Hokkaido,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Dynia Piżmowa,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Cukinia,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Patison,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Marchew Młoda,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Pietruszka Młoda,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Rzodkiewka,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Rzodkiew Biała,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Rzodkiew Czarna,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Seler,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Chrzan,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Pasternak,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Skorzonera,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Topinambur,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Cebula Młoda,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Cebula Szalotka,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Cebula Dymka,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Czosnek Młody,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Czosnek Polski,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Por Młody,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Szczypior,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Siedmiolatka,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Czosnek Niedźwiedzi,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Szalotka,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Pieczarki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Borowiki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Kurki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Podgrzybki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Maślaki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Boczniaki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Shiitake,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Pieczarki Brązowe,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Grzyby Leśne Mieszane,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Grzyby Suszone,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Jabłka,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Jabłka Antonówka,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Jabłka Ligol,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Jabłka Szara Reneta,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Jabłka Cortland,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Gruszki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Śliwki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Wiśnie,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Czereśnie,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Brzoskwinie,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Truskawki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Maliny,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Jagody,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Borówki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Porzeczki Czerwone,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Porzeczki Czarne,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Agrest,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Jeżyny,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Żurawina,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Aronia,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Pomarańcze,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Mandarynki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Cytryny,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Grejpfruty,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Limonki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Kumkwat,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Klementynki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Pomelo,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Cytryny Bez Pestek,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Mandarynki Clemenvilla,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Banany,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Kiwi,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Ananas,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Mango,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Awokado,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Granat,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Figi,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Papaja,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Marakuja,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Liczi,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Jabłka Suszone,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Banany Suszone,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Mango Suszone,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Ananas Suszony,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Bazylia,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Tymianek,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Rozmaryn,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Oregano,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Mięta,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Kolendra,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Lubczyk,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Estragon,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Melisa,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Szałwia,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Kiełki Lucerny,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Kiełki Rzodkiewki,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Kiełki Brokułu,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Kiełki Słonecznika,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Kiełki Pszenicy,ea30d419-88ff-4b34-91fd-ea7cdfa21d47,true
+Pasta do Zębów,809d6840-2427-46f8-92cf-076117b982ca,true
+Płyn do Płukania Ust,809d6840-2427-46f8-92cf-076117b982ca,true
+Nić Dentystyczna,809d6840-2427-46f8-92cf-076117b982ca,true
+Szczoteczka Międzyzębowa,809d6840-2427-46f8-92cf-076117b982ca,true
+Pasta dla Dzieci,809d6840-2427-46f8-92cf-076117b982ca,true
+Tabletki do Czyszczenia Protez,809d6840-2427-46f8-92cf-076117b982ca,true
+Szczoteczka Elektryczna,809d6840-2427-46f8-92cf-076117b982ca,true
+Irygator do Zębów,809d6840-2427-46f8-92cf-076117b982ca,true
+Wybielające Paski,809d6840-2427-46f8-92cf-076117b982ca,true
+Mydło w Kostce,809d6840-2427-46f8-92cf-076117b982ca,true
+Żel pod Prysznic,809d6840-2427-46f8-92cf-076117b982ca,true
+Dezodorant w Sprayu,809d6840-2427-46f8-92cf-076117b982ca,true
+Antyperspirant,809d6840-2427-46f8-92cf-076117b982ca,true
+Mydło w Płynie,809d6840-2427-46f8-92cf-076117b982ca,true
+Balsam do Ciała,809d6840-2427-46f8-92cf-076117b982ca,true
+Peeling do Ciała,809d6840-2427-46f8-92cf-076117b982ca,true
+Krem do Rąk,809d6840-2427-46f8-92cf-076117b982ca,true
+Mydło Antybakteryjne,809d6840-2427-46f8-92cf-076117b982ca,true
+Szampon,809d6840-2427-46f8-92cf-076117b982ca,true
+Odżywka do Włosów,809d6840-2427-46f8-92cf-076117b982ca,true
+Maska do Włosów,809d6840-2427-46f8-92cf-076117b982ca,true
+Szampon Przeciwłupieżowy,809d6840-2427-46f8-92cf-076117b982ca,true
+Suchy Szampon,809d6840-2427-46f8-92cf-076117b982ca,true
+Olejek do Włosów,809d6840-2427-46f8-92cf-076117b982ca,true
+Serum do Włosów,809d6840-2427-46f8-92cf-076117b982ca,true
+Lakier do Włosów,809d6840-2427-46f8-92cf-076117b982ca,true
+Pianka do Włosów,809d6840-2427-46f8-92cf-076117b982ca,true
+Żel do Włosów,809d6840-2427-46f8-92cf-076117b982ca,true
+Podpaski,809d6840-2427-46f8-92cf-076117b982ca,true
+Tampony,809d6840-2427-46f8-92cf-076117b982ca,true
+Wkładki Higieniczne,809d6840-2427-46f8-92cf-076117b982ca,true
+Żel do Higieny Intymnej,809d6840-2427-46f8-92cf-076117b982ca,true
+Chusteczki Intymne,809d6840-2427-46f8-92cf-076117b982ca,true
+Kubeczek Menstruacyjny,809d6840-2427-46f8-92cf-076117b982ca,true
+Mydło do Higieny Intymnej,809d6840-2427-46f8-92cf-076117b982ca,true
+Majtki Menstruacyjne,809d6840-2427-46f8-92cf-076117b982ca,true
+Płyn do Higieny Intymnej,809d6840-2427-46f8-92cf-076117b982ca,true
+Proszek do Prania Bielizny,809d6840-2427-46f8-92cf-076117b982ca,true
+Papier Toaletowy,809d6840-2427-46f8-92cf-076117b982ca,true
+Chusteczki Higieniczne,809d6840-2427-46f8-92cf-076117b982ca,true
+Waciki Kosmetyczne,809d6840-2427-46f8-92cf-076117b982ca,true
+Patyczki Kosmetyczne,809d6840-2427-46f8-92cf-076117b982ca,true
+Płatki Kosmetyczne,809d6840-2427-46f8-92cf-076117b982ca,true
+Chusteczki do Demakijażu,809d6840-2427-46f8-92cf-076117b982ca,true
+Chusteczki Odświeżające,809d6840-2427-46f8-92cf-076117b982ca,true
+Chusteczki Antybakteryjne,809d6840-2427-46f8-92cf-076117b982ca,true
+Gąbka do Mycia,809d6840-2427-46f8-92cf-076117b982ca,true
+Myjka do Ciała,809d6840-2427-46f8-92cf-076117b982ca,true
+Grzebień,809d6840-2427-46f8-92cf-076117b982ca,true
+Pumeks,809d6840-2427-46f8-92cf-076117b982ca,true
+Pilnik do Stóp,809d6840-2427-46f8-92cf-076117b982ca,true
+Obcinacz do Paznokci,809d6840-2427-46f8-92cf-076117b982ca,true
+Lusterko Kosmetyczne,809d6840-2427-46f8-92cf-076117b982ca,true
+Schab,462b4f52-016a-4972-a198-c90f9160cce7,true
+Karkówka,462b4f52-016a-4972-a198-c90f9160cce7,true
+Łopatka Wieprzowa,462b4f52-016a-4972-a198-c90f9160cce7,true
+Boczek Surowy,462b4f52-016a-4972-a198-c90f9160cce7,true
+Żeberka Wieprzowe,462b4f52-016a-4972-a198-c90f9160cce7,true
+Golonka,462b4f52-016a-4972-a198-c90f9160cce7,true
+Polędwiczka Wieprzowa,462b4f52-016a-4972-a198-c90f9160cce7,true
+Mięso na Gulasz,462b4f52-016a-4972-a198-c90f9160cce7,true
+Słonina,462b4f52-016a-4972-a198-c90f9160cce7,true
+Mięso Mielone Wołowe,462b4f52-016a-4972-a198-c90f9160cce7,true
+Antrykot,462b4f52-016a-4972-a198-c90f9160cce7,true
+Rostbef,462b4f52-016a-4972-a198-c90f9160cce7,true
+Polędwica Wołowa,462b4f52-016a-4972-a198-c90f9160cce7,true
+Karkówka Wołowa,462b4f52-016a-4972-a198-c90f9160cce7,true
+Żeberka Wołowe,462b4f52-016a-4972-a198-c90f9160cce7,true
+Wołowina na Gulasz,462b4f52-016a-4972-a198-c90f9160cce7,true
+Szponder,462b4f52-016a-4972-a198-c90f9160cce7,true
+Ligawa,462b4f52-016a-4972-a198-c90f9160cce7,true
+Mostek Wołowy,462b4f52-016a-4972-a198-c90f9160cce7,true
+Pierś z Kurczaka,462b4f52-016a-4972-a198-c90f9160cce7,true
+Udka z Kurczaka,462b4f52-016a-4972-a198-c90f9160cce7,true
+Skrzydełka z Kurczaka,462b4f52-016a-4972-a198-c90f9160cce7,true
+Filet z Indyka,462b4f52-016a-4972-a198-c90f9160cce7,true
+Udko z Indyka,462b4f52-016a-4972-a198-c90f9160cce7,true
+Kurczak Cały,462b4f52-016a-4972-a198-c90f9160cce7,true
+Kaczka,462b4f52-016a-4972-a198-c90f9160cce7,true
+Gęś,462b4f52-016a-4972-a198-c90f9160cce7,true
+Żołądki Drobiowe,462b4f52-016a-4972-a198-c90f9160cce7,true
+Kiełbasa Śląska,462b4f52-016a-4972-a198-c90f9160cce7,true
+Kiełbasa Zwyczajna,462b4f52-016a-4972-a198-c90f9160cce7,true
+Kiełbasa Krakowska,462b4f52-016a-4972-a198-c90f9160cce7,true
+Kiełbasa Biała,462b4f52-016a-4972-a198-c90f9160cce7,true
+Kiełbasa Żywiecka,462b4f52-016a-4972-a198-c90f9160cce7,true
+Kabanosy,462b4f52-016a-4972-a198-c90f9160cce7,true
+Parówki,462b4f52-016a-4972-a198-c90f9160cce7,true
+Serdelki,462b4f52-016a-4972-a198-c90f9160cce7,true
+Salami,462b4f52-016a-4972-a198-c90f9160cce7,true
+Szynka Gotowana,462b4f52-016a-4972-a198-c90f9160cce7,true
+Szynka Wędzona,462b4f52-016a-4972-a198-c90f9160cce7,true
+Polędwica Sopocka,462b4f52-016a-4972-a198-c90f9160cce7,true
+Schab Pieczony,462b4f52-016a-4972-a198-c90f9160cce7,true
+Baleron,462b4f52-016a-4972-a198-c90f9160cce7,true
+Boczek Wędzony,462b4f52-016a-4972-a198-c90f9160cce7,true
+Karczek Wędzony,462b4f52-016a-4972-a198-c90f9160cce7,true
+Szynka z Indyka,462b4f52-016a-4972-a198-c90f9160cce7,true
+Polędwica z Kurczaka,462b4f52-016a-4972-a198-c90f9160cce7,true
+Konserwa Gulaszowa,462b4f52-016a-4972-a198-c90f9160cce7,true
+Konserwa Tyrolska,462b4f52-016a-4972-a198-c90f9160cce7,true
+Pasztetowa,462b4f52-016a-4972-a198-c90f9160cce7,true
+Metka,462b4f52-016a-4972-a198-c90f9160cce7,true
+Wątroba Wieprzowa,462b4f52-016a-4972-a198-c90f9160cce7,true
+Wątroba Wołowa,462b4f52-016a-4972-a198-c90f9160cce7,true
+Nerki,462b4f52-016a-4972-a198-c90f9160cce7,true
+Ozory,462b4f52-016a-4972-a198-c90f9160cce7,true
+Flaki,462b4f52-016a-4972-a198-c90f9160cce7,true
+Kości na Rosół,462b4f52-016a-4972-a198-c90f9160cce7,true
+Nóżki Wieprzowe,462b4f52-016a-4972-a198-c90f9160cce7,true
+Ogony,462b4f52-016a-4972-a198-c90f9160cce7,true
+Podgardle,462b4f52-016a-4972-a198-c90f9160cce7,true
+Skwarki,462b4f52-016a-4972-a198-c90f9160cce7,true
+Mięso Mielone Mieszane,462b4f52-016a-4972-a198-c90f9160cce7,true
+Tatar Wołowy,462b4f52-016a-4972-a198-c90f9160cce7,true
+Salceson,462b4f52-016a-4972-a198-c90f9160cce7,true
+Mielonka,462b4f52-016a-4972-a198-c90f9160cce7,true
+Kiełbasa Pasztetowa,462b4f52-016a-4972-a198-c90f9160cce7,true
+Kiełbasa Mortadela,462b4f52-016a-4972-a198-c90f9160cce7,true
+Rolada Mięsna,462b4f52-016a-4972-a198-c90f9160cce7,true
+Klops,462b4f52-016a-4972-a198-c90f9160cce7,true
+Żurek,878da8e7-b2ac-4124-a882-660d232b3682,true
+Barszcz Czerwony,878da8e7-b2ac-4124-a882-660d232b3682,true
+Barszcz Biały,878da8e7-b2ac-4124-a882-660d232b3682,true
+Zupa Pomidorowa,878da8e7-b2ac-4124-a882-660d232b3682,true
+Zupa Ogórkowa,878da8e7-b2ac-4124-a882-660d232b3682,true
+Zupa Grzybowa,878da8e7-b2ac-4124-a882-660d232b3682,true
+Rosół,878da8e7-b2ac-4124-a882-660d232b3682,true
+Krupnik,878da8e7-b2ac-4124-a882-660d232b3682,true
+Zupa Jarzynowa,878da8e7-b2ac-4124-a882-660d232b3682,true
+Pierogi z Kapustą i Grzybami,878da8e7-b2ac-4124-a882-660d232b3682,true
+Pierogi ze Szpinakiem,878da8e7-b2ac-4124-a882-660d232b3682,true
+Czekolada Mleczna,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Czekolada Gorzka,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Czekolada Biała,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Czekolada z Orzechami,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Czekolada z Rodzynkami,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Baton Czekoladowy,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Baton Mleczny,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Baton Nugat,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Baton Kokosowy,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Pralinki,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Wafelki Czekoladowe,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Wafelki Waniliowe,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Wafelki Orzechowe,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Ciastka Maślane,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Ciastka Zbożowe,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Herbatniki,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Pierniki,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Markizy,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Delicje,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Kruche Ciastka,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Chipsy Ziemniaczane,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Chipsy Paprykowe,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Chipsy Solone,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Paluszki,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Paluszki ze Solą,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Krakersy,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Precelki,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Orzeszki Ziemne,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Orzeszki Solone,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Mix Krakersów,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Żelki Owocowe,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Żelki Kwaśne,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Landrynki,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Cukierki Miętowe,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Cukierki Owocowe,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Lizaki,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Gumy do Żucia,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Dropsy,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Karmelki,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Toffi,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Rodzynki w Czekoladzie,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Morele w Czekoladzie,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Śliwki w Czekoladzie,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Pistacje,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Mix Bakalii,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Mix Orzechów,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Prażynki,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Popcorn,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Płatki Śniadaniowe,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Batoniki Zbożowe,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Batoniki Musli,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Wafle Ryżowe,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Wafle Kukurydziane,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Lody Śmietankowe,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Lody Czekoladowe,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Lody Owocowe,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Lody na Patyku,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Lody w Rożku,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Kisiel,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Pudding,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Mus Owocowy,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Nutella,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Krem Czekoladowy,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Krem Orzechowy,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Masło Orzechowe,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Dżem Truskawkowy,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Dżem Malinowy,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Dżem Brzoskwiniowy,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Powidła Śliwkowe,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Miód,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Syrop Klonowy,6efdcc53-49a4-4039-afb1-804681baea5d,true
+Pieprz Czarny Mielony,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Pieprz Czarny Ziarnisty,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Papryka Słodka Mielona,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Papryka Ostra Mielona,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Bazylia Suszona,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Przyprawa do Wieprzowiny,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Przyprawa do Grilla,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Czosnek Granulowany,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Cebula Suszona,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Kminek,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Jałowiec,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Olej Rzepakowy,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Olej Słonecznikowy,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Oliwa z Oliwek,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Olej Kokosowy,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Olej Lniany,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Olej z Pestek Winogron,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Olej Sezamowy,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Olej do Smażenia,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Vegeta,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Kostka Rosołowa,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Bulion w Proszku,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Curry,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Kurkuma,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Imbir Mielony,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Cynamon,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Gałka Muszkatołowa,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Pieprz Ziołowy,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Maggi,f421877a-9438-42fa-b8f7-cd8c2c9454da,true
+Długopis,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Zeszyt,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Klej,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Tofu Naturalne,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Tofu Wędzone,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Tempeh,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Seitan,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Kotlety Sojowe,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Granulat Sojowy,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Burgery Roślinne,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Kiełbaski Wegańskie,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Pasztet Wegański,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Hummus,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Mleko Sojowe,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Mleko Migdałowe,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Mleko Owsiane,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Mleko Ryżowe,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Mleko Kokosowe,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Jogurt Sojowy,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Jogurt Kokosowy,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Śmietanka Roślinna,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Napój Proteinowy,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Kefir Kokosowy,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Ser Wegański,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Parmezan Wegański,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Masło Roślinne,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Majonez Wegański,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Serek Kremowy Wegański,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Twarożek Wegański,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Śmietana Wegańska,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Ser Żółty Wegański,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Ser Pleśniowy Wegański,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Ser Topiony Wegański,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Fasola Czarna,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Quinoa,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Komosa Ryżowa,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Amarantus,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Groch,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Soja,0bc43bd2-dcca-419d-bd15-433cfb346c1f,true
+Napój Gazowany,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Napój Owocowy,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Długopis Niebieski,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Długopis Czarny,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Ołówek,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Pióro Wieczne,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Cienkopis,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Zakreślacz,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Marker Permanentny,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Kredki,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Flamastry,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Gumka do Mazania,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Zeszyt A5,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Zeszyt A4,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Notes Samoprzylepny,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Karteczki Samoprzylepne,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Papier do Drukarki A4,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Koperta,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Teczka Papierowa,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Segregator,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Koszulki na Dokumenty,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Przekładki do Segregatora,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Zszywacz,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Zszywki,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Dziurkacz,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Spinacze Biurowe,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Klips Biurowy,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Linijka,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Temperówka,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Korektor w Taśmie,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Korektor w Płynie,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Klej w Sztyfcie,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Klej Biurowy,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Taśma Klejąca,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Taśma Dwustronna,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Taśma Pakowa,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Masa Klejąca,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Klej Uniwersalny,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Taśma Izolacyjna,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Klej Montażowy,c9fceefb-62d0-43c2-b09b-1d1910590c88,true
+Woda Mineralna Gazowana,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Woda Mineralna Niegazowana,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Woda Źródlana,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Woda Smakowa,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Woda Lecznicza,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Woda Alkaliczna,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Woda z Witaminami,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Woda Kokosowa,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Woda Mineralizowana,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Woda z Elektrolitami,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Cola Zero,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Sprite,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Fanta,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Oranżada,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Lemoniada Gazowana,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Napój Energetyczny,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Tonik,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Napój Izotonik,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Napój Gazowany Owocowy,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Sok Pomarańczowy,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Sok Multiwitamina,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Sok Pomidorowy,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Sok Marchwiowy,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Sok z Czarnej Porzeczki,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Sok Grejpfrutowy,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Sok Ananasowy,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Nektar Brzoskwiniowy,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Nektar Mango,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Ice Tea,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Napój Herbaciany,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Kompot,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Lemoniada,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Napój Aloesowy,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Smoothie,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Napój Witaminowy,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Napój Funkcjonalny,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Syrop Malinowy,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Syrop Imbirowy,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Syrop do Napojów,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Koncentrat Soku,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Syrop Owocowy,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Koncentrat Herbaty,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Syrop Ziołowy,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Syrop Miętowy,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
+Koncentrat Witaminowy,09807a2a-86e5-4d86-bb33-680d17a40b4d,true
