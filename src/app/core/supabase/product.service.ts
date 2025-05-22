@@ -6,9 +6,12 @@ import type {
   CreateProductCommand,
   UpdateProductCommand,
   ProductWithPreferencesDto,
+  CategoryDto,
 } from '@types';
 import { AppEnvironment } from '@app/app.config';
 import { HttpErrorResponse } from '@angular/common/http';
+import { CategoryService } from '@core/supabase/category.service';
+import { DEFAULT_CATEGORY_NAMES } from '@app/shared/mocks/defaults.mock';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +19,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class ProductService extends SupabaseService {
   private _products$: Observable<ProductDto[]>;
 
-  constructor(@Inject('APP_ENVIRONMENT') environment: AppEnvironment) {
+  constructor(
+    @Inject('APP_ENVIRONMENT') environment: AppEnvironment,
+    private categoryService: CategoryService
+  ) {
     super(environment);
     this._products$ = this.getProducts().pipe(shareReplay({ bufferSize: 1, refCount: true }));
     this.products$.subscribe();
@@ -42,6 +48,11 @@ export class ProductService extends SupabaseService {
         if (result.error) throw result.error;
         return result.data as ProductDto[];
       }),
+      switchMap(products =>
+        this.categoryService.categories$.pipe(
+          map(categories => this.sortProductsByCategory(products, categories))
+        )
+      ),
       catchError(error => this.handleError(error, 'Failed to fetch products'))
     );
   }
@@ -176,6 +187,45 @@ export class ProductService extends SupabaseService {
       }),
       catchError(error => this.handleError(error, 'Failed to track product usage'))
     );
+  }
+
+  /**
+   * Sort products by category, with "Others" category at the end
+   */
+  private sortProductsByCategory<T extends ProductDto>(
+    products: T[],
+    categories: CategoryDto[]
+  ): T[] {
+    return [...products].sort((a, b) => {
+      const getCategoryName = (categoryId: string) =>
+        categories.find(category => category.id === categoryId)?.name ||
+        DEFAULT_CATEGORY_NAMES.DEFAULT_CATEGORY;
+
+      const categoryA = getCategoryName(
+        'preferred_category_id' in a
+          ? (a as ProductWithPreferencesDto).preferred_category_id || a.default_category_id
+          : a.default_category_id
+      );
+      const categoryB = getCategoryName(
+        'preferred_category_id' in b
+          ? (b as ProductWithPreferencesDto).preferred_category_id || b.default_category_id
+          : b.default_category_id
+      );
+
+      // Handle 'Others' case to sort it last
+      if (
+        categoryA === DEFAULT_CATEGORY_NAMES.DEFAULT_CATEGORY &&
+        categoryB !== DEFAULT_CATEGORY_NAMES.DEFAULT_CATEGORY
+      )
+        return 1;
+      if (
+        categoryA !== DEFAULT_CATEGORY_NAMES.DEFAULT_CATEGORY &&
+        categoryB === DEFAULT_CATEGORY_NAMES.DEFAULT_CATEGORY
+      )
+        return -1;
+
+      return categoryA.localeCompare(categoryB);
+    });
   }
 
   /**
