@@ -74,7 +74,9 @@ export class AddItemDialogComponent {
   readonly activeTab = signal<TabValue>(TABS.POPULAR);
   readonly selectedItems = signal<NewShoppingListItem[]>([]);
   readonly popularItems = signal<ProductWithPreferencesDto[]>([]);
+  readonly mostUsedItems = signal<ProductWithPreferencesDto[]>([]);
   readonly loading = signal(true);
+  readonly loadingHistory = signal(false);
   readonly error = signal<string | null>(null);
 
   constructor() {
@@ -94,10 +96,29 @@ export class AddItemDialogComponent {
     });
   }
 
-  // Computed signal for filtered items based on search term
+  private loadMostUsedProducts(): void {
+    if (this.mostUsedItems().length > 0) return; // Already loaded
+
+    this.loadingHistory.set(true);
+    this.userProductService
+      .getMostUsedProducts(20)
+      .pipe(takeUntilDestroyed(this.destroy$))
+      .subscribe({
+        next: products => {
+          this.mostUsedItems.set(products);
+          this.loadingHistory.set(false);
+        },
+        error: () => {
+          this.error.set('Nie udało się załadować historii produktów');
+          this.loadingHistory.set(false);
+        },
+      });
+  }
+
+  // Computed signal for filtered items based on search term and active tab
   readonly filteredItems = computed(() => {
     const term = this.searchTerm().toLowerCase().trim();
-    const items = this.popularItems();
+    const items = this.activeTab() === TABS.POPULAR ? this.popularItems() : this.mostUsedItems();
 
     if (!term) return items;
     return items.filter(item => item.name.toLowerCase().includes(term));
@@ -118,6 +139,14 @@ export class AddItemDialogComponent {
 
   selectTab(tab: TabValue): void {
     this.activeTab.set(tab);
+
+    // Reset search when switching tabs
+    this.searchTerm.set('');
+
+    // Load most used products when History tab is selected
+    if (tab === TABS.HISTORY) {
+      this.loadMostUsedProducts();
+    }
   }
 
   itemExists(name: string): boolean {

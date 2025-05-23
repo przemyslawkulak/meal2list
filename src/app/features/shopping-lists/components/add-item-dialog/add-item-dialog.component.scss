@@ -249,6 +249,39 @@ mat-tab-group {
   margin-top: 1rem;
 }
 
+.no-history-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem 2rem;
+  text-align: center;
+  color: var(--mat-text-secondary);
+
+  .no-history-icon {
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    color: var(--mat-text-disabled);
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0;
+    max-width: 300px;
+  }
+
+  .mat-body-1 {
+    font-weight: 500;
+    color: var(--mat-text-primary);
+  }
+
+  .mat-body-2 {
+    color: var(--mat-text-secondary);
+    line-height: 1.4;
+  }
+}
+
 // Dialog specific styles
 ::ng-deep .mat-mdc-dialog-content {
   max-height: 65vh !important;
