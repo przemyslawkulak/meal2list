@@ -29,6 +29,7 @@ import { CategoryService } from '@app/core/supabase/category.service';
 import { ShoppingListResponseDto, CategoryDto, ShoppingListItemResponseDto } from '@types';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AddItemDialogComponent } from '../../components/add-item-dialog/add-item-dialog.component';
+import { ProductService } from '@app/core/supabase/product.service';
 
 @Component({
   selector: 'app-shopping-list-detail',
@@ -90,7 +91,8 @@ export class ShoppingListDetailComponent implements OnDestroy {
     private shoppingListService: ShoppingListService,
     private shoppingListItemsService: ShoppingListItemsService,
     private categoryService: CategoryService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private productService: ProductService
   ) {
     const shoppingList$ = this.route.params.pipe(
       map(params => params['id']),
@@ -145,9 +147,33 @@ export class ShoppingListDetailComponent implements OnDestroy {
     componentInstance.itemAdded
       .pipe(
         takeUntil(this.destroy$),
-        switchMap(newItemData =>
-          this.shoppingListItemsService
-            .addShoppingListItem({
+        switchMap(newItemData => {
+          // Check if product_id is missing
+          if (!newItemData.product_id) {
+            // Create product first, then add shopping list item
+            return this.productService
+              .createProduct({
+                name: newItemData.productName,
+                default_category_id: newItemData.category_id,
+                is_common: false,
+              })
+              .pipe(
+                switchMap(createdProduct =>
+                  this.shoppingListItemsService.addShoppingListItem({
+                    shopping_list_id: currentList.id,
+                    product_name: newItemData.productName,
+                    quantity: newItemData.quantity,
+                    unit: newItemData.unit,
+                    category_id: newItemData.category_id,
+                    source: 'manual',
+                    is_checked: false,
+                    product_id: createdProduct.id,
+                  })
+                )
+              );
+          } else {
+            // Product already exists, just add the shopping list item
+            return this.shoppingListItemsService.addShoppingListItem({
               shopping_list_id: currentList.id,
               product_name: newItemData.productName,
               quantity: newItemData.quantity,
@@ -155,15 +181,15 @@ export class ShoppingListDetailComponent implements OnDestroy {
               category_id: newItemData.category_id,
               source: 'manual',
               is_checked: false,
-            })
-            .pipe(
-              map(newItem => ({ newItem })),
-              catchError(error => {
-                this.handleError('Error adding item:', error);
-                return of(null);
-              })
-            )
-        )
+              product_id: newItemData.product_id,
+            });
+          }
+        }),
+        map(newItem => ({ newItem })),
+        catchError(error => {
+          this.handleError('Error adding item:', error);
+          return of(null);
+        })
       )
       .subscribe(result => {
         if (result) {

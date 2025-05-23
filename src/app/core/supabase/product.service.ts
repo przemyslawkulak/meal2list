@@ -42,6 +42,7 @@ export class ProductService extends SupabaseService {
             .from('products')
             .select('id, name, default_category_id, is_common, created_by, created_at')
             .or(`is_common.eq.true,created_by.eq.${userId}`)
+            .limit(2000)
         )
       ),
       map(result => {
@@ -158,34 +159,6 @@ export class ProductService extends SupabaseService {
         if (result.error) throw result.error;
       }),
       catchError(error => this.handleError(error, 'Failed to delete product'))
-    );
-  }
-
-  /**
-   * Track product usage
-   */
-  trackProductUsage(productId: string): Observable<void> {
-    return this.getUserId().pipe(
-      switchMap(userId =>
-        from(
-          this.supabase.from('user_products').upsert(
-            {
-              user_id: userId,
-              product_id: productId,
-              use_count: 1,
-              last_used_at: new Date().toISOString(),
-            },
-            {
-              onConflict: 'user_id,product_id',
-              ignoreDuplicates: false,
-            }
-          )
-        )
-      ),
-      map(result => {
-        if (result.error) throw result.error;
-      }),
-      catchError(error => this.handleError(error, 'Failed to track product usage'))
     );
   }
 

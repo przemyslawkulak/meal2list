@@ -23,6 +23,7 @@ import { DEFAULT_ITEM_VALUES, DEFAULT_CATEGORY_NAMES } from '@app/shared/mocks/d
 import { TABS, TabValue } from '@app/shared/mocks/constants.mock';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { ProductService } from '@app/core/supabase/product.service';
+import { UserProductService } from '@app/core/supabase/user-product.service';
 
 export interface AddItemDialogData {
   listId: string;
@@ -61,6 +62,7 @@ export class AddItemDialogComponent {
   private readonly data = inject<AddItemDialogData>(MAT_DIALOG_DATA);
   private readonly snackBar = inject(MatSnackBar);
   private readonly productService = inject(ProductService);
+  private readonly userProductService = inject(UserProductService);
   private readonly destroy$ = inject(DestroyRef);
 
   protected readonly TABS = TABS;
@@ -86,7 +88,7 @@ export class AddItemDialogComponent {
         this.loading.set(false);
       },
       error: () => {
-        this.error.set('Failed to load popular items');
+        this.error.set('Nie udało się załadować popularnych produktów');
         this.loading.set(false);
       },
     });
@@ -146,7 +148,7 @@ export class AddItemDialogComponent {
 
     this.selectedItems.update(items => [...items, newItem]);
     this.itemAdded.emit(newItem);
-    this.snackBar.open(`Dodano ${name.trim()} do listy`, 'OK', {
+    this.snackBar.open(`Dodano ${name.trim()} do listy`, 'Zamknij', {
       duration: 2000,
     });
   }
@@ -160,12 +162,11 @@ export class AddItemDialogComponent {
       product_id: product.id,
     };
 
-    // Track usage
-    this.productService.trackProductUsage(product.id).subscribe();
+    this.userProductService.trackProductUsage(product.id).subscribe();
 
     this.selectedItems.update(items => [...items, newItem]);
     this.itemAdded.emit(newItem);
-    this.snackBar.open(`Dodano ${product.name} do listy`, 'OK', {
+    this.snackBar.open(`Dodano ${product.name} do listy`, 'Zamknij', {
       duration: 2000,
     });
   }
