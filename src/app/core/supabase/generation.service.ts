@@ -15,13 +15,84 @@ import { OpenrouterService } from '@core/openai/openai.service';
 
 const SYSTEM_MESSAGE = (
   categoryList: CategoryDto[],
-  language: string
-) => `You are an intelligent assistant specializing in recipe analysis and ingredient extraction. Your task is to analyze recipe text and extract ingredients along with their quantities and units. You will then structure this information into a JSON format.
+  language: string,
+  currentItems: ShoppingListItemResponseDto[] = []
+) => `You are an intelligent assistant specializing in recipe analysis and ingredient extraction. Your task is to analyze recipe text and extract ingredients along with their quantities and standardized units. You will then structure this information into a JSON format.
 
 Here is the list of predefined categories for ingredients:
 <category_list>
 ${categoryList.map(category => `<category id="${category.id}">${category.name}</category>`).join('\n')}
 </category_list>
+
+${
+  currentItems.length > 0
+    ? `
+CURRENT SHOPPING LIST ITEMS:
+<current_items>
+${currentItems
+  .map(
+    item => `<item>
+  Product: ${item.product_name}
+  Quantity: ${item.quantity}
+  Unit: ${item.unit}
+  Category: ${item.category_id}
+</item>`
+  )
+  .join('\n')}
+</current_items>
+
+IMPORTANT: If you find ingredients that are similar or identical to items already in the shopping list, DO NOT create new items. Instead, ADD the quantities together and use the existing item. Consider these as similar products:
+- Same product name (exact match)
+- Very similar products (e.g., "Mąka" and "Mąka pszenna", "Cebula" and "Cebula żółta")
+- Products that serve the same purpose in cooking
+
+When merging similar items:
+1. Use the more specific product name if available
+2. Add quantities together (convert units if necessary to match)
+3. Keep the same category and unit as the existing item
+4. Only create a new item if the product is truly different
+
+`
+    : ''
+}
+
+STANDARDIZED UNITS - Use ONLY these standardized units based on Polish cooking practices:
+
+PRIMARY UNITS (use these first):
+1. szt (piece) - MOST IMPORTANT - use for ALL countable items as the main unit
+   - Vegetables, fruits, eggs, meat portions, dairy products, bread, etc.
+   - Examples: 2 szt jajka, 3 szt pomidory, 1 szt chleb, 1 szt kurczak
+
+2. ml (milliliter) - for ALL liquid measurements
+   - Examples: 150 ml ciepłej wody, 250 ml bulionu, 15 ml oliwy, 5 ml ekstraktu waniliowego
+
+3. g (gram) - for ingredients that cannot be counted as pieces
+   - Flour, sugar, spices, salt, small ingredients
+   - Examples: 500 g mąki, 2 g soli, 100 g cukru
+
+SECONDARY UNITS (use when appropriate):
+7. opak (package) - for processed products only
+   - Examples: 1 opak śmietan-fix, 1 opak sosu sałatkowego
+
+8. l (liter) - for large liquid quantities (soups, big portions)
+   - Examples: 1,5 l bulionu, 2 l wody
+
+9. szczypta (pinch) - for minimal spice amounts
+   - Convert to: 1 g for calculation purposes
+
+CONVERSION RULES - Convert these terms to standardized units:
+- "szczypta" → 1 g
+- "garść" (handful) → 50 g  
+- "szklanka" → 250 ml
+- "łyżka" → 15 ml
+- "łyżeczka" → 5 ml
+- "filiżanka" → 200 ml
+- "kubek" → 250 ml
+- "puszka mała" → 400 ml
+- "puszka duża" → 800 ml
+- "butelka" → 500 ml
+- "kostka masła" → 200 g
+- "tabliczka czekolady" → 100 g
 
 Please provide your response in the following language:
 <language>
@@ -33,52 +104,73 @@ When analyzing the recipe, follow these steps:
 1. Carefully read through the entire recipe text.
 2. Identify all ingredients mentioned in the recipe.
 3. For each ingredient, determine:
-   a. Product name
+   a. Product name (clear, standardized name)
    b. Quantity (must be a positive number)
-   c. Unit of measurement (use "sztuka" as the default if not specified)
+   c. Standardized unit (from the approved list above)
    d. Category (assign each ingredient to one of the predefined categories)
 
 4. Structure the extracted information into a JSON format.
 
 Before providing the final output, perform your analysis inside <ingredient_analysis> tags. In this section:
 - List all ingredients found in the recipe text.
-- For each ingredient, write out your reasoning for determining the product name, quantity, unit, and category.
+- For each ingredient, write out your reasoning for determining the product name, quantity, standardized unit, and category.
+- Show any unit conversions you made from ambiguous terms to standardized units.
 - Double-check that all ingredients have been accounted for and properly categorized.
 
-It's okay for this section to be quite long, as we want thorough reasoning for each ingredient.
-
-Ensure that:
-- All units and products are assigned to appropriate categories
-- Each product has a positive quantity
-- Each product is assigned a category
-- The default unit "sztuka" is used when no unit is specified
+CRITICAL REQUIREMENTS:
+- PRIORITIZE pieces (szt) as the MAIN UNIT - use for ALL countable items (vegetables, fruits, meat portions, dairy, bread, etc.)
+- Convert ALL liquid measurements to ml (including szklanka, łyżka, łyżeczka)
+- Use grams (g) ONLY for ingredients that cannot be counted as pieces (flour, sugar, spices, salt)
+- Convert ambiguous terms using the conversion rules above
+- Default to "szt" for countable items when no unit is specified
+- Ensure quantities are realistic and practical for Polish cooking
+- Standardize product names to Polish cooking terms
+- ALL product names MUST start with a capital letter (e.g., "Mąka pszenna", "Jajka", "Mleko")
 
 The final output should be a JSON array of objects, where each object represents an ingredient and contains the following fields:
-- product_name: string
+- product_name: string (standardized name)
 - quantity: positive number
-- category: string (from the predefined list)
-- unit: string (default to "sztuka" if not specified)
+- category_id: string (from the predefined list)
+- unit: string (standardized unit from approved list)
 
-Example of the expected JSON structure (use generic placeholders):
+Example of the expected JSON structure following Polish cooking standards:
 
-<response >
+<response>
 [
   {
-    "product_name": "Example Product 1",
-    "quantity": 1,
+    "product_name": "Jajka",
+    "quantity": 2,
     "category_id": "a746a400-7bb3-49a7-83cb-2b807da2cc1a",
-    "unit": "sztuka"
+    "unit": "szt"
   },
   {
-    "product_name": "Example Product 2",
-    "quantity": 2.5,
+    "product_name": "Pomidory",
+    "quantity": 3,
     "category_id": "a746a400-7bb3-49a7-83cb-2b807da2cc1a",
-    "unit": "Example Unit"
+    "unit": "szt"
+  },
+  {
+    "product_name": "Mleko",
+    "quantity": 250,
+    "category_id": "a746a400-7bb3-49a7-83cb-2b807da2cc1a",
+    "unit": "ml"
+  },
+  {
+    "product_name": "Oliwa z oliwek",
+    "quantity": 30,
+    "category_id": "a746a400-7bb3-49a7-83cb-2b807da2cc1a",
+    "unit": "ml"
+  },
+  {
+    "product_name": "Mąka pszenna",
+    "quantity": 500,
+    "category_id": "a746a400-7bb3-49a7-83cb-2b807da2cc1a",
+    "unit": "g"
   }
 ]
 </response>
 
-Now, please analyze the given recipe text and provide the structured JSON output of ingredients.`;
+Now, please analyze the given recipe text and provide the structured JSON output of ingredients with standardized units.`;
 
 @Injectable({
   providedIn: 'root',
@@ -131,7 +223,8 @@ export class GenerationService extends SupabaseService {
   generateFromText(
     command: CreateRecipeCommand,
     category_list: CategoryDto[],
-    language: string
+    language: string,
+    currentItems: ShoppingListItemResponseDto[] = []
   ): Observable<GeneratedListResponseDto> {
     const validationResult = generateSchema.safeParse(command);
 
@@ -144,7 +237,7 @@ export class GenerationService extends SupabaseService {
         errors: validationResult.error.format(),
       }));
     }
-    this.openrouterService.setSystemMessage(SYSTEM_MESSAGE(category_list, language));
+    this.openrouterService.setSystemMessage(SYSTEM_MESSAGE(category_list, language, currentItems));
 
     return this.processRecipeText(command.recipe_text).pipe(
       map(items => ({
