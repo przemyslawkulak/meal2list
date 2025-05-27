@@ -6,7 +6,7 @@
 
   <div class="toolbar-right">
     @if (isAuthenticated$ | async) {
-      @if (!(isTabletOrMobile$ | async)) {
+      @if ((isTabletOrMobile$ | async) === false) {
         <span class="user-email">
           <mat-icon>email</mat-icon>
           {{ (currentUser$ | async)?.email }}
@@ -14,7 +14,7 @@
       }
       <button mat-button (click)="onLogout()">
         <mat-icon>logout</mat-icon>
-        @if (!(isTabletOrMobile$ | async)) {
+        @if ((isTabletOrMobile$ | async) === false) {
           <span>Wyloguj się</span>
         }
       </button>
@@ -28,7 +28,7 @@
 </mat-toolbar>
 
 <mat-sidenav-container [hasBackdrop]="false">
-  @if (!(isTabletOrMobile$ | async)) {
+  @if ((isTabletOrMobile$ | async) === false) {
     <mat-sidenav
       #sidenav
       [mode]="(sidenavMode$ | async) ?? 'side'"
