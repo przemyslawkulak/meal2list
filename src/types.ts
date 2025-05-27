@@ -36,6 +36,51 @@ export interface UserDto {
 }
 
 // ----------------------------
+// Product DTOs and Commands
+// ----------------------------
+
+export type ProductDto = Pick<
+  Database['public']['Tables']['products']['Row'],
+  'id' | 'name' | 'default_category_id' | 'is_common' | 'created_by' | 'created_at'
+>;
+
+export interface CreateProductCommand {
+  name: string;
+  default_category_id: string;
+  is_common?: boolean;
+}
+
+export interface UpdateProductCommand {
+  name?: string;
+  default_category_id?: string;
+}
+
+// ----------------------------
+// UserProduct DTOs and Commands
+// ----------------------------
+
+export type UserProductDto = Pick<
+  Database['public']['Tables']['user_products']['Row'],
+  | 'id'
+  | 'user_id'
+  | 'product_id'
+  | 'preferred_category_id'
+  | 'last_used_at'
+  | 'use_count'
+  | 'created_at'
+>;
+
+export interface UpdateUserProductCommand {
+  preferred_category_id?: string;
+}
+
+export interface ProductWithPreferencesDto extends ProductDto {
+  preferred_category_id?: string | null;
+  last_used_at?: string | null;
+  use_count?: number;
+}
+
+// ----------------------------
 // Recipe DTOs and Command Models
 // ----------------------------
 

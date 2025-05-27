@@ -152,6 +152,7 @@ export class ShoppingListItemsService extends SupabaseService {
     category_id: string;
     source: 'auto' | 'manual' | 'modified';
     is_checked: boolean;
+    product_id?: string;
   }): Observable<ShoppingListItemResponseDto> {
     return this.verifyListOwnership(item.shopping_list_id).pipe(
       switchMap(() =>

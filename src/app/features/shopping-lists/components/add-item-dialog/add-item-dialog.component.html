@@ -1,6 +1,6 @@
 <div class="dialog-container">
   <div class="dialog-header">
-    <h2>Dodaj produkty</h2>
+    <h2>Dodaj produkt</h2>
     <button mat-icon-button (click)="close()" aria-label="Close dialog">
       <mat-icon>close</mat-icon>
     </button>
@@ -8,15 +8,16 @@
 
   <div class="search-container">
     <mat-form-field appearance="outline" class="search-field">
-      <mat-icon matPrefix>search</mat-icon>
+      <mat-label>Wyszukaj produkt</mat-label>
       <input
         matInput
-        placeholder="Szukaj produktu"
-        [value]="searchTerm()"
-        (input)="onSearch($event)"
+        type="text"
+        [ngModel]="searchTerm()"
+        (ngModelChange)="searchTerm.set($event)"
+        placeholder="Wpisz nazwę produktu..."
       />
       @if (searchTerm()) {
-        <button mat-icon-button matSuffix (click)="searchTerm.set('')" aria-label="Clear">
+        <button matSuffix mat-icon-button aria-label="Clear" (click)="searchTerm.set('')">
           <mat-icon>close</mat-icon>
         </button>
       }
@@ -24,68 +25,172 @@
   </div>
 
   <mat-tab-group
-    (selectedTabChange)="selectTab($event.tab.textLabel === 'Historia' ? 'history' : 'popular')"
+    [selectedIndex]="activeTab() === TABS.POPULAR ? 0 : 1"
+    (selectedIndexChange)="selectTab($event === 0 ? TABS.POPULAR : TABS.HISTORY)"
   >
     <mat-tab label="Popularne">
       <div class="items-list">
-        @if (searchTerm() && !itemExists(searchTerm())) {
-          <div class="custom-item-row" data-testid="custom-item-row">
-            <div class="item-info">
-              <app-category-icon
-                [categoryName]="getDefaultCategoryName()"
-                [matTooltip]="getDefaultCategoryName()"
-              ></app-category-icon>
-              <span>{{ searchTerm() }}</span>
-            </div>
-            <div class="item-actions">
-              <app-button
-                color="primary"
-                (buttonClick)="addCustomItem(searchTerm())"
-                data-testid="add-custom-item"
-              >
-                <mat-icon>add</mat-icon>
-              </app-button>
-            </div>
+        @if (loading()) {
+          <div class="loading-container">
+            <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
           </div>
         }
 
-        @if (filteredItems().length === 0 && !searchTerm()) {
-          <p class="no-items-message">Nie znaleziono produktów.</p>
-        } @else {
-          @for (item of filteredItems(); track item.name) {
-            <div class="item-row" [attr.data-testid]="'item-' + item.name">
+        @if (error()) {
+          <div class="error-message">
+            <mat-icon>error_outline</mat-icon>
+            <span>{{ error() }}</span>
+          </div>
+        }
+
+        @if (!loading() && !error()) {
+          @if (searchTerm() && !itemExists(searchTerm())) {
+            <div class="custom-item-row">
               <div class="item-info">
+                <span>{{ searchTerm() }}</span>
                 <app-category-icon
-                  [categoryName]="getCategoryName(item.category_id)"
-                  [matTooltip]="getCategoryName(item.category_id)"
-                ></app-category-icon>
-                <span>{{ item.name }}</span>
+                  [categoryName]="getDefaultCategoryName()"
+                  [matTooltip]="getDefaultCategoryName()"
+                />
               </div>
               <div class="item-actions">
-                <app-button
-                  color="primary"
-                  (buttonClick)="addItem(item)"
-                  [attr.data-testid]="'add-' + item.name"
-                >
-                  <mat-icon>add</mat-icon>
-                </app-button>
                 <button
                   mat-icon-button
-                  color="warn"
-                  aria-label="Remove from list"
-                  [attr.data-testid]="'remove-' + item.name"
+                  color="primary"
+                  (click)="addCustomItem(searchTerm())"
+                  [matTooltip]="'Dodaj ' + searchTerm()"
                 >
-                  <mat-icon>close</mat-icon>
+                  <mat-icon>add</mat-icon>
                 </button>
               </div>
+            </div>
+          }
+          @if (filteredItems().length === 0) {
+          } @else {
+            <div class="products-list">
+              @for (product of filteredItems(); track product.id) {
+                <div
+                  class="product-item mat-elevation-z0"
+                  [attr.data-testid]="'item-' + product.name"
+                >
+                  <div class="product-info">
+                    <span class="product-name">{{ product.name }}</span>
+                    <app-category-icon
+                      [categoryName]="
+                        getCategoryName(
+                          product.preferred_category_id || product.default_category_id
+                        )
+                      "
+                      [matTooltip]="
+                        getCategoryName(
+                          product.preferred_category_id || product.default_category_id
+                        )
+                      "
+                    />
+                  </div>
+                  <div class="product-actions">
+                    <button
+                      mat-icon-button
+                      color="primary"
+                      (click)="addItem(product)"
+                      [matTooltip]="'Dodaj ' + product.name"
+                      [attr.data-testid]="'add-' + product.name"
+                    >
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              }
             </div>
           }
         }
       </div>
     </mat-tab>
+
     <mat-tab label="Historia">
       <div class="items-list">
-        <p class="no-items-message">Historia zakupów będzie dostępna wkrótce.</p>
+        @if (loadingHistory()) {
+          <div class="loading-container">
+            <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+          </div>
+        }
+
+        @if (error() && activeTab() === TABS.HISTORY) {
+          <div class="error-message">
+            <mat-icon>error_outline</mat-icon>
+            <span>{{ error() }}</span>
+          </div>
+        }
+
+        @if (!loadingHistory() && !error() && activeTab() === TABS.HISTORY) {
+          @if (mostUsedItems().length === 0) {
+            <div class="no-history-message">
+              <mat-icon class="no-history-icon">history</mat-icon>
+              <p class="mat-body-1">Brak historii użycia produktów</p>
+              <p class="mat-body-2">
+                Produkty, które dodasz do list zakupowych, pojawią się tutaj jako najczęściej
+                używane.
+              </p>
+            </div>
+          } @else {
+            @if (searchTerm() && !itemExists(searchTerm())) {
+              <div class="custom-item-row">
+                <div class="item-info">
+                  <span>{{ searchTerm() }}</span>
+                  <app-category-icon
+                    [categoryName]="getDefaultCategoryName()"
+                    [matTooltip]="getDefaultCategoryName()"
+                  />
+                </div>
+                <div class="item-actions">
+                  <button
+                    mat-icon-button
+                    color="primary"
+                    (click)="addCustomItem(searchTerm())"
+                    [matTooltip]="'Dodaj ' + searchTerm()"
+                  >
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+              </div>
+            }
+            <div class="products-list">
+              @for (product of filteredItems(); track product.id) {
+                <div
+                  class="product-item mat-elevation-z0"
+                  [attr.data-testid]="'history-item-' + product.name"
+                >
+                  <div class="product-info">
+                    <span class="product-name">{{ product.name }}</span>
+                    <app-category-icon
+                      [categoryName]="
+                        getCategoryName(
+                          product.preferred_category_id || product.default_category_id
+                        )
+                      "
+                      [matTooltip]="
+                        getCategoryName(
+                          product.preferred_category_id || product.default_category_id
+                        )
+                      "
+                    />
+                  </div>
+                  <div class="product-actions">
+                    <button
+                      mat-icon-button
+                      color="primary"
+                      (click)="addItem(product)"
+                      [matTooltip]="'Dodaj ' + product.name"
+                      [attr.data-testid]="'add-history-' + product.name"
+                    >
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        }
       </div>
     </mat-tab>
   </mat-tab-group>

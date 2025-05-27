@@ -112,9 +112,11 @@ The following outlines the planned development phases and key features for Meal2
 
 ### Phase 1: Strengthening Core Functionality & Data Foundation
 
-- [ ] **Standardized Product Database:** Implement a standardized list of products in the database, with the ability for users or administrators to add new items. This will improve data consistency and categorization.
+- [x] **Standardized Product Database:** Implement a standardized list of products in the database, with the ability for users or administrators to add new items. This will improve data consistency and categorization.
 - [ ] **Standardized Quantities:** Introduce standardized units of measurement (e.g., pieces, grams, ml) to replace ambiguous terms like "pinches" or "cups," ensuring clarity and enabling better product management.
+- [ ] **Vector Database Integration (Qdrant):** Implement Qdrant vector database for semantic product matching and improved AI-driven ingredient recognition, enabling better fuzzy matching and product suggestions.
 - [ ] **AI Generation Review Screen:** Develop an intermediary screen after AI-based ingredient extraction. This will allow users to review, edit quantities/units, and exclude items (especially common household staples like spices, oil) before they are added to the shopping list.
+- [ ] **AI Product Matching Integration:** Integrate product matching into AI workflow to automatically connect AI-generated product names to existing database products, improving data consistency and reducing duplicate entries.
 - [ ] **Recipe Saving & Quick-Add:** Enhance the recipe saving feature to allow users to easily select a saved recipe to automatically generate a shopping list, streamlining the process.
 
 ### Phase 2: Further UX Enhancements & Operational Needs
