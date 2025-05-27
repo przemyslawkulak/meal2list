@@ -108,30 +108,30 @@ The following outlines the planned development phases and key features for Meal2
 
 ### Phase 0: Immediate User Experience (UX) Enhancements
 
-- [x] **Mobile Views & Navigation Improvements:** Ensure the application is fully responsive and intuitive to use on mobile devices, enhancing overall accessibility and ease of navigation.
+- :white_check_mark: **Mobile Views & Navigation Improvements:** Ensure the application is fully responsive and intuitive to use on mobile devices, enhancing overall accessibility and ease of navigation.
 
 ### Phase 1: Strengthening Core Functionality & Data Foundation
 
-- [x] **Standardized Product Database:** Implement a standardized list of products in the database, with the ability for users or administrators to add new items. This will improve data consistency and categorization.
-- [ ] **Standardized Quantities:** Introduce standardized units of measurement (e.g., pieces, grams, ml) to replace ambiguous terms like "pinches" or "cups," ensuring clarity and enabling better product management.
-- [ ] **Vector Database Integration (Qdrant):** Implement Qdrant vector database for semantic product matching and improved AI-driven ingredient recognition, enabling better fuzzy matching and product suggestions.
-- [ ] **AI Generation Review Screen:** Develop an intermediary screen after AI-based ingredient extraction. This will allow users to review, edit quantities/units, and exclude items (especially common household staples like spices, oil) before they are added to the shopping list.
-- [ ] **AI Product Matching Integration:** Integrate product matching into AI workflow to automatically connect AI-generated product names to existing database products, improving data consistency and reducing duplicate entries.
-- [ ] **Recipe Saving & Quick-Add:** Enhance the recipe saving feature to allow users to easily select a saved recipe to automatically generate a shopping list, streamlining the process.
+- :white_check_mark: **Standardized Product Database:** Implement a standardized list of products in the database, with the ability for users or administrators to add new items. This will improve data consistency and categorization.
+- :black_square_button: **Standardized Quantities:** Introduce standardized units of measurement (e.g., pieces, grams, ml) to replace ambiguous terms like "pinches" or "cups," ensuring clarity and enabling better product management.
+- :black_square_button: **Vector Database Integration (Qdrant):** Implement Qdrant vector database for semantic product matching and improved AI-driven ingredient recognition, enabling better fuzzy matching and product suggestions.
+- :black_square_button: **AI Generation Review Screen:** Develop an intermediary screen after AI-based ingredient extraction. This will allow users to review, edit quantities/units, and exclude items (especially common household staples like spices, oil) before they are added to the shopping list.
+- :black_square_button: **AI Product Matching Integration:** Integrate product matching into AI workflow to automatically connect AI-generated product names to existing database products, improving data consistency and reducing duplicate entries.
+- :black_square_button: **Recipe Saving & Quick-Add:** Enhance the recipe saving feature to allow users to easily select a saved recipe to automatically generate a shopping list, streamlining the process.
 
 ### Phase 2: Further UX Enhancements & Operational Needs
 
-- [ ] **Product Combination:** Implement logic to combine identical products on the shopping list, even if added from different sources or with different initial units (e.g., "2 tomatoes" manually added + "500g tomatoes" from a recipe should intelligently merge).
-- [ ] **User-Specific Generation Limits:** Introduce a system to manage API usage, such as a weekly limit on the number of recipes a user can process for ingredient extraction (e.g., 10 recipes per week).
+- :black_square_button: **Product Combination:** Implement logic to combine identical products on the shopping list, even if added from different sources or with different initial units (e.g., "2 tomatoes" manually added + "500g tomatoes" from a recipe should intelligently merge).
+- :black_square_button: **User-Specific Generation Limits:** Introduce a system to manage API usage, such as a weekly limit on the number of recipes a user can process for ingredient extraction (e.g., 10 recipes per week).
 
 ### Phase 3: Expanding Scope (Post-MVP Features)
 
-- [ ] **Recipe Cataloging & Tagging:** Allow users to organize their saved recipes with categories or tags for easier browsing and retrieval.
-- [ ] **Recipe Import from URL:** Develop a feature to scrape recipe details directly from a provided website URL, automatically populating the ingredient extraction field.
-- [ ] **Social Features:** Implement social functionalities such as sharing recipes and shopping lists, potentially with collaborative features and notifications.
-- [ ] **Recipe Calendar/Meal Planning:** Introduce a calendar feature to help users plan their meals by assigning recipes to specific dates.
-- [ ] **Rich Multimedia Support:** Integrate support for images or other multimedia content related to recipes (e.g., dish photos, user uploads).
-- [ ] **Gamification:** Introduce gamification elements (e.g., points, badges, challenges) to enhance user engagement and motivation.
+- :black_square_button: **Recipe Cataloging & Tagging:** Allow users to organize their saved recipes with categories or tags for easier browsing and retrieval.
+- :black_square_button: **Recipe Import from URL:** Develop a feature to scrape recipe details directly from a provided website URL, automatically populating the ingredient extraction field.
+- :black_square_button: **Social Features:** Implement social functionalities such as sharing recipes and shopping lists, potentially with collaborative features and notifications.
+- :black_square_button: **Recipe Calendar/Meal Planning:** Introduce a calendar feature to help users plan their meals by assigning recipes to specific dates.
+- :black_square_button: **Rich Multimedia Support:** Integrate support for images or other multimedia content related to recipes (e.g., dish photos, user uploads).
+- :black_square_button: **Gamification:** Introduce gamification elements (e.g., points, badges, challenges) to enhance user engagement and motivation.
 
 ## Project Status
 
