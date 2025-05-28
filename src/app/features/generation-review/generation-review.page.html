@@ -1,0 +1,71 @@
+<div class="review-container">
+  <mat-card class="review-header">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>checklist</mat-icon>
+        Przejrzyj wygenerowane produkty
+      </mat-card-title>
+      <mat-card-subtitle>
+        Sprawdź i edytuj produkty przed dodaniem do listy zakupów
+      </mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+
+  <!-- Recipe Metadata Section -->
+  <mat-card class="recipe-metadata">
+    <mat-card-content>
+      <div class="metadata-fields">
+        <mat-form-field appearance="outline" class="recipe-name-field">
+          <mat-label>Nazwa przepisu</mat-label>
+          <input
+            matInput
+            #recipeNameInput
+            [value]="recipeName()"
+            (input)="onRecipeNameChange(recipeNameInput.value)"
+            placeholder="Wprowadź nazwę przepisu"
+          />
+          <mat-icon matSuffix>restaurant</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="recipe-source-field">
+          <mat-label>Źródło</mat-label>
+          <input
+            matInput
+            #recipeSourceInput
+            [value]="recipeSource()"
+            (input)="onRecipeSourceChange(recipeSourceInput.value)"
+            placeholder="np. książka kucharska, strona internetowa"
+          />
+          <mat-icon matSuffix>source</mat-icon>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <app-review-table
+    [items]="reviewItems()"
+    [categories]="categories()"
+    (itemsChange)="onItemsChange($event)"
+  >
+  </app-review-table>
+
+  <div class="actions">
+    <button mat-button (click)="goBack()" [disabled]="isProcessing()">
+      <mat-icon>arrow_back</mat-icon>
+      Wróć do edycji przepisu
+    </button>
+
+    <button
+      mat-flat-button
+      color="primary"
+      [disabled]="!hasValidItems() || isProcessing()"
+      (click)="confirmAndAdd()"
+    >
+      @if (isProcessing()) {
+      <mat-spinner diameter="20" style="margin-right: 8px"></mat-spinner>
+      } @else {
+      <mat-icon>add_shopping_cart</mat-icon>
+      } Dodaj {{ includedItemsCount() }} produktów do listy
+    </button>
+  </div>
+</div>

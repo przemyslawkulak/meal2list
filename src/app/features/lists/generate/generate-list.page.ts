@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { signal } from '@angular/core';
 import { Router } from '@angular/router';
@@ -7,8 +7,8 @@ import { ShoppingListService } from '../../../core/supabase/shopping-list.servic
 import { ShoppingListItemsService } from '../../../core/supabase/shopping-list-items.service';
 import { GenerationFormComponent } from './components/generation-form/generation-form.component';
 import { GenerationStatusComponent } from './components/generation-status/generation-status.component';
-import { catchError, finalize, map, switchMap, tap } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { catchError, finalize, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 import {
   ShoppingListResponseDto,
   CreateShoppingListItemCommand,
@@ -25,7 +25,7 @@ import { CategoryService } from '@app/core/supabase/category.service';
   styleUrls: ['./generate-list.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GenerateListPageComponent {
+export class GenerateListPageComponent implements OnInit {
   private readonly generationService = inject(GenerationService);
   private readonly shoppingListService = inject(ShoppingListService);
   private readonly shoppingListItemsService = inject(ShoppingListItemsService);
@@ -39,6 +39,16 @@ export class GenerateListPageComponent {
     this._categoryService.categories$.subscribe(categories => this.categories.set(categories));
   }
 
+  ngOnInit(): void {
+    // Check if we're returning from review screen with recipe text
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras?.state;
+
+    if (state && state['recipeText']) {
+      this.initialRecipeText.set(state['recipeText']);
+    }
+  }
+
   // Signals for state management
   shoppingLists = signal<ShoppingListResponseDto[]>([]);
   isGenerating = signal<boolean>(false);
@@ -46,6 +56,7 @@ export class GenerateListPageComponent {
   generatedItems = signal<CreateShoppingListItemCommand[]>([]);
   errorMessage = signal<string | null>(null);
   categories = signal<CategoryDto[]>([]);
+  initialRecipeText = signal<string>('');
 
   private loadShoppingLists(): void {
     this.shoppingListService
@@ -65,28 +76,34 @@ export class GenerateListPageComponent {
     };
 
     this.generationService
-      .generateFromText(command, this.categories(), 'pl')
+      .generateForReview(command, this.categories(), 'pl')
       .pipe(
-        map(result => ({
-          ...result,
-          items: result.items.map(item => ({
-            ...item,
-            source: 'auto' as const,
-            unit: item.unit ?? undefined,
-          })),
-        })),
         tap(result => {
-          console.log('result', result);
-          this.generatedItems.set(result.items);
-          this.generationStatus.set('adding');
-        }),
-        switchMap(result => this.addItemsToList(data.listId, result.items)),
-        tap(() => {
+          console.log('Generated items for review:', result);
           this.generationStatus.set('completed');
-          // Navigate to the shopping list detail page
-          this.router.navigate(['/lists', data.listId]);
+
+          const navigationState = {
+            items: result.items,
+            listId: data.listId,
+            recipeText: data.recipeText,
+            recipeName: result.recipeName,
+            recipeSource: 'text', // Default source
+          };
+
+          console.log('Navigating to review with state:', {
+            itemsCount: navigationState.items.length,
+            listId: navigationState.listId,
+            hasRecipeText: !!navigationState.recipeText,
+            recipeName: navigationState.recipeName,
+          });
+
+          // Navigate to review screen with data
+          this.router.navigate(['/generate/review'], {
+            state: navigationState,
+          });
         }),
         catchError(error => {
+          console.error('Generation error:', error);
           this.errorMessage.set(error instanceof Error ? error.message : 'Generation failed');
           this.generationStatus.set('error');
           return of(null);
@@ -96,14 +113,5 @@ export class GenerateListPageComponent {
         })
       )
       .subscribe();
-  }
-
-  private addItemsToList(listId: string, items: CreateShoppingListItemCommand[]): Observable<void> {
-    return this.shoppingListItemsService.addItemsToShoppingList(listId, items).pipe(
-      map(() => void 0),
-      catchError(error => {
-        throw new Error(error.message || 'Failed to add items to shopping list');
-      })
-    );
   }
 }

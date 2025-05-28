@@ -27,6 +27,7 @@ import { ShoppingListResponseDto } from '../../../../../../types';
 export class GenerationFormComponent {
   generate = output<{ listId: string; recipeText: string }>();
   shoppingLists = input.required<ShoppingListResponseDto[]>();
+  initialRecipeText = input<string>('');
 
   readonly form: FormGroup;
   readonly maxLength = 5000;
@@ -41,6 +42,13 @@ export class GenerationFormComponent {
       const lists = this.shoppingLists();
       if (lists.length > 0 && !this.form.get('listId')?.value) {
         this.form.patchValue({ listId: lists[0].id });
+      }
+    });
+
+    effect(() => {
+      const initialText = this.initialRecipeText();
+      if (initialText && !this.form.get('recipeText')?.value) {
+        this.form.patchValue({ recipeText: initialText });
       }
     });
   }

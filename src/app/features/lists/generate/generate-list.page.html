@@ -2,6 +2,7 @@
   <h1>Generuj listę zakupów z przepisu</h1>
   <app-generation-form
     [shoppingLists]="shoppingLists()"
+    [initialRecipeText]="initialRecipeText()"
     (generate)="onGenerate($event)"
     [class.generation-form--disabled]="isGenerating()"
   >

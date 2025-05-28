@@ -208,6 +208,35 @@ export interface GenerateShoppingListFromRecipeCommand {
   recipe_text: string;
 }
 
+// ----------------------------
+// Generation Review DTOs
+// ----------------------------
+
+export interface GenerationReviewItemDto {
+  id: string; // temporary ID for tracking
+  product_name: string;
+  quantity: number;
+  unit: string;
+  category_id: string;
+  excluded: boolean;
+  source: 'auto';
+  isModified?: boolean; // track if user edited the item
+}
+
+export interface ReviewSessionDto {
+  sessionId: string;
+  items: GenerationReviewItemDto[];
+  originalRecipeText: string;
+  targetListId: string;
+  recipeName?: string; // AI-generated recipe name
+  recipeSource?: string; // User-editable source (text, URL, book name, etc.)
+}
+
+export interface ConfirmReviewCommand {
+  sessionId: string;
+  items: GenerationReviewItemDto[]; // only non-excluded items
+}
+
 export interface NavLink {
   label: string;
   path: string;

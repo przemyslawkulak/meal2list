@@ -32,11 +32,24 @@ export const routes: Routes = [
       },
       {
         path: 'generate',
-        loadComponent: () =>
-          import('./features/lists/generate/generate-list.page').then(
-            m => m.GenerateListPageComponent
-          ),
-        title: 'Generate Shopping List',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/lists/generate/generate-list.page').then(
+                m => m.GenerateListPageComponent
+              ),
+            title: 'Generate Shopping List',
+          },
+          {
+            path: 'review',
+            loadComponent: () =>
+              import('./features/generation-review/generation-review.page').then(
+                m => m.GenerationReviewPageComponent
+              ),
+            title: 'Review Generated Items',
+          },
+        ],
       },
       {
         path: 'lists',
