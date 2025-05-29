@@ -261,7 +261,7 @@ export class GenerationService extends SupabaseService {
     return this.processRecipeText(command.recipe_text).pipe(
       map(items => ({
         id: `temp-${uuidv4()}`,
-        recipe_id: 0,
+        recipe_id: `temp-recipe-${uuidv4()}`,
         items,
       })),
       catchError((error: HttpErrorResponse) => {
@@ -308,6 +308,9 @@ export class GenerationService extends SupabaseService {
           is_checked: false,
           source: 'auto',
           category_id: item.category_id,
+          product_id: null,
+          generation_id: null,
+          recipe_source: null,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         }));

@@ -3,7 +3,7 @@
   This file defines the TypeScript types for the API based on the database models and API plan.
 */
 
-import type { Database } from '@db/database.types';
+import type { Database } from './db/database.types';
 
 // ----------------------------
 // Authentication DTOs and Commands
@@ -33,6 +33,21 @@ export interface UserDto {
   id: string;
   email: string;
   created_at: string;
+}
+
+// ----------------------------
+// Profile DTOs and Commands
+// ----------------------------
+
+export type ProfileDto = Pick<
+  Database['public']['Tables']['profiles']['Row'],
+  'id' | 'username' | 'website' | 'avatar_url' | 'updated_at'
+>;
+
+export interface UpdateProfileCommand {
+  username?: string;
+  website?: string;
+  avatar_url?: string;
 }
 
 // ----------------------------
@@ -97,8 +112,8 @@ export interface CreateRecipeCommand {
 }
 
 export interface UpdateRecipeCommand {
-  title: string;
-  recipe_text: string;
+  title?: string;
+  recipe_text?: string;
   source?: string;
 }
 
@@ -111,6 +126,7 @@ export type ShoppingListResponseDto = Pick<
   'id' | 'name' | 'recipe_id' | 'created_at' | 'updated_at' | 'user_id'
 > & {
   items?: ShoppingListItemResponseDto[];
+  users?: ShoppingListUserDto[];
 };
 
 export interface CreateShoppingListCommand {
@@ -120,8 +136,25 @@ export interface CreateShoppingListCommand {
 }
 
 export interface UpdateShoppingListCommand {
-  name: string;
+  name?: string;
   // user_id is automatically set by the backend
+}
+
+// ----------------------------
+// Shopping List Users DTOs and Commands
+// ----------------------------
+
+export type ShoppingListUserDto = Pick<
+  Database['public']['Tables']['shopping_list_users']['Row'],
+  'shopping_list_id' | 'user_id' | 'created_at' | 'updated_at'
+>;
+
+export interface AddUserToShoppingListCommand {
+  user_id: string;
+}
+
+export interface RemoveUserFromShoppingListCommand {
+  user_id: string;
 }
 
 // ----------------------------
@@ -136,6 +169,8 @@ export type ShoppingListItemResponseDto = Pick<
   | 'unit'
   | 'is_checked'
   | 'category_id'
+  | 'product_id'
+  | 'generation_id'
   | 'created_at'
   | 'updated_at'
   | 'source'
@@ -150,14 +185,18 @@ export interface CreateShoppingListItemCommand {
   category_id: string;
   recipe_source?: string; // Name of the recipe from which this item was generated
   product_id?: string; // Link to products table
+  generation_id?: string; // Link to generation table
 }
 
 export interface UpdateShoppingListItemCommand {
+  product_name?: string;
   quantity?: number;
   unit?: string;
   is_checked?: boolean;
+  category_id?: string;
   recipe_source?: string | null;
-  product_id?: string;
+  product_id?: string | null;
+  generation_id?: string | null;
 }
 
 export type CreateBatchShoppingListItemsCommand = CreateShoppingListItemCommand[];
@@ -166,7 +205,18 @@ export type CreateBatchShoppingListItemsCommand = CreateShoppingListItemCommand[
 // Category DTO
 // ----------------------------
 
-export type CategoryDto = Pick<Database['public']['Tables']['categories']['Row'], 'id' | 'name'>;
+export type CategoryDto = Pick<
+  Database['public']['Tables']['categories']['Row'],
+  'id' | 'name' | 'created_at' | 'updated_at'
+>;
+
+export interface CreateCategoryCommand {
+  name: string;
+}
+
+export interface UpdateCategoryCommand {
+  name?: string;
+}
 
 // ----------------------------
 // Generation DTOs
@@ -205,7 +255,7 @@ export interface GenerationStatusDto {
 // Define response type for generated shopping list
 export interface GeneratedListResponseDto {
   id: string;
-  recipe_id: number;
+  recipe_id: string;
   items: ShoppingListItemResponseDto[];
 }
 

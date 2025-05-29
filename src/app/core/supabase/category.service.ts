@@ -8,7 +8,7 @@ import { SupabaseService } from './supabase.service';
 })
 export class CategoryService extends SupabaseService {
   private readonly _categories$ = from(
-    this.supabase.from('categories').select('id, name').order('name')
+    this.supabase.from('categories').select('id, name, created_at, updated_at').order('name')
   ).pipe(
     map(response => {
       if (response.error) throw response.error;

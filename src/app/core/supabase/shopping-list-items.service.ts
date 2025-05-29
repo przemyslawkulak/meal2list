@@ -107,7 +107,7 @@ export class ShoppingListItemsService extends SupabaseService {
           .from('shopping_list_items')
           .insert(itemsWithListId)
           .select(
-            'id, product_name, quantity, unit, is_checked, category_id, source, recipe_source, created_at, updated_at'
+            'id, product_name, quantity, unit, is_checked, category_id, product_id, generation_id, source, recipe_source, created_at, updated_at'
           )
       ),
       map(result => {
@@ -174,7 +174,7 @@ export class ShoppingListItemsService extends SupabaseService {
           .from('shopping_list_items')
           .insert(itemWithSource)
           .select(
-            'id, product_name, quantity, unit, is_checked, category_id, source, recipe_source, created_at, updated_at'
+            'id, product_name, quantity, unit, is_checked, category_id, product_id, generation_id, source, recipe_source, created_at, updated_at'
           )
           .single();
       }),
@@ -239,7 +239,7 @@ export class ShoppingListItemsService extends SupabaseService {
           .update(validatedUpdates)
           .eq('id', itemId)
           .select(
-            'id, product_name, quantity, unit, is_checked, category_id, source, recipe_source, created_at, updated_at'
+            'id, product_name, quantity, unit, is_checked, category_id, product_id, generation_id, source, recipe_source, created_at, updated_at'
           )
           .single()
       ),
