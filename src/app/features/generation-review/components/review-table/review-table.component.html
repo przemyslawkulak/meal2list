@@ -11,7 +11,7 @@
       Produkty do przeglądu
     </mat-card-title>
     <mat-card-subtitle>
-      Kliknij na produkt aby go edytować, lub użyj przełączników aby wykluczyć z listy
+      Kliknij bezpośrednio na dowolne pole aby je edytować. Zmiany zapisują się automatycznie.
     </mat-card-subtitle>
   </mat-card-header>
 
@@ -91,13 +91,27 @@
                     matInput
                     [formControl]="item.editForm!.product_name"
                     placeholder="Nazwa produktu"
+                    [attr.data-item-id]="item.id"
+                    [attr.data-field]="'product_name'"
+                    (blur)="autoSaveEdit(item)"
+                    (keydown)="onKeyDown($event, item)"
                   />
                   @if (item.editForm!.product_name.hasError('required')) {
                     <mat-error>Nazwa jest wymagana</mat-error>
                   }
                 </mat-form-field>
               } @else {
-                <span class="product-name" [class.modified]="item.isModified">
+                <span
+                  class="product-name editable-field"
+                  [class.modified]="item.isModified"
+                  [class.disabled]="item.excluded"
+                  (click)="startEditField(item, 'product_name')"
+                  [matTooltip]="
+                    item.excluded
+                      ? 'Produkt wykluczony - nie można edytować'
+                      : 'Kliknij aby edytować'
+                  "
+                >
                   {{ item.product_name }}
                   @if (item.isModified) {
                     <mat-icon class="modified-icon" matTooltip="Zmodyfikowane">edit</mat-icon>
@@ -120,6 +134,10 @@
                     placeholder="Ilość"
                     min="0.01"
                     step="0.01"
+                    [attr.data-item-id]="item.id"
+                    [attr.data-field]="'quantity'"
+                    (blur)="autoSaveEdit(item)"
+                    (keydown)="onKeyDown($event, item)"
                   />
                   @if (item.editForm!.quantity.hasError('required')) {
                     <mat-error>Ilość jest wymagana</mat-error>
@@ -129,7 +147,18 @@
                   }
                 </mat-form-field>
               } @else {
-                <span>{{ item.quantity }}</span>
+                <span
+                  class="editable-field"
+                  [class.disabled]="item.excluded"
+                  (click)="startEditField(item, 'quantity')"
+                  [matTooltip]="
+                    item.excluded
+                      ? 'Produkt wykluczony - nie można edytować'
+                      : 'Kliknij aby edytować'
+                  "
+                >
+                  {{ item.quantity }}
+                </span>
               }
             </td>
           </ng-container>
@@ -140,7 +169,13 @@
             <td mat-cell *matCellDef="let item" [class.excluded]="item.excluded">
               @if (item.isEditing) {
                 <mat-form-field appearance="outline" class="edit-field unit-field">
-                  <mat-select [formControl]="item.editForm!.unit" placeholder="Jednostka">
+                  <mat-select
+                    [formControl]="item.editForm!.unit"
+                    placeholder="Jednostka"
+                    [attr.data-item-id]="item.id"
+                    [attr.data-field]="'unit'"
+                    (selectionChange)="autoSaveEdit(item)"
+                  >
                     @for (unit of standardUnits; track unit) {
                       <mat-option [value]="unit">{{ unit }}</mat-option>
                     }
@@ -150,7 +185,18 @@
                   }
                 </mat-form-field>
               } @else {
-                <span>{{ item.unit }}</span>
+                <span
+                  class="editable-field"
+                  [class.disabled]="item.excluded"
+                  (click)="startEditField(item, 'unit')"
+                  [matTooltip]="
+                    item.excluded
+                      ? 'Produkt wykluczony - nie można edytować'
+                      : 'Kliknij aby edytować'
+                  "
+                >
+                  {{ item.unit }}
+                </span>
               }
             </td>
           </ng-container>
@@ -161,9 +207,20 @@
             <td mat-cell *matCellDef="let item" [class.excluded]="item.excluded">
               @if (item.isEditing) {
                 <mat-form-field appearance="outline" class="edit-field category-field">
-                  <mat-select [formControl]="item.editForm!.category_id" placeholder="Kategoria">
+                  <mat-select
+                    [formControl]="item.editForm!.category_id"
+                    placeholder="Kategoria"
+                    [attr.data-item-id]="item.id"
+                    [attr.data-field]="'category_id'"
+                    (selectionChange)="autoSaveEdit(item)"
+                  >
                     @for (category of categories; track category.id) {
-                      <mat-option [value]="category.id">{{ category.name }}</mat-option>
+                      <mat-option [value]="category.id">
+                        <div class="category-option">
+                          <app-category-icon [categoryName]="category.name"></app-category-icon>
+                          <span>{{ category.name }}</span>
+                        </div>
+                      </mat-option>
                     }
                   </mat-select>
                   @if (item.editForm!.category_id.hasError('required')) {
@@ -171,44 +228,21 @@
                   }
                 </mat-form-field>
               } @else {
-                <span>{{ getCategoryName(item.category_id) }}</span>
-              }
-            </td>
-          </ng-container>
-
-          <!-- Actions Column -->
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef class="actions-column">Akcje</th>
-            <td mat-cell *matCellDef="let item" class="actions-column">
-              @if (item.isEditing) {
-                <div class="edit-actions">
-                  <button
-                    mat-icon-button
-                    color="primary"
-                    (click)="saveEdit(item)"
-                    [disabled]="
-                      item.editForm!.product_name.invalid ||
-                      item.editForm!.quantity.invalid ||
-                      item.editForm!.unit.invalid ||
-                      item.editForm!.category_id.invalid
-                    "
-                    matTooltip="Zapisz zmiany"
-                  >
-                    <mat-icon>check</mat-icon>
-                  </button>
-                  <button mat-icon-button (click)="cancelEdit(item)" matTooltip="Anuluj edycję">
-                    <mat-icon>close</mat-icon>
-                  </button>
-                </div>
-              } @else {
-                <button
-                  mat-icon-button
-                  (click)="startEdit(item)"
-                  [disabled]="item.excluded"
-                  matTooltip="Edytuj produkt"
+                <span
+                  class="editable-field category-display"
+                  [class.disabled]="item.excluded"
+                  (click)="startEditField(item, 'category_id')"
+                  [matTooltip]="
+                    item.excluded
+                      ? 'Produkt wykluczony - nie można edytować'
+                      : 'Kliknij aby edytować'
+                  "
                 >
-                  <mat-icon>edit</mat-icon>
-                </button>
+                  <app-category-icon
+                    [categoryName]="getCategoryName(item.category_id)"
+                  ></app-category-icon>
+                  <span>{{ getCategoryName(item.category_id) }}</span>
+                </span>
               }
             </td>
           </ng-container>
@@ -244,7 +278,10 @@
               <!-- Category Header Row -->
               <div class="category-header-row">
                 <div class="category-info">
-                  <h3 class="category-name">{{ group.categoryName }}</h3>
+                  <h3 class="category-name">
+                    <app-category-icon [categoryName]="group.categoryName"></app-category-icon>
+                    <span>{{ group.categoryName }}</span>
+                  </h3>
                   <div class="category-stats">
                     <span class="stat-item">{{ group.items.length }} produktów</span>
                     <span
@@ -275,7 +312,14 @@
                         <div class="edit-form">
                           <mat-form-field appearance="outline" class="edit-field">
                             <mat-label>Nazwa produktu</mat-label>
-                            <input matInput [formControl]="item.editForm!.product_name" />
+                            <input
+                              matInput
+                              [formControl]="item.editForm!.product_name"
+                              [attr.data-item-id]="item.id"
+                              [attr.data-field]="'product_name'"
+                              (blur)="autoSaveEdit(item)"
+                              (keydown)="onKeyDown($event, item)"
+                            />
                             @if (item.editForm!.product_name.hasError('required')) {
                               <mat-error>Nazwa jest wymagana</mat-error>
                             }
@@ -290,6 +334,10 @@
                                 [formControl]="item.editForm!.quantity"
                                 min="0.01"
                                 step="0.01"
+                                [attr.data-item-id]="item.id"
+                                [attr.data-field]="'quantity'"
+                                (blur)="autoSaveEdit(item)"
+                                (keydown)="onKeyDown($event, item)"
                               />
                               @if (item.editForm!.quantity.hasError('required')) {
                                 <mat-error>Ilość jest wymagana</mat-error>
@@ -301,7 +349,12 @@
 
                             <mat-form-field appearance="outline" class="unit-field">
                               <mat-label>Jednostka</mat-label>
-                              <mat-select [formControl]="item.editForm!.unit">
+                              <mat-select
+                                [formControl]="item.editForm!.unit"
+                                [attr.data-item-id]="item.id"
+                                [attr.data-field]="'unit'"
+                                (selectionChange)="autoSaveEdit(item)"
+                              >
                                 @for (unit of standardUnits; track unit) {
                                   <mat-option [value]="unit">{{ unit }}</mat-option>
                                 }
@@ -314,66 +367,92 @@
 
                           <mat-form-field appearance="outline" class="category-field">
                             <mat-label>Kategoria</mat-label>
-                            <mat-select [formControl]="item.editForm!.category_id">
+                            <mat-select
+                              [formControl]="item.editForm!.category_id"
+                              [attr.data-item-id]="item.id"
+                              [attr.data-field]="'category_id'"
+                              (selectionChange)="autoSaveEdit(item)"
+                            >
                               @for (category of categories; track category.id) {
-                                <mat-option [value]="category.id">{{ category.name }}</mat-option>
+                                <mat-option [value]="category.id">
+                                  <div class="category-option">
+                                    <app-category-icon
+                                      [categoryName]="category.name"
+                                    ></app-category-icon>
+                                    <span>{{ category.name }}</span>
+                                  </div>
+                                </mat-option>
                               }
                             </mat-select>
                             @if (item.editForm!.category_id.hasError('required')) {
                               <mat-error>Kategoria jest wymagana</mat-error>
                             }
                           </mat-form-field>
-
-                          <div class="edit-actions">
-                            <button
-                              mat-raised-button
-                              color="primary"
-                              (click)="saveEdit(item)"
-                              [disabled]="
-                                item.editForm!.product_name.invalid ||
-                                item.editForm!.quantity.invalid ||
-                                item.editForm!.unit.invalid ||
-                                item.editForm!.category_id.invalid
-                              "
-                            >
-                              <mat-icon>check</mat-icon>
-                              Zapisz
-                            </button>
-                            <button mat-button (click)="cancelEdit(item)">
-                              <mat-icon>close</mat-icon>
-                              Anuluj
-                            </button>
-                          </div>
                         </div>
                       } @else {
                         <div class="item-display">
                           <div class="item-name">
-                            <span [class.modified]="item.isModified">{{ item.product_name }}</span>
-                            @if (item.isModified) {
-                              <mat-icon class="modified-icon" matTooltip="Zmodyfikowane"
-                                >edit</mat-icon
-                              >
-                            }
+                            <span
+                              class="editable-field"
+                              [class.modified]="item.isModified"
+                              [class.disabled]="item.excluded"
+                              (click)="startEditField(item, 'product_name')"
+                              [matTooltip]="
+                                item.excluded
+                                  ? 'Produkt wykluczony - nie można edytować'
+                                  : 'Kliknij aby edytować'
+                              "
+                            >
+                              {{ item.product_name }}
+                              @if (item.isModified) {
+                                <mat-icon class="modified-icon" matTooltip="Zmodyfikowane"
+                                  >edit</mat-icon
+                                >
+                              }
+                            </span>
                           </div>
                           <div class="item-details">
-                            <span class="quantity">{{ item.quantity }} {{ item.unit }}</span>
+                            <span
+                              class="quantity editable-field"
+                              [class.disabled]="item.excluded"
+                              (click)="startEditField(item, 'quantity')"
+                              [matTooltip]="
+                                item.excluded
+                                  ? 'Produkt wykluczony - nie można edytować'
+                                  : 'Kliknij aby edytować'
+                              "
+                            >
+                              {{ item.quantity }}
+                            </span>
+                            <span
+                              class="unit editable-field"
+                              [class.disabled]="item.excluded"
+                              (click)="startEditField(item, 'unit')"
+                              [matTooltip]="
+                                item.excluded
+                                  ? 'Produkt wykluczony - nie można edytować'
+                                  : 'Kliknij aby edytować'
+                              "
+                            >
+                              {{ item.unit }}
+                            </span>
+                            <span
+                              class="category editable-field"
+                              [class.disabled]="item.excluded"
+                              (click)="startEditField(item, 'category_id')"
+                              [matTooltip]="
+                                item.excluded
+                                  ? 'Produkt wykluczony - nie można edytować'
+                                  : 'Kliknij aby edytować'
+                              "
+                            >
+                              <app-category-icon
+                                [categoryName]="getCategoryName(item.category_id)"
+                              ></app-category-icon>
+                              <span>{{ getCategoryName(item.category_id) }}</span>
+                            </span>
                           </div>
                         </div>
-                      }
-                    </div>
-
-                    <div class="item-actions">
-                      @if (item.isEditing) {
-                        <!-- Actions are in the edit form -->
-                      } @else {
-                        <button
-                          mat-icon-button
-                          (click)="startEdit(item)"
-                          [disabled]="item.excluded"
-                          matTooltip="Edytuj produkt"
-                        >
-                          <mat-icon>edit</mat-icon>
-                        </button>
                       }
                     </div>
                   </div>

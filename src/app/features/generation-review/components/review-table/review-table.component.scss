@@ -93,10 +93,66 @@
   color: #1976d2;
 }
 
-// Edit form fields
+// Editable field styling - NEW
+.editable-field {
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid transparent;
+  min-height: 24px;
+  display: inline-block;
+  position: relative;
+  
+  &:hover:not(.disabled) {
+    background-color: rgba(25, 118, 210, 0.08);
+    border-color: rgba(25, 118, 210, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  &:focus:not(.disabled) {
+    outline: 2px solid #1976d2;
+    outline-offset: 2px;
+    background-color: rgba(25, 118, 210, 0.12);
+  }
+  
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    color: rgba(0, 0, 0, 0.38);
+    
+    &:hover {
+      background-color: transparent;
+      border-color: transparent;
+      transform: none;
+      box-shadow: none;
+    }
+  }
+  
+  // Visual indicator for editable state
+  &:not(.disabled)::after {
+    content: '✎';
+    position: absolute;
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    color: #1976d2;
+  }
+  
+  &:hover:not(.disabled)::after {
+    opacity: 0.6;
+  }
+}
+
+// Enhanced edit form fields with better visual feedback
 .edit-field {
   width: 100%;
   margin: 0;
+  position: relative;
 
   .mat-mdc-form-field-wrapper {
     padding-bottom: 0;
@@ -113,6 +169,30 @@
   input, mat-select {
     font-size: 0.875rem;
   }
+  
+  // Enhanced focus state
+  &.mat-focused {
+    .mat-mdc-form-field-outline {
+      border-color: #1976d2;
+      border-width: 2px;
+    }
+  }
+  
+  // Add subtle animation when entering edit mode
+  &.mat-form-field-appearance-outline {
+    animation: editFieldAppear 0.3s ease-out;
+  }
+}
+
+@keyframes editFieldAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .quantity-field {
@@ -125,6 +205,54 @@
 
 .category-field {
   min-width: 120px;
+}
+
+// Category display with icon - NEW
+.category-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  app-category-icon {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.6);
+    
+    fa-icon {
+      font-size: 14px;
+      width: 14px;
+      height: 14px;
+    }
+  }
+  
+  span {
+    flex: 1;
+  }
+}
+
+// Category option in select dropdown - NEW
+.category-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  app-category-icon {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.6);
+    
+    fa-icon {
+      font-size: 14px;
+      width: 14px;
+      height: 14px;
+    }
+  }
+  
+  span {
+    flex: 1;
+  }
 }
 
 // Edit actions
@@ -301,6 +429,26 @@
           font-weight: 500;
           font-size: 1rem;
           color: rgba(0, 0, 0, 0.87);
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          
+          app-category-icon {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            color: rgba(0, 0, 0, 0.6);
+            
+            fa-icon {
+              font-size: 16px;
+              width: 16px;
+              height: 16px;
+            }
+          }
+          
+          span {
+            flex: 1;
+          }
         }
 
         .category-stats {
@@ -384,9 +532,36 @@
               .item-details {
                 font-size: 0.8rem;
                 color: rgba(0, 0, 0, 0.6);
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                align-items: center;
 
                 .quantity {
                   font-weight: 500;
+                }
+                
+                .unit {
+                  margin-right: 8px;
+                }
+                
+                .category {
+                  display: flex;
+                  align-items: center;
+                  gap: 4px;
+                  
+                  app-category-icon {
+                    display: flex;
+                    align-items: center;
+                    font-size: 12px;
+                    color: rgba(0, 0, 0, 0.5);
+                    
+                    fa-icon {
+                      font-size: 12px;
+                      width: 12px;
+                      height: 12px;
+                    }
+                  }
                 }
               }
             }

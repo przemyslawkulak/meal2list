@@ -1,7 +1,14 @@
 import { Component, OnInit, OnDestroy, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,7 +25,6 @@ import { GenerationService } from '@core/supabase/generation.service';
 import { CategoryService } from '@core/supabase/category.service';
 import { GenerationReviewItemDto, CategoryDto } from '../../../types';
 import { ReviewTableComponent } from './components/review-table/review-table.component';
-import { ReviewSummaryComponent } from './components/review-summary/review-summary.component';
 
 @Component({
   selector: 'app-generation-review',
@@ -35,14 +41,12 @@ import { ReviewSummaryComponent } from './components/review-summary/review-summa
     MatFormFieldModule,
     MatDividerModule,
     ReviewTableComponent,
-    ReviewSummaryComponent,
   ],
   templateUrl: './generation-review.page.html',
   styleUrl: './generation-review.page.scss',
 })
 export class GenerationReviewPageComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
   private readonly fb = inject(FormBuilder);
   private readonly snackBar = inject(MatSnackBar);
   private readonly generationService = inject(GenerationService);
@@ -55,6 +59,21 @@ export class GenerationReviewPageComponent implements OnInit, OnDestroy {
   formErrors = signal<string[]>([]);
   recipeName = signal<string>('');
   recipeSource = signal<string>('text');
+
+  // Recipe editing states
+  isEditingRecipeName = signal<boolean>(false);
+  isEditingRecipeSource = signal<boolean>(false);
+
+  // Recipe form controls
+  recipeNameControl = new FormControl('', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.minLength(1)],
+  });
+
+  recipeSourceControl = new FormControl('', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.minLength(1)],
+  });
 
   // Navigation state
   private listId = '';
@@ -178,6 +197,87 @@ export class GenerationReviewPageComponent implements OnInit, OnDestroy {
 
   onRecipeSourceChange(source: string): void {
     this.recipeSource.set(source);
+  }
+
+  // Recipe editing methods
+  startEditRecipeName(): void {
+    this.recipeNameControl.setValue(this.recipeName());
+    this.isEditingRecipeName.set(true);
+
+    setTimeout(() => {
+      const element = document.querySelector('[data-field="recipe-name"] input') as HTMLElement;
+      if (element) {
+        element.focus();
+      }
+    }, 100);
+  }
+
+  startEditRecipeSource(): void {
+    this.recipeSourceControl.setValue(this.recipeSource());
+    this.isEditingRecipeSource.set(true);
+
+    setTimeout(() => {
+      const element = document.querySelector('[data-field="recipe-source"] input') as HTMLElement;
+      if (element) {
+        element.focus();
+      }
+    }, 100);
+  }
+
+  saveRecipeName(): void {
+    if (this.recipeNameControl.valid) {
+      this.recipeName.set(this.recipeNameControl.value);
+      this.isEditingRecipeName.set(false);
+    }
+  }
+
+  saveRecipeSource(): void {
+    if (this.recipeSourceControl.valid) {
+      this.recipeSource.set(this.recipeSourceControl.value);
+      this.isEditingRecipeSource.set(false);
+    }
+  }
+
+  cancelEditRecipeName(): void {
+    this.recipeNameControl.setValue(this.recipeName());
+    this.isEditingRecipeName.set(false);
+  }
+
+  cancelEditRecipeSource(): void {
+    this.recipeSourceControl.setValue(this.recipeSource());
+    this.isEditingRecipeSource.set(false);
+  }
+
+  // Auto-save for recipe fields
+  autoSaveRecipeName(): void {
+    if (this.recipeNameControl.valid) {
+      this.saveRecipeName();
+    }
+  }
+
+  autoSaveRecipeSource(): void {
+    if (this.recipeSourceControl.valid) {
+      this.saveRecipeSource();
+    }
+  }
+
+  // Keyboard navigation for recipe fields
+  onRecipeKeyDown(event: KeyboardEvent, field: 'name' | 'source'): void {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (field === 'name') {
+        this.autoSaveRecipeName();
+      } else {
+        this.autoSaveRecipeSource();
+      }
+    } else if (event.key === 'Escape') {
+      event.preventDefault();
+      if (field === 'name') {
+        this.cancelEditRecipeName();
+      } else {
+        this.cancelEditRecipeSource();
+      }
+    }
   }
 
   private validateForm(): void {

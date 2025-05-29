@@ -22,6 +22,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { GenerationReviewItemDto, CategoryDto } from '../../../../../types';
 import { DEFAULT_CATEGORY_NAMES } from '@app/shared/mocks/defaults.mock';
+import { CategoryIconComponent } from '@app/shared/category-icon/category-icon.component';
 
 interface EditableItem extends GenerationReviewItemDto {
   isEditing?: boolean;
@@ -53,6 +54,7 @@ type ViewMode = 'table' | 'grouped';
     MatTooltipModule,
     MatCardModule,
     MatButtonToggleModule,
+    CategoryIconComponent,
   ],
   templateUrl: './review-table.component.html',
   styleUrl: './review-table.component.scss',
@@ -65,10 +67,11 @@ export class ReviewTableComponent {
   }
 
   @Input() categories: CategoryDto[] = [];
+
   @Output() itemsChange = new EventEmitter<GenerationReviewItemDto[]>();
 
   editableItems = signal<EditableItem[]>([]);
-  displayedColumns = ['exclude', 'product_name', 'quantity', 'unit', 'category', 'actions'];
+  displayedColumns = ['exclude', 'product_name', 'quantity', 'unit', 'category'];
 
   // View and sorting state
   viewMode = signal<ViewMode>('table');
@@ -292,6 +295,69 @@ export class ReviewTableComponent {
     );
     this.editableItems.set(updatedItems);
     this.emitChanges();
+  }
+
+  // New method for auto-save on blur/enter
+  autoSaveEdit(item: EditableItem): void {
+    if (!item.editForm) return;
+
+    const form = item.editForm;
+
+    // Only save if form is valid
+    if (
+      form.product_name.valid &&
+      form.quantity.valid &&
+      form.unit.valid &&
+      form.category_id.valid
+    ) {
+      this.saveEdit(item);
+    }
+  }
+
+  // New method for handling keyboard navigation
+  onKeyDown(event: KeyboardEvent, item: EditableItem, action?: 'save' | 'cancel'): void {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (action === 'save') {
+        this.autoSaveEdit(item);
+      } else {
+        this.autoSaveEdit(item);
+      }
+    } else if (event.key === 'Escape') {
+      event.preventDefault();
+      this.cancelEdit(item);
+    } else if (event.key === 'Tab') {
+      // Allow default tab behavior for keyboard navigation
+      return;
+    }
+  }
+
+  // Method to start editing specific field (for click-to-edit)
+  startEditField(
+    item: EditableItem,
+    field?: 'product_name' | 'quantity' | 'unit' | 'category_id'
+  ): void {
+    if (item.excluded) return; // Don't allow editing excluded items
+
+    if (!item.isEditing) {
+      this.startEdit(item);
+
+      // Focus the specific field after starting edit mode
+      setTimeout(() => {
+        if (field) {
+          this.focusField(item.id, field);
+        }
+      }, 100);
+    }
+  }
+
+  // Helper method to focus specific field
+  private focusField(itemId: string, field: string): void {
+    const selector = `[data-item-id="${itemId}"][data-field="${field}"] input, [data-item-id="${itemId}"][data-field="${field}"] mat-select`;
+    const element = document.querySelector(selector) as HTMLElement;
+    if (element) {
+      element.focus();
+    }
   }
 
   cancelEdit(item: EditableItem): void {

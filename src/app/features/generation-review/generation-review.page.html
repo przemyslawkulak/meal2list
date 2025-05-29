@@ -15,29 +15,65 @@
   <mat-card class="recipe-metadata">
     <mat-card-content>
       <div class="metadata-fields">
-        <mat-form-field appearance="outline" class="recipe-name-field">
-          <mat-label>Nazwa przepisu</mat-label>
-          <input
-            matInput
-            #recipeNameInput
-            [value]="recipeName()"
-            (input)="onRecipeNameChange(recipeNameInput.value)"
-            placeholder="Wprowadź nazwę przepisu"
-          />
-          <mat-icon matSuffix>restaurant</mat-icon>
-        </mat-form-field>
+        <div class="metadata-field">
+          <span class="field-label">
+            <mat-icon>restaurant</mat-icon>
+            Nazwa przepisu:
+          </span>
+          @if (isEditingRecipeName()) {
+          <mat-form-field appearance="outline" class="edit-field recipe-name-field">
+            <input
+              matInput
+              [formControl]="recipeNameControl"
+              placeholder="Wprowadź nazwę przepisu"
+              data-field="recipe-name"
+              (blur)="autoSaveRecipeName()"
+              (keydown)="onRecipeKeyDown($event, 'name')"
+            />
+            @if (recipeNameControl.hasError('required')) {
+            <mat-error>Nazwa przepisu jest wymagana</mat-error>
+            }
+          </mat-form-field>
+          } @else {
+          <span
+            class="editable-field recipe-display"
+            (click)="startEditRecipeName()"
+            matTooltip="Kliknij aby edytować nazwę przepisu"
+          >
+            {{ recipeName() || 'Kliknij aby dodać nazwę przepisu' }}
+          </span>
+          }
+        </div>
 
-        <mat-form-field appearance="outline" class="recipe-source-field">
-          <mat-label>Źródło</mat-label>
-          <input
-            matInput
-            #recipeSourceInput
-            [value]="recipeSource()"
-            (input)="onRecipeSourceChange(recipeSourceInput.value)"
-            placeholder="np. książka kucharska, strona internetowa"
-          />
-          <mat-icon matSuffix>source</mat-icon>
-        </mat-form-field>
+        <div class="metadata-field">
+          <span class="field-label">
+            <mat-icon>source</mat-icon>
+            Źródło:
+          </span>
+          @if (isEditingRecipeSource()) {
+          <mat-form-field appearance="outline" class="edit-field recipe-source-field">
+            <input
+              matInput
+              [formControl]="recipeSourceControl"
+              placeholder="np. książka kucharska, strona internetowa"
+              data-field="recipe-source"
+              (blur)="autoSaveRecipeSource()"
+              (keydown)="onRecipeKeyDown($event, 'source')"
+            />
+            @if (recipeSourceControl.hasError('required')) {
+            <mat-error>Źródło jest wymagane</mat-error>
+            }
+          </mat-form-field>
+          } @else {
+          <span
+            class="editable-field recipe-display"
+            (click)="startEditRecipeSource()"
+            matTooltip="Kliknij aby edytować źródło przepisu"
+          >
+            {{ recipeSource() || 'Kliknij aby dodać źródło' }}
+          </span>
+          }
+        </div>
       </div>
     </mat-card-content>
   </mat-card>
