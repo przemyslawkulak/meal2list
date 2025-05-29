@@ -265,10 +265,27 @@ export class GenerationReviewPageComponent implements OnInit, OnDestroy {
   onRecipeKeyDown(event: KeyboardEvent, field: 'name' | 'source'): void {
     if (event.key === 'Enter') {
       event.preventDefault();
+      // Check if we're in edit mode (input field) or display mode (span)
       if (field === 'name') {
-        this.autoSaveRecipeName();
+        if (this.isEditingRecipeName()) {
+          this.autoSaveRecipeName();
+        } else {
+          this.startEditRecipeName();
+        }
       } else {
-        this.autoSaveRecipeSource();
+        if (this.isEditingRecipeSource()) {
+          this.autoSaveRecipeSource();
+        } else {
+          this.startEditRecipeSource();
+        }
+      }
+    } else if (event.key === ' ' && (event.target as HTMLElement).tagName === 'SPAN') {
+      // Space key only works for span elements (not input fields)
+      event.preventDefault();
+      if (field === 'name') {
+        this.startEditRecipeName();
+      } else {
+        this.startEditRecipeSource();
       }
     } else if (event.key === 'Escape') {
       event.preventDefault();
@@ -329,13 +346,14 @@ export class GenerationReviewPageComponent implements OnInit, OnDestroy {
     this.isProcessing.set(true);
 
     const itemsToConfirm = this.reviewItems().filter(item => !item.excluded);
+    const currentRecipeName = this.recipeName(); // Get current recipe name from signal
 
     this.generationService
-      .confirmReviewedItems(this.listId, itemsToConfirm)
+      .confirmReviewedItems(this.listId, itemsToConfirm, currentRecipeName)
       .pipe(
         tap(() => {
           this.snackBar.open(
-            `Dodano ${itemsToConfirm.length} produktów do listy zakupów`,
+            `Dodano ${itemsToConfirm.length} produktów z recepty "${currentRecipeName}" do listy zakupów`,
             'Zamknij',
             { duration: 3000 }
           );

@@ -10,13 +10,287 @@
         <mat-card-subtitle>Utworzono: {{ state.data.created_at | date }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <mat-list data-testid="shopping-list-items">
-          @for (item of state.uncheckedItems; track item.id) {
-            <mat-list-item
-              [attr.data-testid]="'list-item-' + item.id"
-              [class.checked-item]="item.is_checked"
-            >
-              <div class="item-container">
+        <!-- Toggle button for grouping by recipe -->
+        <div class="view-controls">
+          <button
+            mat-stroked-button
+            (click)="toggleGroupByRecipe()"
+            [color]="state.groupByRecipe ? 'primary' : 'basic'"
+            data-testid="group-by-recipe-toggle"
+          >
+            <mat-icon>{{ state.groupByRecipe ? 'list' : 'restaurant_menu' }}</mat-icon>
+            {{ state.groupByRecipe ? 'Widok zwykły' : 'Grupuj według recepty' }}
+          </button>
+          <button
+            mat-stroked-button
+            (click)="toggleShowBadges()"
+            [color]="state.showBadges ? 'primary' : 'basic'"
+            data-testid="show-badges-toggle"
+          >
+            <mat-icon>{{ state.showBadges ? 'visibility_off' : 'visibility' }}</mat-icon>
+            {{ state.showBadges ? 'Ukryj znaczniki' : 'Pokaż znaczniki' }}
+          </button>
+        </div>
+
+        @if (!state.groupByRecipe) {
+          <!-- Normal view -->
+          <mat-list data-testid="shopping-list-items">
+            @for (item of state.uncheckedItems; track item.id) {
+              <mat-list-item
+                [attr.data-testid]="'list-item-' + item.id"
+                [class.checked-item]="item.is_checked"
+              >
+                <div class="item-container">
+                  <div class="item-info">
+                    <mat-checkbox
+                      [checked]="item.is_checked"
+                      (change)="toggleItemChecked(item.id, item.is_checked)"
+                      [matTooltip]="item.product_name + ' - ' + item.quantity + ' ' + item.unit"
+                      matTooltipPosition="above"
+                      [matTooltipShowDelay]="300"
+                    >
+                      <span class="checkbox-content">
+                        {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
+                        @if (item.recipe_source && state.showBadges) {
+                          <mat-chip
+                            class="recipe-source-chip inline-chip"
+                            [attr.data-testid]="'recipe-source-chip-' + item.id"
+                            [matTooltip]="'Z recepty: ' + item.recipe_source"
+                            matTooltipPosition="above"
+                          >
+                            <mat-icon>restaurant_menu</mat-icon>
+                            {{ item.recipe_source }}
+                          </mat-chip>
+                        }
+                      </span>
+                    </mat-checkbox>
+                  </div>
+                  <div class="item-actions">
+                    <app-category-icon
+                      [categoryName]="getCategoryName(item.category_id, state.categories)"
+                      [attr.data-testid]="'category-icon-' + item.id"
+                      [matTooltip]="getCategoryName(item.category_id, state.categories)"
+                      matTooltipPosition="above"
+                    ></app-category-icon>
+                    @if (state.showBadges) {
+                      <mat-chip
+                        [attr.data-testid]="'source-chip-' + item.id"
+                        [matTooltip]="'Source: ' + item.source"
+                        matTooltipPosition="above"
+                        [ngClass]="{
+                          'source-auto': item.source === 'auto',
+                          'source-manual': item.source === 'manual',
+                          'source-modified': item.source === 'modified',
+                        }"
+                      >
+                        {{ item.source }}
+                      </mat-chip>
+                    }
+                    <button
+                      mat-icon-button
+                      color="warn"
+                      (click)="deleteItem(item.id)"
+                      [attr.data-testid]="'delete-item-' + item.id"
+                      aria-label="Delete item"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </mat-list-item>
+            }
+          </mat-list>
+        } @else {
+          <!-- Grouped by recipe view -->
+          <div class="grouped-view" data-testid="grouped-by-recipe-view">
+            @for (group of state.groupedByRecipeItems; track group.recipeName) {
+              <mat-card
+                class="recipe-group-card"
+                [attr.data-testid]="'recipe-group-' + group.recipeName"
+              >
+                <mat-card-header>
+                  <mat-card-title class="recipe-group-title">
+                    <mat-icon>restaurant_menu</mat-icon>
+                    {{ group.recipeName }}
+                    <span class="item-count"
+                      >({{ group.items.length }}
+                      {{ group.items.length === 1 ? 'produkt' : 'produkty' }})</span
+                    >
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <mat-list>
+                    @for (item of group.uncheckedItems; track item.id) {
+                      <mat-list-item
+                        [attr.data-testid]="'grouped-item-' + item.id"
+                        [class.checked-item]="item.is_checked"
+                      >
+                        <div class="item-container">
+                          <div class="item-info">
+                            <mat-checkbox
+                              [checked]="item.is_checked"
+                              (change)="toggleItemChecked(item.id, item.is_checked)"
+                              [matTooltip]="
+                                item.product_name + ' - ' + item.quantity + ' ' + item.unit
+                              "
+                              matTooltipPosition="above"
+                              [matTooltipShowDelay]="300"
+                            >
+                              <span class="checkbox-content">
+                                {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
+                                @if (item.recipe_source && state.showBadges) {
+                                  <mat-chip
+                                    class="recipe-source-chip inline-chip"
+                                    [attr.data-testid]="'recipe-source-chip-' + item.id"
+                                    [matTooltip]="'Z recepty: ' + item.recipe_source"
+                                    matTooltipPosition="above"
+                                  >
+                                    <mat-icon>restaurant_menu</mat-icon>
+                                    {{ item.recipe_source }}
+                                  </mat-chip>
+                                }
+                              </span>
+                            </mat-checkbox>
+                          </div>
+                          <div class="item-actions">
+                            <app-category-icon
+                              [categoryName]="getCategoryName(item.category_id, state.categories)"
+                              [attr.data-testid]="'category-icon-' + item.id"
+                              [matTooltip]="getCategoryName(item.category_id, state.categories)"
+                              matTooltipPosition="above"
+                            ></app-category-icon>
+                            @if (state.showBadges) {
+                              <mat-chip
+                                [attr.data-testid]="'source-chip-' + item.id"
+                                [matTooltip]="'Source: ' + item.source"
+                                matTooltipPosition="above"
+                                [ngClass]="{
+                                  'source-auto': item.source === 'auto',
+                                  'source-manual': item.source === 'manual',
+                                  'source-modified': item.source === 'modified',
+                                }"
+                              >
+                                {{ item.source }}
+                              </mat-chip>
+                            }
+                            <button
+                              mat-icon-button
+                              color="warn"
+                              (click)="deleteItem(item.id)"
+                              [attr.data-testid]="'delete-item-' + item.id"
+                              aria-label="Delete item"
+                            >
+                              <mat-icon>delete</mat-icon>
+                            </button>
+                          </div>
+                        </div>
+                      </mat-list-item>
+                    }
+                  </mat-list>
+                </mat-card-content>
+              </mat-card>
+            }
+
+            <!-- All completed items section -->
+            @if (state.allCheckedItemsInGroupedView.length > 0) {
+              <mat-card class="completed-items-card" data-testid="all-completed-items">
+                <mat-card-header>
+                  <mat-card-title class="completed-items-title">
+                    <mat-icon>check_circle</mat-icon>
+                    Zakończone produkty
+                    <span class="item-count"
+                      >({{ state.allCheckedItemsInGroupedView.length }}
+                      {{
+                        state.allCheckedItemsInGroupedView.length === 1 ? 'produkt' : 'produkty'
+                      }})</span
+                    >
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <mat-list>
+                    @for (item of state.allCheckedItemsInGroupedView; track item.id) {
+                      <mat-list-item
+                        [attr.data-testid]="'all-completed-item-' + item.id"
+                        [class.checked-item]="item.is_checked"
+                      >
+                        <div class="item-container">
+                          <div class="item-info">
+                            <mat-checkbox
+                              [checked]="item.is_checked"
+                              (change)="toggleItemChecked(item.id, item.is_checked)"
+                              [matTooltip]="
+                                item.product_name + ' - ' + item.quantity + ' ' + item.unit
+                              "
+                              matTooltipPosition="above"
+                              [matTooltipShowDelay]="300"
+                            >
+                              <span class="checkbox-content">
+                                {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
+                                @if (item.recipe_source && state.showBadges) {
+                                  <mat-chip
+                                    class="recipe-source-chip inline-chip"
+                                    [attr.data-testid]="'recipe-source-chip-' + item.id"
+                                    [matTooltip]="'Z recepty: ' + item.recipe_source"
+                                    matTooltipPosition="above"
+                                  >
+                                    <mat-icon>restaurant_menu</mat-icon>
+                                    {{ item.recipe_source }}
+                                  </mat-chip>
+                                }
+                              </span>
+                            </mat-checkbox>
+                          </div>
+                          <div class="item-actions">
+                            <app-category-icon
+                              [categoryName]="getCategoryName(item.category_id, state.categories)"
+                              [attr.data-testid]="'category-icon-' + item.id"
+                              [matTooltip]="getCategoryName(item.category_id, state.categories)"
+                              matTooltipPosition="above"
+                            ></app-category-icon>
+                            @if (state.showBadges) {
+                              <mat-chip
+                                [attr.data-testid]="'source-chip-' + item.id"
+                                [matTooltip]="'Source: ' + item.source"
+                                matTooltipPosition="above"
+                                [ngClass]="{
+                                  'source-auto': item.source === 'auto',
+                                  'source-manual': item.source === 'manual',
+                                  'source-modified': item.source === 'modified',
+                                }"
+                              >
+                                {{ item.source }}
+                              </mat-chip>
+                            }
+                            <button
+                              mat-icon-button
+                              color="warn"
+                              (click)="deleteItem(item.id)"
+                              [attr.data-testid]="'delete-item-' + item.id"
+                              aria-label="Delete item"
+                            >
+                              <mat-icon>delete</mat-icon>
+                            </button>
+                          </div>
+                        </div>
+                      </mat-list-item>
+                    }
+                  </mat-list>
+                </mat-card-content>
+              </mat-card>
+            }
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+    @if (state.checkedItems.length && !state.groupByRecipe) {
+      <mat-list class="checked-items-list" data-testid="checked-items-list">
+        @for (item of state.checkedItems; track item.id) {
+          <mat-list-item
+            [attr.data-testid]="'checked-item-' + item.id"
+            [class.checked-item]="item.is_checked"
+          >
+            <div class="item-container">
+              <div class="item-info">
                 <mat-checkbox
                   [checked]="item.is_checked"
                   (change)="toggleItemChecked(item.id, item.is_checked)"
@@ -24,15 +298,30 @@
                   matTooltipPosition="above"
                   [matTooltipShowDelay]="300"
                 >
-                  {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
+                  <span class="checkbox-content">
+                    {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
+                    @if (item.recipe_source && state.showBadges) {
+                      <mat-chip
+                        class="recipe-source-chip inline-chip"
+                        [attr.data-testid]="'recipe-source-chip-' + item.id"
+                        [matTooltip]="'Z recepty: ' + item.recipe_source"
+                        matTooltipPosition="above"
+                      >
+                        <mat-icon>restaurant_menu</mat-icon>
+                        {{ item.recipe_source }}
+                      </mat-chip>
+                    }
+                  </span>
                 </mat-checkbox>
-                <div class="item-actions">
-                  <app-category-icon
-                    [categoryName]="getCategoryName(item.category_id, state.categories)"
-                    [attr.data-testid]="'category-icon-' + item.id"
-                    [matTooltip]="getCategoryName(item.category_id, state.categories)"
-                    matTooltipPosition="above"
-                  ></app-category-icon>
+              </div>
+              <div class="item-actions">
+                <app-category-icon
+                  [categoryName]="getCategoryName(item.category_id, state.categories)"
+                  [attr.data-testid]="'category-icon-' + item.id"
+                  [matTooltip]="getCategoryName(item.category_id, state.categories)"
+                  matTooltipPosition="above"
+                ></app-category-icon>
+                @if (state.showBadges) {
                   <mat-chip
                     [attr.data-testid]="'source-chip-' + item.id"
                     [matTooltip]="'Source: ' + item.source"
@@ -45,58 +334,7 @@
                   >
                     {{ item.source }}
                   </mat-chip>
-                  <button
-                    mat-icon-button
-                    color="warn"
-                    (click)="deleteItem(item.id)"
-                    [attr.data-testid]="'delete-item-' + item.id"
-                    aria-label="Delete item"
-                  >
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </div>
-              </div>
-            </mat-list-item>
-          }
-        </mat-list>
-      </mat-card-content>
-    </mat-card>
-    @if (state.checkedItems.length) {
-      <mat-list class="checked-items-list" data-testid="checked-items-list">
-        @for (item of state.checkedItems; track item.id) {
-          <mat-list-item
-            [attr.data-testid]="'checked-item-' + item.id"
-            [class.checked-item]="item.is_checked"
-          >
-            <div class="item-container">
-              <mat-checkbox
-                [checked]="item.is_checked"
-                (change)="toggleItemChecked(item.id, item.is_checked)"
-                [matTooltip]="item.product_name + ' - ' + item.quantity + ' ' + item.unit"
-                matTooltipPosition="above"
-                [matTooltipShowDelay]="300"
-              >
-                {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
-              </mat-checkbox>
-              <div class="item-actions">
-                <app-category-icon
-                  [categoryName]="getCategoryName(item.category_id, state.categories)"
-                  [attr.data-testid]="'category-icon-' + item.id"
-                  [matTooltip]="getCategoryName(item.category_id, state.categories)"
-                  matTooltipPosition="above"
-                ></app-category-icon>
-                <mat-chip
-                  [attr.data-testid]="'source-chip-' + item.id"
-                  [matTooltip]="'Source: ' + item.source"
-                  matTooltipPosition="above"
-                  [ngClass]="{
-                    'source-auto': item.source === 'auto',
-                    'source-manual': item.source === 'manual',
-                    'source-modified': item.source === 'modified',
-                  }"
-                >
-                  {{ item.source }}
-                </mat-chip>
+                }
                 <button
                   mat-icon-button
                   color="warn"

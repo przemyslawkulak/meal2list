@@ -381,7 +381,11 @@ export class GenerationService extends SupabaseService {
     );
   }
 
-  confirmReviewedItems(listId: string, items: GenerationReviewItemDto[]): Observable<void> {
+  confirmReviewedItems(
+    listId: string,
+    items: GenerationReviewItemDto[],
+    recipeName?: string
+  ): Observable<void> {
     if (!listId || items.length === 0) {
       return throwError(() => ({
         message: 'Invalid list ID or no items to add',
@@ -397,6 +401,7 @@ export class GenerationService extends SupabaseService {
         unit: item.unit,
         category_id: item.category_id,
         source: item.isModified ? ('modified' as const) : ('auto' as const),
+        recipe_source: recipeName || item.recipe_source,
       }));
 
     if (itemsToAdd.length === 0) {

@@ -58,6 +58,8 @@ export class ShoppingListDetailComponent implements OnDestroy {
   loading = signal<boolean>(true);
   shoppingList = signal<ShoppingListResponseDto | null>(null);
   categories = signal<CategoryDto[]>([]);
+  groupByRecipe = signal<boolean>(false);
+  showBadges = signal<boolean>(true);
 
   // Computed signal for sorted items - unchecked at top, checked at bottom (sorted by category)
   sortedItems = computed(() => {
@@ -72,19 +74,60 @@ export class ShoppingListDetailComponent implements OnDestroy {
     return [...this.sortItemsByCategory(uncheckedItems), ...this.sortItemsByCategory(checkedItems)];
   });
 
+  // Computed signal for items grouped by recipe
+  groupedByRecipeItems = computed(() => {
+    const list = this.shoppingList();
+    if (!list?.items) return { recipeGroups: [], allCheckedItems: [] };
+
+    // Split all items into checked and unchecked
+    const uncheckedItems = list.items.filter(item => !item.is_checked);
+    const checkedItems = list.items.filter(item => item.is_checked);
+
+    // Group only unchecked items by recipe_source
+    const grouped = new Map<string, ShoppingListItemResponseDto[]>();
+
+    uncheckedItems.forEach(item => {
+      const recipeKey = item.recipe_source || 'Ręczne dodanie';
+      if (!grouped.has(recipeKey)) {
+        grouped.set(recipeKey, []);
+      }
+      grouped.get(recipeKey)!.push(item);
+    });
+
+    // Convert to array and sort each group
+    const recipeGroups = Array.from(grouped.entries()).map(([recipeName, items]) => ({
+      recipeName,
+      items: this.sortItemsByCategory(items),
+      uncheckedItems: items, // All items in groups are unchecked now
+      checkedItems: [] as ShoppingListItemResponseDto[], // Empty since checked items are separate
+    }));
+
+    return {
+      recipeGroups,
+      allCheckedItems: this.sortItemsByCategory(checkedItems),
+    };
+  });
+
   // Computed signals derived from sorted items
   uncheckedItems = computed(() => this.sortedItems().filter(item => !item.is_checked));
   checkedItems = computed(() => this.sortedItems().filter(item => item.is_checked));
 
   // Combined state for template consumption
-  shoppingListState = computed(() => ({
-    loading: this.loading(),
-    data: this.shoppingList(),
-    categories: this.categories(),
-    sortedItems: this.sortedItems(),
-    uncheckedItems: this.uncheckedItems(),
-    checkedItems: this.checkedItems(),
-  }));
+  shoppingListState = computed(() => {
+    const groupedData = this.groupedByRecipeItems();
+    return {
+      loading: this.loading(),
+      data: this.shoppingList(),
+      categories: this.categories(),
+      sortedItems: this.sortedItems(),
+      uncheckedItems: this.uncheckedItems(),
+      checkedItems: this.checkedItems(),
+      groupByRecipe: this.groupByRecipe(),
+      groupedByRecipeItems: groupedData.recipeGroups,
+      allCheckedItemsInGroupedView: groupedData.allCheckedItems,
+      showBadges: this.showBadges(),
+    };
+  });
 
   constructor(
     private route: ActivatedRoute,
@@ -298,5 +341,19 @@ export class ShoppingListDetailComponent implements OnDestroy {
       ...currentList,
       items: currentList.items.filter(item => item.id !== itemId),
     });
+  }
+
+  /**
+   * Toggles between normal view and grouped by recipe view
+   */
+  toggleGroupByRecipe(): void {
+    this.groupByRecipe.set(!this.groupByRecipe());
+  }
+
+  /**
+   * Toggles visibility of recipe and source badges
+   */
+  toggleShowBadges(): void {
+    this.showBadges.set(!this.showBadges());
   }
 }

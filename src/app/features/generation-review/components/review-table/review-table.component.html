@@ -106,6 +106,14 @@
                   [class.modified]="item.isModified"
                   [class.disabled]="item.excluded"
                   (click)="startEditField(item, 'product_name')"
+                  (keydown)="onEditFieldKeyDown($event, item, 'product_name')"
+                  tabindex="0"
+                  role="button"
+                  [attr.aria-label]="
+                    item.excluded
+                      ? 'Produkt wykluczony - nie można edytować'
+                      : 'Edytuj nazwę produktu'
+                  "
                   [matTooltip]="
                     item.excluded
                       ? 'Produkt wykluczony - nie można edytować'
@@ -151,6 +159,12 @@
                   class="editable-field"
                   [class.disabled]="item.excluded"
                   (click)="startEditField(item, 'quantity')"
+                  (keydown)="onEditFieldKeyDown($event, item, 'quantity')"
+                  tabindex="0"
+                  role="button"
+                  [attr.aria-label]="
+                    item.excluded ? 'Produkt wykluczony - nie można edytować' : 'Edytuj ilość'
+                  "
                   [matTooltip]="
                     item.excluded
                       ? 'Produkt wykluczony - nie można edytować'
@@ -189,6 +203,12 @@
                   class="editable-field"
                   [class.disabled]="item.excluded"
                   (click)="startEditField(item, 'unit')"
+                  (keydown)="onEditFieldKeyDown($event, item, 'unit')"
+                  tabindex="0"
+                  role="button"
+                  [attr.aria-label]="
+                    item.excluded ? 'Produkt wykluczony - nie można edytować' : 'Edytuj jednostkę'
+                  "
                   [matTooltip]="
                     item.excluded
                       ? 'Produkt wykluczony - nie można edytować'
@@ -232,6 +252,12 @@
                   class="editable-field category-display"
                   [class.disabled]="item.excluded"
                   (click)="startEditField(item, 'category_id')"
+                  (keydown)="onEditFieldKeyDown($event, item, 'category_id')"
+                  tabindex="0"
+                  role="button"
+                  [attr.aria-label]="
+                    item.excluded ? 'Produkt wykluczony - nie można edytować' : 'Edytuj kategorię'
+                  "
                   [matTooltip]="
                     item.excluded
                       ? 'Produkt wykluczony - nie można edytować'
@@ -397,6 +423,14 @@
                               [class.modified]="item.isModified"
                               [class.disabled]="item.excluded"
                               (click)="startEditField(item, 'product_name')"
+                              (keydown)="onEditFieldKeyDown($event, item, 'product_name')"
+                              tabindex="0"
+                              role="button"
+                              [attr.aria-label]="
+                                item.excluded
+                                  ? 'Produkt wykluczony - nie można edytować'
+                                  : 'Edytuj nazwę produktu'
+                              "
                               [matTooltip]="
                                 item.excluded
                                   ? 'Produkt wykluczony - nie można edytować'
@@ -416,6 +450,14 @@
                               class="quantity editable-field"
                               [class.disabled]="item.excluded"
                               (click)="startEditField(item, 'quantity')"
+                              (keydown)="onEditFieldKeyDown($event, item, 'quantity')"
+                              tabindex="0"
+                              role="button"
+                              [attr.aria-label]="
+                                item.excluded
+                                  ? 'Produkt wykluczony - nie można edytować'
+                                  : 'Edytuj ilość'
+                              "
                               [matTooltip]="
                                 item.excluded
                                   ? 'Produkt wykluczony - nie można edytować'
@@ -428,6 +470,14 @@
                               class="unit editable-field"
                               [class.disabled]="item.excluded"
                               (click)="startEditField(item, 'unit')"
+                              (keydown)="onEditFieldKeyDown($event, item, 'unit')"
+                              tabindex="0"
+                              role="button"
+                              [attr.aria-label]="
+                                item.excluded
+                                  ? 'Produkt wykluczony - nie można edytować'
+                                  : 'Edytuj jednostkę'
+                              "
                               [matTooltip]="
                                 item.excluded
                                   ? 'Produkt wykluczony - nie można edytować'
@@ -440,6 +490,14 @@
                               class="category editable-field"
                               [class.disabled]="item.excluded"
                               (click)="startEditField(item, 'category_id')"
+                              (keydown)="onEditFieldKeyDown($event, item, 'category_id')"
+                              tabindex="0"
+                              role="button"
+                              [attr.aria-label]="
+                                item.excluded
+                                  ? 'Produkt wykluczony - nie można edytować'
+                                  : 'Edytuj kategorię'
+                              "
                               [matTooltip]="
                                 item.excluded
                                   ? 'Produkt wykluczony - nie można edytować'

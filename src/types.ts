@@ -139,6 +139,7 @@ export type ShoppingListItemResponseDto = Pick<
   | 'created_at'
   | 'updated_at'
   | 'source'
+  | 'recipe_source'
 >;
 
 export interface CreateShoppingListItemCommand {
@@ -147,12 +148,16 @@ export interface CreateShoppingListItemCommand {
   unit?: string;
   source: 'auto' | 'manual' | 'modified';
   category_id: string;
+  recipe_source?: string; // Name of the recipe from which this item was generated
+  product_id?: string; // Link to products table
 }
 
 export interface UpdateShoppingListItemCommand {
-  quantity: number;
-  unit: string;
-  is_checked: boolean;
+  quantity?: number;
+  unit?: string;
+  is_checked?: boolean;
+  recipe_source?: string | null;
+  product_id?: string;
 }
 
 export type CreateBatchShoppingListItemsCommand = CreateShoppingListItemCommand[];
@@ -221,6 +226,7 @@ export interface GenerationReviewItemDto {
   excluded: boolean;
   source: 'auto';
   isModified?: boolean; // track if user edited the item
+  recipe_source?: string; // Name of the recipe from which this item was generated
 }
 
 export interface ReviewSessionDto {

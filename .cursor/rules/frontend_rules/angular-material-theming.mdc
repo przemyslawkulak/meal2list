@@ -1,0 +1,264 @@
+---
+description: 
+globs: *scss
+alwaysApply: false
+---
+# Angular Material Theming - Cursor Rule
+
+You are an expert in Angular Material theming with Material Design 3 specification. Follow these guidelines when helping with Angular Material theming:
+
+## Core Principles
+
+### Material 3 Token System
+- Use CSS custom properties (tokens) that start with `--mat-sys-` prefix
+- Avoid direct CSS overrides of component internals
+- Use the new theme API with `@use "@angular/material" as mat;`
+- Leverage token-based approach for granular customization
+
+### Theme Structure
+Always structure themes using the new Angular Material v18+ API:
+
+```scss
+@use "@angular/material" as mat;
+
+html {
+  @include mat.theme((
+    color: $color-palette,
+    typography: $typography-config,
+    density: $density-value,
+  ));
+}
+```
+
+## Color System
+
+### Color Roles
+- **Primary**: Main brand color for most prominent UI elements
+- **Secondary**: Accent color for highlighting and emphasis
+- **Tertiary**: Contrasting accents that balance primary and secondary
+- **Warn**: Error states and critical actions
+
+### Built-in Palettes
+Available palettes: `red`, `green`, `blue`, `yellow`, `cyan`, `magenta`, `orange`, `chartreuse`, `spring-green`, `azure`, `violet`, `rose`
+
+Access with: `mat.${{palette-name}}-palette`
+
+### Custom Palette Generation
+Use Angular CLI to generate custom color palettes:
+```bash
+ng generate @angular/material:theme-color
+```
+
+### Color Configuration Examples
+```scss
+// Single palette
+@include mat.theme((
+  color: mat.$violet-palette,
+));
+
+// Multiple palettes
+@include mat.theme((
+  color: (
+    primary: theme.$primary-palette,
+    tertiary: theme.$tertiary-palette
+  ),
+));
+```
+
+## Typography System
+
+### Typography Categories
+- **Body**: Longer text passages (body-small, body-medium, body-large)
+- **Display**: Largest text for short, important content
+- **Headline**: Prominent text for smaller screens
+- **Label**: Utility text for components and captions
+- **Title**: Medium emphasis text for content sections
+
+### Typography Configuration
+```scss
+// Simple font family
+typography: Roboto,
+
+// Detailed configuration
+typography: (
+  plain-family: Poppins,
+  brand-family: Montserrat,
+  bold-weight: 800,
+  medium-weight: 500,
+  regular-weight: 300,
+),
+```
+
+### Typography Tokens
+Access typography tokens: `--mat-sys-{{category}}-{{size}}`
+- Font parts: `-font`, `-line-height`, `-size`, `-tracking`, `-weight`
+
+Example:
+```css
+h1 { font: var(--mat-sys-headline-large); }
+h2 { font: var(--mat-sys-headline-medium); }
+```
+
+## Density System
+
+### Density Values
+- Range: 0 to -5
+- **0**: Default spacing
+- **-5**: Most compact layout
+- Each step reduces spacing by 4px
+
+```scss
+@include mat.theme((
+  density: -2, // Moderately compact
+));
+```
+
+## Dark Mode Implementation
+
+### Using light-dark() Function
+```scss
+@mixin apply-dark-mode {
+  color-scheme: dark;
+}
+
+html {
+  @include mat.theme((
+    color: theme.$primary-palette,
+    typography: Poppins,
+    density: -2,
+  ));
+}
+
+body.dark-mode {
+  @include apply-dark-mode;
+}
+```
+
+### Custom Dark Theme
+```scss
+@mixin apply-dark-theme {
+  @include mat.theme((
+    color: (
+      primary: dark-theme.$primary-palette,
+      tertiary: dark-theme.$tertiary-palette,
+      theme-type: dark
+    ),
+    typography: Poppins,
+    density: 0,
+  ));
+}
+```
+
+## System Tokens
+
+### Color Tokens
+Key system tokens:
+- `--mat-sys-primary`: Most used component color
+- `--mat-sys-surface`: Background color
+- `--mat-sys-error`: Alert users
+- `--mat-sys-outline`: Borders and separators
+- `--mat-sys-on-*`: Text/icon colors for accessibility
+
+### Elevation Tokens
+Six elevation levels: `--mat-sys-level0` to `--mat-sys-level5`
+Defined as `box-shadow` styles
+
+## Customization with Overrides
+
+### System Token Overrides
+```scss
+// Using theme-overrides mixin
+.custom-container {
+  @include mat.theme-overrides((
+    primary-container: #001e2c,
+    on-primary-container: #dbe3eb
+  ));
+}
+
+// In theme definition
+@include mat.theme((
+  color: theme.$primary-palette,
+  typography: Poppins,
+  density: 0,
+), $overrides: (
+  primary-container: #001e2c,
+));
+```
+
+### Component Token Overrides
+```scss
+// Dialog customization
+:root {
+  @include mat.dialog-overrides((
+    content-padding: 3rem
+  ));
+}
+
+// Button customization
+.custom-button {
+  @include mat.button-overrides((
+    filled-label-text-transform: uppercase,
+    outlined-label-text-transform: uppercase,
+  ));
+}
+```
+
+## Contextual Theming
+
+Apply different themes to specific sections:
+```scss
+html {
+  @include mat.theme((
+    color: theme.$primary-palette,
+    typography: Poppins,
+    density: 0,
+  ));
+}
+
+.special-section {
+  @include mat.theme((
+    color: mat.$azure-palette,
+    typography: Poppins,
+    density: 0,
+  ));
+}
+```
+
+## Best Practices
+
+### Do's
+- Use the token-based approach for all customizations
+- Leverage built-in palettes when possible
+- Use component-specific override mixins
+- Follow Material Design 3 guidelines
+- Test both light and dark modes
+- Use semantic color roles (primary, secondary, etc.)
+
+### Don'ts
+- Avoid direct CSS overrides of component internals
+- Don't hardcode colors instead of using tokens
+- Don't ignore accessibility (use on-* tokens for text)
+- Don't mix old and new theming APIs
+- Don't override private implementation details
+
+### SCSS Structure
+```scss
+// 1. Imports
+@use "@angular/material" as mat;
+@use "./theme-colors" as theme;
+
+// 2. Mixins for reusability
+@mixin apply-dark-theme { ... }
+
+// 3. Base theme
+html { @include mat.theme(...); }
+
+// 4. Contextual themes
+.section { @include mat.theme(...); }
+
+// 5. Component overrides
+.component { @include mat.component-overrides(...); }
+```
+
+
+When implementing Angular Material themes, always prioritize the token-based approach, ensure accessibility, and provide comprehensive light/dark mode support.

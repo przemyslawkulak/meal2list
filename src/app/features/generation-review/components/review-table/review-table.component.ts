@@ -319,16 +319,30 @@ export class ReviewTableComponent {
     if (event.key === 'Enter') {
       event.preventDefault();
       if (action === 'save') {
-        this.autoSaveEdit(item);
+        this.saveEdit(item);
+      } else if (action === 'cancel') {
+        this.cancelEdit(item);
       } else {
         this.autoSaveEdit(item);
       }
     } else if (event.key === 'Escape') {
       event.preventDefault();
       this.cancelEdit(item);
-    } else if (event.key === 'Tab') {
-      // Allow default tab behavior for keyboard navigation
-      return;
+    }
+  }
+
+  onEditFieldKeyDown(
+    event: KeyboardEvent,
+    item: EditableItem,
+    field: 'product_name' | 'quantity' | 'unit' | 'category_id'
+  ): void {
+    // Only handle Enter and Space keys for accessibility
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      // Don't start editing if item is excluded
+      if (!item.excluded) {
+        this.startEditField(item, field);
+      }
     }
   }
 

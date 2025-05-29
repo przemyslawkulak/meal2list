@@ -38,6 +38,10 @@
           <span
             class="editable-field recipe-display"
             (click)="startEditRecipeName()"
+            (keydown)="onRecipeKeyDown($event, 'name')"
+            tabindex="0"
+            role="button"
+            aria-label="Edytuj nazwę przepisu"
             matTooltip="Kliknij aby edytować nazwę przepisu"
           >
             {{ recipeName() || 'Kliknij aby dodać nazwę przepisu' }}
@@ -68,6 +72,10 @@
           <span
             class="editable-field recipe-display"
             (click)="startEditRecipeSource()"
+            (keydown)="onRecipeKeyDown($event, 'source')"
+            tabindex="0"
+            role="button"
+            aria-label="Edytuj źródło przepisu"
             matTooltip="Kliknij aby edytować źródło przepisu"
           >
             {{ recipeSource() || 'Kliknij aby dodać źródło' }}
