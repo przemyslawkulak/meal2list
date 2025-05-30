@@ -1,0 +1,102 @@
+<div class="edit-item-dialog">
+  <h2 mat-dialog-title>Edytuj produkt</h2>
+
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="editForm" class="edit-form">
+      <!-- Product Name -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nazwa produktu</mat-label>
+        <input
+          matInput
+          formControlName="product_name"
+          placeholder="Wpisz nazwę produktu"
+          aria-label="Nazwa produktu"
+        />
+        <mat-error>{{ getErrorMessage('product_name') }}</mat-error>
+      </mat-form-field>
+
+      <!-- Quantity and Unit in one line -->
+      <div class="quantity-unit-row">
+        <div class="quantity-container">
+          <mat-form-field appearance="outline" class="quantity-field">
+            <mat-label>Ilość</mat-label>
+            <input
+              matInput
+              formControlName="quantity"
+              type="number"
+              step="1"
+              min="0.01"
+              max="9999"
+              placeholder="1"
+              aria-label="Ilość"
+            />
+            <mat-error>{{ getErrorMessage('quantity') }}</mat-error>
+          </mat-form-field>
+          <div class="quantity-buttons">
+            <button
+              mat-icon-button
+              type="button"
+              (click)="decrementQuantity()"
+              [disabled]="editForm.get('quantity')?.value <= 0.01"
+              aria-label="Zmniejsz ilość"
+              matTooltip="Zmniejsz o 1"
+            >
+              <mat-icon>remove</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              type="button"
+              (click)="incrementQuantity()"
+              [disabled]="editForm.get('quantity')?.value >= 9999"
+              aria-label="Zwiększ ilość"
+              matTooltip="Zwiększ o 1"
+            >
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Unit -->
+        <mat-form-field appearance="outline" class="unit-field">
+          <mat-label>Jednostka</mat-label>
+          <mat-select formControlName="unit" aria-label="Jednostka">
+            <mat-option value="">Brak jednostki</mat-option>
+            <mat-option *ngFor="let unit of units" [value]="unit">
+              {{ unit }}
+            </mat-option>
+          </mat-select>
+          <mat-error>{{ getErrorMessage('unit') }}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Category -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Kategoria</mat-label>
+        <mat-select formControlName="category_id" aria-label="Kategoria">
+          <mat-option *ngFor="let category of data.categories" [value]="category.id">
+            <span class="category-option">
+              <app-category-icon class="category-icon" [categoryName]="category.name">
+              </app-category-icon>
+              {{ category.name }}
+            </span>
+          </mat-option>
+        </mat-select>
+        <mat-error>{{ getErrorMessage('category_id') }}</mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-button type="button" (click)="onCancel()" class="cancel-button">Anuluj</button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      (click)="onSave()"
+      [disabled]="editForm.invalid"
+      class="save-button"
+    >
+      Zapisz zmiany
+    </button>
+  </mat-dialog-actions>
+</div>

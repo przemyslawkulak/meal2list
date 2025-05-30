@@ -6,9 +6,13 @@ import type {
   ShoppingListItemResponseDto,
   CategoryDto,
   ShoppingListResponseDto,
+  UpdateShoppingListItemCommand,
 } from '../../../types';
 import { AppEnvironment } from '@app/app.config';
-import { batchShoppingListItemsSchema } from '@schemas/shopping-list-item.schema';
+import {
+  batchShoppingListItemsSchema,
+  updateShoppingListItemSchema,
+} from '@schemas/shopping-list-item.schema';
 import { CategoryService } from './category.service';
 import { DEFAULT_CATEGORY_NAMES } from '@app/shared/mocks/defaults.mock';
 import { shareReplay, take } from 'rxjs/operators';
@@ -207,17 +211,35 @@ export class ShoppingListItemsService extends SupabaseService {
 
   updateShoppingListItem(
     itemId: string,
-    updates: Partial<ShoppingListItemResponseDto>
+    updates: UpdateShoppingListItemCommand
   ): Observable<ShoppingListItemResponseDto> {
+    const validationResult = updateShoppingListItemSchema.safeParse(updates);
+    if (!validationResult.success) {
+      console.error('Invalid input data', validationResult.error.format());
+      return throwError(() => ({
+        message: 'Invalid input data',
+        statusCode: 400,
+        errors: validationResult.error.format(),
+      }));
+    }
+
     return from(
-      this.supabase.from('shopping_list_items').select('shopping_list_id').eq('id', itemId).single()
+      this.supabase
+        .from('shopping_list_items')
+        .select('shopping_list_id, source')
+        .eq('id', itemId)
+        .single()
     ).pipe(
       switchMap(result => {
         if (result.error) throw result.error;
         if (!result.data) throw new Error('Item not found');
-        return this.verifyListOwnership(result.data.shopping_list_id);
+
+        const currentSource = result.data.source;
+        return this.verifyListOwnership(result.data.shopping_list_id).pipe(
+          map(() => currentSource)
+        );
       }),
-      switchMap(() => {
+      switchMap(currentSource => {
         // If category_id is being updated, verify it exists
         if (updates.category_id) {
           return this.verifyCategoryExists(updates.category_id).pipe(
@@ -228,21 +250,31 @@ export class ShoppingListItemsService extends SupabaseService {
                 );
               }
               return of(updates);
-            })
+            }),
+            map(validatedUpdates => ({ validatedUpdates, currentSource }))
           );
         }
-        return of(updates);
+        return of({ validatedUpdates: updates, currentSource });
       }),
-      switchMap(validatedUpdates =>
-        this.supabase
+      switchMap(({ validatedUpdates, currentSource }) => {
+        // Set source to 'modified' if updating content fields and current source is not 'manual'
+        const contentFields = ['product_name', 'quantity', 'unit', 'category_id'];
+        const isContentUpdate = contentFields.some(field => field in validatedUpdates);
+
+        const finalUpdates = {
+          ...validatedUpdates,
+          ...(isContentUpdate && currentSource !== 'manual' ? { source: 'modified' as const } : {}),
+        };
+
+        return this.supabase
           .from('shopping_list_items')
-          .update(validatedUpdates)
+          .update(finalUpdates)
           .eq('id', itemId)
           .select(
             'id, product_name, quantity, unit, is_checked, category_id, product_id, generation_id, source, recipe_source, created_at, updated_at'
           )
-          .single()
-      ),
+          .single();
+      }),
       map(result => {
         if (result.error) throw result.error;
         return result.data as ShoppingListItemResponseDto;
@@ -253,15 +285,21 @@ export class ShoppingListItemsService extends SupabaseService {
           message:
             error.message === 'Shopping list not found or access denied'
               ? error.message
-              : error.message === 'Default category not found'
-                ? 'System configuration error: Default category not found'
-                : 'Failed to update shopping list item',
+              : error.message === 'Item not found'
+                ? 'Shopping list item not found'
+                : error.message === 'Default category not found'
+                  ? 'System configuration error: Default category not found'
+                  : 'Failed to update shopping list item',
           statusCode:
             error.message === 'Shopping list not found or access denied'
               ? 403
-              : error.message === 'Default category not found'
-                ? 500
-                : 500,
+              : error.message === 'Item not found'
+                ? 404
+                : error.message === 'Default category not found'
+                  ? 500
+                  : error?.code === '23505'
+                    ? 409
+                    : 500,
           error,
         }));
       })

@@ -115,13 +115,14 @@ The following outlines the planned development phases and key features for Meal2
 - ✅ **Standardized Product Database:** Implement a standardized list of products in the database, with the ability for users or administrators to add new items. This will improve data consistency and categorization.
 - ✅ **Standardized Quantities:** Introduce standardized units of measurement (e.g., pieces, grams, ml) to replace ambiguous terms like "pinches" or "cups," ensuring clarity and enabling better product management.
 - ✅ **AI Generation Review Screen:** Develop an intermediary screen after AI-based ingredient extraction. This will allow users to review, edit quantities/units, and exclude items (especially common household staples like spices, oil) before they are added to the shopping list.
-- 🔄 **Recipe Source Tracking:** Implement recipe name tracking throughout the shopping list lifecycle. Track which recipe generated each product, display recipe source in shopping lists, and add visual grouping/filtering by recipe functionality.
-- [ ] **Vector Database Integration (Qdrant):** Implement Qdrant vector database for semantic product matching and improved AI-driven ingredient recognition, enabling better fuzzy matching and product suggestions.
-- [ ] **AI Product Matching Integration:** Integrate product matching into AI workflow to automatically connect AI-generated product names to existing database products, improving data consistency and reducing duplicate entries.
+- ✅ **Recipe Source Tracking:** Implement recipe name tracking throughout the shopping list lifecycle. Track which recipe generated each product, display recipe source in shopping lists, and add visual grouping/filtering by recipe functionality.
+- ✅ **Shopping List Item Editing:** Implement comprehensive editing capabilities for shopping list items, including modifying quantities, units, product names, categories, and the ability to mark items as completed or remove them entirely.
 - [ ] **Recipe Saving & Quick-Add:** Enhance the recipe saving feature to allow users to easily select a saved recipe to automatically generate a shopping list, streamlining the process.
 
 ### Phase 2: Further UX Enhancements & Operational Needs
 
+- [ ] **Vector Database Integration (Qdrant):** Implement Qdrant vector database for semantic product matching and improved AI-driven ingredient recognition, enabling better fuzzy matching and product suggestions.
+- [ ] **AI Product Matching Integration:** Integrate product matching into AI workflow to automatically connect AI-generated product names to existing database products, improving data consistency and reducing duplicate entries.
 - [ ] **Product Combination:** Implement logic to combine identical products on the shopping list, even if added from different sources or with different initial units (e.g., "2 tomatoes" manually added + "500g tomatoes" from a recipe should intelligently merge).
 - [ ] **User-Specific Generation Limits:** Introduce a system to manage API usage, such as a weekly limit on the number of recipes a user can process for ingredient extraction (e.g., 10 recipes per week).
 

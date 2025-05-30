@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DatePipe, CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CategoryIconComponent } from '@app/shared/category-icon/category-icon.component';
 import {
   catchError,
@@ -26,9 +27,19 @@ import {
 import { ShoppingListService } from '@app/core/supabase/shopping-list.service';
 import { ShoppingListItemsService } from '@app/core/supabase/shopping-list-items.service';
 import { CategoryService } from '@app/core/supabase/category.service';
-import { ShoppingListResponseDto, CategoryDto, ShoppingListItemResponseDto } from '@types';
+import {
+  ShoppingListResponseDto,
+  CategoryDto,
+  ShoppingListItemResponseDto,
+  UpdateShoppingListItemCommand,
+} from '@types';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AddItemDialogComponent } from '../../components/add-item-dialog/add-item-dialog.component';
+import {
+  EditItemDialogComponent,
+  EditItemDialogData,
+  UpdatedShoppingListItem,
+} from '../../components/edit-item-dialog/edit-item-dialog.component';
 import { ProductService } from '@app/core/supabase/product.service';
 
 @Component({
@@ -43,6 +54,7 @@ import { ProductService } from '@app/core/supabase/product.service';
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
+    MatSnackBarModule,
     DatePipe,
     CommonModule,
     MatTooltipModule,
@@ -95,12 +107,24 @@ export class ShoppingListDetailComponent implements OnDestroy {
     });
 
     // Convert to array and sort each group
-    const recipeGroups = Array.from(grouped.entries()).map(([recipeName, items]) => ({
-      recipeName,
-      items: this.sortItemsByCategory(items),
-      uncheckedItems: items, // All items in groups are unchecked now
-      checkedItems: [] as ShoppingListItemResponseDto[], // Empty since checked items are separate
-    }));
+    const recipeGroups = Array.from(grouped.entries())
+      .map(([recipeName, items]) => ({
+        recipeName,
+        items: this.sortItemsByCategory(items),
+        uncheckedItems: items, // All items in groups are unchecked now
+        checkedItems: [] as ShoppingListItemResponseDto[], // Empty since checked items are separate
+      }))
+      // Sort groups: recipe items first, then manual additions
+      .sort((a, b) => {
+        // If both are manual additions or both are recipes, sort alphabetically
+        if ((a.recipeName === 'Ręczne dodanie') === (b.recipeName === 'Ręczne dodanie')) {
+          return a.recipeName.localeCompare(b.recipeName);
+        }
+        // Manual additions go last
+        if (a.recipeName === 'Ręczne dodanie') return 1;
+        if (b.recipeName === 'Ręczne dodanie') return -1;
+        return 0;
+      });
 
     return {
       recipeGroups,
@@ -135,7 +159,8 @@ export class ShoppingListDetailComponent implements OnDestroy {
     private shoppingListItemsService: ShoppingListItemsService,
     private categoryService: CategoryService,
     private dialog: MatDialog,
-    private productService: ProductService
+    private productService: ProductService,
+    private snackBar: MatSnackBar
   ) {
     const shoppingList$ = this.route.params.pipe(
       map(params => params['id']),
@@ -355,5 +380,86 @@ export class ShoppingListDetailComponent implements OnDestroy {
    */
   toggleShowBadges(): void {
     this.showBadges.set(!this.showBadges());
+  }
+
+  /**
+   * Opens the dialog to edit an existing item
+   */
+  openEditItemDialog(item: ShoppingListItemResponseDto): void {
+    const currentList = this.shoppingList();
+    if (!currentList) return;
+
+    const dialogRef = this.dialog.open(EditItemDialogComponent, {
+      width: '100%',
+      maxWidth: '600px',
+      data: {
+        item: { ...item },
+        categories: this.categories(),
+        listId: currentList.id,
+      } as EditItemDialogData,
+      panelClass: 'edit-item-dialog',
+    });
+
+    dialogRef
+      .afterClosed()
+      .subscribe(
+        (result?: { updates: UpdateShoppingListItemCommand; result: UpdatedShoppingListItem }) => {
+          if (result?.updates) {
+            // Optimistic update
+            this.updateLocalShoppingListItemOptimistic(item.id, result.updates);
+
+            // Send update to server
+            this.shoppingListItemsService
+              .updateShoppingListItem(item.id, result.updates)
+              .pipe(
+                takeUntil(this.destroy$),
+                switchMap((updatedItem: ShoppingListItemResponseDto) => {
+                  // Confirm with server response
+                  this.updateLocalShoppingListItem(item.id, updatedItem);
+                  this.snackBar.open('Item updated successfully', 'Close', {
+                    duration: 2000,
+                    panelClass: 'success-snackbar',
+                  });
+                  return of(updatedItem);
+                }),
+                catchError(error => {
+                  // Rollback optimistic update on error
+                  this.updateLocalShoppingListItem(item.id, item);
+                  this.snackBar.open('Failed to update item. Please try again.', 'Close', {
+                    duration: 4000,
+                    panelClass: 'error-snackbar',
+                  });
+                  console.error('Error updating item:', error);
+                  return of(null);
+                })
+              )
+              .subscribe();
+          }
+        }
+      );
+  }
+
+  /**
+   * Updates a shopping list item optimistically (for immediate UI feedback)
+   */
+  private updateLocalShoppingListItemOptimistic(
+    itemId: string,
+    updates: UpdateShoppingListItemCommand
+  ): void {
+    const currentList = this.shoppingList();
+    if (!currentList?.items) return;
+
+    const updatedItems = currentList.items.map(item => {
+      if (item.id === itemId) {
+        return {
+          ...item,
+          ...updates,
+          updated_at: new Date().toISOString(), // Optimistic timestamp
+        };
+      }
+      return item;
+    });
+
+    this.shoppingList.set({ ...currentList, items: updatedItems });
   }
 }

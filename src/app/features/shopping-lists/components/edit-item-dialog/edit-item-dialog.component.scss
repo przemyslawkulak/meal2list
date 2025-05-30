@@ -1,0 +1,171 @@
+.edit-item-dialog {
+  min-width: 400px;
+  max-width: 500px;
+
+  @media (max-width: 768px) {
+    min-width: 280px;
+    max-width: 90vw;
+  }
+}
+
+.dialog-content {
+  padding: 24px !important;
+  min-height: 280px;
+
+  @media (max-width: 768px) {
+    padding: 16px !important;
+  }
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .quantity-unit-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 16px;
+    }
+  }
+  
+  .quantity-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    flex: 0 0 auto;
+    
+    .quantity-field {
+      width: 120px;
+      flex-shrink: 0;
+    }
+    
+    .quantity-buttons {
+      display: flex;
+      flex-direction: row;
+      gap: 2px;
+      margin-top: 4px; // Align with input field top
+      
+      button {
+        width: 40px;
+        height: 48px; // Slightly smaller to better align with input
+        min-width: 40px;
+        border-radius: 4px;
+        
+        &:first-child {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+        
+        &:last-child {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+        
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+        
+        &:disabled {
+          opacity: 0.5;
+        }
+      }
+    }
+  }
+  
+  .unit-field {
+    flex: 1;
+    min-width: 120px;
+    
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+  }
+}
+
+.category-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  .category-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: var(--mat-sys-primary);
+  }
+}
+
+.dialog-actions {
+  padding: 16px 24px !important;
+  gap: 8px;
+  
+  @media (max-width: 768px) {
+    padding: 16px !important;
+    flex-direction: column;
+    
+    .cancel-button,
+    .save-button {
+      width: 100%;
+      margin: 0 !important;
+    }
+    
+    .cancel-button {
+      order: 2;
+    }
+    
+    .save-button {
+      order: 1;
+    }
+  }
+}
+
+.save-button {
+  min-width: 120px;
+}
+
+.cancel-button {
+  min-width: 80px;
+}
+
+// Accessibility improvements
+.edit-form {
+  mat-form-field {
+    &.ng-invalid.ng-touched {
+      .mat-mdc-form-field-outline {
+        color: var(--mat-sys-error);
+      }
+    }
+  }
+  
+  // Focus states
+  input:focus,
+  mat-select:focus {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: -2px;
+  }
+}
+
+// Loading state (if needed)
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+} 

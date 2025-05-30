@@ -88,6 +88,17 @@
                     }
                     <button
                       mat-icon-button
+                      color="primary"
+                      (click)="openEditItemDialog(item)"
+                      [attr.data-testid]="'edit-item-' + item.id"
+                      aria-label="Edit item"
+                      matTooltip="Edit item"
+                      matTooltipPosition="above"
+                    >
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button
+                      mat-icon-button
                       color="warn"
                       (click)="deleteItem(item.id)"
                       [attr.data-testid]="'delete-item-' + item.id"
@@ -173,6 +184,17 @@
                                 {{ item.source }}
                               </mat-chip>
                             }
+                            <button
+                              mat-icon-button
+                              color="primary"
+                              (click)="openEditItemDialog(item)"
+                              [attr.data-testid]="'edit-item-' + item.id"
+                              aria-label="Edit item"
+                              matTooltip="Edit item"
+                              matTooltipPosition="above"
+                            >
+                              <mat-icon>edit</mat-icon>
+                            </button>
                             <button
                               mat-icon-button
                               color="warn"
@@ -263,6 +285,17 @@
                             }
                             <button
                               mat-icon-button
+                              color="primary"
+                              (click)="openEditItemDialog(item)"
+                              [attr.data-testid]="'edit-item-' + item.id"
+                              aria-label="Edit item"
+                              matTooltip="Edit item"
+                              matTooltipPosition="above"
+                            >
+                              <mat-icon>edit</mat-icon>
+                            </button>
+                            <button
+                              mat-icon-button
                               color="warn"
                               (click)="deleteItem(item.id)"
                               [attr.data-testid]="'delete-item-' + item.id"
@@ -335,6 +368,17 @@
                     {{ item.source }}
                   </mat-chip>
                 }
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="openEditItemDialog(item)"
+                  [attr.data-testid]="'edit-item-' + item.id"
+                  aria-label="Edit item"
+                  matTooltip="Edit item"
+                  matTooltipPosition="above"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
                 <button
                   mat-icon-button
                   color="warn"
