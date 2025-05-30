@@ -25,7 +25,6 @@ import { GenerationService } from '@core/supabase/generation.service';
 import { CategoryService } from '@core/supabase/category.service';
 import { GenerationReviewItemDto, CategoryDto } from '../../../types';
 import { ReviewTableComponent } from './components/review-table/review-table.component';
-
 @Component({
   selector: 'app-generation-review',
   standalone: true,
@@ -132,14 +131,6 @@ export class GenerationReviewPageComponent implements OnInit, OnDestroy {
       }, 1000);
       return;
     }
-
-    console.log('Loading review data:', {
-      itemsCount: state.items?.length,
-      listId: state.listId,
-      hasRecipeText: !!state.recipeText,
-      recipeName: state.recipeName,
-      recipeSource: state.recipeSource,
-    });
 
     this.reviewItems.set(state.items);
     this.listId = state.listId;

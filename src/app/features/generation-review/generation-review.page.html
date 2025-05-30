@@ -86,12 +86,14 @@
     </mat-card-content>
   </mat-card>
 
+  @if (reviewItems().length > 0) {
   <app-review-table
-    [items]="reviewItems()"
+    [itemsInput]="reviewItems()"
     [categories]="categories()"
     (itemsChange)="onItemsChange($event)"
   >
   </app-review-table>
+  }
 
   <div class="actions">
     <button mat-button (click)="goBack()" [disabled]="isProcessing()">

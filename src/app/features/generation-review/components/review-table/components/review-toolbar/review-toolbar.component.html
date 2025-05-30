@@ -1,0 +1,45 @@
+<!-- Toolbar with view controls -->
+<div class="toolbar">
+  <!-- View mode toggle -->
+  <mat-button-toggle-group
+    [value]="viewMode()"
+    (change)="onViewModeChange($event.value)"
+    class="view-toggle"
+  >
+    <mat-button-toggle value="table" matTooltip="Widok tabeli">
+      <mat-icon>table_view</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="grouped" matTooltip="Widok grupowany">
+      <mat-icon>view_list</mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <!-- Sorting controls -->
+  <div class="sort-controls">
+    <span class="sort-label">Sortuj:</span>
+    <button
+      mat-button
+      (click)="onSortFieldChange('product_name')"
+      [class.active]="sortField() === 'product_name'"
+    >
+      Nazwa
+      <mat-icon>{{ getSortIcon('product_name') }}</mat-icon>
+    </button>
+    <button
+      mat-button
+      (click)="onSortFieldChange('quantity')"
+      [class.active]="sortField() === 'quantity'"
+    >
+      Ilość
+      <mat-icon>{{ getSortIcon('quantity') }}</mat-icon>
+    </button>
+    <button
+      mat-button
+      (click)="onSortFieldChange('category')"
+      [class.active]="sortField() === 'category'"
+    >
+      Kategoria
+      <mat-icon>{{ getSortIcon('category') }}</mat-icon>
+    </button>
+  </div>
+</div>

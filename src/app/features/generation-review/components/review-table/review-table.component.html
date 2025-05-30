@@ -4,7 +4,7 @@
       <mat-checkbox
         [checked]="allSelected()"
         [indeterminate]="someSelected()"
-        (change)="toggleMasterSelection()"
+        (change)="onMasterSelectionToggle()"
         matTooltip="Zaznacz/odznacz wszystkie"
       >
       </mat-checkbox>
@@ -15,511 +15,49 @@
     </mat-card-subtitle>
   </mat-card-header>
 
-  <!-- Toolbar with view controls -->
-  <div class="toolbar">
-    <!-- View mode toggle -->
-    <mat-button-toggle-group
-      [value]="viewMode()"
-      (change)="viewMode.set($event.value)"
-      class="view-toggle"
-    >
-      <mat-button-toggle value="table" matTooltip="Widok tabeli">
-        <mat-icon>table_view</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle value="grouped" matTooltip="Widok grupowany">
-        <mat-icon>view_list</mat-icon>
-      </mat-button-toggle>
-    </mat-button-toggle-group>
-
-    <!-- Sorting controls -->
-    <div class="sort-controls">
-      <span class="sort-label">Sortuj:</span>
-      <button
-        mat-button
-        (click)="setSortField('product_name')"
-        [class.active]="sortField() === 'product_name'"
-      >
-        Nazwa
-        <mat-icon>{{ getSortIcon('product_name') }}</mat-icon>
-      </button>
-      <button
-        mat-button
-        (click)="setSortField('quantity')"
-        [class.active]="sortField() === 'quantity'"
-      >
-        Ilość
-        <mat-icon>{{ getSortIcon('quantity') }}</mat-icon>
-      </button>
-      <button
-        mat-button
-        (click)="setSortField('category')"
-        [class.active]="sortField() === 'category'"
-      >
-        Kategoria
-        <mat-icon>{{ getSortIcon('category') }}</mat-icon>
-      </button>
-    </div>
-  </div>
+  <!-- Toolbar -->
+  <app-review-toolbar
+    [viewMode]="viewMode()"
+    [sortField]="sortField()"
+    [sortDirection]="sortDirection()"
+    (viewModeChange)="onViewModeChange($event)"
+    (sortFieldChange)="onSortFieldChange($event)"
+  ></app-review-toolbar>
 
   <mat-card-content>
     <!-- Table View -->
     @if (viewMode() === 'table') {
-      <div class="table-container">
-        <table mat-table [dataSource]="sortedItems()" class="review-table">
-          <!-- Exclude Column -->
-          <ng-container matColumnDef="exclude">
-            <th mat-header-cell *matHeaderCellDef class="exclude-column">
-              <span>Dodaj</span>
-            </th>
-            <td mat-cell *matCellDef="let item" class="exclude-column">
-              <mat-checkbox
-                [checked]="!item.excluded"
-                (change)="toggleItemSelection(item)"
-                [matTooltip]="item.excluded ? 'Dodaj do listy' : 'Wyklucz z listy'"
-              >
-              </mat-checkbox>
-            </td>
-          </ng-container>
-
-          <!-- Product Name Column -->
-          <ng-container matColumnDef="product_name">
-            <th mat-header-cell *matHeaderCellDef>Nazwa produktu</th>
-            <td mat-cell *matCellDef="let item" [class.excluded]="item.excluded">
-              @if (item.isEditing) {
-                <mat-form-field appearance="outline" class="edit-field">
-                  <input
-                    matInput
-                    [formControl]="item.editForm!.product_name"
-                    placeholder="Nazwa produktu"
-                    [attr.data-item-id]="item.id"
-                    [attr.data-field]="'product_name'"
-                    (blur)="autoSaveEdit(item)"
-                    (keydown)="onKeyDown($event, item)"
-                  />
-                  @if (item.editForm!.product_name.hasError('required')) {
-                    <mat-error>Nazwa jest wymagana</mat-error>
-                  }
-                </mat-form-field>
-              } @else {
-                <span
-                  class="product-name editable-field"
-                  [class.modified]="item.isModified"
-                  [class.disabled]="item.excluded"
-                  (click)="startEditField(item, 'product_name')"
-                  (keydown)="onEditFieldKeyDown($event, item, 'product_name')"
-                  tabindex="0"
-                  role="button"
-                  [attr.aria-label]="
-                    item.excluded
-                      ? 'Produkt wykluczony - nie można edytować'
-                      : 'Edytuj nazwę produktu'
-                  "
-                  [matTooltip]="
-                    item.excluded
-                      ? 'Produkt wykluczony - nie można edytować'
-                      : 'Kliknij aby edytować'
-                  "
-                >
-                  {{ item.product_name }}
-                  @if (item.isModified) {
-                    <mat-icon class="modified-icon" matTooltip="Zmodyfikowane">edit</mat-icon>
-                  }
-                </span>
-              }
-            </td>
-          </ng-container>
-
-          <!-- Quantity Column -->
-          <ng-container matColumnDef="quantity">
-            <th mat-header-cell *matHeaderCellDef>Ilość</th>
-            <td mat-cell *matCellDef="let item" [class.excluded]="item.excluded">
-              @if (item.isEditing) {
-                <mat-form-field appearance="outline" class="edit-field quantity-field">
-                  <input
-                    matInput
-                    type="number"
-                    [formControl]="item.editForm!.quantity"
-                    placeholder="Ilość"
-                    min="0.01"
-                    step="0.01"
-                    [attr.data-item-id]="item.id"
-                    [attr.data-field]="'quantity'"
-                    (blur)="autoSaveEdit(item)"
-                    (keydown)="onKeyDown($event, item)"
-                  />
-                  @if (item.editForm!.quantity.hasError('required')) {
-                    <mat-error>Ilość jest wymagana</mat-error>
-                  }
-                  @if (item.editForm!.quantity.hasError('min')) {
-                    <mat-error>Ilość musi być większa od 0</mat-error>
-                  }
-                </mat-form-field>
-              } @else {
-                <span
-                  class="editable-field"
-                  [class.disabled]="item.excluded"
-                  (click)="startEditField(item, 'quantity')"
-                  (keydown)="onEditFieldKeyDown($event, item, 'quantity')"
-                  tabindex="0"
-                  role="button"
-                  [attr.aria-label]="
-                    item.excluded ? 'Produkt wykluczony - nie można edytować' : 'Edytuj ilość'
-                  "
-                  [matTooltip]="
-                    item.excluded
-                      ? 'Produkt wykluczony - nie można edytować'
-                      : 'Kliknij aby edytować'
-                  "
-                >
-                  {{ item.quantity }}
-                </span>
-              }
-            </td>
-          </ng-container>
-
-          <!-- Unit Column -->
-          <ng-container matColumnDef="unit">
-            <th mat-header-cell *matHeaderCellDef>Jednostka</th>
-            <td mat-cell *matCellDef="let item" [class.excluded]="item.excluded">
-              @if (item.isEditing) {
-                <mat-form-field appearance="outline" class="edit-field unit-field">
-                  <mat-select
-                    [formControl]="item.editForm!.unit"
-                    placeholder="Jednostka"
-                    [attr.data-item-id]="item.id"
-                    [attr.data-field]="'unit'"
-                    (selectionChange)="autoSaveEdit(item)"
-                  >
-                    @for (unit of standardUnits; track unit) {
-                      <mat-option [value]="unit">{{ unit }}</mat-option>
-                    }
-                  </mat-select>
-                  @if (item.editForm!.unit.hasError('required')) {
-                    <mat-error>Jednostka jest wymagana</mat-error>
-                  }
-                </mat-form-field>
-              } @else {
-                <span
-                  class="editable-field"
-                  [class.disabled]="item.excluded"
-                  (click)="startEditField(item, 'unit')"
-                  (keydown)="onEditFieldKeyDown($event, item, 'unit')"
-                  tabindex="0"
-                  role="button"
-                  [attr.aria-label]="
-                    item.excluded ? 'Produkt wykluczony - nie można edytować' : 'Edytuj jednostkę'
-                  "
-                  [matTooltip]="
-                    item.excluded
-                      ? 'Produkt wykluczony - nie można edytować'
-                      : 'Kliknij aby edytować'
-                  "
-                >
-                  {{ item.unit }}
-                </span>
-              }
-            </td>
-          </ng-container>
-
-          <!-- Category Column -->
-          <ng-container matColumnDef="category">
-            <th mat-header-cell *matHeaderCellDef>Kategoria</th>
-            <td mat-cell *matCellDef="let item" [class.excluded]="item.excluded">
-              @if (item.isEditing) {
-                <mat-form-field appearance="outline" class="edit-field category-field">
-                  <mat-select
-                    [formControl]="item.editForm!.category_id"
-                    placeholder="Kategoria"
-                    [attr.data-item-id]="item.id"
-                    [attr.data-field]="'category_id'"
-                    (selectionChange)="autoSaveEdit(item)"
-                  >
-                    @for (category of categories; track category.id) {
-                      <mat-option [value]="category.id">
-                        <div class="category-option">
-                          <app-category-icon [categoryName]="category.name"></app-category-icon>
-                          <span>{{ category.name }}</span>
-                        </div>
-                      </mat-option>
-                    }
-                  </mat-select>
-                  @if (item.editForm!.category_id.hasError('required')) {
-                    <mat-error>Kategoria jest wymagana</mat-error>
-                  }
-                </mat-form-field>
-              } @else {
-                <span
-                  class="editable-field category-display"
-                  [class.disabled]="item.excluded"
-                  (click)="startEditField(item, 'category_id')"
-                  (keydown)="onEditFieldKeyDown($event, item, 'category_id')"
-                  tabindex="0"
-                  role="button"
-                  [attr.aria-label]="
-                    item.excluded ? 'Produkt wykluczony - nie można edytować' : 'Edytuj kategorię'
-                  "
-                  [matTooltip]="
-                    item.excluded
-                      ? 'Produkt wykluczony - nie można edytować'
-                      : 'Kliknij aby edytować'
-                  "
-                >
-                  <app-category-icon
-                    [categoryName]="getCategoryName(item.category_id)"
-                  ></app-category-icon>
-                  <span>{{ getCategoryName(item.category_id) }}</span>
-                </span>
-              }
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr
-            mat-row
-            *matRowDef="let row; columns: displayedColumns"
-            [class.excluded-row]="row.excluded"
-          ></tr>
-        </table>
-
-        @if (editableItems().length === 0) {
-          <div class="no-items">
-            <mat-icon>inbox</mat-icon>
-            <p>Brak produktów do przeglądu</p>
-          </div>
-        }
-      </div>
+      <app-review-table-view
+        [items]="sortedItems()"
+        [categories]="categories()"
+        [standardUnits]="standardUnits"
+        [displayedColumns]="displayedColumns"
+        [allSelected]="allSelected()"
+        [someSelected]="someSelected()"
+        [getCategoryName]="getCategoryName"
+        (masterSelectionToggle)="onMasterSelectionToggle()"
+        (itemSelectionToggle)="onItemSelectionToggle($event)"
+        (editStart)="onEditStart($event)"
+        (editSave)="onEditSave($event)"
+        (editCancel)="onEditCancel($event)"
+      ></app-review-table-view>
     }
 
     <!-- Grouped View -->
     @if (viewMode() === 'grouped') {
-      <div class="grouped-container">
-        @if (groupedItems().length === 0) {
-          <div class="no-items">
-            <mat-icon>inbox</mat-icon>
-            <p>Brak produktów do przeglądu</p>
-          </div>
-        } @else {
-          <div class="grouped-table">
-            @for (group of groupedItems(); track group.categoryId) {
-              <!-- Category Header Row -->
-              <div class="category-header-row">
-                <div class="category-info">
-                  <h3 class="category-name">
-                    <app-category-icon [categoryName]="group.categoryName"></app-category-icon>
-                    <span>{{ group.categoryName }}</span>
-                  </h3>
-                  <div class="category-stats">
-                    <span class="stat-item">{{ group.items.length }} produktów</span>
-                    <span
-                      class="stat-item"
-                      [class.has-excluded]="hasGroupExcludedItems(group.items)"
-                    >
-                      {{ getGroupIncludedCount(group.items) }} dołączonych
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Category Items -->
-              <div class="category-items">
-                @for (item of group.items; track item.id) {
-                  <div class="grouped-item" [class.excluded-item]="item.excluded">
-                    <div class="item-checkbox">
-                      <mat-checkbox
-                        [checked]="!item.excluded"
-                        (change)="toggleItemSelection(item)"
-                        [matTooltip]="item.excluded ? 'Dodaj do listy' : 'Wyklucz z listy'"
-                      >
-                      </mat-checkbox>
-                    </div>
-
-                    <div class="item-content">
-                      @if (item.isEditing) {
-                        <div class="edit-form">
-                          <mat-form-field appearance="outline" class="edit-field">
-                            <mat-label>Nazwa produktu</mat-label>
-                            <input
-                              matInput
-                              [formControl]="item.editForm!.product_name"
-                              [attr.data-item-id]="item.id"
-                              [attr.data-field]="'product_name'"
-                              (blur)="autoSaveEdit(item)"
-                              (keydown)="onKeyDown($event, item)"
-                            />
-                            @if (item.editForm!.product_name.hasError('required')) {
-                              <mat-error>Nazwa jest wymagana</mat-error>
-                            }
-                          </mat-form-field>
-
-                          <div class="quantity-unit-row">
-                            <mat-form-field appearance="outline" class="quantity-field">
-                              <mat-label>Ilość</mat-label>
-                              <input
-                                matInput
-                                type="number"
-                                [formControl]="item.editForm!.quantity"
-                                min="0.01"
-                                step="0.01"
-                                [attr.data-item-id]="item.id"
-                                [attr.data-field]="'quantity'"
-                                (blur)="autoSaveEdit(item)"
-                                (keydown)="onKeyDown($event, item)"
-                              />
-                              @if (item.editForm!.quantity.hasError('required')) {
-                                <mat-error>Ilość jest wymagana</mat-error>
-                              }
-                              @if (item.editForm!.quantity.hasError('min')) {
-                                <mat-error>Ilość musi być większa od 0</mat-error>
-                              }
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" class="unit-field">
-                              <mat-label>Jednostka</mat-label>
-                              <mat-select
-                                [formControl]="item.editForm!.unit"
-                                [attr.data-item-id]="item.id"
-                                [attr.data-field]="'unit'"
-                                (selectionChange)="autoSaveEdit(item)"
-                              >
-                                @for (unit of standardUnits; track unit) {
-                                  <mat-option [value]="unit">{{ unit }}</mat-option>
-                                }
-                              </mat-select>
-                              @if (item.editForm!.unit.hasError('required')) {
-                                <mat-error>Jednostka jest wymagana</mat-error>
-                              }
-                            </mat-form-field>
-                          </div>
-
-                          <mat-form-field appearance="outline" class="category-field">
-                            <mat-label>Kategoria</mat-label>
-                            <mat-select
-                              [formControl]="item.editForm!.category_id"
-                              [attr.data-item-id]="item.id"
-                              [attr.data-field]="'category_id'"
-                              (selectionChange)="autoSaveEdit(item)"
-                            >
-                              @for (category of categories; track category.id) {
-                                <mat-option [value]="category.id">
-                                  <div class="category-option">
-                                    <app-category-icon
-                                      [categoryName]="category.name"
-                                    ></app-category-icon>
-                                    <span>{{ category.name }}</span>
-                                  </div>
-                                </mat-option>
-                              }
-                            </mat-select>
-                            @if (item.editForm!.category_id.hasError('required')) {
-                              <mat-error>Kategoria jest wymagana</mat-error>
-                            }
-                          </mat-form-field>
-                        </div>
-                      } @else {
-                        <div class="item-display">
-                          <div class="item-name">
-                            <span
-                              class="editable-field"
-                              [class.modified]="item.isModified"
-                              [class.disabled]="item.excluded"
-                              (click)="startEditField(item, 'product_name')"
-                              (keydown)="onEditFieldKeyDown($event, item, 'product_name')"
-                              tabindex="0"
-                              role="button"
-                              [attr.aria-label]="
-                                item.excluded
-                                  ? 'Produkt wykluczony - nie można edytować'
-                                  : 'Edytuj nazwę produktu'
-                              "
-                              [matTooltip]="
-                                item.excluded
-                                  ? 'Produkt wykluczony - nie można edytować'
-                                  : 'Kliknij aby edytować'
-                              "
-                            >
-                              {{ item.product_name }}
-                              @if (item.isModified) {
-                                <mat-icon class="modified-icon" matTooltip="Zmodyfikowane"
-                                  >edit</mat-icon
-                                >
-                              }
-                            </span>
-                          </div>
-                          <div class="item-details">
-                            <span
-                              class="quantity editable-field"
-                              [class.disabled]="item.excluded"
-                              (click)="startEditField(item, 'quantity')"
-                              (keydown)="onEditFieldKeyDown($event, item, 'quantity')"
-                              tabindex="0"
-                              role="button"
-                              [attr.aria-label]="
-                                item.excluded
-                                  ? 'Produkt wykluczony - nie można edytować'
-                                  : 'Edytuj ilość'
-                              "
-                              [matTooltip]="
-                                item.excluded
-                                  ? 'Produkt wykluczony - nie można edytować'
-                                  : 'Kliknij aby edytować'
-                              "
-                            >
-                              {{ item.quantity }}
-                            </span>
-                            <span
-                              class="unit editable-field"
-                              [class.disabled]="item.excluded"
-                              (click)="startEditField(item, 'unit')"
-                              (keydown)="onEditFieldKeyDown($event, item, 'unit')"
-                              tabindex="0"
-                              role="button"
-                              [attr.aria-label]="
-                                item.excluded
-                                  ? 'Produkt wykluczony - nie można edytować'
-                                  : 'Edytuj jednostkę'
-                              "
-                              [matTooltip]="
-                                item.excluded
-                                  ? 'Produkt wykluczony - nie można edytować'
-                                  : 'Kliknij aby edytować'
-                              "
-                            >
-                              {{ item.unit }}
-                            </span>
-                            <span
-                              class="category editable-field"
-                              [class.disabled]="item.excluded"
-                              (click)="startEditField(item, 'category_id')"
-                              (keydown)="onEditFieldKeyDown($event, item, 'category_id')"
-                              tabindex="0"
-                              role="button"
-                              [attr.aria-label]="
-                                item.excluded
-                                  ? 'Produkt wykluczony - nie można edytować'
-                                  : 'Edytuj kategorię'
-                              "
-                              [matTooltip]="
-                                item.excluded
-                                  ? 'Produkt wykluczony - nie można edytować'
-                                  : 'Kliknij aby edytować'
-                              "
-                            >
-                              <app-category-icon
-                                [categoryName]="getCategoryName(item.category_id)"
-                              ></app-category-icon>
-                              <span>{{ getCategoryName(item.category_id) }}</span>
-                            </span>
-                          </div>
-                        </div>
-                      }
-                    </div>
-                  </div>
-                }
-              </div>
-            }
-          </div>
-        }
-      </div>
+      <app-review-grouped-view
+        [groupedItems]="groupedItems()"
+        [categories]="categories()"
+        [standardUnits]="standardUnits"
+        [getCategoryName]="getCategoryName"
+        [getGroupExcludedCount]="getGroupExcludedCount"
+        [getGroupIncludedCount]="getGroupIncludedCount"
+        [hasGroupExcludedItems]="hasGroupExcludedItems"
+        (itemSelectionToggle)="onItemSelectionToggle($event)"
+        (editStart)="onEditStart($event)"
+        (editSave)="onEditSave($event)"
+        (editCancel)="onEditCancel($event)"
+      ></app-review-grouped-view>
     }
   </mat-card-content>
 </mat-card>

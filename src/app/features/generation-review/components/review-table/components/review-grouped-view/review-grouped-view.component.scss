@@ -1,0 +1,126 @@
+.grouped-container {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.grouped-table {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.category-header-row {
+  position: sticky;
+  top: 0;
+  background-color: var(--mat-app-surface);
+  border-bottom: 2px solid var(--mat-app-primary);
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  z-index: 1;
+
+  .category-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .category-name {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--mat-app-primary);
+
+      span {
+        color: var(--mat-app-on-surface);
+      }
+    }
+
+    .category-stats {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.875rem;
+      color: var(--mat-app-on-surface-variant);
+
+      .stat-item {
+        padding: 0.25rem 0.75rem;
+        background-color: var(--mat-app-surface-container);
+        border-radius: 16px;
+        border: 1px solid var(--mat-divider-color);
+        font-weight: 500;
+
+        &.has-excluded {
+          background-color: var(--mat-app-error-container);
+          color: var(--mat-app-on-error-container);
+          border-color: var(--mat-app-error);
+        }
+      }
+    }
+  }
+}
+
+.category-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-left: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--mat-app-outline-variant);
+}
+
+.no-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+  color: var(--mat-app-on-surface-variant);
+
+  mat-icon {
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  p {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .grouped-container {
+    max-height: 60vh;
+    padding: 0.5rem;
+  }
+
+  .category-header-row {
+    .category-info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+
+      .category-stats {
+        gap: 0.5rem;
+        font-size: 0.8rem;
+
+        .stat-item {
+          padding: 0.2rem 0.5rem;
+        }
+      }
+    }
+  }
+
+  .category-items {
+    margin-left: 0;
+    padding-left: 0.5rem;
+  }
+} 
