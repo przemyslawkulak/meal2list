@@ -1,0 +1,28 @@
+<div class="review-container">
+  <app-review-header></app-review-header>
+
+  <app-recipe-metadata
+    [recipeName]="recipeName()"
+    [recipeSource]="recipeSource()"
+    [disabled]="isProcessing()"
+    (recipeNameChange)="onRecipeNameChange($event)"
+    (recipeSourceChange)="onRecipeSourceChange($event)"
+    (validationChange)="onRecipeMetadataValidationChange($event)"
+  ></app-recipe-metadata>
+
+  @if (reviewItems().length > 0) {
+  <app-review-table
+    [itemsInput]="reviewItems()"
+    [categories]="categories()"
+    (itemsChange)="onItemsChange($event)"
+  ></app-review-table>
+  }
+
+  <app-review-actions
+    [hasValidItems]="hasValidItems()"
+    [isProcessing]="isProcessing()"
+    [includedItemsCount]="includedItemsCount()"
+    (backClick)="goBack()"
+    (confirmClick)="confirmAndAdd()"
+  ></app-review-actions>
+</div>

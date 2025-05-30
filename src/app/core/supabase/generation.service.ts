@@ -8,6 +8,8 @@ import {
   CreateRecipeCommand,
   GeneratedListResponseDto,
   ShoppingListItemResponseDto,
+  GenerationReviewItemDto,
+  CreateShoppingListItemCommand,
 } from '../../../types';
 import { AppEnvironment } from '@app/app.config';
 import { SupabaseService } from '@core/supabase/supabase.service';
@@ -17,41 +19,16 @@ const SYSTEM_MESSAGE = (
   categoryList: CategoryDto[],
   language: string,
   currentItems: ShoppingListItemResponseDto[] = []
-) => `You are an intelligent assistant specializing in recipe analysis and ingredient extraction. Your task is to analyze recipe text and extract ingredients along with their quantities and standardized units. You will then structure this information into a JSON format.
+) => `You are an intelligent assistant specializing in recipe analysis and ingredient extraction. Your task is to analyze recipe text and extract ingredients along with their quantities and standardized units. You will also generate a concise, descriptive name for the recipe. You will then structure this information into a JSON format.
 
-Here is the list of predefined categories for ingredients:
-<category_list>
-${categoryList.map(category => `<category id="${category.id}">${category.name}</category>`).join('\n')}
-</category_list>
+AVAILABLE CATEGORIES:
+${categoryList.map(cat => `- ${cat.name} (ID: ${cat.id})`).join('\n')}
 
 ${
   currentItems.length > 0
     ? `
-CURRENT SHOPPING LIST ITEMS:
-<current_items>
-${currentItems
-  .map(
-    item => `<item>
-  Product: ${item.product_name}
-  Quantity: ${item.quantity}
-  Unit: ${item.unit}
-  Category: ${item.category_id}
-</item>`
-  )
-  .join('\n')}
-</current_items>
-
-IMPORTANT: If you find ingredients that are similar or identical to items already in the shopping list, DO NOT create new items. Instead, ADD the quantities together and use the existing item. Consider these as similar products:
-- Same product name (exact match)
-- Very similar products (e.g., "Mąka" and "Mąka pszenna", "Cebula" and "Cebula żółta")
-- Products that serve the same purpose in cooking
-
-When merging similar items:
-1. Use the more specific product name if available
-2. Add quantities together (convert units if necessary to match)
-3. Keep the same category and unit as the existing item
-4. Only create a new item if the product is truly different
-
+CURRENT SHOPPING LIST ITEMS (avoid duplicates):
+${currentItems.map(item => `- ${item.product_name} (${item.quantity} ${item.unit})`).join('\n')}
 `
     : ''
 }
@@ -94,6 +71,29 @@ CONVERSION RULES - Convert these terms to standardized units:
 - "kostka masła" → 200 g
 - "tabliczka czekolady" → 100 g
 
+AUTOMATIC EXCLUSION RULES:
+Automatically set "excluded": true for small amount items that users typically already have at home:
+- Spices and seasonings (salt, pepper, herbs, spices, etc.)
+- Cooking oils and vinegars (olive oil, vegetable oil, vinegar, etc.)
+- Basic baking ingredients in small amounts (baking powder, baking soda, vanilla extract, etc.)
+- Condiments and flavor enhancers (bouillon cubes, stock cubes, etc.)
+- Small quantities of common pantry items (garlic, onion when used as seasoning, etc.)
+
+Set "excluded": false for main ingredients that users need to purchase:
+- Main proteins (meat, fish, eggs in larger quantities)
+- Fresh vegetables and fruits (when used as main ingredients)
+- Dairy products (milk, cheese, yogurt, etc.)
+- Grains and starches (rice, pasta, bread, potatoes)
+- Fresh herbs in larger quantities
+
+RECIPE NAME GENERATION:
+Generate a concise, descriptive name for the recipe based on the main ingredients and cooking method. The name should be:
+- In Polish language
+- 2-5 words maximum
+- Descriptive of the main dish/ingredients
+- Professional and appetizing
+- Examples: "Spaghetti Bolognese", "Zupa Pomidorowa", "Kurczak w Sosie Curry", "Sałatka Grecka"
+
 Please provide your response in the following language:
 <language>
 ${language}
@@ -102,18 +102,21 @@ ${language}
 When analyzing the recipe, follow these steps:
 
 1. Carefully read through the entire recipe text.
-2. Identify all ingredients mentioned in the recipe.
-3. For each ingredient, determine:
+2. Generate a concise, descriptive name for the recipe.
+3. Identify all ingredients mentioned in the recipe.
+4. For each ingredient, determine:
    a. Product name (clear, standardized name)
    b. Quantity (must be a positive number)
    c. Standardized unit (from the approved list above)
    d. Category (assign each ingredient to one of the predefined categories)
+   e. Excluded status (true for small amount items, false for main ingredients)
 
-4. Structure the extracted information into a JSON format.
+5. Structure the extracted information into a JSON format.
 
 Before providing the final output, perform your analysis inside <ingredient_analysis> tags. In this section:
+- Generate and explain the recipe name choice.
 - List all ingredients found in the recipe text.
-- For each ingredient, write out your reasoning for determining the product name, quantity, standardized unit, and category.
+- For each ingredient, write out your reasoning for determining the product name, quantity, standardized unit, category, and exclusion status.
 - Show any unit conversions you made from ambiguous terms to standardized units.
 - Double-check that all ingredients have been accounted for and properly categorized.
 
@@ -126,51 +129,65 @@ CRITICAL REQUIREMENTS:
 - Ensure quantities are realistic and practical for Polish cooking
 - Standardize product names to Polish cooking terms
 - ALL product names MUST start with a capital letter (e.g., "Mąka pszenna", "Jajka", "Mleko")
+- Apply automatic exclusion rules for small amount items
 
-The final output should be a JSON array of objects, where each object represents an ingredient and contains the following fields:
+The final output should be a JSON object containing:
+1. "recipe_name": string (generated recipe name)
+2. "items": array of ingredient objects
+
+Each ingredient object should contain the following fields:
 - product_name: string (standardized name)
 - quantity: positive number
 - category_id: string (from the predefined list)
 - unit: string (standardized unit from approved list)
+- excluded: boolean (true for small amount items, false for main ingredients)
 
 Example of the expected JSON structure following Polish cooking standards:
 
 <response>
-[
-  {
-    "product_name": "Jajka",
-    "quantity": 2,
-    "category_id": "a746a400-7bb3-49a7-83cb-2b807da2cc1a",
-    "unit": "szt"
-  },
-  {
-    "product_name": "Pomidory",
-    "quantity": 3,
-    "category_id": "a746a400-7bb3-49a7-83cb-2b807da2cc1a",
-    "unit": "szt"
-  },
-  {
-    "product_name": "Mleko",
-    "quantity": 250,
-    "category_id": "a746a400-7bb3-49a7-83cb-2b807da2cc1a",
-    "unit": "ml"
-  },
-  {
-    "product_name": "Oliwa z oliwek",
-    "quantity": 30,
-    "category_id": "a746a400-7bb3-49a7-83cb-2b807da2cc1a",
-    "unit": "ml"
-  },
-  {
-    "product_name": "Mąka pszenna",
-    "quantity": 500,
-    "category_id": "a746a400-7bb3-49a7-83cb-2b807da2cc1a",
-    "unit": "g"
-  }
-]
+{
+  "recipe_name": "Spaghetti Bolognese",
+  "items": [
+    {
+      "product_name": "Jajka",
+      "quantity": 2,
+      "category_id": "a746a400-7bb3-49a7-83cb-2b807da2cc1a",
+      "unit": "szt",
+      "excluded": false
+    },
+    {
+      "product_name": "Pomidory",
+      "quantity": 3,
+      "category_id": "a746a400-7bb3-49a7-83cb-2b807da2cc1a",
+      "unit": "szt",
+      "excluded": false
+    },
+    {
+      "product_name": "Mleko",
+      "quantity": 250,
+      "category_id": "a746a400-7bb3-49a7-83cb-2b807da2cc1a",
+      "unit": "ml",
+      "excluded": false
+    },
+    {
+      "product_name": "Oliwa z oliwek",
+      "quantity": 30,
+      "category_id": "a746a400-7bb3-49a7-83cb-2b807da2cc1a",
+      "unit": "ml",
+      "excluded": true
+    },
+    {
+      "product_name": "Sól",
+      "quantity": 2,
+      "category_id": "a746a400-7bb3-49a7-83cb-2b807da2cc1a",
+      "unit": "g",
+      "excluded": true
+    }
+  ]
+}
 </response>
 
-Now, please analyze the given recipe text and provide the structured JSON output of ingredients with standardized units.`;
+Now, please analyze the given recipe text and provide the structured JSON output with recipe name and ingredients with standardized units and exclusion status.`;
 
 @Injectable({
   providedIn: 'root',
@@ -193,28 +210,30 @@ export class GenerationService extends SupabaseService {
     this.openrouterService.setResponseFormat({
       type: 'json_schema',
       json_schema: {
-        name: 'ShoppingListItems',
+        name: 'RecipeAnalysis',
         strict: true,
         schema: {
           type: 'object',
           additionalProperties: false,
           properties: {
+            recipe_name: { type: 'string' },
             items: {
               type: 'array',
               items: {
                 type: 'object',
                 additionalProperties: false,
-                required: ['product_name', 'quantity', 'unit', 'category_id'],
+                required: ['product_name', 'quantity', 'unit', 'category_id', 'excluded'],
                 properties: {
                   product_name: { type: 'string' },
                   quantity: { type: 'number' },
                   unit: { type: 'string' },
                   category_id: { type: 'string' },
+                  excluded: { type: 'boolean' },
                 },
               },
             },
           },
-          required: ['items'],
+          required: ['recipe_name', 'items'],
         },
       },
     });
@@ -242,7 +261,7 @@ export class GenerationService extends SupabaseService {
     return this.processRecipeText(command.recipe_text).pipe(
       map(items => ({
         id: `temp-${uuidv4()}`,
-        recipe_id: 0,
+        recipe_id: `temp-recipe-${uuidv4()}`,
         items,
       })),
       catchError((error: HttpErrorResponse) => {
@@ -270,11 +289,13 @@ export class GenerationService extends SupabaseService {
     return this.openrouterService.sendChatMessage(recipeText).pipe(
       map(response => {
         const responseData = JSON.parse(response.data as string) as {
+          recipe_name: string;
           items: Array<{
             product_name: string;
             quantity: number;
             unit: string;
             category_id: string;
+            excluded: boolean;
           }>;
         };
         const items = responseData.items;
@@ -287,6 +308,9 @@ export class GenerationService extends SupabaseService {
           is_checked: false,
           source: 'auto',
           category_id: item.category_id,
+          product_id: null,
+          generation_id: null,
+          recipe_source: null,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         }));
@@ -295,6 +319,121 @@ export class GenerationService extends SupabaseService {
         console.error('Error processing recipe:', error);
         return throwError(() => ({
           message: 'Failed to process recipe text',
+          statusCode: 500,
+          error,
+        }));
+      })
+    );
+  }
+
+  generateForReview(
+    command: CreateRecipeCommand,
+    categories: CategoryDto[],
+    language: string
+  ): Observable<{ recipeName: string; items: GenerationReviewItemDto[] }> {
+    const validationResult = generateSchema.safeParse(command);
+
+    if (!validationResult.success) {
+      console.error('Invalid input data', validationResult.error.format());
+      return throwError(() => ({
+        message: 'Invalid input data',
+        statusCode: 400,
+        errors: validationResult.error.format(),
+      }));
+    }
+
+    this.openrouterService.setSystemMessage(SYSTEM_MESSAGE(categories, language));
+
+    return this.openrouterService.sendChatMessage(command.recipe_text).pipe(
+      map(response => {
+        const responseData = JSON.parse(response.data as string) as {
+          recipe_name: string;
+          items: Array<{
+            product_name: string;
+            quantity: number;
+            unit: string;
+            category_id: string;
+            excluded: boolean;
+          }>;
+        };
+
+        const items = responseData.items.map(item => ({
+          id: uuidv4(),
+          product_name: item.product_name,
+          quantity: item.quantity,
+          unit: item.unit || 'szt',
+          category_id: item.category_id,
+          excluded: item.excluded,
+          source: 'auto' as const,
+          isModified: false,
+        }));
+
+        return {
+          recipeName: responseData.recipe_name,
+          items,
+        };
+      }),
+      catchError((error: HttpErrorResponse) => {
+        const errorResponse = this.handleHttpError(error);
+        return this.logGenerationError(error).pipe(
+          map(() => {
+            throw errorResponse;
+          })
+        );
+      })
+    );
+  }
+
+  confirmReviewedItems(
+    listId: string,
+    items: GenerationReviewItemDto[],
+    recipeName?: string
+  ): Observable<void> {
+    if (!listId || items.length === 0) {
+      return throwError(() => ({
+        message: 'Invalid list ID or no items to add',
+        statusCode: 400,
+      }));
+    }
+
+    const itemsToAdd: CreateShoppingListItemCommand[] = items
+      .filter(item => !item.excluded)
+      .map(item => ({
+        product_name: item.product_name,
+        quantity: item.quantity,
+        unit: item.unit,
+        category_id: item.category_id,
+        source: item.isModified ? ('modified' as const) : ('auto' as const),
+        recipe_source: recipeName || item.recipe_source,
+      }));
+
+    if (itemsToAdd.length === 0) {
+      return throwError(() => ({
+        message: 'No items selected for addition',
+        statusCode: 400,
+      }));
+    }
+
+    return from(
+      this.supabase
+        .from('shopping_list_items')
+        .insert(
+          itemsToAdd.map(item => ({
+            ...item,
+            shopping_list_id: listId,
+            is_checked: false,
+          }))
+        )
+        .select()
+    ).pipe(
+      map(result => {
+        if (result.error) throw result.error;
+        return void 0;
+      }),
+      catchError(error => {
+        console.error('Error adding items to shopping list:', error);
+        return throwError(() => ({
+          message: 'Failed to add items to shopping list',
           statusCode: 500,
           error,
         }));

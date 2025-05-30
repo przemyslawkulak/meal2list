@@ -1,0 +1,63 @@
+<mat-card class="review-table-card">
+  <mat-card-header>
+    <mat-card-title>
+      <mat-checkbox
+        [checked]="allSelected()"
+        [indeterminate]="someSelected()"
+        (change)="onMasterSelectionToggle()"
+        matTooltip="Zaznacz/odznacz wszystkie"
+      >
+      </mat-checkbox>
+      Produkty do przeglądu
+    </mat-card-title>
+    <mat-card-subtitle>
+      Kliknij bezpośrednio na dowolne pole aby je edytować. Zmiany zapisują się automatycznie.
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <!-- Toolbar -->
+  <app-review-toolbar
+    [viewMode]="viewMode()"
+    [sortField]="sortField()"
+    [sortDirection]="sortDirection()"
+    (viewModeChange)="onViewModeChange($event)"
+    (sortFieldChange)="onSortFieldChange($event)"
+  ></app-review-toolbar>
+
+  <mat-card-content>
+    <!-- Table View -->
+    @if (viewMode() === 'table') {
+      <app-review-table-view
+        [items]="sortedItems()"
+        [categories]="categories()"
+        [standardUnits]="standardUnits"
+        [displayedColumns]="displayedColumns"
+        [allSelected]="allSelected()"
+        [someSelected]="someSelected()"
+        [getCategoryName]="getCategoryName"
+        (masterSelectionToggle)="onMasterSelectionToggle()"
+        (itemSelectionToggle)="onItemSelectionToggle($event)"
+        (editStart)="onEditStart($event)"
+        (editSave)="onEditSave($event)"
+        (editCancel)="onEditCancel($event)"
+      ></app-review-table-view>
+    }
+
+    <!-- Grouped View -->
+    @if (viewMode() === 'grouped') {
+      <app-review-grouped-view
+        [groupedItems]="groupedItems()"
+        [categories]="categories()"
+        [standardUnits]="standardUnits"
+        [getCategoryName]="getCategoryName"
+        [getGroupExcludedCount]="getGroupExcludedCount"
+        [getGroupIncludedCount]="getGroupIncludedCount"
+        [hasGroupExcludedItems]="hasGroupExcludedItems"
+        (itemSelectionToggle)="onItemSelectionToggle($event)"
+        (editStart)="onEditStart($event)"
+        (editSave)="onEditSave($event)"
+        (editCancel)="onEditCancel($event)"
+      ></app-review-grouped-view>
+    }
+  </mat-card-content>
+</mat-card>

@@ -124,6 +124,7 @@ export class ShoppingListService extends SupabaseService {
               is_checked,
               category_id,
               source,
+              recipe_source,
               created_at,
               updated_at
             )

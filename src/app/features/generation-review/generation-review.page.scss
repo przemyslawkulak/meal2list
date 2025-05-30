@@ -1,0 +1,15 @@
+.review-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .review-container {
+    padding: 16px;
+    gap: 16px;
+  }
+} 

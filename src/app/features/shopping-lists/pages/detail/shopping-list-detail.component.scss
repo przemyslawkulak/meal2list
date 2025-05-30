@@ -37,6 +37,30 @@
 mat-card {
   max-width: 800px;
   margin: 0 auto;
+
+  .view-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+    gap: 8px;
+    
+    @include mixins.mobile-tablet {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+    }
+    
+    button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      
+      @include mixins.mobile-tablet {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
 }
 
 mat-list-item {
@@ -56,24 +80,105 @@ mat-list-item {
 .item-container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
   padding: 8px 0;
   min-width: 0;
   position: relative;
   z-index: 0;
+  gap: 8px;
 
   @include mixins.mobile-tablet {
-    padding: 4px 0;
+    padding: 6px 0;
+    gap: 6px;
+    align-items: center;
   }
 
-  mat-checkbox {
+  .item-info {
     flex: 1 1 0;
     min-width: 0;
-    margin-right: 8px;
-    overflow: visible;
-    pointer-events: auto;
-    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    
+    @include mixins.mobile-tablet {
+      gap: 2px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+    
+    mat-checkbox {
+      flex: 1;
+      min-width: 0;
+      overflow: visible;
+      pointer-events: auto;
+      z-index: 1;
+      
+      @include mixins.mobile-tablet {
+        ::ng-deep .mdc-label {
+          max-width: calc(100vw - 160px); // Leave space for actions and chips
+          font-size: 0.9rem;
+        }
+      }
+      
+      .checkbox-content {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        
+        @include mixins.mobile-tablet {
+          flex-direction: row;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 6px;
+        }
+      }
+    }
+
+    .recipe-source-chip {
+      background-color: rgba(76, 175, 80, 0.1);
+      color: #2e7d32;
+      border: 1px solid rgba(76, 175, 80, 0.3);
+      font-size: 0.75rem;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      align-self: flex-start;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      
+      mat-icon {
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+      }
+
+      @include mixins.mobile-tablet {
+        font-size: 0.65rem;
+        height: 20px;
+        max-width: 120px;
+        padding: 0 6px;
+        gap: 2px;
+        
+        mat-icon {
+          font-size: 10px;
+          width: 10px;
+          height: 10px;
+        }
+      }
+      
+      &.inline-chip {
+        @include mixins.mobile-tablet {
+          margin-left: 4px;
+          flex-shrink: 0;
+          max-width: 100px;
+        }
+      }
+    }
   }
 
   .item-actions {
@@ -86,6 +191,7 @@ mat-list-item {
     
     @include mixins.mobile-tablet {
       gap: 4px;
+      flex-shrink: 1;
     }
 
     app-category-icon, mat-chip, button {
@@ -103,6 +209,12 @@ mat-list-item {
     button[mat-icon-button] {
       background-color: rgba(244, 67, 54, 0.1);
       transition: all 0.2s ease;
+      
+      @include mixins.mobile-tablet {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+      }
       
       &:hover {
         background-color: var(--mat-warn-500);
@@ -255,5 +367,63 @@ mat-spinner {
   .mat-mdc-tooltip {
     position: fixed !important;
     z-index: 1000 !important;
+  }
+}
+
+.grouped-view {
+  .recipe-group-card {
+    margin-bottom: 16px;
+    border-left: 4px solid var(--mat-primary-400);
+    
+    .recipe-group-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.1rem;
+      color: var(--mat-primary-600);
+      
+      .item-count {
+        font-size: 0.9rem;
+        color: rgba(0, 0, 0, 0.6);
+        font-weight: normal;
+      }
+    }
+  }
+  
+  .completed-items-card {
+    margin-bottom: 16px;
+    border-left: 4px solid var(--mat-accent-400);
+    opacity: 0.8;
+    
+    .completed-items-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.1rem;
+      color: var(--mat-accent-600);
+      
+      .item-count {
+        font-size: 0.9rem;
+        color: rgba(0, 0, 0, 0.6);
+        font-weight: normal;
+      }
+      
+      mat-icon {
+        color: var(--mat-accent-500);
+      }
+    }
+    
+    mat-list-item {
+      opacity: 0.7;
+      
+      &:hover {
+        opacity: 1;
+      }
+      
+      .checked-item {
+        text-decoration: line-through;
+        text-decoration-color: rgba(0, 0, 0, 0.3);
+      }
+    }
   }
 } 

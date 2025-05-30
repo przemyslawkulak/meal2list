@@ -1,0 +1,20 @@
+<div class="actions">
+  <button mat-button (click)="onBackClick()" [disabled]="isProcessing()">
+    <mat-icon>arrow_back</mat-icon>
+    Wróć do edycji przepisu
+  </button>
+
+  <button
+    mat-flat-button
+    color="primary"
+    [disabled]="!hasValidItems() || isProcessing()"
+    (click)="onConfirmClick()"
+  >
+    @if (isProcessing()) {
+      <mat-spinner diameter="20" style="margin-right: 8px"></mat-spinner>
+    } @else {
+      <mat-icon>add_shopping_cart</mat-icon>
+    }
+    Dodaj {{ includedItemsCount() }} produktów do listy
+  </button>
+</div>

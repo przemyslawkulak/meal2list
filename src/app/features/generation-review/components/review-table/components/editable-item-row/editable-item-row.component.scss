@@ -1,0 +1,232 @@
+// Common styles for both views
+.editable-field {
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover:not(.disabled) {
+    background-color: var(--mat-app-surface-variant);
+  }
+
+  &:focus:not(.disabled) {
+    outline: 2px solid var(--mat-app-primary);
+    outline-offset: 2px;
+  }
+
+  &.disabled {
+    cursor: default;
+    opacity: 0.6;
+    text-decoration: line-through;
+  }
+
+  &.modified {
+    color: #1976d2;
+    font-weight: 600;
+    
+    &:hover:not(.disabled) {
+      background-color: var(--mat-app-surface-variant);
+    }
+  }
+}
+
+.edit-field {
+  width: 100%;
+  min-width: 120px;
+
+  &.quantity-field {
+    min-width: 80px;
+  }
+
+  &.unit-field {
+    min-width: 100px;
+  }
+
+  &.category-field {
+    min-width: 150px;
+  }
+}
+
+.category-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.category-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+// Table view specific styles
+.exclude-column {
+  width: 60px;
+  text-align: center;
+}
+
+td {
+  &.excluded {
+    opacity: 0.6;
+    background-color: var(--mat-app-surface-variant);
+  }
+}
+
+.product-name {
+  font-weight: 500;
+  min-width: 150px;
+  
+  &.modified {
+    color: #1976d2;
+    font-weight: 600;
+  }
+}
+
+// Grouped view specific styles
+.grouped-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--mat-divider-color);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  background-color: var(--mat-app-surface);
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  &.excluded-item {
+    opacity: 0.6;
+    background-color: var(--mat-app-surface-variant);
+    border-color: var(--mat-app-outline-variant);
+  }
+
+  &.modified-item {
+    border-color: #1976d2;
+    
+    .item-name .editable-field {
+      color: #1976d2;
+      font-weight: 600;
+    }
+  }
+
+  .item-checkbox {
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-start;
+    padding-top: 0.25rem;
+  }
+
+  .item-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .quantity-unit-row {
+      display: flex;
+      gap: 1rem;
+
+      .quantity-field {
+        flex: 1;
+        min-width: 100px;
+      }
+
+      .unit-field {
+        flex: 1;
+        min-width: 120px;
+      }
+    }
+  }
+
+  .item-display {
+    .item-name {
+      margin-bottom: 0.75rem;
+
+      .editable-field {
+        font-size: 1.1rem;
+        font-weight: 500;
+        padding: 0.5rem;
+        border-radius: 6px;
+        
+        &.modified {
+          color: #1976d2;
+          font-weight: 600;
+        }
+      }
+    }
+
+    .item-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.9rem;
+
+      .editable-field {
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        background-color: var(--mat-app-surface-container);
+        border: 1px solid var(--mat-divider-color);
+
+        &.modified {
+          color: #1976d2;
+          font-weight: 600;
+          border-color: #1976d2;
+        }
+
+        &.quantity {
+          min-width: 60px;
+          font-weight: 500;
+        }
+
+        &.unit {
+          min-width: 50px;
+        }
+
+        &.category {
+          min-width: 120px;
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .grouped-item {
+    .edit-form {
+      .quantity-unit-row {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+    }
+
+    .item-display {
+      .item-details {
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .editable-field {
+          align-self: flex-start;
+        }
+      }
+    }
+  }
+
+  .edit-field {
+    &.category-field,
+    &.unit-field {
+      min-width: 100px;
+    }
+  }
+} 

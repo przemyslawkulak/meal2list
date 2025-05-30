@@ -1,0 +1,75 @@
+<mat-card class="recipe-metadata">
+  <mat-card-content>
+    <div class="metadata-fields">
+      <div class="metadata-field">
+        <span class="field-label">
+          <mat-icon>restaurant</mat-icon>
+          Nazwa przepisu:
+        </span>
+        @if (isEditingRecipeName()) {
+          <mat-form-field appearance="outline" class="edit-field recipe-name-field">
+            <input
+              matInput
+              [formControl]="recipeNameControl"
+              placeholder="Wprowadź nazwę przepisu"
+              data-field="recipe-name"
+              (blur)="autoSaveRecipeName()"
+              (keydown)="onRecipeKeyDown($event, 'name')"
+              [disabled]="disabled()"
+            />
+            @if (recipeNameControl.hasError('required')) {
+              <mat-error>Nazwa przepisu jest wymagana</mat-error>
+            }
+          </mat-form-field>
+        } @else {
+          <span
+            class="editable-field recipe-display"
+            (click)="startEditRecipeName()"
+            (keydown)="onRecipeKeyDown($event, 'name')"
+            tabindex="0"
+            role="button"
+            aria-label="Edytuj nazwę przepisu"
+            matTooltip="Kliknij aby edytować nazwę przepisu"
+          >
+            {{ recipeName() || 'Kliknij aby dodać nazwę przepisu' }}
+          </span>
+        }
+      </div>
+
+      <div class="metadata-field">
+        <span class="field-label">
+          <mat-icon>source</mat-icon>
+          Źródło:
+        </span>
+        @if (isEditingRecipeSource()) {
+          <mat-form-field appearance="outline" class="edit-field recipe-source-field">
+            <input
+              matInput
+              [formControl]="recipeSourceControl"
+              placeholder="np. książka kucharska, strona internetowa"
+              data-field="recipe-source"
+              (blur)="autoSaveRecipeSource()"
+              (keydown)="onRecipeKeyDown($event, 'source')"
+              [disabled]="disabled()"
+            />
+            @if (recipeSourceControl.hasError('required')) {
+              <mat-error>Źródło jest wymagane</mat-error>
+            }
+          </mat-form-field>
+        } @else {
+          <span
+            class="editable-field recipe-display"
+            (click)="startEditRecipeSource()"
+            (keydown)="onRecipeKeyDown($event, 'source')"
+            tabindex="0"
+            role="button"
+            aria-label="Edytuj źródło przepisu"
+            matTooltip="Kliknij aby edytować źródło przepisu"
+          >
+            {{ recipeSource() || 'Kliknij aby dodać źródło' }}
+          </span>
+        }
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
