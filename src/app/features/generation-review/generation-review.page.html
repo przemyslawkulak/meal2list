@@ -1,117 +1,28 @@
 <div class="review-container">
-  <mat-card class="review-header">
-    <mat-card-header>
-      <mat-card-title>
-        <mat-icon>checklist</mat-icon>
-        Przejrzyj wygenerowane produkty
-      </mat-card-title>
-      <mat-card-subtitle>
-        Sprawdź i edytuj produkty przed dodaniem do listy zakupów
-      </mat-card-subtitle>
-    </mat-card-header>
-  </mat-card>
+  <app-review-header></app-review-header>
 
-  <!-- Recipe Metadata Section -->
-  <mat-card class="recipe-metadata">
-    <mat-card-content>
-      <div class="metadata-fields">
-        <div class="metadata-field">
-          <span class="field-label">
-            <mat-icon>restaurant</mat-icon>
-            Nazwa przepisu:
-          </span>
-          @if (isEditingRecipeName()) {
-          <mat-form-field appearance="outline" class="edit-field recipe-name-field">
-            <input
-              matInput
-              [formControl]="recipeNameControl"
-              placeholder="Wprowadź nazwę przepisu"
-              data-field="recipe-name"
-              (blur)="autoSaveRecipeName()"
-              (keydown)="onRecipeKeyDown($event, 'name')"
-            />
-            @if (recipeNameControl.hasError('required')) {
-            <mat-error>Nazwa przepisu jest wymagana</mat-error>
-            }
-          </mat-form-field>
-          } @else {
-          <span
-            class="editable-field recipe-display"
-            (click)="startEditRecipeName()"
-            (keydown)="onRecipeKeyDown($event, 'name')"
-            tabindex="0"
-            role="button"
-            aria-label="Edytuj nazwę przepisu"
-            matTooltip="Kliknij aby edytować nazwę przepisu"
-          >
-            {{ recipeName() || 'Kliknij aby dodać nazwę przepisu' }}
-          </span>
-          }
-        </div>
-
-        <div class="metadata-field">
-          <span class="field-label">
-            <mat-icon>source</mat-icon>
-            Źródło:
-          </span>
-          @if (isEditingRecipeSource()) {
-          <mat-form-field appearance="outline" class="edit-field recipe-source-field">
-            <input
-              matInput
-              [formControl]="recipeSourceControl"
-              placeholder="np. książka kucharska, strona internetowa"
-              data-field="recipe-source"
-              (blur)="autoSaveRecipeSource()"
-              (keydown)="onRecipeKeyDown($event, 'source')"
-            />
-            @if (recipeSourceControl.hasError('required')) {
-            <mat-error>Źródło jest wymagane</mat-error>
-            }
-          </mat-form-field>
-          } @else {
-          <span
-            class="editable-field recipe-display"
-            (click)="startEditRecipeSource()"
-            (keydown)="onRecipeKeyDown($event, 'source')"
-            tabindex="0"
-            role="button"
-            aria-label="Edytuj źródło przepisu"
-            matTooltip="Kliknij aby edytować źródło przepisu"
-          >
-            {{ recipeSource() || 'Kliknij aby dodać źródło' }}
-          </span>
-          }
-        </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
+  <app-recipe-metadata
+    [recipeName]="recipeName()"
+    [recipeSource]="recipeSource()"
+    [disabled]="isProcessing()"
+    (recipeNameChange)="onRecipeNameChange($event)"
+    (recipeSourceChange)="onRecipeSourceChange($event)"
+    (validationChange)="onRecipeMetadataValidationChange($event)"
+  ></app-recipe-metadata>
 
   @if (reviewItems().length > 0) {
   <app-review-table
     [itemsInput]="reviewItems()"
     [categories]="categories()"
     (itemsChange)="onItemsChange($event)"
-  >
-  </app-review-table>
+  ></app-review-table>
   }
 
-  <div class="actions">
-    <button mat-button (click)="goBack()" [disabled]="isProcessing()">
-      <mat-icon>arrow_back</mat-icon>
-      Wróć do edycji przepisu
-    </button>
-
-    <button
-      mat-flat-button
-      color="primary"
-      [disabled]="!hasValidItems() || isProcessing()"
-      (click)="confirmAndAdd()"
-    >
-      @if (isProcessing()) {
-      <mat-spinner diameter="20" style="margin-right: 8px"></mat-spinner>
-      } @else {
-      <mat-icon>add_shopping_cart</mat-icon>
-      } Dodaj {{ includedItemsCount() }} produktów do listy
-    </button>
-  </div>
+  <app-review-actions
+    [hasValidItems]="hasValidItems()"
+    [isProcessing]="isProcessing()"
+    [includedItemsCount]="includedItemsCount()"
+    (backClick)="goBack()"
+    (confirmClick)="confirmAndAdd()"
+  ></app-review-actions>
 </div>
