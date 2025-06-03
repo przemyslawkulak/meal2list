@@ -21,6 +21,14 @@ export class CategoryService extends SupabaseService {
     return this._categories$;
   }
 
+  /**
+   * Get categories as an observable (for store usage)
+   * This method provides the same interface as the store expects
+   */
+  getCategories() {
+    return this._categories$;
+  }
+
   preload() {
     this._categories$.subscribe({
       error: error => {

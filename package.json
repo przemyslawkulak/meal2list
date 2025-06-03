@@ -36,6 +36,8 @@
     "@fortawesome/angular-fontawesome": "^1.0.0",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@ngrx/operators": "^19.2.1",
+    "@ngrx/signals": "^19.2.1",
     "@supabase/supabase-js": "^2.49.4",
     "dotenv": "^16.5.0",
     "ngx-skeleton-loader": "^11.0.0",

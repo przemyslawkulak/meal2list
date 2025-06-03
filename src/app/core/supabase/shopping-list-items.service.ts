@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { from, Observable, map, catchError, throwError, switchMap, of } from 'rxjs';
+import { from, Observable, map, catchError, throwError, switchMap, of, forkJoin } from 'rxjs';
 import { SupabaseService } from '@core/supabase/supabase.service';
 import type {
   CreateBatchShoppingListItemsCommand,
@@ -92,11 +92,11 @@ export class ShoppingListItemsService extends SupabaseService {
           category_id: item.category_id || defaultCategoryId,
         }));
 
-        // Verify all category IDs exist
+        // Verify all category IDs exist using forkJoin
         const uniqueCategoryIds = [...new Set(itemsWithListId.map(item => item.category_id))];
         const categoryVerifications = uniqueCategoryIds.map(id => this.verifyCategoryExists(id));
 
-        return from(Promise.all(categoryVerifications)).pipe(
+        return forkJoin(categoryVerifications).pipe(
           map(results => {
             const invalidCategories = results.some(exists => !exists);
             if (invalidCategories) {
