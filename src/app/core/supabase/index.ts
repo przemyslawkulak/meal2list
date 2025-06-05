@@ -1,0 +1,9 @@
+export { SupabaseService } from './supabase.service';
+export { AuthService } from './auth.service';
+export { CategoryService } from './category.service';
+export { ProductService } from './product.service';
+export { UserProductService } from './user-product.service';
+export { ShoppingListService } from './shopping-list.service';
+export { ShoppingListItemsService } from './shopping-list-items.service';
+export { GenerationService } from './generation.service';
+export { ScrapingService } from './scraping.service';

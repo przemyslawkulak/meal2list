@@ -1,0 +1,15 @@
+@if (isVisible()) {
+  <div class="overlay-backdrop" (click)="onBackdropClick()">
+    <div class="overlay-content" (click)="onContentClick($event)">
+      @if (showCloseButton()) {
+        <button mat-icon-button class="overlay-close" (click)="onCloseClick()" aria-label="Zamknij">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+
+      <div class="overlay-body">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+}

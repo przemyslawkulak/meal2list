@@ -1,3 +1,5 @@
+@use '../../../../../_mixins.scss' as mixins;
+
 .generation-form {
   display: flex;
   flex-direction: column;
@@ -10,6 +12,11 @@
 
   &__submit {
     align-self: flex-start;
+  }
+
+  &--disabled {
+    opacity: 0.6;
+    pointer-events: none;
   }
 
   textarea {

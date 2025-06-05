@@ -1,16 +1,10 @@
 import { Injectable, Inject } from '@angular/core';
-import {
-  AuthChangeEvent,
-  AuthSession,
-  Session,
-  SupabaseClient,
-  User,
-  createClient,
-} from '@supabase/supabase-js';
+import { AuthChangeEvent, AuthSession, Session, SupabaseClient, User } from '@supabase/supabase-js';
 import { Database } from '@db/database.types';
 import { AppEnvironment } from '@app/app.config';
 import { from, Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { supabaseClient } from '@db/supabase.client';
 
 export interface Profile {
   id?: string;
@@ -28,13 +22,7 @@ export class SupabaseService {
   private _userId$: Observable<string>;
 
   constructor(@Inject('APP_ENVIRONMENT') private environment: AppEnvironment) {
-    this.supabase = createClient<Database>(environment.supabaseUrl, environment.supabaseKey, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: false,
-      },
-    });
+    this.supabase = supabaseClient;
     this._userId$ = from(this.supabase.auth.getUser()).pipe(
       map(({ data: { user } }) => {
         if (!user) {

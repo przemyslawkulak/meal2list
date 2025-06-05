@@ -117,19 +117,21 @@ The following outlines the planned development phases and key features for Meal2
 - ✅ **AI Generation Review Screen:** Develop an intermediary screen after AI-based ingredient extraction. This will allow users to review, edit quantities/units, and exclude items (especially common household staples like spices, oil) before they are added to the shopping list.
 - ✅ **Recipe Source Tracking:** Implement recipe name tracking throughout the shopping list lifecycle. Track which recipe generated each product, display recipe source in shopping lists, and add visual grouping/filtering by recipe functionality.
 - ✅ **Shopping List Item Editing:** Implement comprehensive editing capabilities for shopping list items, including modifying quantities, units, product names, categories, and the ability to mark items as completed or remove them entirely.
-- [ ] **Recipe Saving & Quick-Add:** Enhance the recipe saving feature to allow users to easily select a saved recipe to automatically generate a shopping list, streamlining the process.
+- ✅ **Recipe Import from URL:** Develop a feature to scrape recipe details directly from a provided website URL, automatically populating the ingredient extraction field.
+- [ ] **User-Specific Generation Limits:** Introduce a system to manage API usage, such as a weekly limit on the number of recipes a user can process for ingredient extraction (e.g., 10 recipes per week).
+- [ ] **Production Readiness:** Complete final production preparation including UI/UX polish, security hardening, comprehensive error handling, landing page creation, code cleanup and optimization, and performance caching implementation.
 
 ### Phase 2: Further UX Enhancements & Operational Needs
 
+- [ ] **Receipt Image Processing:** Implement OCR functionality to extract shopping list items directly from receipt images, allowing users to quickly recreate past shopping lists or track spending patterns.
+- [ ] **Recipe Saving & Quick-Add:** Enhance the recipe saving feature to allow users to easily select a saved recipe to automatically generate a shopping list, streamlining the process.
 - [ ] **Vector Database Integration (Qdrant):** Implement Qdrant vector database for semantic product matching and improved AI-driven ingredient recognition, enabling better fuzzy matching and product suggestions.
 - [ ] **AI Product Matching Integration:** Integrate product matching into AI workflow to automatically connect AI-generated product names to existing database products, improving data consistency and reducing duplicate entries.
-- [ ] **Product Combination:** Implement logic to combine identical products on the shopping list, even if added from different sources or with different initial units (e.g., "2 tomatoes" manually added + "500g tomatoes" from a recipe should intelligently merge).
-- [ ] **User-Specific Generation Limits:** Introduce a system to manage API usage, such as a weekly limit on the number of recipes a user can process for ingredient extraction (e.g., 10 recipes per week).
 
 ### Phase 3: Expanding Scope (Post-MVP Features)
 
+- [ ] **Product Combination:** Implement logic to combine identical products on the shopping list, even if added from different sources or with different initial units (e.g., "2 tomatoes" manually added + "500g tomatoes" from a recipe should intelligently merge).
 - [ ] **Recipe Cataloging & Tagging:** Allow users to organize their saved recipes with categories or tags for easier browsing and retrieval.
-- [ ] **Recipe Import from URL:** Develop a feature to scrape recipe details directly from a provided website URL, automatically populating the ingredient extraction field.
 - [ ] **Social Features:** Implement social functionalities such as sharing recipes and shopping lists, potentially with collaborative features and notifications.
 - [ ] **Recipe Calendar/Meal Planning:** Introduce a calendar feature to help users plan their meals by assigning recipes to specific dates.
 - [ ] **Rich Multimedia Support:** Integrate support for images or other multimedia content related to recipes (e.g., dish photos, user uploads).

@@ -1,0 +1,52 @@
+<form [formGroup]="form" class="scraping-form" [class.scraping-form--disabled]="disabled()">
+  <!-- URL Input Field -->
+  <mat-form-field appearance="fill" class="scraping-form__field">
+    <mat-label>URL przepisu</mat-label>
+    <input matInput formControlName="url" placeholder="https://example.com/przepis" type="url" />
+    @if (form.get('url')?.errors?.['required']) {
+      <mat-error>URL jest wymagany</mat-error>
+    }
+    @if (form.get('url')?.errors?.['invalidUrl']) {
+      <mat-error>Proszę podać prawidłowy URL (http:// lub https://)</mat-error>
+    }
+  </mat-form-field>
+
+  <!-- Action Buttons -->
+  <div class="scraping-form__actions">
+    <button
+      mat-flat-button
+      color="primary"
+      type="button"
+      [disabled]="!form.valid || isLoading || hasSuccess"
+      (click)="onScrape()"
+      class="scraping-form__scrape-btn"
+    >
+      @if (isLoading) {
+        <ng-container>
+          <mat-spinner diameter="20"></mat-spinner>
+          <span>Pobieranie...</span>
+        </ng-container>
+      } @else {
+        <ng-container>
+          <mat-icon>download</mat-icon>
+          <span>Pobierz przepis</span>
+        </ng-container>
+      }
+    </button>
+
+    @if (hasSuccess) {
+      <button mat-stroked-button type="button" (click)="onClear()" class="scraping-form__clear-btn">
+        <mat-icon>clear</mat-icon>
+        <span>Wyczyść</span>
+      </button>
+    }
+  </div>
+
+  <!-- Error Display -->
+  @if (hasError && errorMessage()) {
+    <div class="scraping-form__error">
+      <mat-icon color="warn">error</mat-icon>
+      <span>{{ errorMessage() }}</span>
+    </div>
+  }
+</form>

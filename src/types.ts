@@ -304,3 +304,67 @@ export interface SupabaseError {
   status?: number;
   name?: string;
 }
+
+// ----------------------------
+// Web Scraping DTOs and Command Models
+// ----------------------------
+
+export interface ScrapingRequestDto {
+  url: string;
+  options?: ScrapingOptionsDto;
+}
+
+export interface ScrapingOptionsDto {
+  maxTokens?: number;
+  extractMetadata?: boolean;
+  cleanContent?: boolean;
+  respectRateLimit?: boolean;
+  userAgent?: string;
+  contentSelector?: string; // CSS selector for specific content area (e.g., "#block-system-main")
+  excludeSelectors?: string[]; // CSS selectors to exclude (e.g., [".ads", ".navigation", ".footer"])
+  includeSelectors?: string[]; // CSS selectors to specifically include
+  preserveFormatting?: boolean; // Whether to preserve HTML formatting for structured content
+}
+
+export interface ScrapedContentDto {
+  url: string;
+  title?: string;
+  content: string;
+  metadata?: ContentMetadataDto;
+  tokenCount?: number;
+  scrapedAt: string;
+  success: boolean;
+  error?: string;
+}
+
+export interface ContentMetadataDto {
+  title?: string;
+  description?: string;
+  author?: string;
+  publishDate?: string;
+  keywords?: string[];
+  contentType?: string;
+  language?: string;
+}
+
+export interface OptimizedContentDto {
+  originalContent: string;
+  cleanedContent: string;
+  metadata: ContentMetadataDto;
+  tokenReduction: number;
+  estimatedTokens: number;
+}
+
+export interface ScrapingErrorDto {
+  url: string;
+  errorType: 'NETWORK_ERROR' | 'PARSING_ERROR' | 'RATE_LIMIT' | 'BLOCKED' | 'TIMEOUT';
+  message: string;
+  statusCode?: number;
+  timestamp: string;
+}
+
+export interface FallbackStrategy {
+  name: 'cheerio' | 'jsdom' | 'browser_service';
+  priority: number;
+  enabled: boolean;
+}

@@ -711,7 +711,7 @@ This API supports the following primary resources, each mapped to a correspondin
 
 - **POST /generate-shopping-list**
   - Description: Initiate the auto-generation of a shopping list from the provided recipe text without persisting the recipe in the database.
-  - Validation: The request payload must include the `recipe_text` field, which is required, non-empty, and limited to 5000 characters.
+  - Validation: The request payload must include the `recipe_text` field, which is required, non-empty, and limited to 10000 characters.
   - Request Example:
     ```json
     { "recipe_text": "Mix flour, sugar, eggs, and butter to create a cake batter..." }
@@ -753,7 +753,7 @@ This API supports the following primary resources, each mapped to a correspondin
 
   - Email and password must follow proper formats during signup and login.
   - Required fields such as `title`, `recipe_text`, and `name` must be non-empty.
-  - `recipe_text` is capped at 5000 characters.
+  - `recipe_text` is capped at 10000 characters.
   - Numeric values such as `quantity` are validated.
 
 - **Business Logic**:

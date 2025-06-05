@@ -1,0 +1,20 @@
+<div class="generation-steps">
+  @for (step of steps(); track step.id) {
+    <div class="generation-steps__item" [class]="'generation-steps__item--' + step.status">
+      <div class="generation-steps__icon">
+        @switch (step.status) {
+          @case ('completed') {
+            <mat-icon class="generation-steps__check">check_circle</mat-icon>
+          }
+          @case ('active') {
+            <mat-spinner diameter="16"></mat-spinner>
+          }
+          @case ('pending') {
+            <mat-icon class="generation-steps__pending">radio_button_unchecked</mat-icon>
+          }
+        }
+      </div>
+      <span class="generation-steps__label">{{ step.label }}</span>
+    </div>
+  }
+</div>

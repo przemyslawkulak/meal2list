@@ -1,16 +1,9 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="generation-form">
-  <mat-form-field appearance="fill" class="generation-form__field">
-    <mat-label>Wybierz listę zakupów</mat-label>
-    <mat-select formControlName="listId">
-      @for (list of shoppingLists(); track list.id) {
-        <mat-option [value]="list.id">{{ list.name }}</mat-option>
-      }
-    </mat-select>
-    @if (form.get('listId')?.errors?.['required']) {
-      <mat-error>Proszę wybrać listę zakupów</mat-error>
-    }
-  </mat-form-field>
-
+<form
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  class="generation-form"
+  [class.generation-form--disabled]="disabled()"
+>
   <mat-form-field appearance="fill" class="generation-form__field">
     <mat-label>Tekst przepisu</mat-label>
     <textarea
@@ -34,7 +27,7 @@
     mat-flat-button
     color="primary"
     type="submit"
-    [disabled]="!form.valid || form.pristine"
+    [disabled]="!form.valid || form.pristine || disabled()"
     class="generation-form__submit"
   >
     Generuj listę zakupów
