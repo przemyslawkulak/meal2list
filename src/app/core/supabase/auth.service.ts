@@ -7,6 +7,14 @@ import { User, AuthResponse } from '@supabase/supabase-js';
 import { AppEnvironment } from '@app/app.config';
 import { SupabaseService } from './supabase.service';
 
+// Auth service configuration constants
+const AUTH_CONFIG = {
+  SNACKBAR_DURATIONS_MS: {
+    SUCCESS: 3000,
+    ERROR: 5000,
+  },
+} as const;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -29,10 +37,8 @@ export class AuthService extends SupabaseService {
     this.supabase.auth.getSession().then(({ data: { session } }) => {
       this.currentUserSubject.next(session?.user ?? null);
 
-      // If we have a session, navigate to lists
-      if (session?.user) {
-        this.router.navigate(['/lists']);
-      }
+      // Don't auto-navigate on app initialization - let guards handle routing
+      // This prevents interference with returnUrl logic
 
       // Setup auth state change subscription
       this.supabase.auth.onAuthStateChange((event, session) => {
@@ -56,7 +62,7 @@ export class AuthService extends SupabaseService {
       catchError(error => {
         console.error('Registration error:', error);
         this.snackBar.open(this.getErrorMessage(error), 'Close', {
-          duration: 5000,
+          duration: AUTH_CONFIG.SNACKBAR_DURATIONS_MS.ERROR,
           panelClass: ['error-snackbar'],
         });
         throw error;
@@ -64,7 +70,7 @@ export class AuthService extends SupabaseService {
     );
   }
 
-  login(email: string, password: string): Observable<User> {
+  login(email: string, password: string, returnUrl?: string): Observable<User> {
     return from(this.signInWithPassword(email, password)).pipe(
       map((response: AuthResponse) => {
         if (response.error) throw response.error;
@@ -77,13 +83,23 @@ export class AuthService extends SupabaseService {
         return user;
       }),
       tap(() => {
-        this.snackBar.open('Logged in successfully', 'Close', { duration: 3000 });
-        this.router.navigate(['/lists']);
+        this.snackBar.open('Zalogowano pomyślnie', 'Zamknij', {
+          duration: AUTH_CONFIG.SNACKBAR_DURATIONS_MS.SUCCESS,
+        });
+        // Navigate to intended URL or default to lists
+        console.log('Auth: Login successful, returnUrl:', returnUrl);
+        if (returnUrl && returnUrl !== '/auth/login') {
+          console.log('Auth: Navigating to returnUrl:', returnUrl);
+          this.router.navigateByUrl(returnUrl);
+        } else {
+          console.log('Auth: Navigating to default /lists');
+          this.router.navigate(['/lists']);
+        }
       }),
       catchError(error => {
         console.error('Login error:', error);
         this.snackBar.open(this.getErrorMessage(error), 'Close', {
-          duration: 5000,
+          duration: AUTH_CONFIG.SNACKBAR_DURATIONS_MS.ERROR,
           panelClass: ['error-snackbar'],
         });
         throw error;
@@ -115,7 +131,7 @@ export class AuthService extends SupabaseService {
       catchError(error => {
         console.error('Reset password error:', error);
         this.snackBar.open(this.getErrorMessage(error), 'Close', {
-          duration: 5000,
+          duration: AUTH_CONFIG.SNACKBAR_DURATIONS_MS.ERROR,
           panelClass: ['error-snackbar'],
         });
         throw error;
@@ -141,7 +157,7 @@ export class AuthService extends SupabaseService {
       catchError(error => {
         console.error('Handle reset token error:', error);
         this.snackBar.open(this.getErrorMessage(error), 'Close', {
-          duration: 5000,
+          duration: AUTH_CONFIG.SNACKBAR_DURATIONS_MS.ERROR,
           panelClass: ['error-snackbar'],
         });
         throw error;
@@ -155,7 +171,7 @@ export class AuthService extends SupabaseService {
       catchError(error => {
         console.error('Update password error:', error);
         this.snackBar.open(this.getErrorMessage(error), 'Close', {
-          duration: 5000,
+          duration: AUTH_CONFIG.SNACKBAR_DURATIONS_MS.ERROR,
           panelClass: ['error-snackbar'],
         });
         throw error;

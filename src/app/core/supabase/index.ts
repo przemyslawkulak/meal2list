@@ -1,5 +1,6 @@
 export { SupabaseService } from './supabase.service';
 export { AuthService } from './auth.service';
+export { SessionManagementService } from './session-management.service';
 export { CategoryService } from './category.service';
 export { ProductService } from './product.service';
 export { UserProductService } from './user-product.service';

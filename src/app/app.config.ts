@@ -5,13 +5,14 @@ import {
   inject,
 } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient, withFetch, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatNativeDateModule } from '@angular/material/core';
 import { environment } from '../environments/environment';
 import { routes } from './app.routes';
 import { provideRouter } from '@angular/router';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { CategoriesStore, ProductsStore, AppInitializationService } from '@app/core/stores';
+import { AuthInterceptor, ErrorInterceptor, RetryInterceptor } from '@app/core/interceptors';
 
 export interface AppEnvironment {
   production: boolean;
@@ -29,6 +30,22 @@ export const appConfig: ApplicationConfig = {
     {
       provide: 'APP_ENVIRONMENT',
       useValue: environment as AppEnvironment,
+    },
+    // HTTP Interceptors for Authentication & Authorization Flow
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RetryInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
     },
     // NgRx SignalStore providers
     CategoriesStore,

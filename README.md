@@ -118,8 +118,8 @@ The following outlines the planned development phases and key features for Meal2
 - ✅ **Recipe Source Tracking:** Implement recipe name tracking throughout the shopping list lifecycle. Track which recipe generated each product, display recipe source in shopping lists, and add visual grouping/filtering by recipe functionality.
 - ✅ **Shopping List Item Editing:** Implement comprehensive editing capabilities for shopping list items, including modifying quantities, units, product names, categories, and the ability to mark items as completed or remove them entirely.
 - ✅ **Recipe Import from URL:** Develop a feature to scrape recipe details directly from a provided website URL, automatically populating the ingredient extraction field.
-- [ ] **User-Specific Generation Limits:** Introduce a system to manage API usage, such as a weekly limit on the number of recipes a user can process for ingredient extraction (e.g., 10 recipes per week).
 - [ ] **Production Readiness:** Complete final production preparation including UI/UX polish, security hardening, comprehensive error handling, landing page creation, code cleanup and optimization, and performance caching implementation.
+- [ ] **User-Specific Generation Limits:** Introduce a system to manage API usage, such as a weekly limit on the number of recipes a user can process for ingredient extraction (e.g., 10 recipes per week).
 
 ### Phase 2: Further UX Enhancements & Operational Needs
 
