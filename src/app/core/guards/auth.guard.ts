@@ -6,7 +6,8 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { AuthService } from '../supabase/auth.service';
-import { map, take, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { switchMap, take } from 'rxjs/operators';
 
 export const authGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
@@ -15,19 +16,14 @@ export const authGuard: CanActivateFn = (
   const router = inject(Router);
   const authService = inject(AuthService);
 
-  return authService.isAuthenticated$.pipe(
+  return authService.validateSession().pipe(
     take(1),
-    tap(isAuthenticated => {
-      if (!isAuthenticated) {
-        // Save intended URL for redirect after login
-        const returnUrl = state.url;
-        console.log('AuthGuard: Redirecting to login with returnUrl:', returnUrl);
-        router.navigate(['/auth/login'], {
-          queryParams: { returnUrl },
-          replaceUrl: true,
-        });
+    switchMap(isValid => {
+      if (isValid) {
+        return of(true);
       }
-    }),
-    map(isAuthenticated => isAuthenticated)
+      router.navigate(['/auth/login'], { queryParams: { returnUrl: state.url }, replaceUrl: true });
+      return of(false);
+    })
   );
 };

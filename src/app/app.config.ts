@@ -12,7 +12,7 @@ import { routes } from './app.routes';
 import { provideRouter } from '@angular/router';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { CategoriesStore, ProductsStore, AppInitializationService } from '@app/core/stores';
-import { AuthInterceptor, ErrorInterceptor, RetryInterceptor } from '@app/core/interceptors';
+import { ErrorInterceptor, RetryInterceptor } from '@app/core/interceptors';
 
 export interface AppEnvironment {
   production: boolean;
@@ -35,11 +35,6 @@ export const appConfig: ApplicationConfig = {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: RetryInterceptor,
-      multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
       multi: true,
     },
     {

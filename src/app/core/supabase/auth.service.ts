@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable, from, of } from 'rxjs';
-import { tap, map, catchError } from 'rxjs/operators';
+import { tap, map, catchError, switchMap } from 'rxjs/operators';
 import { User, AuthResponse } from '@supabase/supabase-js';
 import { AppEnvironment } from '@app/app.config';
 import { SupabaseService } from './supabase.service';
@@ -32,23 +32,59 @@ export class AuthService extends SupabaseService {
     this.initializeAuth();
   }
 
-  private initializeAuth(): void {
-    // Check for existing sessions
-    this.supabase.auth.getSession().then(({ data: { session } }) => {
+  private async initializeAuth(): Promise<void> {
+    try {
+      // Check for existing session
+      const {
+        data: { session },
+        error: sessionError,
+      } = await this.supabase.auth.getSession();
+
+      if (sessionError) throw sessionError;
+
+      // Update current user state
       this.currentUserSubject.next(session?.user ?? null);
 
-      // Don't auto-navigate on app initialization - let guards handle routing
-      // This prevents interference with returnUrl logic
-
       // Setup auth state change subscription
-      this.supabase.auth.onAuthStateChange((event, session) => {
-        this.currentUserSubject.next(session?.user ?? null);
-
-        if (event === 'SIGNED_OUT') {
-          this.router.navigate(['/auth/login']);
+      this.supabase.auth.onAuthStateChange(async (event, session) => {
+        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+          this.currentUserSubject.next(session?.user ?? null);
+        } else if (event === 'SIGNED_OUT') {
+          this.currentUserSubject.next(null);
+          await this.router.navigate(['/auth/login']);
+        } else if (event === 'USER_UPDATED') {
+          this.currentUserSubject.next(session?.user ?? null);
         }
       });
-    });
+    } catch (error) {
+      console.error('Error initializing auth:', error);
+      this.currentUserSubject.next(null);
+    }
+  }
+
+  validateSession(): Observable<boolean> {
+    return from(this.supabase.auth.getSession()).pipe(
+      switchMap(({ data: { session }, error }) => {
+        if (error) {
+          this.currentUserSubject.next(null);
+          return of(false);
+        }
+
+        if (!session) {
+          this.currentUserSubject.next(null);
+          return of(false);
+        }
+
+        // Session exists; no manual expiration re-check needed
+        this.currentUserSubject.next(session.user);
+        return of(true);
+      }),
+      catchError(error => {
+        console.error('Error validating session:', error);
+        this.currentUserSubject.next(null);
+        return of(false);
+      })
+    );
   }
 
   signUp(email: string, password: string): Observable<User> {
@@ -72,29 +108,16 @@ export class AuthService extends SupabaseService {
 
   login(email: string, password: string, returnUrl?: string): Observable<User> {
     return from(this.signInWithPassword(email, password)).pipe(
-      map((response: AuthResponse) => {
+      switchMap((response: AuthResponse) => {
         if (response.error) throw response.error;
-
         const user = response.data.user;
         if (!user) throw new Error('No user returned from auth response');
-
         this.currentUserSubject.next(user);
-
-        return user;
-      }),
-      tap(() => {
         this.snackBar.open('Zalogowano pomyślnie', 'Zamknij', {
           duration: AUTH_CONFIG.SNACKBAR_DURATIONS_MS.SUCCESS,
         });
-        // Navigate to intended URL or default to lists
-        console.log('Auth: Login successful, returnUrl:', returnUrl);
-        if (returnUrl && returnUrl !== '/auth/login') {
-          console.log('Auth: Navigating to returnUrl:', returnUrl);
-          this.router.navigateByUrl(returnUrl);
-        } else {
-          console.log('Auth: Navigating to default /lists');
-          this.router.navigate(['/lists']);
-        }
+        const target = returnUrl && returnUrl !== '/auth/login' ? returnUrl : '/lists';
+        return from(this.router.navigateByUrl(target)).pipe(map(() => user));
       }),
       catchError(error => {
         console.error('Login error:', error);
