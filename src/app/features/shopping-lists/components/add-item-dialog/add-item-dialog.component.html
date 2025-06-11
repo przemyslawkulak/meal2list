@@ -76,16 +76,8 @@
                   <div class="product-info">
                     <span class="product-name">{{ product.name }}</span>
                     <app-category-icon
-                      [categoryName]="
-                        getCategoryName(
-                          product.preferred_category_id || product.default_category_id
-                        )
-                      "
-                      [matTooltip]="
-                        getCategoryName(
-                          product.preferred_category_id || product.default_category_id
-                        )
-                      "
+                      [categoryName]="getCategoryName(getProductCategoryId(product))"
+                      [matTooltip]="getCategoryName(getProductCategoryId(product))"
                     />
                   </div>
                   <div class="product-actions">
@@ -163,16 +155,8 @@
                   <div class="product-info">
                     <span class="product-name">{{ product.name }}</span>
                     <app-category-icon
-                      [categoryName]="
-                        getCategoryName(
-                          product.preferred_category_id || product.default_category_id
-                        )
-                      "
-                      [matTooltip]="
-                        getCategoryName(
-                          product.preferred_category_id || product.default_category_id
-                        )
-                      "
+                      [categoryName]="getCategoryName(getProductCategoryId(product))"
+                      [matTooltip]="getCategoryName(getProductCategoryId(product))"
                     />
                   </div>
                   <div class="product-actions">

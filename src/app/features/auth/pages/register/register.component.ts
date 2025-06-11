@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -12,7 +12,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
@@ -21,6 +20,8 @@ import { finalize } from 'rxjs/operators';
 import { AuthService } from '../../../../core/supabase/auth.service';
 import { User } from '@supabase/supabase-js';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NotificationService } from '@app/shared/services/notification.service';
+import { LoggerService } from '@app/shared/services/logger.service';
 
 @Component({
   selector: 'app-register',
@@ -41,12 +42,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class RegisterComponent {
   registerForm: FormGroup;
   loading = false;
+  private readonly notification = inject(NotificationService);
+  private readonly logger = inject(LoggerService);
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router,
-    private snackBar: MatSnackBar
+    private router: Router
   ) {
     this.registerForm = this.fb.group(
       {
@@ -79,21 +81,14 @@ export class RegisterComponent {
         .pipe(finalize(() => (this.loading = false)))
         .subscribe({
           next: () => {
-            this.snackBar.open(
-              'Rejestracja zakończona powodzeniem. Możesz się teraz zalogować.',
-              'OK',
-              {
-                duration: 5000,
-              }
+            this.notification.showSuccess(
+              'Rejestracja zakończona powodzeniem. Możesz się teraz zalogować.'
             );
             this.router.navigate(['/auth/login']);
           },
           error: error => {
-            console.error('Registration error:', error);
-            this.snackBar.open(this.getErrorMessage(error), 'OK', {
-              duration: 5000,
-              panelClass: ['error-snackbar'],
-            });
+            this.logger.logError(error, 'Registration error');
+            this.notification.showError(this.getErrorMessage(error));
           },
         });
     }

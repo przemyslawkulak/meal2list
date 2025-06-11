@@ -118,30 +118,7 @@ export class ShoppingListItemsService extends SupabaseService {
         if (result.error) throw result.error;
         return result.data as ShoppingListItemResponseDto[];
       }),
-      catchError(error => {
-        console.error('Error adding items to shopping list:', error);
-        return throwError(() => ({
-          message:
-            error.message === 'Shopping list not found or access denied'
-              ? error.message
-              : error.message === 'One or more category IDs are invalid'
-                ? error.message
-                : error.message === 'Default category not found'
-                  ? 'System configuration error: Default category not found'
-                  : 'Failed to add items to shopping list',
-          statusCode:
-            error.message === 'Shopping list not found or access denied'
-              ? 403
-              : error.message === 'One or more category IDs are invalid'
-                ? 400
-                : error.message === 'Default category not found'
-                  ? 500
-                  : error?.code === '23505'
-                    ? 409
-                    : 500,
-          error,
-        }));
-      })
+      catchError(error => this.handleServiceError(error, 'Failed to add items to shopping list'))
     );
   }
 
@@ -186,26 +163,7 @@ export class ShoppingListItemsService extends SupabaseService {
         if (result.error) throw result.error;
         return result.data as ShoppingListItemResponseDto;
       }),
-      catchError(error => {
-        console.error('Error adding item to shopping list:', error);
-        return throwError(() => ({
-          message:
-            error.message === 'Shopping list not found or access denied'
-              ? error.message
-              : error.message === 'Default category not found'
-                ? 'System configuration error: Default category not found'
-                : 'Failed to add item to shopping list',
-          statusCode:
-            error.message === 'Shopping list not found or access denied'
-              ? 403
-              : error.message === 'Default category not found'
-                ? 500
-                : error?.code === '23505'
-                  ? 409
-                  : 500,
-          error,
-        }));
-      })
+      catchError(error => this.handleServiceError(error, 'Failed to add item to shopping list'))
     );
   }
 
@@ -279,30 +237,7 @@ export class ShoppingListItemsService extends SupabaseService {
         if (result.error) throw result.error;
         return result.data as ShoppingListItemResponseDto;
       }),
-      catchError(error => {
-        console.error('Error updating shopping list item:', error);
-        return throwError(() => ({
-          message:
-            error.message === 'Shopping list not found or access denied'
-              ? error.message
-              : error.message === 'Item not found'
-                ? 'Shopping list item not found'
-                : error.message === 'Default category not found'
-                  ? 'System configuration error: Default category not found'
-                  : 'Failed to update shopping list item',
-          statusCode:
-            error.message === 'Shopping list not found or access denied'
-              ? 403
-              : error.message === 'Item not found'
-                ? 404
-                : error.message === 'Default category not found'
-                  ? 500
-                  : error?.code === '23505'
-                    ? 409
-                    : 500,
-          error,
-        }));
-      })
+      catchError(error => this.handleServiceError(error, 'Failed to update shopping list item'))
     );
   }
 
@@ -320,17 +255,7 @@ export class ShoppingListItemsService extends SupabaseService {
         if (result.error) throw result.error;
         return;
       }),
-      catchError(error => {
-        console.error('Error deleting shopping list item:', error);
-        return throwError(() => ({
-          message:
-            error.message === 'Shopping list not found or access denied'
-              ? error.message
-              : 'Failed to delete shopping list item',
-          statusCode: error.message === 'Shopping list not found or access denied' ? 403 : 500,
-          error,
-        }));
-      })
+      catchError(error => this.handleServiceError(error, 'Failed to delete shopping list item'))
     );
   }
 }

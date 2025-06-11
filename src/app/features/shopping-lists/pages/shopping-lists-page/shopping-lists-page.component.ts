@@ -2,7 +2,6 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,6 +14,8 @@ import { ShoppingListService } from '../../../../core/supabase/shopping-list.ser
 import { DeleteConfirmDialogComponent } from '../../components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { NewShoppingListDialogComponent } from '../../components/new-shopping-list-dialog/new-shopping-list-dialog.component';
 import { ShoppingListItemComponent } from '../../components/shopping-list-item/shopping-list-item.component';
+import { NotificationService } from '@app/shared/services/notification.service';
+import { LoggerService } from '@app/shared/services/logger.service';
 
 @Component({
   selector: 'app-shopping-lists-page',
@@ -22,7 +23,6 @@ import { ShoppingListItemComponent } from '../../components/shopping-list-item/s
   imports: [
     CommonModule,
     MatDialogModule,
-    MatSnackBarModule,
     MatToolbarModule,
     MatListModule,
     MatButtonModule,
@@ -36,7 +36,8 @@ import { ShoppingListItemComponent } from '../../components/shopping-list-item/s
 })
 export class ShoppingListsPageComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
-  private readonly snackBar = inject(MatSnackBar);
+  private readonly notification = inject(NotificationService);
+  private readonly logger = inject(LoggerService);
   private readonly shoppingListService = inject(ShoppingListService);
   private readonly router = inject(Router);
 
@@ -59,11 +60,11 @@ export class ShoppingListsPageComponent implements OnInit {
           .pipe(
             tap(newList => {
               this.lists.update(currentLists => [...currentLists, newList]);
-              this.snackBar.open('Lista zakupowa została utworzona', 'OK', { duration: 3000 });
+              this.notification.showSuccess('Lista zakupowa została utworzona');
             }),
             catchError(error => {
-              console.error('Error creating shopping list:', error);
-              this.snackBar.open('Wystąpił błąd podczas tworzenia listy', 'OK', { duration: 3000 });
+              this.logger.logError(error, 'Error creating shopping list');
+              this.notification.showError('Wystąpił błąd podczas tworzenia listy');
               return of(null);
             })
           )
@@ -85,11 +86,11 @@ export class ShoppingListsPageComponent implements OnInit {
           .pipe(
             tap(() => {
               this.lists.update(currentLists => currentLists.filter(l => l.id !== list.id));
-              this.snackBar.open('Lista zakupowa została usunięta', 'OK', { duration: 3000 });
+              this.notification.showSuccess('Lista zakupowa została usunięta');
             }),
             catchError(error => {
-              console.error('Error deleting shopping list:', error);
-              this.snackBar.open('Wystąpił błąd podczas usuwania listy', 'OK', { duration: 3000 });
+              this.logger.logError(error, 'Error deleting shopping list');
+              this.notification.showError('Wystąpił błąd podczas usuwania listy');
               return of(null);
             })
           )
@@ -111,8 +112,8 @@ export class ShoppingListsPageComponent implements OnInit {
         delay(300),
         tap(lists => this.lists.set(lists)),
         catchError(error => {
-          console.error('Error loading shopping lists:', error);
-          this.snackBar.open('Wystąpił błąd podczas ładowania list', 'OK', { duration: 3000 });
+          this.logger.logError(error, 'Error loading shopping lists');
+          this.notification.showError('Wystąpił błąd podczas ładowania list');
           return of([]);
         }),
         finalize(() => this.isLoading.set(false))

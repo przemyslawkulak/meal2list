@@ -14,6 +14,7 @@ import { AuthService } from '@core/supabase/auth.service';
 import { NavListComponent } from '@app/layout/nav-list/nav-list.component';
 import { NavLink } from '@types';
 import { MatTabsModule } from '@angular/material/tabs';
+import { OfflineBannerComponent } from '@app/shared/ui/offline-banner/offline-banner.component';
 
 @Component({
   selector: 'app-shell',
@@ -24,6 +25,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatIconModule,
     MatListModule,
     MatButtonModule,
+    OfflineBannerComponent,
     RouterOutlet,
     RouterLink,
     RouterLinkActive,

@@ -1,4 +1,11 @@
-import { Component, ChangeDetectionStrategy, signal, computed, OnDestroy } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  signal,
+  computed,
+  OnDestroy,
+  inject,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
@@ -10,7 +17,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DatePipe, CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CategoryIconComponent } from '@app/shared/category-icon/category-icon.component';
 import {
   catchError,
@@ -41,6 +47,8 @@ import {
   UpdatedShoppingListItem,
 } from '../../components/edit-item-dialog/edit-item-dialog.component';
 import { ProductService } from '@app/core/supabase/product.service';
+import { NotificationService } from '@app/shared/services/notification.service';
+import { LoggerService } from '@app/shared/services/logger.service';
 
 @Component({
   selector: 'app-shopping-list-detail',
@@ -54,7 +62,6 @@ import { ProductService } from '@app/core/supabase/product.service';
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
-    MatSnackBarModule,
     DatePipe,
     CommonModule,
     MatTooltipModule,
@@ -66,6 +73,8 @@ import { ProductService } from '@app/core/supabase/product.service';
 })
 export class ShoppingListDetailComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
+  private readonly notification = inject(NotificationService);
+  private readonly logger = inject(LoggerService);
 
   loading = signal<boolean>(true);
   shoppingList = signal<ShoppingListResponseDto | null>(null);
@@ -159,15 +168,14 @@ export class ShoppingListDetailComponent implements OnDestroy {
     private shoppingListItemsService: ShoppingListItemsService,
     private categoryService: CategoryService,
     private dialog: MatDialog,
-    private productService: ProductService,
-    private snackBar: MatSnackBar
+    private productService: ProductService
   ) {
     const shoppingList$ = this.route.params.pipe(
       map(params => params['id']),
       switchMap(id =>
         this.shoppingListService.getShoppingListById(id).pipe(
           map(data => ({ loading: false, data })),
-          catchError(error => this.handleError('Error loading shopping list:', error)),
+          catchError(error => this.handleError('Error loading shopping list', error)),
           startWith({ loading: true, data: null })
         )
       )
@@ -300,7 +308,8 @@ export class ShoppingListDetailComponent implements OnDestroy {
     message: string,
     error: HttpErrorResponse
   ): Observable<{ loading: boolean; data: null }> {
-    console.error(message, error);
+    this.logger.logError(error, message);
+    this.notification.showError(message);
     return of({ loading: false, data: null });
   }
 
@@ -416,20 +425,14 @@ export class ShoppingListDetailComponent implements OnDestroy {
                 switchMap((updatedItem: ShoppingListItemResponseDto) => {
                   // Confirm with server response
                   this.updateLocalShoppingListItem(item.id, updatedItem);
-                  this.snackBar.open('Item updated successfully', 'Close', {
-                    duration: 2000,
-                    panelClass: 'success-snackbar',
-                  });
+                  this.notification.showSuccess('Item updated successfully');
                   return of(updatedItem);
                 }),
                 catchError(error => {
                   // Rollback optimistic update on error
                   this.updateLocalShoppingListItem(item.id, item);
-                  this.snackBar.open('Failed to update item. Please try again.', 'Close', {
-                    duration: 4000,
-                    panelClass: 'error-snackbar',
-                  });
-                  console.error('Error updating item:', error);
+                  this.logger.logError(error, 'Error updating item');
+                  this.notification.showError('Failed to update item. Please try again.');
                   return of(null);
                 })
               )

@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { Observable, map, catchError, throwError, of, switchMap } from 'rxjs';
+import { Observable, map, catchError, of, switchMap } from 'rxjs';
 import {
   CreateShoppingListCommand,
   ShoppingListResponseDto,
@@ -30,7 +30,8 @@ export class ShoppingListService extends SupabaseService {
         return result.data as ShoppingListResponseDto[];
       }),
       catchError(error => {
-        console.error('Error fetching shopping lists:', error);
+        this.logger.logError(error, 'Error fetching shopping lists');
+        this.notification.showError('Failed to load shopping lists');
         return of([]);
       })
     );
@@ -55,10 +56,7 @@ export class ShoppingListService extends SupabaseService {
         if (result.error) throw result.error;
         return result.data;
       }),
-      catchError(error => {
-        console.error('Error creating shopping list:', error);
-        return throwError(() => new Error('Failed to create shopping list'));
-      })
+      catchError(error => this.handleServiceError(error, 'Failed to create shopping list'))
     );
   }
 
@@ -71,10 +69,7 @@ export class ShoppingListService extends SupabaseService {
         if (result.error) throw result.error;
         return;
       }),
-      catchError(error => {
-        console.error('Error deleting shopping list:', error);
-        return throwError(() => new Error('Failed to delete shopping list'));
-      })
+      catchError(error => this.handleServiceError(error, 'Failed to delete shopping list'))
     );
   }
 
@@ -96,10 +91,7 @@ export class ShoppingListService extends SupabaseService {
         if (result.error) throw result.error;
         return result.data;
       }),
-      catchError(error => {
-        console.error('Error updating shopping list:', error);
-        return throwError(() => new Error('Failed to update shopping list'));
-      })
+      catchError(error => this.handleServiceError(error, 'Failed to update shopping list'))
     );
   }
 
@@ -140,7 +132,8 @@ export class ShoppingListService extends SupabaseService {
         return result.data as ShoppingListResponseDto;
       }),
       catchError(error => {
-        console.error('Error fetching shopping list:', error);
+        this.logger.logError(error, 'Error fetching shopping list');
+        this.notification.showError('Failed to load shopping list');
         return of(null);
       })
     );

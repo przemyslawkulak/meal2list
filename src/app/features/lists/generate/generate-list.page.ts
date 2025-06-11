@@ -24,6 +24,8 @@ import {
   CategoryDto,
 } from '../../../../types';
 import { CategoryService } from '@app/core/supabase/category.service';
+import { NotificationService } from '@app/shared/services/notification.service';
+import { LoggerService } from '@app/shared/services/logger.service';
 
 @Component({
   selector: 'app-generate-list-page',
@@ -51,6 +53,8 @@ export class GenerateListPageComponent implements OnInit {
   private readonly shoppingListItemsService = inject(ShoppingListItemsService);
   private readonly router = inject(Router);
   private readonly _categoryService = inject(CategoryService);
+  private readonly notification = inject(NotificationService);
+  private readonly logger = inject(LoggerService);
 
   constructor() {
     // Load shopping lists on component init
@@ -292,8 +296,10 @@ export class GenerateListPageComponent implements OnInit {
           });
         }),
         catchError(error => {
-          console.error('Generation error:', error);
-          this.errorMessage.set(error instanceof Error ? error.message : 'Generation failed');
+          this.logger.logError(error, 'Generation error');
+          const msg = error instanceof Error ? error.message : 'Generation failed';
+          this.errorMessage.set(msg);
+          this.notification.showError(msg);
           this.generationStatus.set('error');
           return of(null);
         }),

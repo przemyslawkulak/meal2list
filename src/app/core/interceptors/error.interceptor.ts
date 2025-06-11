@@ -8,7 +8,8 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationService } from '@app/shared/services/notification.service';
+import { LoggerService } from '@app/shared/services/logger.service';
 import { Router } from '@angular/router';
 
 // Error handling configuration constants
@@ -34,7 +35,8 @@ const ERROR_CONFIG = {
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  private readonly snackBar = inject(MatSnackBar);
+  private readonly notification = inject(NotificationService);
+  private readonly logger = inject(LoggerService);
   private readonly router = inject(Router);
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -46,7 +48,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    console.error('HTTP Error:', error);
+    this.logger.logError(error, 'HTTP Error');
 
     // Handle different error types
     const { HTTP_STATUS_CODES } = ERROR_CONFIG;
@@ -152,11 +154,6 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   private showError(message: string): void {
-    this.snackBar.open(message, 'Zamknij', {
-      duration: ERROR_CONFIG.SNACKBAR_DURATION_MS,
-      panelClass: ['error-snackbar'],
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-    });
+    this.notification.showError(message);
   }
 }

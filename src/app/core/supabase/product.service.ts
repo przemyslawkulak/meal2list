@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { Observable, from, map, catchError, throwError, shareReplay, switchMap } from 'rxjs';
+import { Observable, from, map, catchError, throwError, switchMap } from 'rxjs';
 import { SupabaseService } from '@core/supabase/supabase.service';
 import type {
   ProductDto,
@@ -9,7 +9,6 @@ import type {
   CategoryDto,
 } from '@types';
 import { AppEnvironment } from '@app/app.config';
-import { HttpErrorResponse } from '@angular/common/http';
 import { CategoryService } from '@core/supabase/category.service';
 import { DEFAULT_CATEGORY_NAMES } from '@app/shared/mocks/defaults.mock';
 
@@ -17,34 +16,32 @@ import { DEFAULT_CATEGORY_NAMES } from '@app/shared/mocks/defaults.mock';
   providedIn: 'root',
 })
 export class ProductService extends SupabaseService {
-  private _products$: Observable<ProductDto[]>;
+  // private _products$: Observable<ProductDto[]>;
 
   constructor(
     @Inject('APP_ENVIRONMENT') environment: AppEnvironment,
     private categoryService: CategoryService
   ) {
     super(environment);
-    this._products$ = this.getProducts().pipe(shareReplay({ bufferSize: 1, refCount: true }));
-    this.products$.subscribe();
   }
 
-  get products$() {
-    return this._products$;
-  }
   /**
    * Get all products (common + user-specific)
    */
   getProducts(): Observable<ProductDto[]> {
     return this.getUserId().pipe(
-      switchMap(userId =>
-        from(
+      switchMap(userId => {
+        if (!userId) {
+          return throwError(() => new Error('User ID not available'));
+        }
+        return from(
           this.supabase
             .from('products')
             .select('id, name, default_category_id, is_common, created_by, created_at')
             .or(`is_common.eq.true,created_by.eq.${userId}`)
             .limit(2000)
-        )
-      ),
+        );
+      }),
       map(result => {
         if (result.error) throw result.error;
         return result.data as ProductDto[];
@@ -54,7 +51,7 @@ export class ProductService extends SupabaseService {
           map(categories => this.sortProductsByCategory(products, categories))
         )
       ),
-      catchError(error => this.handleError(error, 'Failed to fetch products'))
+      catchError(error => this.handleServiceError(error, 'Failed to fetch products'))
     );
   }
 
@@ -72,7 +69,7 @@ export class ProductService extends SupabaseService {
         if (result.error) throw result.error;
         return result.data as ProductDto[];
       }),
-      catchError(error => this.handleError(error, 'Failed to fetch common products'))
+      catchError(error => this.handleServiceError(error, 'Failed to fetch common products'))
     );
   }
 
@@ -93,7 +90,7 @@ export class ProductService extends SupabaseService {
         if (result.error) throw result.error;
         return result.data as ProductDto[];
       }),
-      catchError(error => this.handleError(error, 'Failed to fetch user products'))
+      catchError(error => this.handleServiceError(error, 'Failed to fetch user products'))
     );
   }
 
@@ -119,7 +116,7 @@ export class ProductService extends SupabaseService {
         if (result.error) throw result.error;
         return result.data as ProductDto;
       }),
-      catchError(error => this.handleError(error, 'Failed to create product'))
+      catchError(error => this.handleServiceError(error, 'Failed to create product'))
     );
   }
 
@@ -143,7 +140,7 @@ export class ProductService extends SupabaseService {
         if (result.error) throw result.error;
         return result.data as ProductDto;
       }),
-      catchError(error => this.handleError(error, 'Failed to update product'))
+      catchError(error => this.handleServiceError(error, 'Failed to update product'))
     );
   }
 
@@ -158,7 +155,7 @@ export class ProductService extends SupabaseService {
       map(result => {
         if (result.error) throw result.error;
       }),
-      catchError(error => this.handleError(error, 'Failed to delete product'))
+      catchError(error => this.handleServiceError(error, 'Failed to delete product'))
     );
   }
 
@@ -241,16 +238,7 @@ export class ProductService extends SupabaseService {
           use_count: row.use_count,
         }));
       }),
-      catchError(error => this.handleError(error, 'Failed to fetch recently used products'))
+      catchError(error => this.handleServiceError(error, 'Failed to fetch recently used products'))
     );
-  }
-
-  private handleError(error: HttpErrorResponse, message: string): Observable<never> {
-    console.error(message, error);
-    return throwError(() => ({
-      message: error.message || message,
-      statusCode: error.status === 409 ? 409 : 500,
-      error,
-    }));
   }
 }

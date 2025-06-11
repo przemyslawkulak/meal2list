@@ -3,6 +3,7 @@ import {
   importProvidersFrom,
   provideAppInitializer,
   inject,
+  ErrorHandler,
 } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withFetch, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -13,6 +14,7 @@ import { provideRouter } from '@angular/router';
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { CategoriesStore, ProductsStore, AppInitializationService } from '@app/core/stores';
 import { ErrorInterceptor, RetryInterceptor } from '@app/core/interceptors';
+import { GlobalErrorHandler } from '@app/core/errors/global-error.handler';
 
 export interface AppEnvironment {
   production: boolean;
@@ -41,6 +43,10 @@ export const appConfig: ApplicationConfig = {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true,
+    },
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler,
     },
     // NgRx SignalStore providers
     CategoriesStore,

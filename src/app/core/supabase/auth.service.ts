@@ -1,19 +1,13 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable, from, of } from 'rxjs';
 import { tap, map, catchError, switchMap } from 'rxjs/operators';
 import { User, AuthResponse } from '@supabase/supabase-js';
 import { AppEnvironment } from '@app/app.config';
 import { SupabaseService } from './supabase.service';
-
-// Auth service configuration constants
-const AUTH_CONFIG = {
-  SNACKBAR_DURATIONS_MS: {
-    SUCCESS: 3000,
-    ERROR: 5000,
-  },
-} as const;
+import { ProductsStore } from '../stores/products/products.store';
+import { CategoriesStore } from '../stores/categories/categories.store';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -22,11 +16,12 @@ export class AuthService extends SupabaseService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
   isAuthenticated$ = this.currentUser$.pipe(map(user => !!user));
+  private readonly productsStore = inject(ProductsStore);
+  private readonly categoriesStore = inject(CategoriesStore);
 
   constructor(
     @Inject('APP_ENVIRONMENT') environment: AppEnvironment,
-    private router: Router,
-    private snackBar: MatSnackBar
+    private router: Router
   ) {
     super(environment);
     this.initializeAuth();
@@ -45,6 +40,13 @@ export class AuthService extends SupabaseService {
       // Update current user state
       this.currentUserSubject.next(session?.user ?? null);
 
+      // If user is already authenticated (auto-auth), load data
+      if (session?.user) {
+        this.logger.logInfo('🔄 User auto-authenticated, loading data');
+        this.categoriesStore.checkAndLoadCategories();
+        this.productsStore.checkAndLoadProducts();
+      }
+
       // Setup auth state change subscription
       this.supabase.auth.onAuthStateChange(async (event, session) => {
         if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
@@ -57,7 +59,7 @@ export class AuthService extends SupabaseService {
         }
       });
     } catch (error) {
-      console.error('Error initializing auth:', error);
+      this.logger.logError(error as HttpErrorResponse, 'Error initializing auth');
       this.currentUserSubject.next(null);
     }
   }
@@ -80,7 +82,8 @@ export class AuthService extends SupabaseService {
         return of(true);
       }),
       catchError(error => {
-        console.error('Error validating session:', error);
+        this.logger.logError(error, 'Error validating session');
+        this.notification.showError('Failed to validate session');
         this.currentUserSubject.next(null);
         return of(false);
       })
@@ -96,11 +99,8 @@ export class AuthService extends SupabaseService {
         return user;
       }),
       catchError(error => {
-        console.error('Registration error:', error);
-        this.snackBar.open(this.getErrorMessage(error), 'Close', {
-          duration: AUTH_CONFIG.SNACKBAR_DURATIONS_MS.ERROR,
-          panelClass: ['error-snackbar'],
-        });
+        this.logger.logError(error, 'Registration error');
+        this.notification.showError(this.getErrorMessage(error));
         throw error;
       })
     );
@@ -113,18 +113,18 @@ export class AuthService extends SupabaseService {
         const user = response.data.user;
         if (!user) throw new Error('No user returned from auth response');
         this.currentUserSubject.next(user);
-        this.snackBar.open('Zalogowano pomyślnie', 'Zamknij', {
-          duration: AUTH_CONFIG.SNACKBAR_DURATIONS_MS.SUCCESS,
-        });
+        this.notification.showSuccess('Zalogowano pomyślnie');
+
+        // Load both categories and products after successful login
+        this.categoriesStore.checkAndLoadCategories();
+        this.productsStore.checkAndLoadProducts();
+
         const target = returnUrl && returnUrl !== '/auth/login' ? returnUrl : '/lists';
         return from(this.router.navigateByUrl(target)).pipe(map(() => user));
       }),
       catchError(error => {
-        console.error('Login error:', error);
-        this.snackBar.open(this.getErrorMessage(error), 'Close', {
-          duration: AUTH_CONFIG.SNACKBAR_DURATIONS_MS.ERROR,
-          panelClass: ['error-snackbar'],
-        });
+        this.logger.logError(error, 'Login error');
+        this.notification.showError(this.getErrorMessage(error));
         throw error;
       })
     );
@@ -135,10 +135,14 @@ export class AuthService extends SupabaseService {
       map(() => void 0),
       tap(() => {
         this.currentUserSubject.next(null);
+        // Reset stores on logout
+        this.categoriesStore.reset();
+        this.productsStore.reset();
         this.router.navigate(['/auth/login']);
       }),
       catchError(error => {
-        console.error('Logout error:', error);
+        this.logger.logError(error, 'Logout error');
+        this.notification.showError('Failed to logout');
         return of(void 0);
       })
     );
@@ -152,11 +156,8 @@ export class AuthService extends SupabaseService {
     ).pipe(
       map(() => void 0),
       catchError(error => {
-        console.error('Reset password error:', error);
-        this.snackBar.open(this.getErrorMessage(error), 'Close', {
-          duration: AUTH_CONFIG.SNACKBAR_DURATIONS_MS.ERROR,
-          panelClass: ['error-snackbar'],
-        });
+        this.logger.logError(error, 'Reset password error');
+        this.notification.showError(this.getErrorMessage(error));
         throw error;
       })
     );
@@ -178,11 +179,8 @@ export class AuthService extends SupabaseService {
     ).pipe(
       map(() => void 0),
       catchError(error => {
-        console.error('Handle reset token error:', error);
-        this.snackBar.open(this.getErrorMessage(error), 'Close', {
-          duration: AUTH_CONFIG.SNACKBAR_DURATIONS_MS.ERROR,
-          panelClass: ['error-snackbar'],
-        });
+        this.logger.logError(error, 'Handle reset token error');
+        this.notification.showError(this.getErrorMessage(error));
         throw error;
       })
     );
@@ -192,11 +190,8 @@ export class AuthService extends SupabaseService {
     return from(this.supabase.auth.updateUser({ password: newPassword })).pipe(
       map(() => void 0),
       catchError(error => {
-        console.error('Update password error:', error);
-        this.snackBar.open(this.getErrorMessage(error), 'Close', {
-          duration: AUTH_CONFIG.SNACKBAR_DURATIONS_MS.ERROR,
-          panelClass: ['error-snackbar'],
-        });
+        this.logger.logError(error, 'Update password error');
+        this.notification.showError(this.getErrorMessage(error));
         throw error;
       })
     );

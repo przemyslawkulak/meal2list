@@ -17,13 +17,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CategoryDto, ProductWithPreferencesDto } from '@types';
+import { CategoryDto, ProductWithPreferencesDto, ProductDto } from '@types';
 import { CategoryIconComponent } from '@app/shared/category-icon/category-icon.component';
 import { DEFAULT_ITEM_VALUES, DEFAULT_CATEGORY_NAMES } from '@app/shared/mocks/defaults.mock';
 import { TABS, TabValue } from '@app/shared/mocks/constants.mock';
-import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
-import { ProductService } from '@app/core/supabase/product.service';
+import { NotificationService } from '@app/shared/services/notification.service';
+import { LoggerService } from '@app/shared/services/logger.service';
+import { ProductsStore } from '@app/core/stores/products/products.store';
 import { UserProductService } from '@app/core/supabase/user-product.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface AddItemDialogData {
   listId: string;
@@ -48,7 +50,6 @@ export interface NewShoppingListItem {
     MatTabsModule,
     MatIconModule,
     MatTooltipModule,
-    MatSnackBarModule,
     MatProgressSpinnerModule,
     FormsModule,
     CategoryIconComponent,
@@ -60,8 +61,9 @@ export interface NewShoppingListItem {
 export class AddItemDialogComponent {
   private readonly dialogRef = inject(MatDialogRef<AddItemDialogComponent>);
   private readonly data = inject<AddItemDialogData>(MAT_DIALOG_DATA);
-  private readonly snackBar = inject(MatSnackBar);
-  private readonly productService = inject(ProductService);
+  private readonly notification = inject(NotificationService);
+  private readonly logger = inject(LoggerService);
+  private readonly productsStore = inject(ProductsStore);
   private readonly userProductService = inject(UserProductService);
   private readonly destroy$ = inject(DestroyRef);
 
@@ -73,27 +75,25 @@ export class AddItemDialogComponent {
   readonly searchTerm = signal('');
   readonly activeTab = signal<TabValue>(TABS.POPULAR);
   readonly selectedItems = signal<NewShoppingListItem[]>([]);
-  readonly popularItems = signal<ProductWithPreferencesDto[]>([]);
   readonly mostUsedItems = signal<ProductWithPreferencesDto[]>([]);
-  readonly loading = signal(true);
   readonly loadingHistory = signal(false);
   readonly error = signal<string | null>(null);
+
+  // Computed signals from store
+  readonly popularItems = computed(() => this.productsStore.popularProducts());
+  readonly loading = computed(() => this.productsStore.loading());
+  readonly storeError = computed(() => this.productsStore.error());
 
   constructor() {
     this.initializeProducts();
   }
 
   private initializeProducts(): void {
-    this.productService.products$.pipe(takeUntilDestroyed(this.destroy$)).subscribe({
-      next: products => {
-        this.popularItems.set(products);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.error.set('Nie udało się załadować popularnych produktów');
-        this.loading.set(false);
-      },
-    });
+    // Check if we have an error from the store
+    if (this.storeError()) {
+      this.error.set('Nie udało się załadować popularnych produktów');
+      this.notification.showError('Nie udało się załadować popularnych produktów');
+    }
   }
 
   private loadMostUsedProducts(): void {
@@ -104,12 +104,14 @@ export class AddItemDialogComponent {
       .getMostUsedProducts(20)
       .pipe(takeUntilDestroyed(this.destroy$))
       .subscribe({
-        next: products => {
+        next: (products: ProductWithPreferencesDto[]) => {
           this.mostUsedItems.set(products);
           this.loadingHistory.set(false);
         },
-        error: () => {
+        error: (error: HttpErrorResponse) => {
           this.error.set('Nie udało się załadować historii produktów');
+          this.logger.logError(error, 'Failed to load history items');
+          this.notification.showError('Nie udało się załadować historii produktów');
           this.loadingHistory.set(false);
         },
       });
@@ -177,9 +179,7 @@ export class AddItemDialogComponent {
 
     this.selectedItems.update(items => [...items, newItem]);
     this.itemAdded.emit(newItem);
-    this.snackBar.open(`Dodano ${name.trim()} do listy`, 'Zamknij', {
-      duration: 2000,
-    });
+    this.notification.showSuccess(`Dodano ${name.trim()} do listy`);
   }
 
   addItem(product: ProductWithPreferencesDto): void {
@@ -195,9 +195,7 @@ export class AddItemDialogComponent {
 
     this.selectedItems.update(items => [...items, newItem]);
     this.itemAdded.emit(newItem);
-    this.snackBar.open(`Dodano ${product.name} do listy`, 'Zamknij', {
-      duration: 2000,
-    });
+    this.notification.showSuccess(`Dodano ${product.name} do listy`);
   }
 
   addItemAndClose(product: ProductWithPreferencesDto): void {
@@ -217,6 +215,12 @@ export class AddItemDialogComponent {
     return (
       this.data.categories.find(category => category.id === categoryId)?.name ||
       DEFAULT_CATEGORY_NAMES.DEFAULT_CATEGORY
+    );
+  }
+
+  getProductCategoryId(product: ProductDto | ProductWithPreferencesDto): string {
+    return (
+      (product as ProductWithPreferencesDto).preferred_category_id || product.default_category_id
     );
   }
 
