@@ -5,8 +5,15 @@ import { authGuard } from './core/guards/auth.guard';
 import { ShoppingListDetailComponent } from './features/shopping-lists/pages/detail/shopping-list-detail.component';
 
 export const routes: Routes = [
+  // Public Landing Page
   {
     path: '',
+    loadComponent: () => import('./features/landing').then(m => m.LandingPageComponent),
+    title: 'Meal2List - Inteligentne Listy Zakupów',
+  },
+  // Protected App Routes
+  {
+    path: 'app',
     component: ShellComponent,
     canActivate: [authGuard],
     children: [

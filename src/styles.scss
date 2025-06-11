@@ -5,6 +5,7 @@
 // Include core styles for common elements
 @include mat.core();
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:wght@400;500;700;800&family=Noto+Sans:wght@400;500;700;900&display=swap');
 
 // Note: Color palettes are generated from primary: 63A002, secondary: 85976E, tertiary: 4D9D98, neutral: 91918B, neutral variant: 8F9285, error: FF5449
 $_palettes: (
@@ -245,7 +246,7 @@ html {
 
 // Global app styles
 body {
-  font-family: var(--mat-sys-body-medium-font);
+  font-family: 'Newsreader', 'Noto Sans', sans-serif;
   margin: 0;
   padding: 0;
   background-color: var(--mat-sys-surface);

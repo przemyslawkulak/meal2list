@@ -53,7 +53,7 @@ export class AuthService extends SupabaseService {
           this.currentUserSubject.next(session?.user ?? null);
         } else if (event === 'SIGNED_OUT') {
           this.currentUserSubject.next(null);
-          await this.router.navigate(['/auth/login']);
+          await this.router.navigate(['/']);
         } else if (event === 'USER_UPDATED') {
           this.currentUserSubject.next(session?.user ?? null);
         }
@@ -119,7 +119,7 @@ export class AuthService extends SupabaseService {
         this.categoriesStore.checkAndLoadCategories();
         this.productsStore.checkAndLoadProducts();
 
-        const target = returnUrl && returnUrl !== '/auth/login' ? returnUrl : '/lists';
+        const target = returnUrl && returnUrl !== '/auth/login' ? returnUrl : '/app/lists';
         return from(this.router.navigateByUrl(target)).pipe(map(() => user));
       }),
       catchError(error => {
@@ -138,7 +138,7 @@ export class AuthService extends SupabaseService {
         // Reset stores on logout
         this.categoriesStore.reset();
         this.productsStore.reset();
-        this.router.navigate(['/auth/login']);
+        this.router.navigate(['/']);
       }),
       catchError(error => {
         this.logger.logError(error, 'Logout error');
