@@ -13,7 +13,13 @@ module.exports = {
     '^@core/(.*)$': '<rootDir>/src/app/core/$1',
     '^@shared/(.*)$': '<rootDir>/src/app/shared/$1',
     '^@features/(.*)$': '<rootDir>/src/app/features/$1',
+    '^@env/(.*)$': '<rootDir>/src/environments/$1',
     '^@environments/(.*)$': '<rootDir>/src/environments/$1',
+    '^@types': '<rootDir>/src/types.ts',
+    '^@schemas/(.*)$': '<rootDir>/src/schemas/$1',
+    '^@components/(.*)$': '<rootDir>/src/components/$1',
+    '^@pages/(.*)$': '<rootDir>/src/pages/$1',
+    '^@assets/(.*)$': '<rootDir>/src/assets/$1',
   },
   testEnvironment: 'jsdom',
   transform: {
