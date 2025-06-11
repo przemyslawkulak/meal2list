@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,10 +25,9 @@ import { AuthService } from '@app/core/supabase/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isLoading = false;
-  authError: string | null = null;
   private returnUrl: string | null = null;
 
   constructor(
@@ -40,10 +39,11 @@ export class LoginComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
+  }
 
-    // Get return URL from query params
-    this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || null;
-    console.log('LoginComponent: returnUrl from query params:', this.returnUrl);
+  ngOnInit() {
+    // Get return URL once from snapshot
+    this.returnUrl = this.activatedRoute.snapshot.queryParamMap.get('returnUrl') || null;
   }
 
   get email() {
@@ -56,17 +56,14 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.isLoading = true;
-      this.authError = null;
       const { email, password } = this.loginForm.value;
 
-      console.log('LoginComponent: Calling login with returnUrl:', this.returnUrl);
       this.authService.login(email, password, this.returnUrl || undefined).subscribe({
         next: () => {
           this.isLoading = false;
         },
         error: error => {
           this.isLoading = false;
-          this.authError = error.message;
           this.loginForm.get('password')?.reset();
           if (error.message === 'Invalid login credentials') {
             this.loginForm.setErrors({ invalidCredentials: true });

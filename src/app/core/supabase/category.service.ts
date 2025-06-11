@@ -32,8 +32,8 @@ export class CategoryService extends SupabaseService {
   preload() {
     this._categories$.subscribe({
       error: error => {
-        console.error('Failed to preload categories:', error);
-        // Here we could inject MatSnackBar and show error message
+        this.logger.logError(error, 'Failed to preload categories');
+        this.notification.showError('Failed to load categories');
       },
     });
   }

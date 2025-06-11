@@ -1,6 +1,20 @@
 @if (isVisible()) {
-  <div class="overlay-backdrop" (click)="onBackdropClick()">
-    <div class="overlay-content" (click)="onContentClick($event)">
+  <div
+    class="overlay-backdrop"
+    (click)="onBackdropClick()"
+    (keydown)="onBackdropKeydown($event)"
+    tabindex="0"
+    role="button"
+    aria-label="Zamknij nakładkę"
+  >
+    <div
+      class="overlay-content"
+      (click)="onContentClick($event)"
+      (keydown)="onContentKeydown($event)"
+      tabindex="0"
+      role="dialog"
+      aria-label="Zawartość nakładki"
+    >
       @if (showCloseButton()) {
         <button mat-icon-button class="overlay-close" (click)="onCloseClick()" aria-label="Zamknij">
           <mat-icon>close</mat-icon>

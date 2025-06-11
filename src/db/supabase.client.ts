@@ -9,7 +9,7 @@ export const supabaseClient = createClient<Database>(supabaseUrl, supabaseAnonKe
   auth: {
     persistSession: true,
     autoRefreshToken: true,
-    detectSessionInUrl: false,
   },
 });
+
 export type SupabaseClient = typeof supabaseClient;

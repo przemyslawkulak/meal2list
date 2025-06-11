@@ -118,7 +118,7 @@ export class SessionManagementService extends SupabaseService {
       } = await this.supabase.auth.getSession();
 
       if (error) {
-        console.error('Failed to get session info:', error);
+        this.logger.logError(error, 'Failed to get session info');
         this.sessionInfo.set(null);
         return;
       }
@@ -136,7 +136,7 @@ export class SessionManagementService extends SupabaseService {
         this.sessionInfo.set(null);
       }
     } catch (error) {
-      console.error('Error updating session info:', error);
+      this.logger.logError(error, 'Error updating session info');
       this.sessionInfo.set(null);
     }
   }
@@ -227,22 +227,14 @@ export class SessionManagementService extends SupabaseService {
   }
 
   private handleSessionExpiry(): void {
-    this.snackBar.open('Sesja wygasła. Proszę zalogować się ponownie.', 'OK', {
-      duration: SESSION_CONFIG.SNACKBAR_DURATIONS_MS.ERROR,
-      panelClass: ['error-snackbar'],
-    });
+    this.notification.showError('Sesja wygasła. Proszę zalogować się ponownie.');
 
     this.authService.logout().subscribe();
   }
 
   private handleInactivity(): void {
-    this.snackBar.open(
-      'Wykryto długotrwałą nieaktywność. Zostaniesz wylogowany ze względów bezpieczeństwa.',
-      'OK',
-      {
-        duration: SESSION_CONFIG.SNACKBAR_DURATIONS_MS.WARNING,
-        panelClass: ['warning-snackbar'],
-      }
+    this.notification.showWarning(
+      'Wykryto długotrwałą nieaktywność. Zostaniesz wylogowany ze względów bezpieczeństwa.'
     );
 
     // Give user configured grace period to react before logging out
@@ -262,15 +254,13 @@ export class SessionManagementService extends SupabaseService {
     return from(this.supabase.auth.refreshSession({ refresh_token: session.refreshToken })).pipe(
       map(({ data, error }) => {
         if (error) {
-          console.error('Failed to refresh session:', error);
+          this.logger.logError(error, 'Failed to refresh session');
           return false;
         }
 
         if (data.session) {
           this.updateSessionInfo();
-          this.snackBar.open('Sesja została przedłużona', 'OK', {
-            duration: SESSION_CONFIG.SNACKBAR_DURATIONS_MS.SUCCESS,
-          });
+          this.notification.showSuccess('Sesja została przedłużona');
           return true;
         }
 

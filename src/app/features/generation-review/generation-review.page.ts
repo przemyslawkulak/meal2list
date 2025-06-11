@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { tap, catchError, finalize } from 'rxjs/operators';
 import { of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -16,6 +16,8 @@ import {
   ReviewActionsComponent,
 } from './components';
 import { ReviewValidationService, ReviewStateService } from './services';
+import { NotificationService } from '@app/shared/services/notification.service';
+import { LoggerService } from '@app/shared/services/logger.service';
 
 @Component({
   selector: 'app-generation-review',
@@ -33,11 +35,12 @@ import { ReviewValidationService, ReviewStateService } from './services';
 })
 export class GenerationReviewPageComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
-  private readonly snackBar = inject(MatSnackBar);
+  private readonly notification = inject(NotificationService);
   private readonly generationService = inject(GenerationService);
   private readonly categoryService = inject(CategoryService);
   private readonly validationService = inject(ReviewValidationService);
   private readonly stateService = inject(ReviewStateService);
+  private readonly logger = inject(LoggerService);
 
   // Signals for reactive state management
   reviewItems = signal<GenerationReviewItemDto[]>([]);
@@ -82,9 +85,7 @@ export class GenerationReviewPageComponent implements OnInit, OnDestroy {
     if (!navigationState) {
       console.warn('No review data found in navigation state. Expected items and listId.');
 
-      this.snackBar.open('Brak danych do przeglądu. Przekierowanie...', 'Zamknij', {
-        duration: 3000,
-      });
+      this.notification.showError('Brak danych do przeglądu. Przekierowanie...');
 
       setTimeout(() => {
         this.router.navigate(['/generate']);
@@ -106,10 +107,8 @@ export class GenerationReviewPageComponent implements OnInit, OnDestroy {
       .pipe(
         tap(categories => this.categories.set(categories)),
         catchError(error => {
-          console.error('Error loading categories:', error);
-          this.snackBar.open('Błąd podczas ładowania kategorii', 'Zamknij', {
-            duration: 3000,
-          });
+          this.logger.logError(error, 'Error loading categories');
+          this.notification.showError('Błąd podczas ładowania kategorii');
           return of([]);
         }),
         takeUntil(this.destroy$)
@@ -157,9 +156,7 @@ export class GenerationReviewPageComponent implements OnInit, OnDestroy {
 
   confirmAndAdd(): void {
     if (!this.hasValidItems()) {
-      this.snackBar.open('Popraw błędy przed kontynuowaniem', 'Zamknij', {
-        duration: 3000,
-      });
+      this.notification.showError('Popraw błędy przed kontynuowaniem');
       return;
     }
 
@@ -172,18 +169,14 @@ export class GenerationReviewPageComponent implements OnInit, OnDestroy {
       .confirmReviewedItems(this.listId, itemsToConfirm, currentRecipeName)
       .pipe(
         tap(() => {
-          this.snackBar.open(
-            `Dodano ${itemsToConfirm.length} produktów z recepty "${currentRecipeName}" do listy zakupów`,
-            'Zamknij',
-            { duration: 3000 }
+          this.notification.showSuccess(
+            `Dodano ${itemsToConfirm.length} produktów z recepty "${currentRecipeName}" do listy zakupów`
           );
           this.router.navigate(['/lists', this.listId]);
         }),
         catchError(error => {
-          console.error('Error confirming items:', error);
-          this.snackBar.open('Błąd podczas dodawania produktów do listy', 'Zamknij', {
-            duration: 5000,
-          });
+          this.logger.logError(error, 'Error confirming items');
+          this.notification.showError('Błąd podczas dodawania produktów do listy');
           return of(null);
         }),
         finalize(() => this.isProcessing.set(false)),

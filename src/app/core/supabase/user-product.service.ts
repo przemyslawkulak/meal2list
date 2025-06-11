@@ -1,9 +1,8 @@
 import { Injectable, Inject } from '@angular/core';
-import { Observable, from, map, catchError, throwError, switchMap, shareReplay } from 'rxjs';
+import { Observable, from, map, catchError, switchMap, shareReplay } from 'rxjs';
 import { SupabaseService } from '@core/supabase/supabase.service';
 import type { UserProductDto, ProductWithPreferencesDto, ProductDto } from '@types';
 import { AppEnvironment } from '@app/app.config';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +35,9 @@ export class UserProductService extends SupabaseService {
         if (result.error) throw result.error;
         return result.data as UserProductDto[];
       }),
-      catchError(error => this.handleError(error, 'Failed to fetch user product preferences'))
+      catchError(error =>
+        this.handleServiceError(error, 'Failed to fetch user product preferences')
+      )
     );
   }
 
@@ -61,7 +62,7 @@ export class UserProductService extends SupabaseService {
         if (result.error) throw result.error;
         return result.data as UserProductDto[];
       }),
-      catchError(error => this.handleError(error, 'Failed to fetch recently used products'))
+      catchError(error => this.handleServiceError(error, 'Failed to fetch recently used products'))
     );
   }
 
@@ -107,7 +108,7 @@ export class UserProductService extends SupabaseService {
         if (result.error) throw result.error;
         console.log(`Product usage tracked for ${productId}`);
       }),
-      catchError(error => this.handleError(error, 'Failed to track product usage'))
+      catchError(error => this.handleServiceError(error, 'Failed to track product usage'))
     );
   }
 
@@ -152,16 +153,7 @@ export class UserProductService extends SupabaseService {
           use_count: row.use_count,
         }));
       }),
-      catchError(error => this.handleError(error, 'Failed to fetch most used products'))
+      catchError(error => this.handleServiceError(error, 'Failed to fetch most used products'))
     );
-  }
-
-  private handleError(error: HttpErrorResponse, message: string): Observable<never> {
-    console.error(message, error);
-    return throwError(() => ({
-      message: error.message || message,
-      statusCode: error.status === 409 ? 409 : 500,
-      error,
-    }));
   }
 }

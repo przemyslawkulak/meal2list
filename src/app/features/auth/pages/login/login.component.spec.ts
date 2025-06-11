@@ -50,8 +50,12 @@ describe('LoginComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            snapshot: { paramMap: { get: () => null } },
+            snapshot: {
+              paramMap: { get: () => null },
+              queryParamMap: { get: () => null },
+            },
             paramMap: of({ get: () => null }),
+            queryParamMap: of({ get: () => null }),
           },
         },
       ],
@@ -163,7 +167,11 @@ describe('LoginComponent', () => {
 
       component.onSubmit();
 
-      expect(authServiceMock.login).toHaveBeenCalledWith('test@example.com', 'password123');
+      expect(authServiceMock.login).toHaveBeenCalledWith(
+        'test@example.com',
+        'password123',
+        undefined
+      );
       expect(component.isLoading).toBeFalsy();
     });
 
@@ -185,7 +193,7 @@ describe('LoginComponent', () => {
     });
 
     it('should handle login error correctly', () => {
-      const errorMsg = 'Error message';
+      const errorMsg = 'Invalid login credentials';
       authServiceMock.login.mockReturnValue(throwError(() => ({ message: errorMsg })));
 
       component.loginForm.setValue({
@@ -196,7 +204,7 @@ describe('LoginComponent', () => {
       component.onSubmit();
 
       expect(component.isLoading).toBeFalsy();
-      expect(component.authError).toBe(errorMsg);
+      expect(component.loginForm.hasError('invalidCredentials')).toBeTruthy();
       expect(component.loginForm.get('password')?.value).toBeNull();
     });
 
@@ -271,14 +279,13 @@ describe('LoginComponent', () => {
       );
     });
 
-    it('should display auth error when authError is set', () => {
-      component.authError = 'Authentication failed';
+    it('should disable submit button when form has invalid credentials error', () => {
+      component.loginForm.setErrors({ invalidCredentials: true });
       fixture.detectChanges();
 
-      const errorElement = fixture.debugElement.query(By.css('.auth-error'));
+      const submitButton = fixture.debugElement.query(By.css('button[type="submit"]'));
 
-      expect(errorElement).toBeTruthy();
-      expect(errorElement.nativeElement.textContent.trim()).toBe('Authentication failed');
+      expect(submitButton.nativeElement.disabled).toBeTruthy();
     });
 
     it('should show spinner when isLoading is true', () => {
@@ -327,7 +334,11 @@ describe('LoginComponent', () => {
 
       component.onSubmit();
 
-      expect(authServiceMock.login).toHaveBeenCalledWith('test+special@example.com', 'p@$$w0rd!');
+      expect(authServiceMock.login).toHaveBeenCalledWith(
+        'test+special@example.com',
+        'p@$$w0rd!',
+        undefined
+      );
     });
   });
 });

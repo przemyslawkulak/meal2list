@@ -1,0 +1,8 @@
+<mat-card class="error-card">
+  <mat-card-content>
+    <div class="message">{{ message }}</div>
+    @if (retry.observers.length) {
+      <button mat-raised-button color="primary" (click)="retry.emit()">Retry</button>
+    }
+  </mat-card-content>
+</mat-card>

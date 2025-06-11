@@ -6,16 +6,6 @@ import { ShoppingListDetailComponent } from './features/shopping-lists/pages/det
 
 export const routes: Routes = [
   {
-    path: 'auth',
-    component: AuthLayoutComponent,
-    loadChildren: () => import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES),
-  },
-  {
-    path: '',
-    redirectTo: 'auth/login',
-    pathMatch: 'full',
-  },
-  {
     path: '',
     component: ShellComponent,
     canActivate: [authGuard],
@@ -26,7 +16,7 @@ export const routes: Routes = [
           import('./features/categories/categories.component').then(m => m.CategoriesComponent),
       },
       {
-        path: 'lists/:id', // TODO: to delete after testing
+        path: 'lists/:id',
         component: ShoppingListDetailComponent,
         title: 'Shopping List Details',
       },
@@ -70,6 +60,11 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
     ],
+  },
+  {
+    path: 'auth',
+    component: AuthLayoutComponent,
+    loadChildren: () => import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES),
   },
   {
     path: '**',

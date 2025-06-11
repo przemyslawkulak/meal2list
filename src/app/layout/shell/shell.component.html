@@ -27,6 +27,8 @@
   </div>
 </mat-toolbar>
 
+<app-offline-banner></app-offline-banner>
+
 <mat-sidenav-container [hasBackdrop]="false">
   @if ((isTabletOrMobile$ | async) === false) {
     <mat-sidenav
