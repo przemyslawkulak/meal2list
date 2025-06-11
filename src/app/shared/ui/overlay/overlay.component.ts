@@ -24,6 +24,17 @@ export class OverlayComponent {
     }
   }
 
+  onBackdropKeydown(event: KeyboardEvent): void {
+    if ((event.key === 'Enter' || event.key === ' ') && this.backdropClick()) {
+      event.preventDefault();
+      this.closeOverlay.emit();
+    }
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      this.closeOverlay.emit();
+    }
+  }
+
   onCloseClick(): void {
     this.closeOverlay.emit();
   }
@@ -31,5 +42,16 @@ export class OverlayComponent {
   onContentClick(event: Event): void {
     // Prevent backdrop click when clicking on content
     event.stopPropagation();
+  }
+
+  onContentKeydown(event: KeyboardEvent): void {
+    // Prevent backdrop keydown when focusing on content
+    event.stopPropagation();
+
+    // Allow Escape key to close overlay
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      this.closeOverlay.emit();
+    }
   }
 }
