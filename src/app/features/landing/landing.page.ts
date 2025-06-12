@@ -1,13 +1,13 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { AuthService } from '@core/supabase/auth.service';
 
 @Component({
   selector: 'app-landing',
@@ -18,7 +18,7 @@ import { MatInputModule } from '@angular/material/input';
     MatButtonModule,
     MatCardModule,
     MatIconModule,
-    MatToolbarModule,
+
     MatDividerModule,
     MatFormFieldModule,
     MatInputModule,
@@ -28,6 +28,10 @@ import { MatInputModule } from '@angular/material/input';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LandingPageComponent {
+  private readonly _authService = inject(AuthService);
+
+  readonly isAuthenticated$ = this._authService.isAuthenticated$;
+
   readonly features = [
     {
       icon: 'smart_toy',

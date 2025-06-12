@@ -1,67 +1,63 @@
-<mat-toolbar class="toolbar">
-  <div class="toolbar-left">
-    <mat-icon>restaurant</mat-icon>
-    <span>meal2List</span>
-  </div>
+<header class="header" role="navigation">
+  <mat-toolbar class="toolbar" color="transparent">
+    <div class="logo" routerLink="/" style="cursor: pointer">
+      <img src="logo.png" alt="Meal2List Logo" class="logo-image" />
+      <span class="logo-text">Meal2List</span>
+    </div>
+    <span class="spacer"></span>
 
-  <div class="toolbar-right">
     @if (isAuthenticated$ | async) {
-      @if ((isTabletOrMobile$ | async) === false) {
-        <span class="user-email">
-          <mat-icon>email</mat-icon>
-          {{ (currentUser$ | async)?.email }}
-        </span>
-      }
-      <button mat-button (click)="onLogout()">
+      <!-- Authenticated navigation - same as sidebar -->
+      <nav class="nav-links" aria-label="Nawigacja główna">
+        @for (link of navigationLinks; track link.path) {
+          <a mat-button [routerLink]="'/app' + link.path" routerLinkActive="active-nav-link">
+            <mat-icon>{{ link.icon }}</mat-icon>
+            <span>{{ link.label }}</span>
+          </a>
+        }
+      </nav>
+      <button mat-button (click)="onLogout()" class="logout-btn">
         <mat-icon>logout</mat-icon>
         @if ((isTabletOrMobile$ | async) === false) {
           <span>Wyloguj się</span>
         }
       </button>
     } @else {
-      <a mat-button routerLink="/auth/login">
-        <mat-icon>login</mat-icon>
-        Zaloguj się
-      </a>
+      <!-- Public navigation - Login/Register buttons -->
+      <div class="auth-buttons">
+        <a mat-button routerLink="/auth/login" class="login-btn">
+          <mat-icon>login</mat-icon>
+          <span>Zaloguj się</span>
+        </a>
+        <a mat-raised-button routerLink="/auth/register" color="primary" class="register-btn">
+          <mat-icon>person_add</mat-icon>
+          <span>Rejestracja</span>
+        </a>
+      </div>
     }
-  </div>
-</mat-toolbar>
+  </mat-toolbar>
+</header>
 
 <app-offline-banner></app-offline-banner>
 
-<mat-sidenav-container [hasBackdrop]="false">
-  @if ((isTabletOrMobile$ | async) === false) {
-    <mat-sidenav
-      #sidenav
-      [mode]="(sidenavMode$ | async) ?? 'side'"
-      [opened]="(isWeb$ | async) ?? false"
-      [disableClose]="false"
-    >
-      <app-nav-list [links]="desktopNavigationLinks" />
-    </mat-sidenav>
-  }
+<div class="main-content">
+  <router-outlet></router-outlet>
+</div>
 
-  <mat-sidenav-content>
-    <div [class.mobile-content-wrapper]="isTabletOrMobile$ | async">
-      <router-outlet></router-outlet>
-    </div>
-
-    @if (isTabletOrMobile$ | async) {
-      <nav mat-tab-nav-bar class="bottom-nav" [tabPanel]="tabPanel">
-        @for (link of navigationLinks; track link) {
-          <a
-            mat-tab-link
-            [routerLink]="link.path"
-            routerLinkActive
-            #rla="routerLinkActive"
-            [active]="rla.isActive"
-          >
-            <mat-icon>{{ link.icon }}</mat-icon>
-            <span>{{ link.label }}</span>
-          </a>
-        }
-      </nav>
-      <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+@if (isTabletOrMobile$ | async) {
+  <nav mat-tab-nav-bar class="bottom-nav" [tabPanel]="tabPanel">
+    @for (link of navigationLinks; track link) {
+      <a
+        mat-tab-link
+        [routerLink]="'/app' + link.path"
+        routerLinkActive
+        #rla="routerLinkActive"
+        [active]="rla.isActive"
+      >
+        <mat-icon>{{ link.icon }}</mat-icon>
+        <span>{{ link.label }}</span>
+      </a>
     }
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </nav>
+  <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+}

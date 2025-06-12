@@ -88,7 +88,7 @@ export class GenerationReviewPageComponent implements OnInit, OnDestroy {
       this.notification.showError('Brak danych do przeglądu. Przekierowanie...');
 
       setTimeout(() => {
-        this.router.navigate(['/generate']);
+        this.router.navigate(['/app/generate']);
       }, 1000);
       return;
     }
@@ -149,7 +149,7 @@ export class GenerationReviewPageComponent implements OnInit, OnDestroy {
       recipeSource: this.recipeSource(),
     });
 
-    this.router.navigate(['/generate'], {
+    this.router.navigate(['/app/generate'], {
       state: navigationState,
     });
   }
@@ -172,7 +172,7 @@ export class GenerationReviewPageComponent implements OnInit, OnDestroy {
           this.notification.showSuccess(
             `Dodano ${itemsToConfirm.length} produktów z recepty "${currentRecipeName}" do listy zakupów`
           );
-          this.router.navigate(['/lists', this.listId]);
+          this.router.navigate(['/app/lists', this.listId]);
         }),
         catchError(error => {
           this.logger.logError(error, 'Error confirming items');
