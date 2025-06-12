@@ -118,7 +118,7 @@ The following outlines the planned development phases and key features for Meal2
 - ✅ **Recipe Source Tracking:** Implement recipe name tracking throughout the shopping list lifecycle. Track which recipe generated each product, display recipe source in shopping lists, and add visual grouping/filtering by recipe functionality.
 - ✅ **Shopping List Item Editing:** Implement comprehensive editing capabilities for shopping list items, including modifying quantities, units, product names, categories, and the ability to mark items as completed or remove them entirely.
 - ✅ **Recipe Import from URL:** Develop a feature to scrape recipe details directly from a provided website URL, automatically populating the ingredient extraction field.
-- [ ] **Production Readiness:** Complete final production preparation including UI/UX polish, security hardening, comprehensive error handling, landing page creation, code cleanup and optimization, and performance caching implementation.
+- 🔄 **Production Readiness:** Complete final production preparation including UI/UX polish, security hardening, comprehensive error handling, landing page creation, code cleanup and optimization, and performance caching implementation.
 - [ ] **User-Specific Generation Limits:** Introduce a system to manage API usage, such as a weekly limit on the number of recipes a user can process for ingredient extraction (e.g., 10 recipes per week).
 
 ### Phase 2: Further UX Enhancements & Operational Needs
@@ -127,6 +127,7 @@ The following outlines the planned development phases and key features for Meal2
 - [ ] **Recipe Saving & Quick-Add:** Enhance the recipe saving feature to allow users to easily select a saved recipe to automatically generate a shopping list, streamlining the process.
 - [ ] **Vector Database Integration (Qdrant):** Implement Qdrant vector database for semantic product matching and improved AI-driven ingredient recognition, enabling better fuzzy matching and product suggestions.
 - [ ] **AI Product Matching Integration:** Integrate product matching into AI workflow to automatically connect AI-generated product names to existing database products, improving data consistency and reducing duplicate entries.
+- [ ] **AI Caching System:** Implement intelligent caching for AI-generated responses to reduce API costs and improve response times, including cache warming for common operations and smart invalidation strategies.
 
 ### Phase 3: Expanding Scope (Post-MVP Features)
 

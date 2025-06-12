@@ -101,7 +101,7 @@ export class ShoppingListsPageComponent implements OnInit {
 
   onGenerate(list: ShoppingListResponseDto): void {
     console.log('onGenerate', list);
-    this.router.navigate(['/generate'], { queryParams: { listId: list.id } });
+    this.router.navigate(['/app/generate'], { queryParams: { listId: list.id } });
   }
 
   private loadLists(): void {

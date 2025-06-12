@@ -1,0 +1,220 @@
+<!-- Main Content -->
+<div class="main-container">
+  <div class="content-wrapper">
+    <!-- Hero Section -->
+    <section class="hero-section" role="banner">
+      <div class="hero-background">
+        <div class="hero-content">
+          <h1 class="hero-title">Uprość Gotowanie dzięki Inteligentnym Listom Zakupów</h1>
+          <h2 class="hero-subtitle">
+            Bez wysiłku twórz listy zakupów ze swoich ulubionych przepisów. Wystarczy wkleić tekst
+            przepisu lub zaimportować z URL, a wygenerujemy dla Ciebie listę składników.
+          </h2>
+          <div class="hero-actions">
+            @if (isAuthenticated$ | async) {
+            <!-- Authenticated user actions -->
+            <a mat-raised-button color="primary" class="primary-button" routerLink="/app/generate">
+              <mat-icon>auto_fix_high</mat-icon>
+              <span>Generuj Listę</span>
+            </a>
+            <a mat-stroked-button class="secondary-button" routerLink="/app/lists">
+              <mat-icon>view_list</mat-icon>
+              <span>Moje Listy</span>
+            </a>
+            } @else {
+            <!-- Guest user actions -->
+            <a mat-raised-button color="primary" class="primary-button" routerLink="/auth/register">
+              <mat-icon>person_add</mat-icon>
+              <span>Rozpocznij z Meal2List</span>
+            </a>
+            <a mat-stroked-button class="secondary-button" routerLink="/auth/login">
+              <mat-icon>login</mat-icon>
+              <span>Zaloguj się</span>
+            </a>
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Manual Input Section -->
+    <section class="manual-section">
+      <h2 class="section-title">Lub Wprowadź Składniki Ręcznie</h2>
+      <div class="input-container">
+        <mat-form-field class="ingredients-input" appearance="outline">
+          <mat-label>Wprowadź składniki tutaj...</mat-label>
+          <textarea
+            matInput
+            rows="6"
+            placeholder="Wprowadź składniki tutaj..."
+            class="ingredients-textarea"
+          >
+          </textarea>
+        </mat-form-field>
+      </div>
+      <div class="input-actions">
+        @if (isAuthenticated$ | async) {
+        <!-- Authenticated user action -->
+        <a mat-raised-button color="primary" class="add-button" routerLink="/app/generate">
+          <mat-icon>auto_fix_high</mat-icon>
+          <span>Generuj Listę</span>
+        </a>
+        } @else {
+        <!-- Guest user action -->
+        <a mat-raised-button color="primary" class="add-button" routerLink="/auth/register">
+          <mat-icon>add_shopping_cart</mat-icon>
+          <span>Rozpocznij z Meal2List</span>
+        </a>
+        }
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- Features Section -->
+@if ((isAuthenticated$ | async) === false) {
+<section class="features-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Dlaczego Meal2List?</h2>
+      <p>Odkryj funkcje, które sprawiają, że zakupy spożywcze stają się bezwysiłkowe</p>
+    </div>
+
+    <div class="features-grid">
+      <mat-card class="feature-card" *ngFor="let feature of features">
+        <mat-card-content>
+          <div class="feature-icon">
+            <mat-icon>{{ feature.icon }}</mat-icon>
+          </div>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</section>
+}
+
+<!-- How It Works Section -->
+@if ((isAuthenticated$ | async) === false) {
+<section class="how-it-works">
+  <div class="container">
+    <div class="section-header">
+      <h2>Jak To Działa</h2>
+      <p>Otrzymaj spersonalizowaną listę zakupów w trzech prostych krokach</p>
+    </div>
+
+    <div class="steps-container">
+      <div class="step">
+        <div class="step-icon">
+          <mat-icon>psychology</mat-icon>
+          <span class="step-number">1</span>
+        </div>
+        <h3>Podaj Swoje Preferencje</h3>
+        <p>
+          Podziel się swoimi potrzebami dietetycznymi, wielkością rodziny i ulubionymi posiłkami
+        </p>
+      </div>
+
+      <div class="step">
+        <div class="step-icon">
+          <mat-icon>auto_awesome</mat-icon>
+          <span class="step-number">2</span>
+        </div>
+        <h3>AI Generuje Twoją Listę</h3>
+        <p>Nasze AI tworzy spersonalizowaną listę zakupów z inteligentnymi sugestiami</p>
+      </div>
+
+      <div class="step">
+        <div class="step-icon">
+          <mat-icon>done_all</mat-icon>
+          <span class="step-number">3</span>
+        </div>
+        <h3>Rób Zakupy Efektywnie</h3>
+        <p>
+          Odznaczaj produkty podczas zakupów dzięki naszemu zorganizowanemu, mobilnemu interfejsowi
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Testimonials Section -->
+<!-- <section class="testimonials-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Co Mówią Nasi Użytkownicy</h2>
+      <p>
+        Dołącz do tysięcy zadowolonych klientów, którzy przekształcili swoje doświadczenie zakupowe
+      </p>
+    </div>
+
+    <div class="testimonials-grid">
+      <mat-card class="testimonial-card" *ngFor="let testimonial of testimonials">
+        <mat-card-content>
+          <div class="stars">
+            <mat-icon *ngFor="let star of [1,2,3,4,5]">star</mat-icon>
+          </div>
+          <p class="testimonial-content">"{{ testimonial.content }}"</p>
+          <div class="testimonial-author">
+            <strong>{{ testimonial.name }}</strong>
+            <span>{{ testimonial.role }}</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</section> -->
+
+<!-- CTA Section -->
+@if ((isAuthenticated$ | async) === false) {
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <h2>Gotowy na Transformację Swoich Zakupów?</h2>
+      <p>Dołącz do tysięcy rodzin, które już uczyniły swoje zakupy spożywcze inteligentniejszymi</p>
+      <div class="cta-actions">
+        <a mat-raised-button color="primary" class="cta-button" routerLink="/auth/register">
+          Rozpocznij Darmowy Okres Próbny
+        </a>
+        <p class="cta-note">Karta kredytowa nie jest wymagana • Anuluj w każdej chwili</p>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- Footer -->
+@if ((isAuthenticated$ | async) === false) {
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Meal2List</h3>
+        <p>Inteligentne listy zakupów napędzane przez AI</p>
+      </div>
+
+      <div class="footer-section">
+        <h4>Produkt</h4>
+        <a routerLink="/auth/register">Funkcje</a>
+        <a routerLink="/auth/register">Cennik</a>
+        <a routerLink="/auth/register">Zacznij</a>
+      </div>
+
+      <div class="footer-section">
+        <h4>Pomoc</h4>
+        <a href="mailto:support@meal2list.com">Skontaktuj się</a>
+        <a href="#help">Centrum Pomocy</a>
+        <a href="#privacy">Polityka Prywatności</a>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="footer-bottom">
+      <p>&copy; 2024 Meal2List. Wszystkie prawa zastrzeżone.</p>
+    </div>
+  </div>
+</footer>
+}

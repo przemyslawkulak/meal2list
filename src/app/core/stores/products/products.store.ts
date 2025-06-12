@@ -107,11 +107,8 @@ export const ProductsStore = signalStore(
       return categoryMap;
     }),
 
-    popularProducts: computed(() =>
-      products()
-        .filter(p => p.is_common) // Common products are typically more popular
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .slice(0, 10)
+    popularProducts: computed(
+      () => products().filter(p => p.is_common) // Common products are typically more popular
     ),
 
     productCount: computed(() => products().length),

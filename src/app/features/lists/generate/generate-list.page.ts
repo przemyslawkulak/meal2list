@@ -291,7 +291,7 @@ export class GenerateListPageComponent implements OnInit {
           });
 
           // Navigate to review screen with data
-          this.router.navigate(['/generate/review'], {
+          this.router.navigate(['/app/generate/review'], {
             state: navigationState,
           });
         }),
