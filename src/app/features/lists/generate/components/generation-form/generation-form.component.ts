@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { CharacterCounterComponent } from '../character-counter/character-counter.component';
 
 @Component({
@@ -15,6 +16,7 @@ import { CharacterCounterComponent } from '../character-counter/character-counte
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatIconModule,
     CharacterCounterComponent,
   ],
   templateUrl: './generation-form.component.html',

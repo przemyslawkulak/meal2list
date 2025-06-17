@@ -1,277 +1,464 @@
 /* You can add global styles to this file, and also import other style files */
-@use '@angular/material' as mat;
-@use 'sass:map';
 
-// Include core styles for common elements
-@include mat.core();
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Newsreader:wght@400;500;700;800&family=Noto+Sans:wght@400;500;700;900&display=swap');
+// Import theme system
+@use 'styles/themes' as theme;
 
-// Note: Color palettes are generated from primary: 63A002, secondary: 85976E, tertiary: 4D9D98, neutral: 91918B, neutral variant: 8F9285, error: FF5449
-$_palettes: (
-  primary: (
-    0: #000000,
-    10: #102000,
-    20: #1f3700,
-    25: #264300,
-    30: #2f4f00,
-    35: #375c00,
-    40: #3f6900,
-    50: #518500,
-    60: #64a104,
-    70: #7dbd2a,
-    80: #97d945,
-    90: #b2f65f,
-    95: #d2ff9b,
-    98: #f0ffd7,
-    99: #f9ffe9,
-    100: #ffffff,
-  ),
-  secondary: (
-    0: #000000,
-    10: #121f03,
-    20: #263515,
-    25: #31401f,
-    30: #3c4c29,
-    35: #475834,
-    40: #53643f,
-    50: #6b7d56,
-    60: #85976e,
-    70: #9fb287,
-    80: #bacda0,
-    90: #d6e9bb,
-    95: #e4f8c8,
-    98: #f0ffd8,
-    99: #f8ffe9,
-    100: #ffffff,
-  ),
-  tertiary: (
-    0: #000000,
-    10: #00201e,
-    20: #003735,
-    25: #004340,
-    30: #00504c,
-    35: #005d59,
-    40: #056a66,
-    50: #30837f,
-    60: #4d9d98,
-    70: #69b8b3,
-    80: #85d4cf,
-    90: #a1f1eb,
-    95: #b0fff9,
-    98: #e3fffc,
-    99: #f2fffd,
-    100: #ffffff,
-  ),
-  neutral: (
-    0: #000000,
-    10: #1b1c18,
-    20: #30312c,
-    25: #3b3c37,
-    30: #464742,
-    35: #52534e,
-    40: #5e5f59,
-    50: #777772,
-    60: #91918b,
-    70: #acaba5,
-    80: #c7c7c0,
-    90: #e4e3dc,
-    95: #f2f1ea,
-    98: #fbf9f2,
-    99: #fefcf5,
-    100: #ffffff,
-    4: #0d0f0b,
-    6: #131410,
-    12: #1f201c,
-    17: #292a26,
-    22: #343531,
-    24: #393a35,
-    87: #dbdad3,
-    92: #e9e8e1,
-    94: #efeee7,
-    96: #f5f4ed,
-  ),
-  neutral-variant: (
-    0: #000000,
-    10: #191d14,
-    20: #2e3228,
-    25: #393d32,
-    30: #45483d,
-    35: #505449,
-    40: #5c6054,
-    50: #75786c,
-    60: #8f9285,
-    70: #aaad9f,
-    80: #c5c8ba,
-    90: #e1e4d5,
-    95: #f0f2e3,
-    98: #f9fbeb,
-    99: #fbfeee,
-    100: #ffffff,
-  ),
-  error: (
-    0: #000000,
-    10: #410002,
-    20: #690005,
-    25: #7e0007,
-    30: #93000a,
-    35: #a60f13,
-    40: #b81f1e,
-    50: #db3a33,
-    60: #ff5449,
-    70: #ff897d,
-    80: #ffb4ab,
-    90: #ffdad6,
-    95: #ffedea,
-    98: #fff8f7,
-    99: #fffbff,
-    100: #ffffff,
-  ),
-);
+// Import modern font stack
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-$_rest: (
-  secondary: map.get($_palettes, secondary),
-  neutral: map.get($_palettes, neutral),
-  neutral-variant: map.get($_palettes,  neutral-variant),
-  error: map.get($_palettes, error),
-);
+// =============================================================================
+// GLOBAL BASE STYLES
+// =============================================================================
 
-$primary-palette: map.merge(map.get($_palettes, primary), $_rest);
-$tertiary-palette: map.merge(map.get($_palettes, tertiary), $_rest);
-
-@function _high-contrast-value($light, $dark, $theme-type) {
-  @if ($theme-type == light) {
-    @return $light;
-  }
-  @if ($theme-type == dark) {
-    @return $dark;
-  }
-  @if ($theme-type == color-scheme) {
-    @return light-dark(#{$light}, #{$dark});
-  }
-  
-  @error 'Unknown theme-type #{$theme-type}. Expected light, dark, or color-scheme';
-}
-
-@mixin high-contrast-overrides($theme-type) {
-  @include mat.theme-overrides((
-    primary: _high-contrast-value(#1c3200, #cfff95, $theme-type),
-    on-primary: _high-contrast-value(#ffffff, #000000, $theme-type),
-    primary-container: _high-contrast-value(#305200, #93d542, $theme-type),
-    on-primary-container: _high-contrast-value(#ffffff, #050e00, $theme-type),
-    inverse-primary: _high-contrast-value(#97d945, #2f5100, $theme-type),
-    primary-fixed: _high-contrast-value(#305200, #b2f65f, $theme-type),
-    primary-fixed-dim: _high-contrast-value(#203900, #97d945, $theme-type),
-    on-primary-fixed: _high-contrast-value(#ffffff, #000000, $theme-type),
-    on-primary-fixed-variant: _high-contrast-value(#ffffff, #081400, $theme-type),
-    secondary: _high-contrast-value(#223011, #e3f7c8, $theme-type),
-    on-secondary: _high-contrast-value(#ffffff, #000000, $theme-type),
-    secondary-container: _high-contrast-value(#3e4e2c, #b6c99d, $theme-type),
-    on-secondary-container: _high-contrast-value(#ffffff, #050e00, $theme-type),
-    secondary-fixed: _high-contrast-value(#3e4e2c, #d6e9bb, $theme-type),
-    secondary-fixed-dim: _high-contrast-value(#283717, #bacda0, $theme-type),
-    on-secondary-fixed: _high-contrast-value(#ffffff, #000000, $theme-type),
-    on-secondary-fixed-variant: _high-contrast-value(#ffffff, #081400, $theme-type),
-    tertiary: _high-contrast-value(#003230, #aefef8, $theme-type),
-    on-tertiary: _high-contrast-value(#ffffff, #000000, $theme-type),
-    tertiary-container: _high-contrast-value(#00524f, #81d0cb, $theme-type),
-    on-tertiary-container: _high-contrast-value(#ffffff, #000e0d, $theme-type),
-    tertiary-fixed: _high-contrast-value(#00524f, #a1f1eb, $theme-type),
-    tertiary-fixed-dim: _high-contrast-value(#003a37, #85d4cf, $theme-type),
-    on-tertiary-fixed: _high-contrast-value(#ffffff, #000000, $theme-type),
-    on-tertiary-fixed-variant: _high-contrast-value(#ffffff, #001413, $theme-type),
-    background: _high-contrast-value(#fbf9f2, #131410, $theme-type),
-    on-background: _high-contrast-value(#1b1c18, #e4e3dc, $theme-type),
-    surface: _high-contrast-value(#fbf9f2, #131410, $theme-type),
-    surface-dim: _high-contrast-value(#b9b9b2, #131410, $theme-type),
-    surface-bright: _high-contrast-value(#fbf9f2, #50504b, $theme-type),
-    surface-container-lowest: _high-contrast-value(#ffffff, #000000, $theme-type),
-    surface-container: _high-contrast-value(#e4e3dc, #30312c, $theme-type),
-    surface-container-high: _high-contrast-value(#d5d5ce, #3b3c37, $theme-type),
-    surface-container-highest: _high-contrast-value(#c7c7c0, #464742, $theme-type),
-    on-surface: _high-contrast-value(#000000, #ffffff, $theme-type),
-    shadow: _high-contrast-value(#000000, #000000, $theme-type),
-    scrim: _high-contrast-value(#000000, #000000, $theme-type),
-    surface-tint: _high-contrast-value(#3f6900, #97d945, $theme-type),
-    inverse-surface: _high-contrast-value(#30312c, #e4e3dc, $theme-type),
-    inverse-on-surface: _high-contrast-value(#ffffff, #000000, $theme-type),
-    outline: _high-contrast-value(#2a2d24, #eff1e2, $theme-type),
-    outline-variant: _high-contrast-value(#474a40, #c1c4b6, $theme-type),
-    error: _high-contrast-value(#600004, #ffece9, $theme-type),
-    on-error: _high-contrast-value(#ffffff, #000000, $theme-type),
-    error-container: _high-contrast-value(#98000b, #ffaea5, $theme-type),
-    on-error-container: _high-contrast-value(#ffffff, #220001, $theme-type),
-    surface-variant: _high-contrast-value(#e1e4d5, #45483d, $theme-type),
-    on-surface-variant: _high-contrast-value(#000000, #ffffff, $theme-type),
-  ))
- }
-
-
-// Typography configuration using modern approach
-$typography-config: (
-  plain-family: 'Nunito, system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
-  brand-family: 'Nunito, system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
-  bold-weight: 700,
-  medium-weight: 500,
-  regular-weight: 400,
-);
-
-// Apply the modern theme using the new API
-html {
-  @include mat.theme((
-    color: (
-      primary: $primary-palette,
-      tertiary: $tertiary-palette,
-      theme-type: light
-    ),
-    typography: $typography-config,
-    density: 0,
-  ));
-}
-
-// Dark mode support
-@media (prefers-color-scheme: dark) {
-  html {
-    @include mat.theme((
-      color: (
-        primary: $primary-palette,
-        tertiary: $tertiary-palette,
-        theme-type: dark
-      ),
-      typography: $typography-config,
-      density: 0,
-    ));
-  }
-}
-
-// Global app styles
 body {
-  font-family: 'Newsreader', 'Noto Sans', sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
+  background-color: var(--md-sys-color-background);
+  color: var(--md-sys-color-on-background);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-// Improve button styling
-.mat-mdc-button, .mat-mdc-raised-button, .mat-mdc-fab {
-  border-radius: 12px;
+// =============================================================================
+// MODERN BUTTON ENHANCEMENTS
+// =============================================================================
+
+.mat-mdc-button, 
+.mat-mdc-raised-button, 
+.mat-mdc-outlined-button,
+.mat-mdc-fab,
+.mat-mdc-mini-fab {
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+  
+  // Modern micro-interactions
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  &:active {
+    transform: translateY(0);
+    transition: transform 0.1s ease;
+  }
+  
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-// Enhanced card styling
-.mat-mdc-card {
-  border-radius: 16px;
-  box-shadow: var(--mat-sys-level1);
-}
-
-// Consistent form field styling
-.mat-mdc-form-field {
-  .mat-mdc-text-field-wrapper {
-    border-radius: 12px;
+// Primary button special effects
+.mat-mdc-raised-button.mat-primary,
+.mat-mdc-fab.mat-primary {
+  background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%) !important;
+  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3) !important;
+  
+  &:hover {
+    box-shadow: 0 8px 32px rgba(76, 175, 80, 0.4) !important;
+    transform: translateY(-3px);
   }
 }
 
-// Smooth transitions for interactive elements
-* {
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+// Outlined button enhancements
+.mat-mdc-outlined-button {
+  border-width: 2px !important;
+  
+  &.mat-primary {
+    border-color: var(--md-sys-color-primary) !important;
+    color: var(--md-sys-color-primary) !important;
+    
+    &:hover {
+      background-color: rgba(76, 175, 80, 0.08) !important;
+      border-color: var(--md-sys-color-primary) !important;
+    }
+  }
 }
+
+// =============================================================================
+// ENHANCED CARDS WITH DEPTH
+// =============================================================================
+
+.mat-mdc-card {
+  border-radius: 16px !important;
+  background-color: var(--md-sys-color-surface-container) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  .mat-mdc-card-header {
+    background: linear-gradient(135deg, var(--md-sys-color-surface-container-high) 0%, var(--md-sys-color-surface-container) 100%);
+    border-radius: 16px 16px 0 0;
+    padding: 20px;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  }
+  
+  .mat-mdc-card-content {
+    padding: 20px;
+  }
+}
+
+// =============================================================================
+// MODERN FORM FIELDS
+// =============================================================================
+
+.mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    border-radius: 12px !important;
+    background-color: var(--md-sys-color-surface-container-highest);
+    transition: all 0.2s ease;
+  }
+  
+  &.mat-focused .mat-mdc-text-field-wrapper {
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+    transform: scale(1.01);
+  }
+  
+  .mat-mdc-form-field-focus-overlay {
+    background-color: var(--md-sys-color-primary);
+    opacity: 0.12;
+  }
+  
+  // Floating label enhancements
+  .mdc-floating-label {
+    font-weight: 500 !important;
+    color: var(--md-sys-color-on-surface-variant) !important;
+  }
+  
+  &.mat-focused .mdc-floating-label {
+    color: var(--md-sys-color-primary) !important;
+  }
+}
+
+// Input field styling with better contrast
+.mat-mdc-input-element {
+  color: var(--md-sys-color-on-surface) !important;
+  font-weight: 500 !important;
+  
+  &::placeholder {
+    color: var(--md-sys-color-on-surface-variant) !important;
+    opacity: 0.7;
+  }
+  
+  &:focus {
+    outline: none;
+  }
+}
+
+// =============================================================================
+// ENHANCED DROPDOWNS & MENUS
+// =============================================================================
+
+.mat-mdc-menu-panel {
+  border-radius: 16px !important;
+  background-color: var(--md-sys-color-surface-container) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  overflow: hidden;
+  
+  .mat-mdc-menu-content {
+    padding: 8px;
+  }
+}
+
+.mat-mdc-menu-item {
+  color: var(--md-sys-color-on-surface) !important;
+  border-radius: 8px !important;
+  margin: 2px 0;
+  font-weight: 500 !important;
+  
+  &:hover {
+    background-color: var(--md-sys-color-primary-container) !important;
+    color: var(--md-sys-color-on-primary-container) !important;
+    transform: translateX(4px);
+  }
+  
+  transition: all 0.2s ease;
+}
+
+// =============================================================================
+// MODERN DIALOGS
+// =============================================================================
+
+.mat-mdc-dialog-container {
+  border-radius: 24px !important;
+  background-color: var(--md-sys-color-surface-container) !important;
+  box-shadow: 0 16px 64px rgba(0, 0, 0, 0.2) !important;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  overflow: hidden;
+}
+
+.mat-mdc-dialog-content {
+  color: var(--md-sys-color-on-surface) !important;
+  line-height: 1.6;
+}
+
+.mat-mdc-dialog-actions {
+  padding: 16px 24px 24px !important;
+  gap: 12px;
+  
+  .mat-mdc-button {
+    min-width: 88px;
+  }
+}
+
+// =============================================================================
+// ENHANCED SNACKBARS
+// =============================================================================
+
+.mat-mdc-snack-bar-container {
+  border-radius: 16px !important;
+  background-color: var(--md-sys-color-surface-container-highest) !important;
+  color: var(--md-sys-color-on-surface) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  
+  .mat-mdc-snack-bar-label {
+    font-weight: 500 !important;
+  }
+  
+  .mat-mdc-snack-bar-action {
+    color: var(--md-sys-color-primary) !important;
+    font-weight: 600 !important;
+  }
+}
+
+// =============================================================================
+// MODERN TOOLBAR
+// =============================================================================
+
+.mat-toolbar {
+  background: linear-gradient(135deg, var(--md-sys-color-surface-container) 0%, var(--md-sys-color-surface-container-high) 100%) !important;
+  color: var(--md-sys-color-on-surface) !important;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+// =============================================================================
+// ENHANCED NAVIGATION
+// =============================================================================
+
+.mat-mdc-list-item {
+  border-radius: 12px;
+  margin: 4px 8px;
+  font-weight: 500 !important;
+  
+  &:hover {
+    background-color: var(--md-sys-color-primary-container) !important;
+    color: var(--md-sys-color-on-primary-container) !important;
+    transform: translateX(4px);
+  }
+  
+  &.mat-mdc-list-item-activated {
+    background: linear-gradient(135deg, var(--md-sys-color-primary-container) 0%, var(--md-sys-color-surface-container-highest) 100%) !important;
+    color: var(--md-sys-color-on-primary-container) !important;
+    border: 2px solid var(--md-sys-color-primary);
+    font-weight: 600 !important;
+  }
+  
+  transition: all 0.2s ease;
+}
+
+// =============================================================================
+// MODERN CHIPS
+// =============================================================================
+
+.mat-mdc-standard-chip {
+  border-radius: 16px !important;
+  background: linear-gradient(135deg, var(--md-sys-color-surface-container-high) 0%, var(--md-sys-color-surface-container) 100%) !important;
+  color: var(--md-sys-color-on-surface) !important;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  font-weight: 500 !important;
+  
+  &:hover {
+    background: linear-gradient(135deg, var(--md-sys-color-primary-container) 0%, var(--md-sys-color-surface-container-high) 100%) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  transition: all 0.2s ease;
+}
+
+// =============================================================================
+// ENHANCED TABS
+// =============================================================================
+
+.mat-mdc-tab-group {
+  .mat-mdc-tab-header {
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    background-color: var(--md-sys-color-surface);
+  }
+  
+  .mat-mdc-tab {
+    border-radius: 12px 12px 0 0;
+    font-weight: 500 !important;
+    
+    &.mdc-tab--active {
+      background: linear-gradient(135deg, var(--md-sys-color-primary-container) 0%, var(--md-sys-color-surface) 100%);
+      color: var(--md-sys-color-on-primary-container) !important;
+      font-weight: 600 !important;
+    }
+    
+    &:hover:not(.mdc-tab--active) {
+      background-color: var(--md-sys-color-surface-container-high);
+    }
+  }
+}
+
+// =============================================================================
+// MODERN PROGRESS INDICATORS
+// =============================================================================
+
+.mat-mdc-progress-bar {
+  height: 6px !important;
+  border-radius: 3px !important;
+  overflow: hidden;
+  
+  .mdc-linear-progress__buffer {
+    background-color: var(--md-sys-color-surface-container-highest) !important;
+  }
+  
+  .mdc-linear-progress__bar-inner {
+    background: linear-gradient(90deg, var(--md-sys-color-primary) 0%, var(--md-sys-color-secondary) 100%) !important;
+  }
+}
+
+.mat-mdc-progress-spinner circle {
+  stroke: var(--md-sys-color-primary) !important;
+}
+
+// =============================================================================
+// ENHANCED SELECTION CONTROLS
+// =============================================================================
+
+.mat-mdc-checkbox,
+.mat-mdc-radio-button {
+  font-weight: 500 !important;
+  
+  .mdc-checkbox__background,
+  .mdc-radio__background {
+    border-color: var(--md-sys-color-outline) !important;
+    border-width: 2px !important;
+  }
+  
+  &.mat-mdc-checkbox-checked,
+  &.mat-mdc-radio-checked {
+    .mdc-checkbox__background,
+    .mdc-radio__background {
+      background-color: var(--md-sys-color-primary) !important;
+      border-color: var(--md-sys-color-primary) !important;
+    }
+  }
+}
+
+// =============================================================================
+// SMOOTH ANIMATIONS & TRANSITIONS
+// =============================================================================
+
+// Global smooth transitions for theme changes
+* {
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Reduced motion for accessibility
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// =============================================================================
+// MODERN UTILITY CLASSES
+// =============================================================================
+
+// Surface utility classes with gradients
+.surface-container {
+  background: linear-gradient(135deg, var(--md-sys-color-surface-container) 0%, var(--md-sys-color-surface-container-low) 100%);
+  color: var(--md-sys-color-on-surface);
+}
+
+.surface-container-low {
+  background-color: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface);
+}
+
+.surface-container-high {
+  background: linear-gradient(135deg, var(--md-sys-color-surface-container-high) 0%, var(--md-sys-color-surface-container) 100%);
+  color: var(--md-sys-color-on-surface);
+}
+
+.surface-container-highest {
+  background-color: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface);
+}
+
+.primary-container {
+  background: linear-gradient(135deg, var(--md-sys-color-primary-container) 0%, var(--md-sys-color-surface-container-highest) 100%);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+// Typography utility classes
+.text-primary {
+  color: var(--md-sys-color-on-surface) !important;
+  font-weight: 600 !important;
+}
+
+.text-secondary {
+  color: var(--md-sys-color-on-surface-variant) !important;
+  font-weight: 500 !important;
+}
+
+.text-accent {
+  color: var(--md-sys-color-tertiary) !important;
+  font-weight: 600 !important;
+}
+
+// Modern shadow utilities
+.shadow-soft {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+.shadow-medium {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+}
+
+.shadow-strong {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16) !important;
+}
+
+.shadow-primary {
+  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.2) !important;
+}
+
+// Interaction utilities
+.hover-lift {
+  transition: transform 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.hover-scale {
+  transition: transform 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+

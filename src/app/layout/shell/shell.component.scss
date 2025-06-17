@@ -1,52 +1,77 @@
 @use '@angular/material' as mat;
-@use '../../../mixins' as mixins;
+@use '../../../styles/themes/theme-variables' as theme;
 
 :host {
   display: block;
   height: 100vh;
 }
 
-// Header styles moved from landing page
+// =============================================================================
+// MODERN HEADER STYLES
+// =============================================================================
+
 .header {
-  background-color: #f8f9fc;
-  border-bottom: 1px solid #e6e9f4;
+  background: linear-gradient(135deg, var(--md-sys-color-surface-container) 0%, var(--md-sys-color-surface-container-high) 100%);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 2;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+  box-shadow: theme.get-shadow(soft);
 
   .toolbar {
     display: flex;
     align-items: center;
-    padding: 0 2rem;
-    height: 64px;
+    justify-content: space-between;
+    padding: 0 theme.get-spacing(xxl);
+    height: 72px;  // Slightly taller for modern look
+    max-width: 1400px;
+    margin: 0 auto;
 
-    @include mixins.mobile-tablet {
-      height: 56px;
-      padding: 0 1rem;
+    @media (max-width: 768px) {
+      height: 64px;
+      padding: 0 theme.get-spacing(lg);
     }
+
+    // =============================================================================
+    // MODERN LOGO SECTION
+    // =============================================================================
 
     .logo {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: theme.get-spacing(md);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        transform: scale(1.02);
+      }
 
       .logo-image {
-        height: 2rem;
+        height: theme.get-spacing(xxxl);  // 48px
         width: auto;
         object-fit: contain;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
       }
 
       mat-icon {
-        font-size: 1.5rem;
-        color: #0d0f1c;
+        font-size: theme.get-font-size(xxl);  // 24px
+        color: var(--md-sys-color-primary);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
       }
 
       .logo-text {
-        font-weight: 700;
-        font-size: 1.25rem;
-        color: #0d0f1c;
+        font-weight: theme.get-font-weight(extrabold);
+        font-size: theme.get-font-size(xl);  // 20px
+        color: var(--md-sys-color-on-surface);
+        background: theme.get-gradient(primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.01em;
       }
     }
 
@@ -54,65 +79,123 @@
       flex: 1 1 auto;
     }
 
+    // =============================================================================
+    // MODERN NAVIGATION LINKS
+    // =============================================================================
+
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: theme.get-spacing(xs);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
 
-      @include mixins.mobile-tablet {
-        gap: 0.25rem;
+      @media (max-width: 768px) {
+        gap: theme.get-spacing(xs);
+        position: static;
+        transform: none;
       }
 
       a {
-        color: #0d0f1c;
-        font-weight: 500;
+        color: var(--md-sys-color-on-surface);
+        font-weight: theme.get-font-weight(medium);
         text-transform: none;
         display: flex;
         align-items: center;
-        gap: 0.25rem;
-        padding: 0.5rem;
-        border-radius: 0.5rem;
+        gap: theme.get-spacing(xs);
+        padding: theme.get-spacing(md) theme.get-spacing(lg);
+        border-radius: theme.get-radius(lg);
+        text-decoration: none;
+        transition: all 0.2s ease;
+        position: relative;
+        overflow: hidden;
 
-        @include mixins.mobile-tablet {
-          padding: 0.375rem;
+        @media (max-width: 768px) {
+          padding: theme.get-spacing(md);
           
           span {
             display: none;
           }
         }
 
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: theme.get-gradient(primary-soft);
+          opacity: 0;
+          transition: opacity 0.2s ease;
+        }
+
         mat-icon {
-          font-size: 1.125rem;
-          height: 1.125rem;
-          width: 1.125rem;
+          font-size: theme.get-font-size(lg);  // 18px
+          height: theme.get-font-size(lg);
+          width: theme.get-font-size(lg);
+          z-index: 1;
+          position: relative;
+        }
+
+        span {
+          z-index: 1;
+          position: relative;
         }
 
         &.active-nav-link {
-          background-color: rgba(96, 122, 251, 0.1);
-          color: #607afb;
+          background: theme.get-gradient(primary-soft);
+          color: var(--md-sys-color-primary);
+          font-weight: theme.get-font-weight(semibold);
+          transform: translateY(-1px);
+          box-shadow: theme.get-shadow(soft);
+          
+          &::before {
+            opacity: 1;
+          }
         }
 
-        &:hover {
-          background-color: rgba(96, 122, 251, 0.05);
+        &:hover:not(.active-nav-link) {
+          background-color: var(--md-sys-color-surface-container-high);
+          color: var(--md-sys-color-primary);
+          transform: translateY(-1px);
+          
+          &::before {
+            opacity: 0.3;
+          }
         }
       }
     }
 
+    // =============================================================================
+    // MODERN AUTH BUTTONS
+    // =============================================================================
+
     .auth-buttons {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: theme.get-spacing(lg);
 
-      @include mixins.mobile-tablet {
-        gap: 0.5rem;
+      @media (max-width: 768px) {
+        gap: theme.get-spacing(md);
       }
 
       .login-btn {
-        color: #0d0f1c;
-        font-weight: 500;
+        color: var(--md-sys-color-on-surface);
+        font-weight: theme.get-font-weight(medium);
         text-transform: none;
+        padding: theme.get-spacing(md) theme.get-spacing(lg);
+        border-radius: theme.get-radius(lg);
+        transition: all 0.2s ease;
 
-        @include mixins.mobile-tablet {
+        &:hover {
+          background-color: var(--md-sys-color-surface-container-high);
+          color: var(--md-sys-color-primary);
+          transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
           span {
             display: none;
           }
@@ -120,10 +203,21 @@
       }
 
       .register-btn {
-        font-weight: 500;
+        font-weight: theme.get-font-weight(semibold);
         text-transform: none;
+        background: theme.get-gradient(primary);
+        color: white;
+        padding: theme.get-spacing(md) theme.get-spacing(xl);
+        border-radius: theme.get-radius(lg);
+        box-shadow: theme.get-shadow(primary-glow);
+        transition: all 0.2s ease;
 
-        @include mixins.mobile-tablet {
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: theme.get-shadow(primary-strong);
+        }
+
+        @media (max-width: 768px) {
           span {
             display: none;
           }
@@ -131,77 +225,176 @@
       }
     }
 
+    // =============================================================================
+    // USER SECTION
+    // =============================================================================
+
     .user-email {
       display: flex;
       align-items: center;
-      gap: 4px;
-      color: #0d0f1c;
-      margin-right: 1rem;
+      gap: theme.get-spacing(xs);
+      color: var(--md-sys-color-on-surface);
+      margin-right: theme.get-spacing(lg);
+      font-weight: theme.get-font-weight(medium);
       
       mat-icon {
-        font-size: 20px;
-        height: 20px;
-        width: 20px;
-        color: #0d0f1c;
+        font-size: theme.get-font-size(lg);  // 18px
+        height: theme.get-font-size(lg);
+        width: theme.get-font-size(lg);
+        color: var(--md-sys-color-primary);
       }
     }
 
     .logout-btn {
-      color: #0d0f1c;
-      font-weight: 500;
+      color: var(--md-sys-color-on-surface);
+      font-weight: theme.get-font-weight(medium);
       text-transform: none;
+      padding: theme.get-spacing(md) theme.get-spacing(lg);
+      border-radius: theme.get-radius(lg);
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: rgba(244, 67, 54, 0.1);
+        color: #F44336;
+        transform: translateY(-1px);
+      }
 
-      @include mixins.mobile-tablet {
+      @media (max-width: 768px) {
         span {
           display: none;
+        }
+      }
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: theme.get-spacing(md);
+
+      @media (max-width: 768px) {
+        gap: theme.get-spacing(xs);
+      }
+
+      .auth-buttons {
+        display: flex;
+        align-items: center;
+        gap: theme.get-spacing(lg);
+
+        @media (max-width: 768px) {
+          gap: theme.get-spacing(md);
         }
       }
     }
   }
 }
 
-.toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  &-left, &-right {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .user-email {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    color: rgba(0, 0, 0, 0.87);
-    
-    mat-icon {
-      font-size: 20px;
-      height: 20px;
-      width: 20px;
-      color: rgba(0, 0, 0, 0.54);
-    }
-  }
-  
-}
+// =============================================================================
+// MAIN CONTENT AREA
+// =============================================================================
 
 .main-content {
-  position: absolute;
-  top: 64px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: calc(100vh - 64px);
-  overflow-y: auto;
-
-  @include mixins.mobile-tablet {
-    top: 56px;
-    height: calc(100vh - 56px);
-    padding-bottom: 56px; // Account for bottom nav
+  margin-top: 72px;  // Account for header height
+  min-height: calc(100vh - 72px);
+  background: linear-gradient(135deg, var(--md-sys-color-background) 0%, var(--md-sys-color-surface-container-low) 100%);
+  
+  @media (max-width: 768px) {
+    margin-top: 64px;
+    min-height: calc(100vh - 64px);
   }
 }
+
+// =============================================================================
+// THEME TOGGLE INTEGRATION
+// =============================================================================
+
+.theme-toggle {
+  margin-left: theme.get-spacing(md);
+  
+  .theme-toggle-button {
+    width: 48px;
+    height: 48px;
+    border-radius: theme.get-radius(full);
+    background: linear-gradient(135deg, var(--md-sys-color-surface-container-high) 0%, var(--md-sys-color-surface-container) 100%);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    color: var(--md-sys-color-on-surface);
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: theme.get-gradient(primary-soft);
+      color: var(--md-sys-color-primary);
+      transform: scale(1.05);
+      box-shadow: theme.get-shadow(soft);
+    }
+    
+    mat-icon {
+      font-size: theme.get-font-size(lg);
+    }
+  }
+}
+
+// =============================================================================
+// MOBILE MENU TOGGLE
+// =============================================================================
+
+.mobile-menu-toggle {
+  @media (min-width: 769px) {
+    display: none;
+  }
+  
+  .mobile-toggle-button {
+    width: 48px;
+    height: 48px;
+    border-radius: theme.get-radius(lg);
+    background: var(--md-sys-color-surface-container-high);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    color: var(--md-sys-color-on-surface);
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+      transform: scale(1.05);
+    }
+    
+    mat-icon {
+      font-size: theme.get-font-size(xl);
+    }
+  }
+}
+
+// =============================================================================
+// ACCESSIBILITY & FOCUS STATES
+// =============================================================================
+
+.toolbar a:focus-visible,
+.toolbar button:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+  border-radius: theme.get-radius(sm);
+}
+
+// =============================================================================
+// ANIMATIONS
+// =============================================================================
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header {
+  animation: slideDown 0.3s ease-out;
+}
+
+// =============================================================================
+// MOBILE BOTTOM NAVIGATION
+// =============================================================================
 
 .bottom-nav {
   position: fixed;
@@ -209,42 +402,176 @@
   left: 0;
   right: 0;
   z-index: 100;
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
-  background-color: rgba(248, 249, 252, 0.95);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
-  .mat-mdc-tab-link {
-    height: 56px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-width: 0 !important;
-    flex-grow: 1;
-    padding: 6px 0 !important;
-    color: #0d0f1c;
-
-    mat-icon {
-      margin-bottom: 2px;
-      font-size: 20px;
-      height: 20px;
-      width: 20px;
+  background: white;
+  border-top: 1px solid #e5e7eb;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  height: 64px;
+  
+  ::ng-deep .mat-mdc-tab-nav-bar {
+    background: transparent;
+    border: none;
+    height: 100%;
+    
+    .mat-mdc-tab-nav-panel {
+      display: none;
     }
-
-    span {
+    
+    .mat-mdc-tab-links {
+      display: flex;
+      height: 100%;
+      align-items: stretch;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .mat-mdc-tab-link {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 8px 4px;
       font-size: 0.75rem;
-      line-height: 1;
-      font-weight: 500;
+      font-weight: 400;
+      color: #6b7280;
+      text-decoration: none;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      min-width: 0;
+      min-height: 0;
+      height: 100%;
+      transition: color 0.2s ease;
+      
+      &.mdc-tab--active {
+        color: #10b981;
+        
+        mat-icon {
+          color: #10b981;
+        }
+      }
+      
+      &:hover {
+        color: #10b981;
+        
+        mat-icon {
+          color: #10b981;
+        }
+      }
+      
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        margin: 0;
+      }
+      
+      span {
+        font-size: 0.75rem;
+        line-height: 1;
+        margin: 0;
+      }
     }
+    
+    .logout-tab-link {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 8px 4px;
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: #6b7280;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      min-width: 0;
+      min-height: 0;
+      height: 100%;
+      transition: color 0.2s ease;
+      cursor: pointer;
+      
+      &:hover {
+        color: #10b981;
+        
+        mat-icon {
+          color: #10b981;
+        }
+      }
+      
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        margin: 0;
+      }
+      
+      span {
+        font-size: 0.75rem;
+        line-height: 1;
+        margin: 0;
+      }
+    }
+  }
+  
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
 
-    &.mdc-tab--active {
-      color: #607afb;
-      background-color: rgba(96, 122, 251, 0.1);
+// Dark theme support for bottom nav
+:host-context(.dark-theme) {
+  .bottom-nav {
+    background: #1e293b;
+    border-top-color: #334155;
+    
+    ::ng-deep .mat-mdc-tab-link {
+      color: #94a3b8;
+      
+      &.mdc-tab--active {
+        color: #10b981;
+      }
+      
+      &:hover {
+        color: #10b981;
+      }
     }
+    
+    .logout-tab-link {
+      color: #94a3b8;
+      
+      &:hover {
+        color: #10b981;
+        
+        mat-icon {
+          color: #10b981;
+        }
+      }
+    }
+  }
+}
 
-    &:hover {
-      background-color: rgba(96, 122, 251, 0.05);
-    }
+// Ensure main content has bottom padding on mobile
+@media (max-width: 767px) {
+  .main-content {
+    padding-bottom: 64px;
+  }
+}
+
+// =============================================================================
+// HIGH CONTRAST MODE
+// =============================================================================
+
+@media (prefers-contrast: high) {
+  .header {
+    border-bottom-width: 2px;
+  }
+  
+  .nav-links a,
+  .auth-buttons button {
+    border: 1px solid var(--md-sys-color-outline);
   }
 } 
