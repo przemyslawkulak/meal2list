@@ -1,48 +1,82 @@
 <header class="header" role="navigation">
-  <mat-toolbar class="toolbar" color="transparent">
-    <div class="logo" routerLink="/" style="cursor: pointer">
-      <img src="logo.png" alt="Meal2List Logo" class="logo-image" />
-      <span class="logo-text">Meal2List</span>
+  <div class="header-container">
+    <div class="header-content">
+      <!-- Logo Section -->
+      <div class="logo" routerLink="/" style="cursor: pointer">
+        <img src="logo.png" alt="Meal2List Logo" class="logo-image" />
+        <span class="logo-text">Meal2List</span>
+      </div>
+
+      @if (isAuthenticated$ | async) {
+        <!-- Desktop Navigation - centered -->
+        @if ((isTabletOrMobile$ | async) === false) {
+          <nav class="nav-links-desktop" aria-label="Nawigacja główna">
+            @for (link of navigationLinks; track link.path) {
+              <a [routerLink]="'/app' + link.path" routerLinkActive="nav-active" class="nav-link">
+                <mat-icon>{{ link.icon }}</mat-icon>
+                <span>{{ link.label }}</span>
+              </a>
+            }
+          </nav>
+        }
+
+        <!-- Toolbar Actions -->
+        <div class="toolbar-actions">
+          <app-theme-toggle></app-theme-toggle>
+          <button mat-button (click)="onLogout()" class="logout-btn">
+            <mat-icon>logout</mat-icon>
+            @if ((isTabletOrMobile$ | async) === false) {
+              <span>Wyloguj się</span>
+            }
+          </button>
+
+          <!-- Mobile Menu Button -->
+          @if (isTabletOrMobile$ | async) {
+            <button mat-icon-button class="mobile-menu-btn" (click)="toggleMobileMenu()">
+              <mat-icon>menu</mat-icon>
+            </button>
+          }
+        </div>
+      } @else {
+        <!-- Public navigation - Login/Register buttons -->
+        <div class="spacer"></div>
+        <div class="toolbar-actions">
+          <app-theme-toggle></app-theme-toggle>
+          <div class="auth-buttons">
+            <a mat-button routerLink="/auth/login" class="login-btn">
+              <mat-icon>login</mat-icon>
+              <span>Zaloguj się</span>
+            </a>
+            <a mat-raised-button routerLink="/auth/register" color="primary" class="register-btn">
+              <mat-icon>person_add</mat-icon>
+              <span>Rejestracja</span>
+            </a>
+          </div>
+        </div>
+      }
     </div>
 
-    @if (isAuthenticated$ | async) {
-      <!-- Authenticated navigation - centered -->
-      <nav class="nav-links" aria-label="Nawigacja główna">
-        @for (link of navigationLinks; track link.path) {
-          <a mat-button [routerLink]="'/app' + link.path" routerLinkActive="active-nav-link">
-            <mat-icon>{{ link.icon }}</mat-icon>
-            <span>{{ link.label }}</span>
-          </a>
-        }
-      </nav>
-
-      <div class="toolbar-actions">
-        <app-theme-toggle></app-theme-toggle>
-        <button mat-button (click)="onLogout()" class="logout-btn">
-          <mat-icon>logout</mat-icon>
-          @if ((isTabletOrMobile$ | async) === false) {
-            <span>Wyloguj się</span>
-          }
-        </button>
-      </div>
-    } @else {
-      <!-- Public navigation - Login/Register buttons with theme toggle -->
-      <div class="spacer"></div>
-      <div class="toolbar-actions">
-        <app-theme-toggle></app-theme-toggle>
-        <div class="auth-buttons">
-          <a mat-button routerLink="/auth/login" class="login-btn">
-            <mat-icon>login</mat-icon>
-            <span>Zaloguj się</span>
-          </a>
-          <a mat-raised-button routerLink="/auth/register" color="primary" class="register-btn">
-            <mat-icon>person_add</mat-icon>
-            <span>Rejestracja</span>
-          </a>
+    <!-- Mobile Navigation Menu -->
+    @if (isTabletOrMobile$ | async) {
+      @if (isAuthenticated$ | async) {
+        <div class="mobile-nav" [class.mobile-nav--open]="isMobileMenuOpen">
+          <div class="mobile-nav-content">
+            @for (link of navigationLinks; track link.path) {
+              <a
+                [routerLink]="'/app' + link.path"
+                routerLinkActive="nav-active"
+                class="mobile-nav-link"
+                (click)="closeMobileMenu()"
+              >
+                <mat-icon>{{ link.icon }}</mat-icon>
+                <span>{{ link.label }}</span>
+              </a>
+            }
+          </div>
         </div>
-      </div>
+      }
     }
-  </mat-toolbar>
+  </div>
 </header>
 
 <app-offline-banner></app-offline-banner>
@@ -71,4 +105,15 @@
     </button>
   </nav>
   <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+} @else {
+  <!-- Desktop-only black footer -->
+  <footer class="desktop-footer">
+    <div class="footer-content">
+      <p>© 2024 Meal2List. Wszelkie prawa zastrzeżone.</p>
+      <p>
+        Developed by
+        <a href="https://github.com/przemyslawkulak/meal2list" target="_blank">Colourscode</a>
+      </p>
+    </div>
+  </footer>
 }

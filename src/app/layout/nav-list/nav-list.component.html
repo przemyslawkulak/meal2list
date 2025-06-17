@@ -1,10 +1,25 @@
-<mat-nav-list>
-  @for (link of links; track link.path) {
-    <a mat-list-item [routerLink]="link.path" routerLinkActive="active">
-      @if (link.icon) {
-        <mat-icon matListItemIcon>{{ link.icon }}</mat-icon>
-      }
-      <span matListItemTitle>{{ link.label }}</span>
-    </a>
-  }
-</mat-nav-list>
+@if (isDesktop$ | async) {
+  <!-- Desktop Navigation with green theme styling -->
+  <nav class="desktop-nav" aria-label="Main navigation">
+    @for (link of links; track link.path) {
+      <a [routerLink]="link.path" routerLinkActive="nav-active" class="nav-link">
+        @if (link.icon) {
+          <mat-icon class="nav-icon">{{ link.icon }}</mat-icon>
+        }
+        <span>{{ link.label }}</span>
+      </a>
+    }
+  </nav>
+} @else {
+  <!-- Mobile/Tablet - keep original Material nav-list -->
+  <mat-nav-list>
+    @for (link of links; track link.path) {
+      <a mat-list-item [routerLink]="link.path" routerLinkActive="active">
+        @if (link.icon) {
+          <mat-icon matListItemIcon>{{ link.icon }}</mat-icon>
+        }
+        <span matListItemTitle>{{ link.label }}</span>
+      </a>
+    }
+  </mat-nav-list>
+}

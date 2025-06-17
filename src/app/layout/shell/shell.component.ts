@@ -64,7 +64,17 @@ export class ShellComponent {
     { label: 'Kategorie', path: '/categories', icon: 'category' },
   ];
 
+  isMobileMenuOpen = false;
+
   onLogout(): void {
     this._authService.logout().subscribe();
+  }
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu(): void {
+    this.isMobileMenuOpen = false;
   }
 }

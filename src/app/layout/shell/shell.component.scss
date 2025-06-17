@@ -4,286 +4,291 @@
 :host {
   display: block;
   height: 100vh;
+  background-color: var(--md-sys-color-background);
 }
 
 // =============================================================================
-// MODERN HEADER STYLES
+// MODERN HEADER STYLES (Updated to match HTML design)
 // =============================================================================
 
 .header {
-  background: linear-gradient(135deg, var(--md-sys-color-surface-container) 0%, var(--md-sys-color-surface-container-high) 100%);
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
-  position: fixed;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
-  backdrop-filter: blur(10px);
-  box-shadow: theme.get-shadow(soft);
+  z-index: 50;
 
-  .toolbar {
+  .header-container {
+    margin: 0 auto;
+    padding: 0 theme.get-spacing(lg);
+
+    @media (min-width: 768px) {
+      padding: 0 theme.get-spacing(xl);
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+
+      @media (min-width: 768px) {
+        height: 72px;
+      }
+    }
+  }
+
+  // =============================================================================
+  // LOGO SECTION
+  // =============================================================================
+
+  .logo {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 theme.get-spacing(xxl);
-    height: 72px;  // Slightly taller for modern look
-    max-width: 1400px;
-    margin: 0 auto;
-
-    @media (max-width: 768px) {
-      height: 64px;
-      padding: 0 theme.get-spacing(lg);
+    gap: theme.get-spacing(md);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      transform: scale(1.02);
     }
 
-    // =============================================================================
-    // MODERN LOGO SECTION
-    // =============================================================================
+    .logo-image {
+      height: 32px;
+      width: auto;
+      margin-right: theme.get-spacing(sm);
 
-    .logo {
+      @media (min-width: 768px) {
+        height: 40px;
+      }
+    }
+
+    .logo-text {
+      font-weight: 600;
+      font-size: theme.get-font-size(xl);
+      color: #15803d; // green-700 to match HTML design
+      letter-spacing: -0.01em;
+
+      @media (min-width: 768px) {
+        font-size: theme.get-font-size(xxl);
+      }
+    }
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  // =============================================================================
+  // DESKTOP NAVIGATION LINKS (Green Theme)
+  // =============================================================================
+
+  .nav-links-desktop {
+    display: flex;
+    align-items: center;
+    gap: theme.get-spacing(lg);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    .nav-link {
       display: flex;
       align-items: center;
-      gap: theme.get-spacing(md);
+      gap: theme.get-spacing(sm);
+      padding: theme.get-spacing(sm) theme.get-spacing(md);
+      border-radius: 6px;
       text-decoration: none;
+      color: #6b7280; // text-gray-600
+      font-size: 14px;
+      font-weight: 500;
       transition: all 0.2s ease;
       
       &:hover {
-        transform: scale(1.02);
+        color: #15803d; // text-green-700
+        background-color: #f0f9ff; // hover:bg-green-50
       }
-
-      .logo-image {
-        height: theme.get-spacing(xxxl);  // 48px
-        width: auto;
-        object-fit: contain;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+      
+      &.nav-active {
+        color: #15803d; // text-green-700
+        background-color: #dcfce7; // bg-green-100
       }
-
-      mat-icon {
-        font-size: theme.get-font-size(xxl);  // 24px
-        color: var(--md-sys-color-primary);
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-      }
-
-      .logo-text {
-        font-weight: theme.get-font-weight(extrabold);
-        font-size: theme.get-font-size(xl);  // 20px
-        color: var(--md-sys-color-on-surface);
-        background: theme.get-gradient(primary);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        letter-spacing: -0.01em;
-      }
-    }
-
-    .spacer {
-      flex: 1 1 auto;
-    }
-
-    // =============================================================================
-    // MODERN NAVIGATION LINKS
-    // =============================================================================
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: theme.get-spacing(xs);
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-
-      @media (max-width: 768px) {
-        gap: theme.get-spacing(xs);
-        position: static;
-        transform: none;
-      }
-
-      a {
-        color: var(--md-sys-color-on-surface);
-        font-weight: theme.get-font-weight(medium);
-        text-transform: none;
-        display: flex;
-        align-items: center;
-        gap: theme.get-spacing(xs);
-        padding: theme.get-spacing(md) theme.get-spacing(lg);
-        border-radius: theme.get-radius(lg);
-        text-decoration: none;
-        transition: all 0.2s ease;
-        position: relative;
-        overflow: hidden;
-
-        @media (max-width: 768px) {
-          padding: theme.get-spacing(md);
-          
-          span {
-            display: none;
-          }
-        }
-
-        &::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: theme.get-gradient(primary-soft);
-          opacity: 0;
-          transition: opacity 0.2s ease;
-        }
-
-        mat-icon {
-          font-size: theme.get-font-size(lg);  // 18px
-          height: theme.get-font-size(lg);
-          width: theme.get-font-size(lg);
-          z-index: 1;
-          position: relative;
-        }
-
-        span {
-          z-index: 1;
-          position: relative;
-        }
-
-        &.active-nav-link {
-          background: theme.get-gradient(primary-soft);
-          color: var(--md-sys-color-primary);
-          font-weight: theme.get-font-weight(semibold);
-          transform: translateY(-1px);
-          box-shadow: theme.get-shadow(soft);
-          
-          &::before {
-            opacity: 1;
-          }
-        }
-
-        &:hover:not(.active-nav-link) {
-          background-color: var(--md-sys-color-surface-container-high);
-          color: var(--md-sys-color-primary);
-          transform: translateY(-1px);
-          
-          &::before {
-            opacity: 0.3;
-          }
-        }
-      }
-    }
-
-    // =============================================================================
-    // MODERN AUTH BUTTONS
-    // =============================================================================
-
-    .auth-buttons {
-      display: flex;
-      align-items: center;
-      gap: theme.get-spacing(lg);
-
-      @media (max-width: 768px) {
-        gap: theme.get-spacing(md);
-      }
-
-      .login-btn {
-        color: var(--md-sys-color-on-surface);
-        font-weight: theme.get-font-weight(medium);
-        text-transform: none;
-        padding: theme.get-spacing(md) theme.get-spacing(lg);
-        border-radius: theme.get-radius(lg);
-        transition: all 0.2s ease;
-
-        &:hover {
-          background-color: var(--md-sys-color-surface-container-high);
-          color: var(--md-sys-color-primary);
-          transform: translateY(-1px);
-        }
-
-        @media (max-width: 768px) {
-          span {
-            display: none;
-          }
-        }
-      }
-
-      .register-btn {
-        font-weight: theme.get-font-weight(semibold);
-        text-transform: none;
-        background: theme.get-gradient(primary);
-        color: white;
-        padding: theme.get-spacing(md) theme.get-spacing(xl);
-        border-radius: theme.get-radius(lg);
-        box-shadow: theme.get-shadow(primary-glow);
-        transition: all 0.2s ease;
-
-        &:hover {
-          transform: translateY(-2px);
-          box-shadow: theme.get-shadow(primary-strong);
-        }
-
-        @media (max-width: 768px) {
-          span {
-            display: none;
-          }
-        }
-      }
-    }
-
-    // =============================================================================
-    // USER SECTION
-    // =============================================================================
-
-    .user-email {
-      display: flex;
-      align-items: center;
-      gap: theme.get-spacing(xs);
-      color: var(--md-sys-color-on-surface);
-      margin-right: theme.get-spacing(lg);
-      font-weight: theme.get-font-weight(medium);
       
       mat-icon {
-        font-size: theme.get-font-size(lg);  // 18px
-        height: theme.get-font-size(lg);
-        width: theme.get-font-size(lg);
-        color: var(--md-sys-color-primary);
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
       }
     }
+  }
+
+  // =============================================================================
+  // TOOLBAR ACTIONS
+  // =============================================================================
+
+  .toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: theme.get-spacing(md);
 
     .logout-btn {
-      color: var(--md-sys-color-on-surface);
-      font-weight: theme.get-font-weight(medium);
+      color: #6b7280;
+      font-weight: 500;
       text-transform: none;
-      padding: theme.get-spacing(md) theme.get-spacing(lg);
-      border-radius: theme.get-radius(lg);
+      padding: theme.get-spacing(sm) theme.get-spacing(md);
+      border-radius: 6px;
       transition: all 0.2s ease;
-      
+
       &:hover {
-        background-color: rgba(244, 67, 54, 0.1);
-        color: #F44336;
-        transform: translateY(-1px);
+        color: #15803d;
+        background-color: #f0f9ff;
       }
 
-      @media (max-width: 768px) {
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+
+      @media (max-width: 767px) {
         span {
           display: none;
         }
       }
     }
 
-    .toolbar-actions {
-      display: flex;
-      align-items: center;
-      gap: theme.get-spacing(md);
-
-      @media (max-width: 768px) {
-        gap: theme.get-spacing(xs);
+    .mobile-menu-btn {
+      color: #6b7280;
+      
+      &:hover {
+        color: #15803d;
+        background-color: #f0f9ff;
       }
 
-      .auth-buttons {
-        display: flex;
-        align-items: center;
-        gap: theme.get-spacing(lg);
+      mat-icon {
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
 
-        @media (max-width: 768px) {
-          gap: theme.get-spacing(md);
+  // =============================================================================
+  // AUTH BUTTONS
+  // =============================================================================
+
+  .auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: theme.get-spacing(md);
+
+    .login-btn {
+      color: #6b7280;
+      font-weight: 500;
+      text-transform: none;
+      padding: theme.get-spacing(sm) theme.get-spacing(md);
+      border-radius: 6px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: #15803d;
+        background-color: #f0f9ff;
+      }
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+
+      @media (max-width: 767px) {
+        span {
+          display: none;
         }
       }
+    }
+
+    .register-btn {
+      background-color: #16a34a; // green-600
+      color: white;
+      font-weight: 500;
+      text-transform: none;
+      padding: theme.get-spacing(sm) theme.get-spacing(md);
+      border-radius: 6px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: #15803d; // green-700
+      }
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+
+      @media (max-width: 767px) {
+        span {
+          display: none;
+        }
+      }
+    }
+  }
+
+  // =============================================================================
+  // MOBILE NAVIGATION MENU
+  // =============================================================================
+
+  .mobile-nav {
+    @media (max-width: 767px) {
+      display: none;
+      background: white;
+      border-top: 1px solid #e5e7eb;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+
+      &--open {
+        display: block;
+      }
+
+      .mobile-nav-content {
+        padding: theme.get-spacing(md) 0;
+        display: flex;
+        flex-direction: column;
+        gap: theme.get-spacing(xs);
+
+        .mobile-nav-link {
+          display: flex;
+          align-items: center;
+          gap: theme.get-spacing(sm);
+          padding: theme.get-spacing(md) theme.get-spacing(lg);
+          color: #6b7280;
+          text-decoration: none;
+          font-size: 16px;
+          font-weight: 500;
+          transition: all 0.2s ease;
+
+          &:hover {
+            color: #15803d;
+            background-color: #f0f9ff;
+          }
+
+          &.nav-active {
+            color: #15803d;
+            background-color: #dcfce7;
+          }
+
+          mat-icon {
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+    }
+
+    @media (min-width: 768px) {
+      display: none;
     }
   }
 }
@@ -293,13 +298,15 @@
 // =============================================================================
 
 .main-content {
-  margin-top: 72px;  // Account for header height
-  min-height: calc(100vh - 72px);
-  background: linear-gradient(135deg, var(--md-sys-color-background) 0%, var(--md-sys-color-surface-container-low) 100%);
+  margin-top: theme.get-spacing(lg);  // Account for header height
+  min-height: calc(100vh - 291px);
+  padding: theme.get-spacing(lg) 0; // Add padding instead of forcing full height
+  background: var(--md-sys-color-background);
   
   @media (max-width: 768px) {
     margin-top: 64px;
-    min-height: calc(100vh - 64px);
+    min-height: auto; // Changed from calc(100vh - 64px) to auto
+    padding: theme.get-spacing(md) 0; // Smaller padding on mobile
   }
 }
 
@@ -573,5 +580,35 @@
   .nav-links a,
   .auth-buttons button {
     border: 1px solid var(--md-sys-color-outline);
+  }
+}
+
+// =============================================================================
+// DESKTOP-ONLY COMPONENTS
+// =============================================================================
+
+// Desktop black footer
+.desktop-footer {
+  @media (min-width: 768px) {
+    background-color: #1f2937; // gray-800
+    color: white;
+    padding: theme.get-spacing(xxl) 0;
+    
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 theme.get-spacing(xl);
+      text-align: center;
+      
+      p {
+        margin: 0;
+        font-size: theme.get-font-size(base);
+        color: #d1d5db; // gray-300
+      }
+    }
+  }
+  
+  @media (max-width: 767px) {
+    display: none;
   }
 } 

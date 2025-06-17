@@ -6,8 +6,7 @@
 // =============================================================================
 
 .generate-list-container {
-  min-height: 100vh;
-  background: #f9fafb;
+  background: var(--md-sys-color-background); 
   font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
