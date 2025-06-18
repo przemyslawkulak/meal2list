@@ -140,7 +140,7 @@ $breakpoints: (
 // =============================================================================
 
 @mixin modern-card {
-  background: linear-gradient(135deg, var(--md-sys-color-surface) 0%, var(--md-sys-color-surface-container-low) 100%);
+  background: white;
   border-radius: theme.get-radius(xl);
   box-shadow: theme.get-shadow(medium);
   border: 1px solid var(--md-sys-color-outline-variant);

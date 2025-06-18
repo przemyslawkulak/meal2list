@@ -1,75 +1,95 @@
-<mat-card class="recipe-metadata">
-  <mat-card-content>
-    <div class="metadata-fields">
-      <div class="metadata-field">
-        <span class="field-label">
-          <mat-icon>restaurant</mat-icon>
-          Nazwa przepisu:
-        </span>
-        @if (isEditingRecipeName()) {
-          <mat-form-field appearance="outline" class="edit-field recipe-name-field">
-            <input
-              matInput
-              [formControl]="recipeNameControl"
-              placeholder="Wprowadź nazwę przepisu"
-              data-field="recipe-name"
-              (blur)="autoSaveRecipeName()"
-              (keydown)="onRecipeKeyDown($event, 'name')"
-              [disabled]="disabled()"
-            />
-            @if (recipeNameControl.hasError('required')) {
-              <mat-error>Nazwa przepisu jest wymagana</mat-error>
-            }
-          </mat-form-field>
-        } @else {
-          <span
-            class="editable-field recipe-display"
-            (click)="startEditRecipeName()"
+<section class="recipe-metadata">
+  <h3 class="section-title">Szczegóły Przepisu</h3>
+  <div class="metadata-single-row">
+    <div class="metadata-item recipe-name">
+      <span class="metadata-label">Nazwa przepisu:</span>
+      @if (isEditingRecipeName()) {
+        <mat-form-field appearance="outline" class="edit-field">
+          <input
+            matInput
+            [formControl]="recipeNameControl"
+            placeholder="Wprowadź nazwę przepisu"
+            data-field="recipe-name"
+            (blur)="autoSaveRecipeName()"
             (keydown)="onRecipeKeyDown($event, 'name')"
-            tabindex="0"
-            role="button"
-            aria-label="Edytuj nazwę przepisu"
-            matTooltip="Kliknij aby edytować nazwę przepisu"
-          >
-            {{ recipeName() || 'Kliknij aby dodać nazwę przepisu' }}
-          </span>
-        }
-      </div>
-
-      <div class="metadata-field">
-        <span class="field-label">
-          <mat-icon>source</mat-icon>
-          Źródło:
+            [disabled]="disabled()"
+          />
+          @if (recipeNameControl.hasError('required')) {
+            <mat-error>Nazwa przepisu jest wymagana</mat-error>
+          }
+        </mat-form-field>
+      } @else {
+        <span
+          class="metadata-value editable"
+          (click)="startEditRecipeName()"
+          (keydown)="onRecipeKeyDown($event, 'name')"
+          tabindex="0"
+          role="button"
+          aria-label="Edytuj nazwę przepisu"
+          matTooltip="Kliknij aby edytować nazwę przepisu"
+        >
+          {{ recipeName() || 'Kliknij aby dodać nazwę przepisu' }}
         </span>
-        @if (isEditingRecipeSource()) {
-          <mat-form-field appearance="outline" class="edit-field recipe-source-field">
-            <input
-              matInput
-              [formControl]="recipeSourceControl"
-              placeholder="np. książka kucharska, strona internetowa"
-              data-field="recipe-source"
-              (blur)="autoSaveRecipeSource()"
-              (keydown)="onRecipeKeyDown($event, 'source')"
-              [disabled]="disabled()"
-            />
-            @if (recipeSourceControl.hasError('required')) {
-              <mat-error>Źródło jest wymagane</mat-error>
-            }
-          </mat-form-field>
+      }
+    </div>
+
+    <div class="metadata-item recipe-source">
+      <span class="metadata-label">Źródło:</span>
+      @if (isEditingRecipeSource()) {
+        <mat-form-field appearance="outline" class="edit-field">
+          <input
+            matInput
+            [formControl]="recipeSourceControl"
+            placeholder="np. książka kucharska, strona internetowa"
+            data-field="recipe-source"
+            (blur)="autoSaveRecipeSource()"
+            (keydown)="onRecipeKeyDown($event, 'source')"
+            [disabled]="disabled()"
+          />
+          @if (recipeSourceControl.hasError('required')) {
+            <mat-error>Źródło jest wymagane</mat-error>
+          }
+        </mat-form-field>
+      } @else {
+        @if (isSourceUrl()) {
+          <div class="url-source-container">
+            <span class="url-domain">{{ displaySource() }}</span>
+            <div class="url-actions">
+              <button
+                mat-icon-button
+                class="url-action-btn"
+                (click)="openSourceUrl()"
+                matTooltip="Otwórz w nowej karcie"
+                aria-label="Otwórz stronę w nowej karcie"
+              >
+                <mat-icon>open_in_new</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                class="url-action-btn"
+                (click)="startEditRecipeSource()"
+                matTooltip="Edytuj źródło"
+                aria-label="Edytuj źródło przepisu"
+                [disabled]="disabled()"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+          </div>
         } @else {
           <span
-            class="editable-field recipe-display"
+            class="metadata-value editable"
             (click)="startEditRecipeSource()"
             (keydown)="onRecipeKeyDown($event, 'source')"
             tabindex="0"
             role="button"
             aria-label="Edytuj źródło przepisu"
-            matTooltip="Kliknij aby edytować źródło przepisu"
+            matTooltip="Kliknij aby edytować źródło"
           >
             {{ recipeSource() || 'Kliknij aby dodać źródło' }}
           </span>
         }
-      </div>
+      }
     </div>
-  </mat-card-content>
-</mat-card>
+  </div>
+</section>

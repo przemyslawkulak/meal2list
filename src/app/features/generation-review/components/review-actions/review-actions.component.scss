@@ -1,27 +1,82 @@
-.actions {
+@use '../../../../../_mixins' as mixins;
+@use '../../../../../styles/themes/theme-variables.scss' as theme;
+
+.review-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
-  margin-top: 24px;
-  padding: 16px 0;
+  gap: theme.get-spacing(md);
+  width: 100%;
 
-  button {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 48px;
-    padding: 0 24px;
+  @include mixins.mobile-tablet {
+    flex-direction: column;
+    gap: theme.get-spacing(sm);
+  }
+}
 
-    mat-icon {
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
-    }
+.discard-btn {
+  @include mixins.secondary-button;
+  display: flex;
+  align-items: center;
+  gap: theme.get-spacing(sm);
+  min-width: 140px;
+  height: 44px;
+  padding: 0 theme.get-spacing(lg);
+
+  @include mixins.mobile-tablet {
+    width: 100%;
+    order: 2;
+    height: 40px;
+    padding: 0 theme.get-spacing(md);
   }
 
-  button[mat-flat-button] {
-    font-weight: 500;
+  mat-icon {
+    @include mixins.icon-medium;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.save-btn {
+  @include mixins.primary-button;
+  display: flex;
+  align-items: center;
+  gap: theme.get-spacing(sm);
+  min-width: 140px;
+  height: 44px;
+  padding: 0 theme.get-spacing(lg);
+
+  @include mixins.mobile-tablet {
+    width: 100%;
+    order: 1;
+    height: 40px;
+    padding: 0 theme.get-spacing(md);
+  }
+
+  mat-icon,
+  mat-spinner {
+    @include mixins.icon-medium;
+  }
+
+  mat-spinner {
+    margin-right: theme.get-spacing(sm);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: var(--md-sys-color-surface-container-low);
+    color: var(--md-sys-color-on-surface-variant);
+    box-shadow: none;
+    transform: none;
+    
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
   }
 }
 

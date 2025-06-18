@@ -1,58 +1,486 @@
-.review-table-card {
-  margin: 1rem;
-  max-width: 100%;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  overflow: hidden;
+@use '../../../../../_mixins' as mixins;
+@use '../../../../../styles/themes/theme-variables' as theme;
 
-  .mat-mdc-card-header {
-    background-color: var(--mat-app-surface-variant);
-    border-bottom: 1px solid var(--mat-divider-color);
-    padding: 1.5rem;
+// ==============================================================================
+// RESPONSIVE LAYOUT CONTROL
+// ==============================================================================
 
-    .mat-mdc-card-title {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--mat-app-on-surface);
+.desktop-table-container {
+  display: none;
+
+  @include mixins.tablet-desktop {
+    display: block;
+  }
+}
+
+.mobile-cards-container {
+  display: block;
+
+  @include mixins.tablet-desktop {
+    display: none;
+  }
+}
+
+// ==============================================================================
+// DESKTOP TABLE STYLES
+// ==============================================================================
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: theme.get-radius(lg);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface);
+  box-shadow: theme.get-shadow(soft);
+}
+
+.review-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--md-sys-color-surface);
+}
+
+.table-header {
+  @include mixins.label-medium;
+  color: var(--md-sys-color-on-surface);
+  padding: theme.get-spacing(sm) theme.get-spacing(md);
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: var(--md-sys-color-surface-container-low);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  font-weight: theme.get-font-weight(semibold);
+
+  &.checkbox-header {
+    width: 50px;
+    text-align: center;
+    padding: theme.get-spacing(sm);
+  }
+
+  &.quantity-header,
+  &.category-header {
+    text-align: center;
+  }
+}
+
+.table-row {
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+
+  &.included {
+    background-color: white;
+  }
+
+  &.excluded {
+    opacity: 0.7;
+    background-color: var(--md-sys-color-surface-container-low);
+  }
+
+  &:hover {
+    background-color: var(--md-sys-color-surface-container-high);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.table-cell {
+  @include mixins.body-medium;
+  color: var(--md-sys-color-on-surface);
+  padding: theme.get-spacing(sm) theme.get-spacing(md);
+  vertical-align: middle;
+
+  &.checkbox-cell {
+    width: 50px;
+    text-align: center;
+    padding: theme.get-spacing(sm);
+  }
+
+  &.quantity-cell,
+  &.category-cell {
+    text-align: center;
+  }
+}
+
+// Combined quantity-unit field
+.quantity-unit-combined {
+  display: flex;
+  gap: theme.get-spacing(xs);
+  align-items: center;
+  justify-content: center;
+
+  .quantity-input {
+    width: 70px;
+    text-align: center;
+  }
+
+  .unit-select {
+    width: 70px;
+  }
+}
+
+.separator-row {
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  
+  .separator-cell {
+    padding: theme.get-spacing(md);
+    background-color: var(--md-sys-color-surface-container-low);
+  }
+  
+  .separator-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+      background-color: var(--md-sys-color-outline-variant);
+      z-index: 1;
+    }
+  }
+  
+  .separator-text {
+    @include mixins.body-medium;
+    font-weight: theme.get-font-weight(semibold);
+    color: var(--md-sys-color-on-surface);
+    background-color: var(--md-sys-color-surface-container-low);
+    padding: theme.get-spacing(xs) theme.get-spacing(md);
+    border-radius: theme.get-radius(md);
+    position: relative;
+    z-index: 2;
+  }
+}
+
+// ==============================================================================
+// MOBILE CARD STYLES - CLEAN FULL-WIDTH DESIGN
+// ==============================================================================
+
+.mobile-header {
+  display: flex;
+  align-items: center;
+  gap: theme.get-spacing(sm);
+  padding: theme.get-spacing(md) 0;
+  margin-bottom: theme.get-spacing(sm);
+
+  .header-text {
+    @include mixins.body-medium;
+    color: var(--md-sys-color-on-surface);
+    font-weight: theme.get-font-weight(medium);
+  }
+}
+
+.items-section {
+  display: flex;
+  flex-direction: column;
+
+  &.excluded-section {
+    opacity: 0.6;
+  }
+}
+
+.mobile-item {
+  display: flex;
+  align-items: center;
+  gap: theme.get-spacing(md);
+  padding: theme.get-spacing(md) theme.get-spacing(sm);
+  background: white;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  min-height: 64px;
+
+  &:first-child {
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+  }
+
+  &:last-child {
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  }
+
+  &.excluded {
+    background: var(--md-sys-color-surface-container-lowest);
+    opacity: 0.8;
+  }
+
+  &:active {
+    background: var(--md-sys-color-surface-container-low);
+  }
+
+  .item-checkbox {
+    flex-shrink: 0;
+    margin-right: theme.get-spacing(xs);
+  }
+
+  .item-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: theme.get-spacing(xs);
+  }
+
+  .item-name {
+    @include mixins.body-large;
+    font-weight: theme.get-font-weight(medium);
+    color: var(--md-sys-color-on-surface);
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.4;
+  }
+
+  .item-quantity {
+    @include mixins.body-small;
+    color: var(--md-sys-color-on-surface-variant);
+    font-weight: theme.get-font-weight(medium);
+    margin: 0;
+  }
+
+  .category-icon-mobile {
+    flex-shrink: 0;
+    font-size: 1.5rem;
+    opacity: 0.8;
+  }
+
+  // Excluded items styling
+  &.excluded {
+    .item-name {
+      color: var(--md-sys-color-on-surface-variant);
+    }
+    
+    .item-quantity {
+      color: var(--md-sys-color-on-surface-variant);
+      opacity: 0.7;
+    }
+    
+    .category-icon-mobile {
+      opacity: 0.5;
+    }
+  }
+}
+
+.mobile-separator {
+  padding: theme.get-spacing(lg) 0 theme.get-spacing(md) 0;
+  
+  .separator-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+      background: linear-gradient(
+        to right, 
+        transparent, 
+        var(--md-sys-color-outline-variant) 20%, 
+        var(--md-sys-color-outline-variant) 80%, 
+        transparent
+      );
+      z-index: 1;
+    }
+  }
+  
+  .separator-text {
+    @include mixins.body-small;
+    font-weight: theme.get-font-weight(medium);
+    color: var(--md-sys-color-on-surface-variant);
+    background-color: white;
+    padding: theme.get-spacing(xs) theme.get-spacing(md);
+    border-radius: theme.get-radius(sm);
+    position: relative;
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+// ==============================================================================
+// CHECKBOX STYLING
+// ==============================================================================
+
+// Desktop table checkboxes
+.checkbox-header mat-checkbox,
+.included-checkbox,
+.item-checkbox,
+.mobile-header mat-checkbox {
+  ::ng-deep {
+    .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background {
+      background-color: #4CAF50 !important;
+      border-color: #4CAF50 !important;
+    }
+    
+    .mdc-checkbox__checkmark-path {
+      stroke: white !important;
+    }
+    
+    .mdc-checkbox__mixedmark {
+      background-color: white !important;
+    }
+
+    .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background {
+      background-color: #4CAF50 !important;
+      border-color: #4CAF50 !important;
+    }
+  }
+}
+
+.excluded-checkbox {
+  ::ng-deep {
+    .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background {
+      background-color: #9E9E9E !important;
+      border-color: #9E9E9E !important;
+    }
+    
+    .mdc-checkbox__checkmark-path {
+      stroke: white !important;
+    }
+
+    .mdc-checkbox__native-control:not(:checked) ~ .mdc-checkbox__background {
+      border-color: #BDBDBD !important;
+    }
+  }
+}
+
+// ==============================================================================
+// EDITABLE INPUTS (DESKTOP)
+// ==============================================================================
+
+.editable-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  padding: theme.get-spacing(xs);
+  border-radius: theme.get-radius(sm);
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: 2px solid var(--md-sys-color-primary);
+    outline-offset: 2px;
+    background-color: var(--md-sys-color-surface-container-high);
+  }
+
+  &:hover {
+    background-color: var(--md-sys-color-surface-container);
+  }
+
+  &.quantity-input {
+    width: 70px;
+    text-align: center;
+
+    // Hide number input arrows
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
       margin: 0;
     }
 
-    .mat-mdc-card-subtitle {
-      margin-top: 0.5rem;
-      color: var(--mat-app-on-surface-variant);
-      font-size: 0.875rem;
-      margin-bottom: 0;
+    &[type=number] {
+      -moz-appearance: textfield;
     }
   }
+}
 
-  .mat-mdc-card-content {
-    padding: 0;
-    margin: 0;
+.editable-select {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  padding: theme.get-spacing(xs);
+  border-radius: theme.get-radius(sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: 2px solid var(--md-sys-color-primary);
+    outline-offset: 2px;
+    background-color: var(--md-sys-color-surface-container-high);
+  }
+
+  &:hover {
+    background-color: var(--md-sys-color-surface-container);
+  }
+
+  &.unit-select {
+    width: 70px;
+  }
+}
+
+// Category select with icon
+.category-select-container {
+  display: flex;
+  align-items: center;
+  gap: theme.get-spacing(xs);
+  justify-content: center;
+
+  .category-icon-desktop {
+    flex-shrink: 0;
+    font-size: 1rem;
+  }
+
+  .category-select {
+    flex: 1;
+    min-width: 120px;
+  }
+}
+
+.delete-btn {
+  @include mixins.flex-center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  border-radius: theme.get-radius(md);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: #F44336;
+  }
+
+  &:focus {
+    @include mixins.focus-ring;
+  }
+
+  mat-icon {
+    @include mixins.icon-medium;
   }
 }
 
 // Responsive design
-@media (max-width: 768px) {
-  .review-table-card {
-    margin: 0.5rem;
-    border-radius: 8px;
+@include mixins.mobile-tablet {
+  .table-wrapper {
+    border-radius: theme.get-radius(lg);
+  }
 
-    .mat-mdc-card-header {
-      padding: 1rem;
+  .table-header,
+  .table-cell {
+    padding: theme.get-spacing(sm) theme.get-spacing(md);
+  }
 
-      .mat-mdc-card-title {
-        font-size: 1.25rem;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.75rem;
-      }
+  .table-header {
+    @include mixins.body-small;
+    font-weight: theme.get-font-weight(semibold);
+  }
 
-      .mat-mdc-card-subtitle {
-        font-size: 0.8rem;
-      }
-    }
+  .table-cell {
+    @include mixins.body-small;
   }
 } 

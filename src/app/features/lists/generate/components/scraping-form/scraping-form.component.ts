@@ -45,7 +45,7 @@ export class ScrapingFormComponent {
 
   // Outputs
   scrapingStart = output<void>();
-  scrapingSuccess = output<string>();
+  scrapingSuccess = output<{ url: string; content: string }>();
   scrapingError = output<string>();
   contentChange = output<boolean>();
 
@@ -88,7 +88,7 @@ export class ScrapingFormComponent {
       .scrapeUrl(url)
       .pipe(
         tap(content => {
-          this.scrapingSuccess.emit(content);
+          this.scrapingSuccess.emit({ url, content });
         }),
         catchError(error => {
           const message =
@@ -104,19 +104,19 @@ export class ScrapingFormComponent {
 
   onClear(): void {
     this.form.reset();
-    this.scrapingSuccess.emit('');
+    this.scrapingSuccess.emit({ url: '', content: '' });
   }
 
   get isLoading(): boolean {
     return this.scrapingStatus() === 'scraping';
   }
 
-  get hasError(): boolean {
-    return this.scrapingStatus() === 'error';
+  get hasSuccess(): boolean {
+    return this.scrapingStatus() === 'success';
   }
 
-  get hasSuccess(): boolean {
-    return this.scrapingStatus() === 'success' && !!this.scrapedContent();
+  get hasError(): boolean {
+    return this.scrapingStatus() === 'error';
   }
 
   private urlValidator = (control: AbstractControl): ValidationErrors | null => {

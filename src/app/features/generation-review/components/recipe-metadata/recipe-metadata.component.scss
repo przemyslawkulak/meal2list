@@ -1,146 +1,244 @@
-.recipe-metadata {
-  .metadata-fields {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+@use '../../../../../_mixins' as mixins;
+@use '../../../../../styles/themes/theme-variables' as theme;
 
-    .metadata-field {
+.recipe-metadata {
+  background-color: white;
+  @include mixins.modern-card;
+  padding: theme.get-spacing(md);
+  margin-bottom: 0;
+
+  @include mixins.tablet-desktop {
+    padding: theme.get-spacing(lg);
+  }
+}
+
+.section-title {
+  @include mixins.body-large;
+  color: var(--md-sys-color-primary);
+  margin: 0 0 theme.get-spacing(md) 0;
+  font-weight: theme.get-font-weight(semibold);
+
+  @include mixins.tablet-desktop {
+    @include mixins.heading-4;
+    margin: 0 0 theme.get-spacing(lg) 0;
+  }
+}
+
+.metadata-single-row {
+  display: flex;
+  gap: theme.get-spacing(md);
+  align-items: flex-start;
+
+  @include mixins.mobile-tablet {
+    flex-direction: column;
+    gap: theme.get-spacing(sm);
+  }
+
+  @include mixins.tablet-desktop {
+    gap: theme.get-spacing(lg);
+  }
+}
+
+.metadata-item {
+  display: flex;
+  flex-direction: column;
+  gap: theme.get-spacing(xs);
+  flex: 1;
+
+  &.recipe-name {
+    @include mixins.tablet-desktop {
+      flex: 1.5;
+    }
+  }
+
+  &.recipe-source {
+    @include mixins.tablet-desktop {
+      flex: 1.5;
+    }
+    position: relative;
+
+    // Container for source value and edit button
+    > :not(.metadata-label):not(.url-source-container) {
       display: flex;
       align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
+    }
+  }
 
-      .field-label {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-weight: 500;
-        font-size: 0.875rem;
-        color: rgba(0, 0, 0, 0.87);
-        min-width: 140px;
-        flex-shrink: 0;
+  @include mixins.mobile-tablet {
+    border-bottom: 1px dashed var(--md-sys-color-outline-variant);
+    padding-bottom: theme.get-spacing(xs);
+    width: 100%;
+    
+    &:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+  }
+}
 
-        mat-icon {
-          font-size: 18px;
-          width: 18px;
-          height: 18px;
-          color: rgba(0, 0, 0, 0.6);
-        }
-      }
+.metadata-label {
+  @include mixins.label-medium;
+  color: var(--md-sys-color-on-surface-variant);
+  flex-shrink: 0;
+  min-width: 120px;
 
-      .recipe-display {
-        flex: 1;
-        min-width: 200px;
-        cursor: pointer;
-        padding: 8px 12px;
-        border-radius: 4px;
-        transition: all 0.2s ease-in-out;
-        border: 1px solid transparent;
-        font-style: italic;
-        color: rgba(0, 0, 0, 0.6);
-        
-        &:empty::before,
-        &:not(:empty):empty::before {
-          content: attr(data-placeholder);
-          color: rgba(0, 0, 0, 0.38);
-        }
-        
-        &:hover {
-          background-color: rgba(25, 118, 210, 0.08);
-          border-color: rgba(25, 118, 210, 0.3);
-          transform: translateY(-1px);
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        &:focus {
-          outline: 2px solid #1976d2;
-          outline-offset: 2px;
-          background-color: rgba(25, 118, 210, 0.12);
-        }
-        
-        // Visual indicator for editable state
-        &::after {
-          content: '✎';
-          position: absolute;
-          margin-left: 8px;
-          font-size: 10px;
-          opacity: 0;
-          transition: opacity 0.2s ease;
-          color: #1976d2;
-        }
-        
-        &:hover::after {
-          opacity: 0.6;
-        }
-      }
+  @include mixins.mobile-tablet {
+    min-width: auto;
+    width: 100%;
+  }
+}
 
-      .edit-field {
-        flex: 1;
-        min-width: 200px;
-        margin: 0;
+.metadata-value {
+  @include mixins.body-medium;
+  color: var(--md-sys-color-on-surface);
 
-        .mat-mdc-form-field-wrapper {
-          padding-bottom: 0;
-        }
+  @include mixins.mobile-tablet {
+    width: 100%;
+  }
 
-        .mat-mdc-form-field-infix {
-          min-height: 36px;
-        }
+  &.editable {
+    cursor: pointer;
+    transition: color 0.2s ease;
+    border-radius: theme.get-radius(sm);
+    padding: theme.get-spacing(xs);
+    margin: -#{theme.get-spacing(xs)};
 
-        input {
-          font-size: 0.875rem;
-        }
-        
-        // Enhanced focus state
-        &.mat-focused {
-          .mat-mdc-form-field-outline {
-            border-color: #1976d2;
-            border-width: 2px;
-          }
-        }
-        
-        // Add subtle animation when entering edit mode
-        &.mat-form-field-appearance-outline {
-          animation: editFieldAppear 0.3s ease-out;
-        }
+    &:hover {
+      color: var(--md-sys-color-primary);
+      background-color: var(--md-sys-color-primary-container);
+    }
+
+    &:focus {
+      outline: 2px solid var(--md-sys-color-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  &--url {
+    color: var(--md-sys-color-on-surface);
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    background-color: var(--md-sys-color-surface-container-low);
+    border-radius: theme.get-radius(sm);
+    padding: theme.get-spacing(xs) theme.get-spacing(sm);
+    margin: -#{theme.get-spacing(xs)};
+    font-size: 0.875rem;
+
+    &:hover {
+      background-color: var(--md-sys-color-surface-container);
+      border-color: var(--md-sys-color-primary);
+      color: var(--md-sys-color-primary);
+    }
+
+    .url-icon {
+      margin-right: theme.get-spacing(xs);
+      font-size: 0.875rem;
+      opacity: 0.6;
+      color: var(--md-sys-color-primary);
+    }
+  }
+}
+
+.edit-field {
+  width: 100%;
+
+  @include mixins.mobile-tablet {
+    width: 100% !important;
+  }
+
+  ::ng-deep {
+    .mat-mdc-form-field-wrapper {
+      padding-bottom: 0;
+      width: 100%;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      border-radius: theme.get-radius(md);
+      width: 100%;
+    }
+
+    .mat-mdc-form-field-infix {
+      width: 100%;
+    }
+  }
+}
+
+// Solution 3: Two-line layout with action buttons
+.url-source-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: theme.get-spacing(xs) theme.get-spacing(sm);
+  border-radius: theme.get-radius(md);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  width: 100%;
+  
+  @include mixins.mobile-tablet {
+    width: 90%;
+    padding: theme.get-spacing(md);
+    flex-direction: row;
+    gap: theme.get-spacing(md);
+    align-items: center;
+  }
+  
+  .url-domain {
+    @include mixins.body-medium;
+    color: var(--md-sys-color-primary);
+    font-weight: theme.get-font-weight(medium);
+    flex: 1;
+    min-width: 0;
+    
+    @include mixins.mobile-tablet {
+      word-break: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  
+  .url-actions {
+    display: flex;
+    gap: theme.get-spacing(xs);
+    flex-shrink: 0;
+    align-items: center;
+    
+    @include mixins.mobile-tablet {
+      margin-left: auto;
+    }
+  }
+  
+  .url-action-btn {
+    color: var(--md-sys-color-on-surface-variant);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: theme.get-radius(sm);
+    
+    @include mixins.mobile-tablet {
+      width: 44px;
+      height: 44px;
+    }
+    
+    &:hover {
+      color: var(--md-sys-color-primary);
+      background-color: var(--md-sys-color-primary-container);
+    }
+    
+    mat-icon {
+      font-size: 18px;
+      line-height: 1;
+      width: 18px;
+      height: 18px;
+      
+      @include mixins.mobile-tablet {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
       }
     }
   }
 }
 
-@keyframes editFieldAppear {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@media (max-width: 768px) {
-  .recipe-metadata {
-    .metadata-fields {
-      gap: 12px;
-
-      .metadata-field {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-
-        .field-label {
-          min-width: auto;
-        }
-
-        .recipe-display {
-          min-width: auto;
-        }
-
-        .edit-field {
-          min-width: auto;
-        }
-      }
-    }
-  }
-} 
+ 

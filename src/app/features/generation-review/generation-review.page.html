@@ -1,28 +1,38 @@
-<div class="review-container">
-  <app-review-header></app-review-header>
+<main class="main-container">
+  <div class="content-wrapper">
+    <div class="page-header">
+      <div class="header-content">
+        <h2 class="page-title">Przegląd Listy Zakupów</h2>
+      </div>
+    </div>
 
-  <app-recipe-metadata
-    [recipeName]="recipeName()"
-    [recipeSource]="recipeSource()"
-    [disabled]="isProcessing()"
-    (recipeNameChange)="onRecipeNameChange($event)"
-    (recipeSourceChange)="onRecipeSourceChange($event)"
-    (validationChange)="onRecipeMetadataValidationChange($event)"
-  ></app-recipe-metadata>
+    <app-recipe-metadata
+      [recipeName]="recipeName()"
+      [recipeSource]="recipeSource()"
+      [disabled]="isProcessing()"
+      (recipeNameChange)="onRecipeNameChange($event)"
+      (recipeSourceChange)="onRecipeSourceChange($event)"
+      (validationChange)="onRecipeMetadataValidationChange($event)"
+    ></app-recipe-metadata>
 
-  @if (reviewItems().length > 0) {
-  <app-review-table
-    [itemsInput]="reviewItems()"
-    [categories]="categories()"
-    (itemsChange)="onItemsChange($event)"
-  ></app-review-table>
-  }
+    @if (reviewItems().length > 0) {
+    <app-review-table
+      [itemsInput]="reviewItems()"
+      [categories]="categories()"
+      (itemsChange)="onItemsChange($event)"
+    ></app-review-table>
+    }
+  </div>
+</main>
 
-  <app-review-actions
-    [hasValidItems]="hasValidItems()"
-    [isProcessing]="isProcessing()"
-    [includedItemsCount]="includedItemsCount()"
-    (backClick)="goBack()"
-    (confirmClick)="confirmAndAdd()"
-  ></app-review-actions>
-</div>
+<footer class="footer-actions">
+  <div class="actions-container">
+    <app-review-actions
+      [hasValidItems]="hasValidItems()"
+      [isProcessing]="isProcessing()"
+      [includedItemsCount]="includedItemsCount()"
+      (backClick)="goBack()"
+      (confirmClick)="confirmAndAdd()"
+    ></app-review-actions>
+  </div>
+</footer>

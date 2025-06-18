@@ -1,20 +1,28 @@
-<div class="actions">
-  <button mat-button (click)="onBackClick()" [disabled]="isProcessing()">
-    <mat-icon>arrow_back</mat-icon>
-    Wróć do edycji przepisu
+<div class="review-actions">
+  <button
+    mat-stroked-button
+    type="button"
+    class="discard-btn"
+    (click)="onBackClick()"
+    [disabled]="isProcessing()"
+  >
+    <mat-icon>delete_sweep</mat-icon>
+    Odrzuć Listę
   </button>
 
   <button
     mat-flat-button
     color="primary"
+    type="button"
+    class="save-btn"
     [disabled]="!hasValidItems() || isProcessing()"
     (click)="onConfirmClick()"
   >
     @if (isProcessing()) {
-      <mat-spinner diameter="20" style="margin-right: 8px"></mat-spinner>
+      <mat-spinner diameter="20"></mat-spinner>
     } @else {
-      <mat-icon>add_shopping_cart</mat-icon>
+      <mat-icon>save</mat-icon>
     }
-    Dodaj {{ includedItemsCount() }} produktów do listy
+    Zapisz Listę
   </button>
 </div>

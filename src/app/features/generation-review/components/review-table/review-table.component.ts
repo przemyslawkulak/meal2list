@@ -14,17 +14,23 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialog } from '@angular/material/dialog';
+import { MatChipsModule } from '@angular/material/chips';
 
 import { GenerationReviewItemDto, CategoryDto } from '../../../../../types';
 import { ReviewSelectionService, EditableItem } from './services/review-selection.service';
 import { ReviewDataService, SortField, SortDirection } from './services/review-data.service';
-import {
-  ReviewToolbarComponent,
-  ViewMode,
-} from './components/review-toolbar/review-toolbar.component';
-import { ReviewTableViewComponent } from './components/review-table-view/review-table-view.component';
-import { ReviewGroupedViewComponent } from './components/review-grouped-view/review-grouped-view.component';
+import { ViewMode } from './components/review-toolbar/review-toolbar.component';
 import { EditFieldEvent } from './components/editable-item-row/editable-item-row.component';
+import {
+  EditItemModalComponent,
+  EditItemDialogData,
+  EditItemDialogResult,
+} from './components/edit-item-modal/edit-item-modal.component';
+import { CategoryIconComponent } from '../../../../shared/category-icon/category-icon.component';
 
 @Component({
   selector: 'app-review-table',
@@ -35,9 +41,11 @@ import { EditFieldEvent } from './components/editable-item-row/editable-item-row
     MatCardModule,
     MatCheckboxModule,
     MatTooltipModule,
-    ReviewToolbarComponent,
-    ReviewTableViewComponent,
-    ReviewGroupedViewComponent,
+    MatIconModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    MatChipsModule,
+    CategoryIconComponent,
   ],
   templateUrl: './review-table.component.html',
   styleUrl: './review-table.component.scss',
@@ -46,6 +54,7 @@ import { EditFieldEvent } from './components/editable-item-row/editable-item-row
 export class ReviewTableComponent {
   private selectionService = inject(ReviewSelectionService);
   private dataService = inject(ReviewDataService);
+  private dialog = inject(MatDialog);
 
   itemsInput = input<GenerationReviewItemDto[]>([]);
   categories = input<CategoryDto[]>([]);
@@ -87,6 +96,16 @@ export class ReviewTableComponent {
     return this.dataService.sortItems(items, field, direction, this.categories());
   });
 
+  // Included items (checked/not excluded)
+  getIncludedItems = computed(() => {
+    return this.sortedItems().filter(item => !item.excluded);
+  });
+
+  // Excluded items (unchecked/excluded)
+  getExcludedItems = computed(() => {
+    return this.sortedItems().filter(item => item.excluded);
+  });
+
   // Grouped items by category
   groupedItems = computed(() => {
     const items = this.sortedItems();
@@ -107,6 +126,24 @@ export class ReviewTableComponent {
       isEditing: false,
       editForm: undefined,
     };
+  }
+
+  // Add the missing updateItemField method
+  updateItemField(item: EditableItem, field: keyof GenerationReviewItemDto, event: Event): void {
+    const target = event.target as HTMLInputElement | HTMLSelectElement;
+    let value = target.value;
+
+    // Handle different field types
+    if (field === 'quantity') {
+      value = String(+target.value);
+    }
+
+    const updatedItems = this.editableItems().map(i =>
+      i.id === item.id ? { ...i, [field]: value, isModified: true } : i
+    );
+
+    this.editableItems.set(updatedItems);
+    this.emitChanges();
   }
 
   // View mode and sorting handlers
@@ -240,6 +277,35 @@ export class ReviewTableComponent {
   hasGroupExcludedItems = (items: EditableItem[]): boolean => {
     return this.dataService.hasGroupExcludedItems(items);
   };
+
+  // Mobile edit modal functionality
+  openEditModal(item: EditableItem): void {
+    const dialogRef = this.dialog.open(EditItemModalComponent, {
+      data: {
+        item: item,
+        categories: this.categories(),
+      } as EditItemDialogData,
+      width: '90%',
+      maxWidth: '500px',
+      disableClose: false,
+    });
+
+    dialogRef.afterClosed().subscribe((result: EditItemDialogResult | undefined) => {
+      if (result) {
+        const updatedItems = this.editableItems().map(i =>
+          i.id === item.id ? { ...result.item, isEditing: false } : i
+        );
+        this.editableItems.set(updatedItems);
+        this.selectionService.setItems(updatedItems);
+        this.emitChanges();
+      }
+    });
+  }
+
+  // Format quantity and unit as combined string
+  formatQuantityUnit(quantity: number, unit: string): string {
+    return `${quantity} ${unit}`;
+  }
 
   private focusField(itemId: string, field: string): void {
     const selector = `[data-item-id="${itemId}"][data-field="${field}"] input, [data-item-id="${itemId}"][data-field="${field}"] mat-select`;

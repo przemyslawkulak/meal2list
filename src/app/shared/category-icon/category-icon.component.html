@@ -1,0 +1,7 @@
+<mat-icon
+  [matTooltip]="showTooltip ? categoryName : ''"
+  [class]="'category-icon ' + (categoryIcon || 'category')"
+  [attr.aria-label]="categoryName"
+>
+  {{ categoryIcon || 'category' }}
+</mat-icon>

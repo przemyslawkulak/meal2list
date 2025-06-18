@@ -298,13 +298,10 @@
 // =============================================================================
 
 .main-content {
-  margin-top: theme.get-spacing(lg);  // Account for header height
   min-height: calc(100vh - 291px);
-  padding: theme.get-spacing(lg) 0; // Add padding instead of forcing full height
   background: var(--md-sys-color-background);
   
   @media (max-width: 768px) {
-    margin-top: 64px;
     min-height: auto; // Changed from calc(100vh - 64px) to auto
     padding: theme.get-spacing(md) 0; // Smaller padding on mobile
   }
