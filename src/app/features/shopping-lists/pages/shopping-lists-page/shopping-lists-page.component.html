@@ -1,51 +1,131 @@
-<div class="page-header">
-  <span class="page-title">Listy zakupowe</span>
-  @if (!isLoading() && lists().length > 0) {
-    <button
-      mat-raised-button
-      color="accent"
-      (click)="openNew()"
-      data-testid="create-new-list-button"
-    >
-      <mat-icon>add</mat-icon>
-      Nowa lista
-    </button>
-  }
-</div>
-
-<div class="content">
-  @if (isLoading()) {
-    <div class="skeleton-container">
-      @for (i of [1, 2, 3]; track i) {
-        <ngx-skeleton-loader
-          [theme]="{ height: '60px', marginBottom: '16px' }"
-        ></ngx-skeleton-loader>
+<main class="main-container">
+  <div class="content-wrapper">
+    <!-- Header Section -->
+    <section class="page-header">
+      <h2 class="page-title">Listy zakupowe</h2>
+      @if (hasLists() && !isLoading()) {
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="openNew()"
+          class="header-action-btn"
+          data-testid="create-new-list-button"
+        >
+          <mat-icon>add_circle_outline</mat-icon>
+          Nowa lista
+        </button>
       }
-    </div>
-  } @else {
-    <mat-card>
-      <mat-card-content>
-        <mat-nav-list role="list" data-testid="shopping-lists-container">
-          @if (lists().length === 0) {
-            <div class="empty-state">
-              <mat-icon class="empty-state-icon">list_alt</mat-icon>
-              <p class="empty-state-text">Nie masz jeszcze żadnych list zakupowych</p>
-              <button mat-raised-button color="primary" (click)="openNew()">
-                <mat-icon>add</mat-icon>
-                Utwórz pierwszą listę
-              </button>
+    </section>
+
+    <!-- Content Section -->
+    <section class="lists-content">
+      @if (isLoading()) {
+        <div class="skeleton-container">
+          @for (i of [1, 2, 3, 4]; track i) {
+            <div class="skeleton-card">
+              <ngx-skeleton-loader
+                [theme]="{
+                  height: '200px',
+                  borderRadius: '12px',
+                  marginBottom: '0',
+                }"
+              ></ngx-skeleton-loader>
             </div>
-          } @else {
-            @for (list of lists(); track list.id) {
-              <app-shopping-list-item
-                [list]="list"
-                (delete)="openDelete($event)"
-                (generate)="onGenerate($event)"
-              />
-            }
           }
-        </mat-nav-list>
-      </mat-card-content>
-    </mat-card>
-  }
-</div>
+        </div>
+      } @else {
+        @if (!hasLists()) {
+          <!-- Empty State -->
+          <div class="empty-state-card">
+            <div class="empty-state-content">
+              <div class="empty-state-icon">
+                <mat-icon>list_alt</mat-icon>
+              </div>
+              <h3 class="empty-state-title">Zacznij tworzyć listy zakupów</h3>
+              <p class="empty-state-description">
+                Utwórz swoją pierwszą listę zakupów lub wygeneruj ją automatycznie z przepisu
+              </p>
+              <div class="empty-state-actions">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="openNew()"
+                  class="primary-action-btn"
+                >
+                  <mat-icon>add</mat-icon>
+                  Utwórz pierwszą listę
+                </button>
+                <button
+                  mat-stroked-button
+                  color="primary"
+                  (click)="navigateToGenerate()"
+                  class="secondary-action-btn"
+                >
+                  <mat-icon>restaurant_menu</mat-icon>
+                  Generuj listę z przepisu
+                </button>
+              </div>
+            </div>
+          </div>
+        } @else {
+          <!-- Lists Grid -->
+          <div class="lists-grid">
+            @for (list of lists(); track list.id) {
+              <mat-card
+                class="list-card clickable-card"
+                (click)="onViewDetails(list)"
+                [attr.data-testid]="'shopping-list-card-' + list.id"
+              >
+                <!-- Card Main Content -->
+                <mat-card-content class="list-card-content">
+                  <div class="list-info">
+                    <div class="list-details">
+                      <h3 class="list-title">{{ list.name }}</h3>
+                      <p class="list-metadata">
+                        Ostatnia aktualizacja: {{ list.created_at | date: 'dd.MM.yyyy' }}
+                      </p>
+                      <p class="list-progress">{{ getProgressText(list) }}</p>
+                    </div>
+                    <div class="list-thumbnail">
+                      <div class="thumbnail-placeholder">
+                        <mat-icon>shopping_cart</mat-icon>
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-content>
+
+                <!-- Card Footer Actions -->
+                <mat-card-actions class="list-card-footer">
+                  <div class="footer-actions">
+                    <button
+                      mat-icon-button
+                      [matTooltip]="'Usuń listę'"
+                      (click)="openDelete(list); $event.stopPropagation()"
+                      class="action-icon-btn delete-btn"
+                      [attr.data-testid]="'delete-list-button-' + list.id"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+
+                    <button
+                      mat-stroked-button
+                      color="primary"
+                      (click)="onGenerate(list); $event.stopPropagation()"
+                      class="action-btn secondary-action"
+                    >
+                      <mat-icon>restaurant_menu</mat-icon>
+                      Generuj listę z przepisu
+                    </button>
+                  </div>
+                </mat-card-actions>
+              </mat-card>
+            }
+          </div>
+        }
+      }
+    </section>
+
+    <!-- Bottom spacing for mobile navigation -->
+    <div class="bottom-spacer"></div>
+  </div>
+</main>
