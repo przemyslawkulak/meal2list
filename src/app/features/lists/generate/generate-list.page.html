@@ -17,6 +17,11 @@
           class="method-card"
           [class.method-card--active]="selectedFormType() === 'scraping'"
           (click)="onFormTypeChange('scraping')"
+          (keydown.enter)="onFormTypeChange('scraping')"
+          (keydown.space)="$event.preventDefault(); onFormTypeChange('scraping')"
+          tabindex="0"
+          role="button"
+          aria-label="Wybierz metodę: Wklej linki do przepisów"
         >
           <div class="method-card__icon">
             <mat-icon>link</mat-icon>
@@ -31,6 +36,11 @@
           class="method-card"
           [class.method-card--active]="selectedFormType() === 'text'"
           (click)="onFormTypeChange('text')"
+          (keydown.enter)="onFormTypeChange('text')"
+          (keydown.space)="$event.preventDefault(); onFormTypeChange('text')"
+          tabindex="0"
+          role="button"
+          aria-label="Wybierz metodę: Wprowadź tekst przepisu"
         >
           <div class="method-card__icon">
             <mat-icon>article</mat-icon>

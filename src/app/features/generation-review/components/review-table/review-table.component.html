@@ -187,7 +187,15 @@
   <!-- Included items -->
   <div class="items-section">
     @for (item of getIncludedItems(); track item.id) {
-      <div class="mobile-item included" (click)="openEditModal(item)">
+      <div
+        class="mobile-item included"
+        (click)="openEditModal(item)"
+        (keydown.enter)="openEditModal(item)"
+        (keydown.space)="$event.preventDefault(); openEditModal(item)"
+        tabindex="0"
+        role="button"
+        [attr.aria-label]="'Edytuj produkt: ' + item.product_name"
+      >
         <mat-checkbox
           [checked]="!item.excluded"
           (change)="onItemSelectionToggle(item)"
@@ -220,7 +228,15 @@
     <!-- Excluded items -->
     <div class="items-section excluded-section">
       @for (item of getExcludedItems(); track item.id) {
-        <div class="mobile-item excluded" (click)="openEditModal(item)">
+        <div
+          class="mobile-item excluded"
+          (click)="openEditModal(item)"
+          (keydown.enter)="openEditModal(item)"
+          (keydown.space)="$event.preventDefault(); openEditModal(item)"
+          tabindex="0"
+          role="button"
+          [attr.aria-label]="'Edytuj produkt: ' + item.product_name"
+        >
           <mat-checkbox
             [checked]="!item.excluded"
             (change)="onItemSelectionToggle(item)"
