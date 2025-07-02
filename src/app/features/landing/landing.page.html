@@ -1,73 +1,43 @@
-<!-- Main Content -->
-<div class="main-container">
-  <div class="content-wrapper">
-    <!-- Hero Section -->
-    <section class="hero-section" role="banner">
-      <div class="hero-background">
-        <div class="hero-content">
-          <h1 class="hero-title">Uprość Gotowanie dzięki Inteligentnym Listom Zakupów</h1>
-          <h2 class="hero-subtitle">
-            Bez wysiłku twórz listy zakupów ze swoich ulubionych przepisów. Wystarczy wkleić tekst
-            przepisu lub zaimportować z URL, a wygenerujemy dla Ciebie listę składników.
-          </h2>
-          <div class="hero-actions">
-            @if (isAuthenticated$ | async) {
-            <!-- Authenticated user actions -->
-            <a mat-raised-button color="primary" class="primary-button" routerLink="/app/generate">
-              <mat-icon>auto_fix_high</mat-icon>
-              <span>Generuj Listę</span>
-            </a>
-            <a mat-stroked-button class="secondary-button" routerLink="/app/lists">
-              <mat-icon>view_list</mat-icon>
-              <span>Moje Listy</span>
-            </a>
-            } @else {
-            <!-- Guest user actions -->
-            <a mat-raised-button color="primary" class="primary-button" routerLink="/auth/register">
-              <mat-icon>person_add</mat-icon>
-              <span>Rozpocznij z Meal2List</span>
-            </a>
-            <a mat-stroked-button class="secondary-button" routerLink="/auth/login">
-              <mat-icon>login</mat-icon>
-              <span>Zaloguj się</span>
-            </a>
-            }
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Manual Input Section -->
-    <section class="manual-section">
-      <h2 class="section-title">Lub Wprowadź Składniki Ręcznie</h2>
-      <div class="input-container">
-        <mat-form-field class="ingredients-input" appearance="outline">
-          <mat-label>Wprowadź składniki tutaj...</mat-label>
-          <textarea
-            matInput
-            rows="6"
-            placeholder="Wprowadź składniki tutaj..."
-            class="ingredients-textarea"
-          >
-          </textarea>
-        </mat-form-field>
-      </div>
-      <div class="input-actions">
+<!-- Hero Section - Full Page -->
+<section class="hero-section" role="banner">
+  <div class="hero-background">
+    <div class="hero-content">
+      <h1 class="hero-title">Uprość Robienie Zakupów dzięki Inteligentnym Listom</h1>
+      <h2 class="hero-subtitle">
+        Bez wysiłku twórz listy zakupów ze swoich ulubionych przepisów. Wystarczy wkleić tekst
+        przepisu lub zaimportować z URL, a wygenerujemy dla Ciebie listę składników.
+      </h2>
+      <div class="hero-actions">
         @if (isAuthenticated$ | async) {
-        <!-- Authenticated user action -->
-        <a mat-raised-button color="primary" class="add-button" routerLink="/app/generate">
+        <!-- Authenticated user actions -->
+        <a mat-raised-button color="primary" class="primary-button" routerLink="/app/generate">
           <mat-icon>auto_fix_high</mat-icon>
           <span>Generuj Listę</span>
         </a>
+        <a mat-stroked-button class="secondary-button" routerLink="/app/lists">
+          <mat-icon>view_list</mat-icon>
+          <span>Moje Listy</span>
+        </a>
         } @else {
-        <!-- Guest user action -->
-        <a mat-raised-button color="primary" class="add-button" routerLink="/auth/register">
-          <mat-icon>add_shopping_cart</mat-icon>
+        <!-- Guest user actions -->
+        <a mat-raised-button color="primary" class="primary-button" routerLink="/auth/register">
+          <mat-icon>person_add</mat-icon>
           <span>Rozpocznij z Meal2List</span>
+        </a>
+        <a mat-stroked-button class="secondary-button" routerLink="/auth/login">
+          <mat-icon>login</mat-icon>
+          <span>Zaloguj się</span>
         </a>
         }
       </div>
-    </section>
+    </div>
+  </div>
+</section>
+
+<!-- Main Content -->
+<div class="main-container">
+  <div class="content-wrapper">
+    <!-- Additional content sections will go here if needed -->
   </div>
 </div>
 
@@ -82,6 +52,12 @@
 
     <div class="features-grid">
       <mat-card class="feature-card" *ngFor="let feature of features">
+        @if (feature.comingSoon) {
+        <div class="coming-soon-banner">
+          <mat-icon>schedule</mat-icon>
+          <span>Premiera tej funkcji już wkrótce.</span>
+        </div>
+        }
         <mat-card-content>
           <div class="feature-icon">
             <mat-icon>{{ feature.icon }}</mat-icon>
@@ -107,13 +83,11 @@
     <div class="steps-container">
       <div class="step">
         <div class="step-icon">
-          <mat-icon>psychology</mat-icon>
+          <mat-icon>link</mat-icon>
           <span class="step-number">1</span>
         </div>
-        <h3>Podaj Swoje Preferencje</h3>
-        <p>
-          Podziel się swoimi potrzebami dietetycznymi, wielkością rodziny i ulubionymi posiłkami
-        </p>
+        <h3>Podaj Link do Przepisu</h3>
+        <p>Wklej URL do swojego ulubionego przepisu lub wprowadź tekst przepisu bezpośrednio</p>
       </div>
 
       <div class="step">

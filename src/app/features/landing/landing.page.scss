@@ -2,10 +2,18 @@
 @use '../../../_mixins' as mixins;
 @use 'sass:map';
 
+// Global overflow control
+:host {
+  display: block;
+  overflow-x: hidden;
+  width: 100%;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
+  box-sizing: border-box;
 
   @include mixins.tablet-up {
     padding: 0 2rem;
@@ -18,6 +26,8 @@
   display: flex;
   justify-content: center;
   padding: 0 2rem;
+  box-sizing: border-box;
+  width: 100%;
 
   @include mixins.mobile-only {
     padding: 0 1rem;
@@ -29,34 +39,43 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-// Hero Section
+// Hero Section - Full Page (minus header)
 .hero-section {
-  padding: 1rem 0;
+  height: calc(100vh - 80px); // Mobile header height
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
 
   @include mixins.tablet-up {
-    padding: 1rem;
+    height: calc(100vh - 316px); // Desktop header height
   }
 
   .hero-background {
-    min-height: 480px;
+    height: 100%;
+    width: 100%;
     background-image: 
       linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), 
       url("https://lh3.googleusercontent.com/aida-public/AB6AXuBx9z5zbJgIqfh91A752gC_lqbSpKjQkSckxyml0RbgnkFWxQkhXzA0T_q9mRBuw45rMsj0plhdCu_6tSMfXRABHIWaSdf_cUSA1PEvb2V4FI0oIzHXplVNrvGLYO3azcpqCI_gT6Y9DWzrlkxwVvfsC5_DIiH36NkcvzPdWX0TPBWLWJiNTAuibtl6WEwLmsNejTAI3JGzfHoMNo4Acz2bGvoVchOt-pfuhGCRxrPyY2g1ZsDoGEKenkMQpVqtmTmLp6bZgkpjwHIr");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    border-radius: 0.75rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
+    padding: 2rem;
     gap: 1.5rem;
+    box-sizing: border-box;
 
     @include mixins.tablet-up {
       gap: 2rem;
+      padding: 3rem;
     }
   }
 
@@ -66,6 +85,8 @@
     gap: 0.5rem;
     text-align: center;
     max-width: 800px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .hero-title {
@@ -74,6 +95,8 @@
     font-weight: 900;
     line-height: 1.1;
     letter-spacing: -0.033em;
+    word-wrap: break-word;
+    hyphens: auto;
 
     @include mixins.tablet-up {
       font-size: 3rem;
@@ -89,6 +112,7 @@
     font-size: 0.875rem;
     font-weight: 400;
     line-height: 1.5;
+    word-wrap: break-word;
 
     @include mixins.tablet-up {
       font-size: 1rem;
@@ -100,6 +124,8 @@
     flex-wrap: wrap;
     gap: 0.75rem;
     justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
 
     @include mixins.mobile-only {
       flex-direction: column;
@@ -119,6 +145,9 @@
       align-items: center;
       gap: 0.5rem;
       text-decoration: none;
+      white-space: nowrap;
+      min-width: 0;
+      box-sizing: border-box;
 
       @include mixins.tablet-up {
         height: 3rem;
@@ -140,6 +169,9 @@
       align-items: center;
       gap: 0.5rem;
       text-decoration: none;
+      white-space: nowrap;
+      min-width: 0;
+      box-sizing: border-box;
 
       @include mixins.tablet-up {
         height: 3rem;
@@ -153,6 +185,8 @@
 // Manual Section
 .manual-section {
   padding: 1.25rem 1rem 0.75rem;
+  box-sizing: border-box;
+  width: 100%;
 
   .section-title {
     color: #0d0f1c;
@@ -161,14 +195,18 @@
     line-height: 1.2;
     letter-spacing: -0.015em;
     margin-bottom: 0.75rem;
+    word-wrap: break-word;
   }
 
   .input-container {
     max-width: 480px;
     margin-bottom: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
 
     .ingredients-input {
       width: 100%;
+      box-sizing: border-box;
 
       .ingredients-textarea {
         background-color: #f8f9fc;
@@ -176,6 +214,8 @@
         color: #0d0f1c;
         font-size: 1rem;
         line-height: 1.5;
+        width: 100%;
+        box-sizing: border-box;
 
         &::placeholder {
           color: #47569e;
@@ -238,6 +278,8 @@
 .features-section {
   padding: 4rem 0;
   background-color: #f8fafc;
+  width: 100%;
+  box-sizing: border-box;
 
   @media (min-width: 768px) {
     padding: 6rem 0;
@@ -247,6 +289,8 @@
     display: grid;
     gap: 2rem;
     grid-template-columns: 1fr;
+    width: 100%;
+    box-sizing: border-box;
 
     @media (min-width: 640px) {
       grid-template-columns: repeat(2, 1fr);
@@ -261,10 +305,35 @@
     text-align: center;
     padding: 1.5rem;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    position: relative;
+    overflow: hidden;
 
     &:hover {
       transform: translateY(-4px);
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .coming-soon-banner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      z-index: 1;
+      
+      mat-icon {
+        font-size: 1rem;
+        width: 1rem;
+        height: 1rem;
+      }
     }
 
     .feature-icon {
@@ -295,6 +364,8 @@
 // How It Works Section
 .how-it-works {
   padding: 4rem 0;
+  width: 100%;
+  box-sizing: border-box;
 
   @media (min-width: 768px) {
     padding: 6rem 0;
@@ -304,6 +375,8 @@
     display: grid;
     gap: 3rem;
     grid-template-columns: 1fr;
+    width: 100%;
+    box-sizing: border-box;
 
     @media (min-width: 768px) {
       grid-template-columns: repeat(3, 1fr);
@@ -427,6 +500,8 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 
   @media (min-width: 768px) {
     padding: 6rem 0;
@@ -435,6 +510,8 @@
   .cta-content {
     max-width: 600px;
     margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
 
     h2 {
       font-size: 2rem;
@@ -474,11 +551,14 @@
   background-color: var(--md-sys-color-surface-container-highest);
   color: white;
   padding: 3rem 0 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
 
   .container {
     max-width: 960px; // Match the content-wrapper width
     margin: 0 auto;
     padding: 0 1rem;
+    box-sizing: border-box;
 
     @include mixins.tablet-up {
       padding: 0 2rem;

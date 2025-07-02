@@ -40,6 +40,12 @@ export class LandingPageComponent {
         'Generuj spersonalizowane listy zakupów na podstawie swoich preferencji, ograniczeń dietetycznych i planów posiłków za pomocą zaawansowanej technologii AI.',
     },
     {
+      icon: 'mobile_friendly',
+      title: 'Zoptymalizowane na Mobilne',
+      description:
+        'Uzyskaj dostęp do swoich list w każdym miejscu i czasie. Nasz design mobile-first zapewnia doskonałe doświadczenie na wszystkich urządzeniach.',
+    },
+    {
       icon: 'checklist',
       title: 'Inteligentna Organizacja',
       description:
@@ -50,24 +56,21 @@ export class LandingPageComponent {
       title: 'Dzielenie z Rodziną',
       description:
         'Udostępniaj listy członkom rodziny, współpracuj w czasie rzeczywistym i nigdy nie zapomnij o żadnym produkcie dzięki zsynchronizowanym aktualizacjom.',
+      comingSoon: true,
     },
     {
       icon: 'savings',
       title: 'Śledzenie Budżetu',
       description:
         'Śledź swoje wydatki, ustalaj budżety dla różnych kategorii i podejmuj świadome decyzje o zakupach.',
+      comingSoon: true,
     },
     {
       icon: 'restaurant_menu',
       title: 'Planowanie Posiłków',
       description:
         'Planuj posiłki na cały tydzień i automatycznie generuj listy zakupów ze wszystkimi potrzebnymi składnikami.',
-    },
-    {
-      icon: 'mobile_friendly',
-      title: 'Zoptymalizowane na Mobilne',
-      description:
-        'Uzyskaj dostęp do swoich list w każdym miejscu i czasie. Nasz design mobile-first zapewnia doskonałe doświadczenie na wszystkich urządzeniach.',
+      comingSoon: true,
     },
   ];
 
