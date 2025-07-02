@@ -100,14 +100,14 @@
   }
 
   &--active {
-    border-color: #10b981;
+    border-color: var(--md-sys-color-primary);
     border-width: 3px;
     background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
     box-shadow: 0 12px 32px rgba(16, 185, 129, 0.25);
     transform: translateY(-2px);
 
     .method-card__icon {
-      background: #10b981;
+      background: var(--md-sys-color-primary);
       color: white;
       transform: scale(1.1);
     }
@@ -211,7 +211,7 @@
     font-size: 1.5rem;
     width: 1.5rem;
     height: 1.5rem;
-    color: #10b981;
+    color: var(--md-sys-color-primary);
     
     @media (min-width: 768px) {
       font-size: 2rem;
@@ -274,7 +274,7 @@
 .bottom-spacer {
   height: 80px; // Space for mobile bottom navigation
   
-  @media (min-width: 768px) {
+  @include mixins.tablet-desktop  {
     height: 0;
   }
 }
@@ -319,8 +319,8 @@
     }
     
     &--active {
-      background: #10b981;
-      border-color: #10b981;
+      background: var(--md-sys-color-primary);
+      border-color: var(--md-sys-color-primary);
     }
   }
   
@@ -378,7 +378,7 @@
   .mat-mdc-raised-button,
   .mat-mdc-unelevated-button {
     &.mat-primary {
-      background-color: #10b981;
+      background-color: var(--md-sys-color-primary);
       color: white;
 
       &:hover {

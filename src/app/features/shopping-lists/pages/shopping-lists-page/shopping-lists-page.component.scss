@@ -286,7 +286,7 @@
       .list-progress {
         margin: 0;
         font-size: 0.75rem;
-        color: #10b981;
+        color: var(--md-sys-color-primary);
         font-weight: 600;
         line-height: 1.4;
         
@@ -399,7 +399,7 @@
 .bottom-spacer {
   height: 80px; // Space for mobile bottom navigation
   
-  @media (min-width: 768px) {
+  @include mixins.tablet-desktop  {
     height: 0;
   }
 }

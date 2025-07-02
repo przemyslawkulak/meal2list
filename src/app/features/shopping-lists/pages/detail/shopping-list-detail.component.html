@@ -1,418 +1,420 @@
 @if (shoppingListState(); as state) {
   @if (state.loading) {
-    <mat-spinner data-testid="loading-spinner"></mat-spinner>
+    <div class="loading-container">
+      <mat-spinner data-testid="loading-spinner"></mat-spinner>
+    </div>
   } @else if (state.data) {
-    <mat-card data-testid="shopping-list-details-container">
-      <mat-card-header>
-        <mat-card-title data-testid="shopping-list-title">
-          {{ state.data.name }}
-        </mat-card-title>
-        <mat-card-subtitle>Utworzono: {{ state.data.created_at | date }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <!-- Toggle button for grouping by recipe -->
-        <div class="view-controls">
-          <button
-            mat-stroked-button
-            (click)="toggleGroupByRecipe()"
-            [color]="state.groupByRecipe ? 'primary' : 'basic'"
-            data-testid="group-by-recipe-toggle"
-          >
-            <mat-icon>{{ state.groupByRecipe ? 'list' : 'restaurant_menu' }}</mat-icon>
-            {{ state.groupByRecipe ? 'Widok zwykły' : 'Grupuj według recepty' }}
-          </button>
-          <button
-            mat-stroked-button
-            (click)="toggleShowBadges()"
-            [color]="state.showBadges ? 'primary' : 'basic'"
-            data-testid="show-badges-toggle"
-          >
-            <mat-icon>{{ state.showBadges ? 'visibility_off' : 'visibility' }}</mat-icon>
-            {{ state.showBadges ? 'Ukryj znaczniki' : 'Pokaż znaczniki' }}
-          </button>
+    <!-- Main Container -->
+    <main class="detail-container">
+      <!-- Header Section -->
+      <section class="detail-header">
+        <div class="header-content">
+          <div class="header-info">
+            <h1 class="page-title" data-testid="shopping-list-title">
+              {{ state.data.name }}
+            </h1>
+            <p class="page-subtitle">
+              Utworzono: {{ state.data.created_at | date: 'dd.MM.yyyy' }} •
+              {{ getTotalItemsCount(state) }}/{{ getAllItemsCount(state) }} produktów •
+              {{ getProgressPercentage(state) }}% ukończone
+            </p>
+          </div>
+          <div class="header-actions">
+            <button
+              mat-icon-button
+              [routerLink]="['/app/lists']"
+              matTooltip="Powrót do list"
+              class="back-btn"
+            >
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+          </div>
         </div>
 
+        <!-- Progress Bar -->
+        <div class="progress-section">
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" [style.width.%]="getProgressPercentage(state)"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Toolbar Section -->
+      <section class="toolbar-section">
+        <div class="view-controls">
+          <div class="control-group">
+            <button
+              mat-stroked-button
+              (click)="toggleGroupByRecipe()"
+              [color]="state.groupByRecipe ? 'primary' : 'basic'"
+              data-testid="group-by-recipe-toggle"
+              class="control-btn"
+            >
+              <mat-icon>{{ state.groupByRecipe ? 'list' : 'restaurant_menu' }}</mat-icon>
+              {{ state.groupByRecipe ? 'Widok zwykły' : 'Grupuj według recepty' }}
+            </button>
+
+            <button
+              mat-stroked-button
+              (click)="toggleShowBadges()"
+              [color]="state.showBadges ? 'primary' : 'basic'"
+              data-testid="show-badges-toggle"
+              class="control-btn"
+            >
+              <mat-icon>{{ state.showBadges ? 'visibility_off' : 'visibility' }}</mat-icon>
+              {{ state.showBadges ? 'Ukryj znaczniki' : 'Pokaż znaczniki' }}
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Content Section -->
+      <section class="content-section">
         @if (!state.groupByRecipe) {
-          <!-- Normal view -->
-          <mat-list data-testid="shopping-list-items">
-            @for (item of state.uncheckedItems; track item.id) {
-              <mat-list-item
-                [attr.data-testid]="'list-item-' + item.id"
-                [class.checked-item]="item.is_checked"
-              >
-                <div class="item-container">
-                  <div class="item-info">
-                    <mat-checkbox
-                      [checked]="item.is_checked"
-                      (change)="toggleItemChecked(item.id, item.is_checked)"
-                      [matTooltip]="item.product_name + ' - ' + item.quantity + ' ' + item.unit"
-                      matTooltipPosition="above"
-                      [matTooltipShowDelay]="300"
-                    >
-                      <span class="checkbox-content">
-                        {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
-                        @if (item.recipe_source && state.showBadges) {
-                          <mat-chip
-                            class="recipe-source-chip inline-chip"
-                            [attr.data-testid]="'recipe-source-chip-' + item.id"
-                            [matTooltip]="'Z recepty: ' + item.recipe_source"
-                            matTooltipPosition="above"
-                          >
-                            <mat-icon>restaurant_menu</mat-icon>
-                            {{ item.recipe_source }}
-                          </mat-chip>
-                        }
-                      </span>
-                    </mat-checkbox>
-                  </div>
-                  <div class="item-actions">
-                    <app-category-icon
-                      [categoryName]="getCategoryName(item.category_id, state.categories)"
-                      [attr.data-testid]="'category-icon-' + item.id"
-                      [matTooltip]="getCategoryName(item.category_id, state.categories)"
-                      matTooltipPosition="above"
-                    ></app-category-icon>
-                    @if (state.showBadges) {
-                      <mat-chip
-                        [attr.data-testid]="'source-chip-' + item.id"
-                        [matTooltip]="'Source: ' + item.source"
-                        matTooltipPosition="above"
-                        [ngClass]="{
-                          'source-auto': item.source === 'auto',
-                          'source-manual': item.source === 'manual',
-                          'source-modified': item.source === 'modified',
-                        }"
-                      >
-                        {{ item.source }}
-                      </mat-chip>
-                    }
-                    <button
-                      mat-icon-button
-                      color="primary"
-                      (click)="openEditItemDialog(item)"
-                      [attr.data-testid]="'edit-item-' + item.id"
-                      aria-label="Edit item"
-                      matTooltip="Edit item"
-                      matTooltipPosition="above"
-                    >
-                      <mat-icon>edit</mat-icon>
-                    </button>
-                    <button
-                      mat-icon-button
-                      color="warn"
-                      (click)="deleteItem(item.id)"
-                      [attr.data-testid]="'delete-item-' + item.id"
-                      aria-label="Delete item"
-                    >
-                      <mat-icon>delete</mat-icon>
-                    </button>
-                  </div>
+          <!-- Standard Table View -->
+          <div class="shopping-table-container">
+            @if (state.uncheckedItems.length > 0) {
+              <div class="table-section">
+                <h3 class="section-title">
+                  <mat-icon>shopping_cart</mat-icon>
+                  Do kupienia
+                  <span class="item-count">({{ state.uncheckedItems.length }})</span>
+                </h3>
+
+                <div class="table-wrapper">
+                  <table class="shopping-table" data-testid="shopping-list-items">
+                    <tbody>
+                      @for (item of state.uncheckedItems; track item.id) {
+                        <tr
+                          class="table-row"
+                          [attr.data-testid]="'list-item-' + item.id"
+                          [class.checked-item]="item.is_checked"
+                        >
+                          <td class="cell-checkbox">
+                            <mat-checkbox
+                              [checked]="item.is_checked"
+                              (change)="toggleItemChecked(item.id, item.is_checked)"
+                            ></mat-checkbox>
+                          </td>
+                          <td class="cell-product-info">
+                            <div class="product-info-container">
+                              <div class="product-name-row">
+                                <span class="product-name">{{ item.product_name }}</span>
+                                @if (item.recipe_source && state.showBadges) {
+                                  <mat-icon
+                                    class="recipe-icon"
+                                    [attr.data-testid]="'recipe-source-icon-' + item.id"
+                                    [matTooltip]="'Z recepty: ' + item.recipe_source"
+                                    >restaurant_menu</mat-icon
+                                  >
+                                }
+                              </div>
+                              <div class="product-quantity-row">
+                                <span class="product-quantity" style="font-weight: 300"
+                                  >{{ item.quantity }} {{ item.unit }}</span
+                                >
+                              </div>
+                            </div>
+                          </td>
+                          <td class="cell-category"></td>
+                          <td class="cell-actions">
+                            <div class="action-buttons">
+                              <app-category-icon
+                                [categoryName]="getCategoryName(item.category_id, state.categories)"
+                                [attr.data-testid]="'category-icon-' + item.id"
+                                [matTooltip]="getCategoryName(item.category_id, state.categories)"
+                              ></app-category-icon>
+                              <button
+                                mat-icon-button
+                                (click)="openEditItemDialog(item)"
+                                [attr.data-testid]="'edit-item-' + item.id"
+                                matTooltip="Edytuj produkt"
+                                class="edit-btn"
+                                color="primary"
+                              >
+                                <mat-icon style="color: green">edit</mat-icon>
+                              </button>
+                              <button
+                                mat-icon-button
+                                (click)="deleteItem(item.id)"
+                                [attr.data-testid]="'delete-item-' + item.id"
+                                matTooltip="Usuń produkt"
+                                class="delete-btn"
+                                color="warn"
+                              >
+                                <mat-icon style="color: red">delete</mat-icon>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
                 </div>
-              </mat-list-item>
+              </div>
             }
-          </mat-list>
+
+            <!-- Completed Items Section -->
+            @if (state.checkedItems.length > 0) {
+              <div class="table-section completed-section">
+                <h3 class="section-title">
+                  <mat-icon>check_circle</mat-icon>
+                  Ukończone
+                  <span class="item-count">({{ state.checkedItems.length }})</span>
+                </h3>
+
+                <div class="table-wrapper">
+                  <table class="shopping-table completed-table">
+                    <tbody>
+                      @for (item of state.checkedItems; track item.id) {
+                        <tr
+                          class="table-row checked-item"
+                          [attr.data-testid]="'checked-item-' + item.id"
+                        >
+                          <td class="cell-checkbox">
+                            <mat-checkbox
+                              [checked]="item.is_checked"
+                              (change)="toggleItemChecked(item.id, item.is_checked)"
+                            ></mat-checkbox>
+                          </td>
+                          <td class="cell-product-info">
+                            <div class="product-info-container completed">
+                              <div class="product-name-row">
+                                <span class="product-name completed-text">{{
+                                  item.product_name
+                                }}</span>
+                              </div>
+                              <div class="product-quantity-row">
+                                <span
+                                  class="product-quantity completed-text"
+                                  style="font-weight: 300"
+                                  >{{ item.quantity }} {{ item.unit }}</span
+                                >
+                              </div>
+                            </div>
+                          </td>
+                          <td class="cell-category"></td>
+                          <td class="cell-actions">
+                            <div class="action-buttons">
+                              <app-category-icon
+                                [categoryName]="getCategoryName(item.category_id, state.categories)"
+                                [matTooltip]="getCategoryName(item.category_id, state.categories)"
+                              ></app-category-icon>
+                              <button
+                                mat-icon-button
+                                (click)="deleteItem(item.id)"
+                                [attr.data-testid]="'delete-item-' + item.id"
+                                matTooltip="Usuń produkt"
+                                class="delete-btn"
+                                color="warn"
+                              >
+                                <mat-icon style="color: red">delete</mat-icon>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            }
+          </div>
         } @else {
-          <!-- Grouped by recipe view -->
+          <!-- Grouped by Recipe View -->
           <div class="grouped-view" data-testid="grouped-by-recipe-view">
             @for (group of state.groupedByRecipeItems; track group.recipeName) {
-              <mat-card
+              <div
                 class="recipe-group-card"
                 [attr.data-testid]="'recipe-group-' + group.recipeName"
               >
-                <mat-card-header>
-                  <mat-card-title class="recipe-group-title">
+                <!-- Recipe Metadata Card -->
+                <div class="recipe-metadata-section">
+                  <h3 class="recipe-title">
                     <mat-icon>restaurant_menu</mat-icon>
                     {{ group.recipeName }}
-                    <span class="item-count"
-                      >({{ group.items.length }}
-                      {{ group.items.length === 1 ? 'produkt' : 'produkty' }})</span
-                    >
-                  </mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                  <mat-list>
-                    @for (item of group.uncheckedItems; track item.id) {
-                      <mat-list-item
-                        [attr.data-testid]="'grouped-item-' + item.id"
-                        [class.checked-item]="item.is_checked"
+                  </h3>
+                  <div class="recipe-details">
+                    <div class="detail-item">
+                      <span class="detail-label">Ukończone:</span>
+                      <span class="detail-value"
+                        >{{ getCompletedCount(group.items) }}/{{ group.items.length }}</span
                       >
-                        <div class="item-container">
-                          <div class="item-info">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Recipe Items Table -->
+                <div class="recipe-items-table">
+                  <table class="shopping-table">
+                    <tbody>
+                      <!-- Unchecked items -->
+                      @for (item of group.uncheckedItems; track item.id) {
+                        <tr class="table-row" [attr.data-testid]="'grouped-item-' + item.id">
+                          <td class="cell-checkbox">
                             <mat-checkbox
                               [checked]="item.is_checked"
                               (change)="toggleItemChecked(item.id, item.is_checked)"
-                              [matTooltip]="
-                                item.product_name + ' - ' + item.quantity + ' ' + item.unit
-                              "
-                              matTooltipPosition="above"
-                              [matTooltipShowDelay]="300"
-                            >
-                              <span class="checkbox-content">
-                                {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
-                                @if (item.recipe_source && state.showBadges) {
-                                  <mat-chip
-                                    class="recipe-source-chip inline-chip"
-                                    [attr.data-testid]="'recipe-source-chip-' + item.id"
-                                    [matTooltip]="'Z recepty: ' + item.recipe_source"
-                                    matTooltipPosition="above"
-                                  >
-                                    <mat-icon>restaurant_menu</mat-icon>
-                                    {{ item.recipe_source }}
-                                  </mat-chip>
-                                }
-                              </span>
-                            </mat-checkbox>
-                          </div>
-                          <div class="item-actions">
-                            <app-category-icon
-                              [categoryName]="getCategoryName(item.category_id, state.categories)"
-                              [attr.data-testid]="'category-icon-' + item.id"
-                              [matTooltip]="getCategoryName(item.category_id, state.categories)"
-                              matTooltipPosition="above"
-                            ></app-category-icon>
-                            @if (state.showBadges) {
-                              <mat-chip
-                                [attr.data-testid]="'source-chip-' + item.id"
-                                [matTooltip]="'Source: ' + item.source"
-                                matTooltipPosition="above"
-                                [ngClass]="{
-                                  'source-auto': item.source === 'auto',
-                                  'source-manual': item.source === 'manual',
-                                  'source-modified': item.source === 'modified',
-                                }"
+                            ></mat-checkbox>
+                          </td>
+                          <td class="cell-product-info">
+                            <div class="product-info-container">
+                              <div class="product-name-row">
+                                <span class="product-name">{{ item.product_name }}</span>
+                              </div>
+                              <div class="product-quantity-row">
+                                <span class="product-quantity" style="font-weight: 300"
+                                  >{{ item.quantity }} {{ item.unit }}</span
+                                >
+                              </div>
+                            </div>
+                          </td>
+                          <td class="cell-category"></td>
+                          <td class="cell-actions">
+                            <div class="action-buttons">
+                              <app-category-icon
+                                [categoryName]="getCategoryName(item.category_id, state.categories)"
+                                [matTooltip]="getCategoryName(item.category_id, state.categories)"
+                              ></app-category-icon>
+                              <button
+                                mat-icon-button
+                                (click)="openEditItemDialog(item)"
+                                [attr.data-testid]="'edit-item-' + item.id"
+                                matTooltip="Edytuj produkt"
+                                class="edit-btn"
+                                color="primary"
                               >
-                                {{ item.source }}
-                              </mat-chip>
-                            }
-                            <button
-                              mat-icon-button
-                              color="primary"
-                              (click)="openEditItemDialog(item)"
-                              [attr.data-testid]="'edit-item-' + item.id"
-                              aria-label="Edit item"
-                              matTooltip="Edit item"
-                              matTooltipPosition="above"
-                            >
-                              <mat-icon>edit</mat-icon>
-                            </button>
-                            <button
-                              mat-icon-button
-                              color="warn"
-                              (click)="deleteItem(item.id)"
-                              [attr.data-testid]="'delete-item-' + item.id"
-                              aria-label="Delete item"
-                            >
-                              <mat-icon>delete</mat-icon>
-                            </button>
-                          </div>
-                        </div>
-                      </mat-list-item>
-                    }
-                  </mat-list>
-                </mat-card-content>
-              </mat-card>
+                                <mat-icon style="color: green">edit</mat-icon>
+                              </button>
+                              <button
+                                mat-icon-button
+                                (click)="deleteItem(item.id)"
+                                [attr.data-testid]="'delete-item-' + item.id"
+                                matTooltip="Usuń produkt"
+                                class="delete-btn"
+                                color="warn"
+                              >
+                                <mat-icon style="color: red">delete</mat-icon>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             }
 
-            <!-- All completed items section -->
+            <!-- All Completed Items in Grouped View -->
             @if (state.allCheckedItemsInGroupedView.length > 0) {
-              <mat-card class="completed-items-card" data-testid="all-completed-items">
-                <mat-card-header>
-                  <mat-card-title class="completed-items-title">
+              <div class="recipe-group-card completed-group">
+                <div class="recipe-metadata-section">
+                  <h3 class="recipe-title">
                     <mat-icon>check_circle</mat-icon>
-                    Zakończone produkty
-                    <span class="item-count"
-                      >({{ state.allCheckedItemsInGroupedView.length }}
-                      {{
-                        state.allCheckedItemsInGroupedView.length === 1 ? 'produkt' : 'produkty'
-                      }})</span
-                    >
-                  </mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                  <mat-list>
-                    @for (item of state.allCheckedItemsInGroupedView; track item.id) {
-                      <mat-list-item
-                        [attr.data-testid]="'all-completed-item-' + item.id"
-                        [class.checked-item]="item.is_checked"
-                      >
-                        <div class="item-container">
-                          <div class="item-info">
+                    Wszystkie ukończone produkty
+                  </h3>
+                </div>
+
+                <div class="recipe-items-table">
+                  <table class="shopping-table completed-table">
+                    <tbody>
+                      @for (item of state.allCheckedItemsInGroupedView; track item.id) {
+                        <tr
+                          class="table-row checked-item"
+                          [attr.data-testid]="'all-completed-item-' + item.id"
+                        >
+                          <td class="cell-checkbox">
                             <mat-checkbox
                               [checked]="item.is_checked"
                               (change)="toggleItemChecked(item.id, item.is_checked)"
-                              [matTooltip]="
-                                item.product_name + ' - ' + item.quantity + ' ' + item.unit
-                              "
-                              matTooltipPosition="above"
-                              [matTooltipShowDelay]="300"
-                            >
-                              <span class="checkbox-content">
-                                {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
-                                @if (item.recipe_source && state.showBadges) {
-                                  <mat-chip
-                                    class="recipe-source-chip inline-chip"
-                                    [attr.data-testid]="'recipe-source-chip-' + item.id"
-                                    [matTooltip]="'Z recepty: ' + item.recipe_source"
-                                    matTooltipPosition="above"
-                                  >
-                                    <mat-icon>restaurant_menu</mat-icon>
-                                    {{ item.recipe_source }}
-                                  </mat-chip>
-                                }
-                              </span>
-                            </mat-checkbox>
-                          </div>
-                          <div class="item-actions">
-                            <app-category-icon
-                              [categoryName]="getCategoryName(item.category_id, state.categories)"
-                              [attr.data-testid]="'category-icon-' + item.id"
-                              [matTooltip]="getCategoryName(item.category_id, state.categories)"
-                              matTooltipPosition="above"
-                            ></app-category-icon>
-                            @if (state.showBadges) {
-                              <mat-chip
-                                [attr.data-testid]="'source-chip-' + item.id"
-                                [matTooltip]="'Source: ' + item.source"
-                                matTooltipPosition="above"
-                                [ngClass]="{
-                                  'source-auto': item.source === 'auto',
-                                  'source-manual': item.source === 'manual',
-                                  'source-modified': item.source === 'modified',
-                                }"
+                            ></mat-checkbox>
+                          </td>
+                          <td class="cell-product-info">
+                            <div class="product-info-container completed">
+                              <div class="product-name-row">
+                                <span class="product-name completed-text">{{
+                                  item.product_name
+                                }}</span>
+                              </div>
+                              <div class="product-quantity-row">
+                                <span
+                                  class="product-quantity completed-text"
+                                  style="font-weight: 300"
+                                  >{{ item.quantity }} {{ item.unit }}</span
+                                >
+                              </div>
+                            </div>
+                          </td>
+                          <td class="cell-category"></td>
+                          <td class="cell-actions">
+                            <div class="action-buttons">
+                              <app-category-icon
+                                [categoryName]="getCategoryName(item.category_id, state.categories)"
+                                [matTooltip]="getCategoryName(item.category_id, state.categories)"
+                              ></app-category-icon>
+                              <button
+                                mat-icon-button
+                                (click)="deleteItem(item.id)"
+                                [attr.data-testid]="'delete-item-' + item.id"
+                                matTooltip="Usuń produkt"
+                                class="delete-btn"
+                                color="warn"
                               >
-                                {{ item.source }}
-                              </mat-chip>
-                            }
-                            <button
-                              mat-icon-button
-                              color="primary"
-                              (click)="openEditItemDialog(item)"
-                              [attr.data-testid]="'edit-item-' + item.id"
-                              aria-label="Edit item"
-                              matTooltip="Edit item"
-                              matTooltipPosition="above"
-                            >
-                              <mat-icon>edit</mat-icon>
-                            </button>
-                            <button
-                              mat-icon-button
-                              color="warn"
-                              (click)="deleteItem(item.id)"
-                              [attr.data-testid]="'delete-item-' + item.id"
-                              aria-label="Delete item"
-                            >
-                              <mat-icon>delete</mat-icon>
-                            </button>
-                          </div>
-                        </div>
-                      </mat-list-item>
-                    }
-                  </mat-list>
-                </mat-card-content>
-              </mat-card>
+                                <mat-icon style="color: red">delete</mat-icon>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             }
           </div>
         }
-      </mat-card-content>
-    </mat-card>
-    @if (state.checkedItems.length && !state.groupByRecipe) {
-      <mat-list class="checked-items-list" data-testid="checked-items-list">
-        @for (item of state.checkedItems; track item.id) {
-          <mat-list-item
-            [attr.data-testid]="'checked-item-' + item.id"
-            [class.checked-item]="item.is_checked"
-          >
-            <div class="item-container">
-              <div class="item-info">
-                <mat-checkbox
-                  [checked]="item.is_checked"
-                  (change)="toggleItemChecked(item.id, item.is_checked)"
-                  [matTooltip]="item.product_name + ' - ' + item.quantity + ' ' + item.unit"
-                  matTooltipPosition="above"
-                  [matTooltipShowDelay]="300"
-                >
-                  <span class="checkbox-content">
-                    {{ item.product_name }} - {{ item.quantity }} {{ item.unit }}
-                    @if (item.recipe_source && state.showBadges) {
-                      <mat-chip
-                        class="recipe-source-chip inline-chip"
-                        [attr.data-testid]="'recipe-source-chip-' + item.id"
-                        [matTooltip]="'Z recepty: ' + item.recipe_source"
-                        matTooltipPosition="above"
-                      >
-                        <mat-icon>restaurant_menu</mat-icon>
-                        {{ item.recipe_source }}
-                      </mat-chip>
-                    }
-                  </span>
-                </mat-checkbox>
-              </div>
-              <div class="item-actions">
-                <app-category-icon
-                  [categoryName]="getCategoryName(item.category_id, state.categories)"
-                  [attr.data-testid]="'category-icon-' + item.id"
-                  [matTooltip]="getCategoryName(item.category_id, state.categories)"
-                  matTooltipPosition="above"
-                ></app-category-icon>
-                @if (state.showBadges) {
-                  <mat-chip
-                    [attr.data-testid]="'source-chip-' + item.id"
-                    [matTooltip]="'Source: ' + item.source"
-                    matTooltipPosition="above"
-                    [ngClass]="{
-                      'source-auto': item.source === 'auto',
-                      'source-manual': item.source === 'manual',
-                      'source-modified': item.source === 'modified',
-                    }"
-                  >
-                    {{ item.source }}
-                  </mat-chip>
-                }
-                <button
-                  mat-icon-button
-                  color="primary"
-                  (click)="openEditItemDialog(item)"
-                  [attr.data-testid]="'edit-item-' + item.id"
-                  aria-label="Edit item"
-                  matTooltip="Edit item"
-                  matTooltipPosition="above"
-                >
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button
-                  mat-icon-button
-                  color="warn"
-                  (click)="deleteItem(item.id)"
-                  [attr.data-testid]="'delete-item-' + item.id"
-                  aria-label="Delete item"
-                >
-                  <mat-icon>delete</mat-icon>
-                </button>
-              </div>
-            </div>
-          </mat-list-item>
-        }
-      </mat-list>
-    }
+      </section>
+    </main>
 
-    <!-- Sticky Add Button -->
-    <div class="sticky-add-button">
-      <button
-        mat-stroked-button
-        color="primary"
-        (click)="openAddItemDialog()"
-        data-testid="add-item-button"
-        aria-label="Add product to shopping list"
+    <!-- Action Footer -->
+    <footer
+      class="action-footer"
+      style="
+        position: sticky;
+        bottom: 0;
+        background-color: white;
+        z-index: 1000;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <div
+        class="footer-content"
+        style="display: flex; justify-content: center; align-items: center; padding: 16px"
       >
-        <mat-icon>add</mat-icon>
-        Dodaj produkt
+        <button
+          mat-raised-button
+          (click)="openAddItemDialog()"
+          data-testid="add-item-button"
+          class="add-item-btn"
+          style="background-color: var(--md-sys-color-primary); color: white; border: none"
+        >
+          <mat-icon>add</mat-icon>
+          Dodaj produkt
+        </button>
+      </div>
+    </footer>
+
+    <!-- Bottom spacer for mobile navigation -->
+    <div class="bottom-spacer"></div>
+  } @else {
+    <div class="error-state">
+      <mat-icon>error_outline</mat-icon>
+      <h2>Nie znaleziono listy zakupów</h2>
+      <p>Lista może zostać usunięta lub nie masz do niej dostępu.</p>
+      <button mat-raised-button color="primary" [routerLink]="['/app/lists']">
+        Powrót do list
       </button>
     </div>
-  } @else {
-    <mat-card>
-      <mat-card-content>
-        <p>Nie znaleziono listy zakupów</p>
-      </mat-card-content>
-    </mat-card>
   }
 }

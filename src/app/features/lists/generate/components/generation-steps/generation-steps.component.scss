@@ -13,7 +13,7 @@
     transition: all 0.2s ease;
 
     &--completed {
-      color: var(--mat-sys-on-surface);
+      color: var(--md-sys-color-primary);
     }
 
     &--active {
@@ -49,7 +49,7 @@
   }
 
   &__check {
-    color: #4caf50 !important; // Green color for completed steps
+    color: var(--md-sys-color-primary); 
   }
 
   &__pending {

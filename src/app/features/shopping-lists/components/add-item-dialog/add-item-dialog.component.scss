@@ -1,12 +1,17 @@
 @use '@angular/material' as mat;
 @use 'sass:map';
 
+::host{
+  overflow: hidden;
+}
+
 .dialog-container {
   padding: 0;
   height: 90vh;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
+  // overflow: hidden;
 }
 
 .dialog-header {
@@ -131,6 +136,7 @@ mat-tab-group {
     flex: 1;
     display: flex;
     flex-direction: column;
+    padding: 5px;
   }
   
   .mat-mdc-tab-body {
@@ -148,6 +154,61 @@ mat-tab-group {
   
   .mat-mdc-form-field-subscript-wrapper {
     display: none;
+  }
+
+  // Custom tab styling to match nav-link colors
+  .mat-mdc-tab-group {
+    .mat-mdc-tab-header {
+      .mat-mdc-tab-label-container {
+        .mat-mdc-tab-list {
+          .mat-mdc-tab {
+            &.mdc-tab {
+              min-width: 0;
+              flex: 1;
+              
+              .mdc-tab__content {
+                .mdc-tab__text-label {
+                  color: #6b7280; // text-gray-600 (inactive)
+                  font-size: 14px;
+                  font-weight: 500;
+                  transition: all 0.2s ease;
+                }
+              }
+
+              // Hover state
+              &:hover:not(.mdc-tab--active) {
+                .mdc-tab__content .mdc-tab__text-label {
+                  color: #15803d; // text-green-700
+                }
+                
+                background-color: #f0f9ff; // hover:bg-green-50
+                border-radius: 6px;
+              }
+
+              // Active state
+              &.mdc-tab--active {
+                .mdc-tab__content .mdc-tab__text-label {
+                  color: #15803d; // text-green-700
+                }
+                
+                background-color: #dcfce7; // bg-green-100
+                border-radius: 6px;
+              }
+            }
+          }
+        }
+      }
+
+      // Remove default active indicator
+      .mat-mdc-tab-header-pagination {
+        display: none;
+      }
+    }
+
+    // Remove the default Material tab indicator line
+    .mdc-tab-indicator {
+      display: none;
+    }
   }
 }
 

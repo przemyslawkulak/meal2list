@@ -38,7 +38,7 @@
   
   &:focus {
     outline: none;
-    border-color: #10b981;
+    border-color: var(--md-sys-color-primary);
     box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
   }
   
@@ -65,7 +65,7 @@
 
 .generation-form__submit {
   width: 100%;
-  background: #10b981;
+  background: var(--md-sys-color-primary);
   color: white;
   border: none;
   border-radius: 6px;
@@ -137,7 +137,7 @@
     color: #f3f4f6;
     
     &:focus {
-      border-color: #10b981;
+      border-color: var(--md-sys-color-primary);
       box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
     }
     

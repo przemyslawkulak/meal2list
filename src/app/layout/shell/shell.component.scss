@@ -449,18 +449,18 @@
       transition: color 0.2s ease;
       
       &.mdc-tab--active {
-        color: #10b981;
+        color: var(--md-sys-color-primary);
         
         mat-icon {
-          color: #10b981;
+          color: var(--md-sys-color-primary);
         }
       }
       
       &:hover {
-        color: #10b981;
+        color: var(--md-sys-color-primary);
         
         mat-icon {
-          color: #10b981;
+          color: var(--md-sys-color-primary);
         }
       }
       
@@ -499,10 +499,10 @@
       cursor: pointer;
       
       &:hover {
-        color: #10b981;
+        color: var(--md-sys-color-primary);
         
         mat-icon {
-          color: #10b981;
+          color: var(--md-sys-color-primary);
         }
       }
       
@@ -536,11 +536,11 @@
       color: #94a3b8;
       
       &.mdc-tab--active {
-        color: #10b981;
+        color: var(--md-sys-color-primary);
       }
       
       &:hover {
-        color: #10b981;
+        color: var(--md-sys-color-primary);
       }
     }
     
@@ -548,10 +548,10 @@
       color: #94a3b8;
       
       &:hover {
-        color: #10b981;
+        color: var(--md-sys-color-primary);
         
         mat-icon {
-          color: #10b981;
+          color: var(--md-sys-color-primary);
         }
       }
     }

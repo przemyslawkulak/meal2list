@@ -1,424 +1,911 @@
 @use '@angular/material' as mat;
-@use 'sass:map';
 @use '../../../../../_mixins' as mixins;
+
+// =============================================================================
+// MODERN SHOPPING LIST DETAIL STYLES
+// =============================================================================
 
 :host {
   display: block;
-  padding: 16px;
-  padding-bottom: 80px;
+  min-height: 100vh;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+}
+
+// =============================================================================
+// LOADING STATE
+// =============================================================================
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  padding: 2rem;
+}
+
+// =============================================================================
+// MAIN CONTAINER
+// =============================================================================
+
+.detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem 5rem;
 
   @include mixins.mobile-tablet {
-    padding: 8px;
-    padding-bottom: 80px;
+    padding: 0 0.5rem 6rem;
+  }
+}
+
+// =============================================================================
+// HEADER SECTION (Inspired by generate-list.html)
+// =============================================================================
+
+.detail-header {
+  background: var(--mat-sys-surface);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  padding: 1.5rem 0;
+  margin-bottom: 2rem;
+
+  @include mixins.mobile-tablet {
+    padding: 1rem 0;
+    margin-bottom: 1rem;
   }
 
-  .checked-items-list {
-    margin: 16px auto 0;
-    max-width: 800px;
-    opacity: 0.5;
-    
-    .mat-mdc-list-item {
-      background-color: rgba(0, 0, 0, 0.02);
-      
-      &:hover {
-        opacity: 0.9;
-        background-color: rgba(0, 0, 0, 0.04);
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .header-info {
+    flex: 1;
+    min-width: 0;
+
+    .page-title {
+      font: var(--mat-sys-headline-large);
+      color: var(--mat-sys-on-surface);
+      margin: 0 0 0.5rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+
+      @include mixins.mobile-tablet {
+        font: var(--mat-sys-headline-medium);
       }
     }
 
-    .item-actions {
-      button[mat-icon-button] {
-        background-color: rgba(244, 67, 54, 0.05);
+    .page-subtitle {
+      font: var(--mat-sys-body-medium);
+      color: var(--mat-sys-on-surface-variant);
+      margin: 0;
+      line-height: 1.5;
+
+      @include mixins.mobile-tablet {
+        font: var(--mat-sys-body-small);
+      }
+    }
+  }
+
+  .header-actions {
+    flex-shrink: 0;
+
+    .back-btn {
+      background: var(--mat-sys-surface-container);
+      color: var(--mat-sys-on-surface);
+      border: 1px solid var(--mat-sys-outline-variant);
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: var(--mat-sys-surface-container-high);
+        transform: scale(1.05);
       }
     }
   }
 }
 
-mat-card {
-  max-width: 800px;
-  margin: 0 auto;
+// =============================================================================
+// PROGRESS SECTION
+// =============================================================================
+
+.progress-section {
+  margin-top: 1rem;
+
+  .progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background: var(--mat-sys-surface-container-highest);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--mat-sys-primary) 0%, var(--mat-sys-primary-container) 100%);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+// =============================================================================
+// TOOLBAR SECTION
+// =============================================================================
+
+.toolbar-section {
+  background: var(--mat-sys-surface-container-low);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--mat-sys-level1);
+
+  @include mixins.mobile-tablet {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+  }
 
   .view-controls {
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 16px;
-    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
     
     @include mixins.mobile-tablet {
       flex-direction: column;
       align-items: stretch;
-      gap: 8px;
+      gap: 0.75rem;
     }
-    
-    button {
+
+    .control-group {
+      display: flex;
+      gap: 0.75rem;
+
+      @include mixins.mobile-tablet {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .control-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        transition: all 0.2s ease;
+
+        @include mixins.mobile-tablet {
+          justify-content: center;
+          width: 100%;
+        }
+
+        mat-icon {
+          font-size: 1.25rem;
+          width: 1.25rem;
+          height: 1.25rem;
+        }
+      }
+    }
+  }
+}
+
+// =============================================================================
+// CONTENT SECTION
+// =============================================================================
+
+.content-section {
+  .shopping-table-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .table-section {
+    background: var(--mat-sys-surface);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--mat-sys-level2);
+    border: 1px solid var(--mat-sys-outline-variant);
+
+    &.completed-section {
+      opacity: 0.8;
+      
+      .section-title {
+        color: var(--mat-sys-on-surface-variant);
+      }
+    }
+
+    .section-title {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 0.75rem;
+      padding: 1rem 1.5rem;
+      margin: 0;
+      background: var(--mat-sys-surface-container-low);
+      border-bottom: 1px solid var(--mat-sys-outline-variant);
+      font: var(--mat-sys-title-medium);
+      color: var(--mat-sys-on-surface);
+      font-weight: 600;
       
       @include mixins.mobile-tablet {
+        padding: 0.75rem 1rem;
+        font: var(--mat-sys-title-small);
+      }
+
+      mat-icon {
+        color: var(--mat-sys-primary);
+        font-size: 1.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      .item-count {
+        color: var(--mat-sys-on-surface-variant);
+        font-weight: 400;
+        font-size: 0.875rem;
+      }
+    }
+  }
+}
+
+// =============================================================================
+// TABLE STYLES WITH ENHANCED VISUAL DISTINCTION
+// =============================================================================
+
+.table-wrapper {
+  overflow-x: auto;
+  
+  @include mixins.mobile-tablet {
+    // Make table scrollable on mobile
+    -webkit-overflow-scrolling: touch;
+    
+    .shopping-table {
+      min-width: 500px; // Prevent table from being too compressed
+      font-size: 0.8rem;
+      
+      .table-header th {
+        padding: 0.5rem 0.25rem;
+        font-size: 0.75rem;
+      }
+      
+      .table-row td {
+        padding: 0.5rem 0.25rem;
+        font-size: 0.75rem;
+      }
+      
+      .col-product-info {
+        min-width: 120px;
+      }
+      
+      .col-category {
+        width: 40px;
+        
+        .category-name {
+          display: none; // Hide category names on mobile, show only icons
+        }
+      }
+      
+      .col-actions {
+        width: 60px;
+      }
+    }
+  }
+}
+
+.shopping-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--mat-sys-surface);
+
+  &.completed-table {
+    .table-row {
+      opacity: 0.7;
+      background: var(--mat-sys-surface-container-lowest);
+    }
+  }
+
+  .table-header {
+    background: var(--mat-sys-surface-container);
+
+    th {
+      padding: 1rem;
+      text-align: left;
+      font: var(--mat-sys-label-large);
+      color: var(--mat-sys-on-surface);
+      font-weight: 600;
+      border-bottom: 2px solid var(--mat-sys-outline-variant);
+      white-space: nowrap;
+
+      &.col-checkbox {
+        width: 60px;
+        text-align: center;
+      }
+
+      &.col-product-info {
+        min-width: 200px;
+      }
+
+      &.col-category {
+        width: 120px;
+        text-align: center;
+      }
+
+      &.col-actions {
+        width: 120px;
+        text-align: right;
+      }
+    }
+  }
+
+  .table-row {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+
+    &:nth-child(even) {
+      background: var(--mat-sys-surface-container-lowest);
+    }
+
+    &:hover {
+      background: var(--mat-sys-surface-container-low);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transform: translateY(-1px);
+    }
+
+    &.checked-item {
+      background: var(--mat-sys-surface-container);
+      opacity: 0.7;
+
+      .completed-text {
+        text-decoration: line-through;
+        color: var(--mat-sys-on-surface-variant);
+      }
+
+      &:hover {
+        background: var(--mat-sys-surface-container-high);
+      }
+    }
+
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--mat-sys-outline-variant);
+      vertical-align: middle;
+
+      &.cell-checkbox {
+        text-align: center;
+        width: 60px;
+      }
+
+      &.cell-product-info {
+        .product-info-container {
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
+          align-items: flex-start;
+
+          &.completed {
+            opacity: 0.7;
+          }
+
+          .product-name-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.25rem;
+            
+            @include mixins.mobile-tablet {
+              gap: 0.25rem;
+            }
+          }
+
+          .product-name {
+            font: var(--mat-sys-body-medium);
+            color: var(--mat-sys-on-surface);
+            font-weight: 600;
+            line-height: 1.4;
+
+            &.completed-text {
+              text-decoration: line-through;
+              color: var(--mat-sys-on-surface-variant);
+            }
+          }
+
+          .product-quantity-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            
+            @include mixins.mobile-tablet {
+              gap: 0.25rem;
+            }
+          }
+
+          .product-quantity {
+            font: var(--mat-sys-body-small);
+            color: var(--mat-sys-on-surface-variant);
+            font-weight: 500;
+
+            &.completed-text {
+              text-decoration: line-through;
+            }
+          }
+
+          .recipe-icon {
+            color: var(--mat-sys-tertiary);
+            font-size: 1.125rem;
+            width: 1.125rem;
+            height: 1.125rem;
+            flex-shrink: 0;
+            cursor: help;
+            
+            &:hover {
+              color: var(--mat-sys-tertiary-container);
+            }
+          }
+        }
+      }
+
+      &.cell-category {
+        text-align: center;
+
+        .category-container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+
+          @include mixins.mobile-tablet {
+            gap: 0.25rem;
+          }
+        }
+
+        app-category-icon {
+          font-size: 1.5rem;
+          width: 1.5rem;
+          height: 1.5rem;
+          flex-shrink: 0;
+        }
+
+        .category-name {
+          font: var(--mat-sys-body-small);
+          color: var(--mat-sys-on-surface-variant);
+          font-weight: 500;
+          white-space: nowrap;
+
+          @include mixins.mobile-tablet {
+            display: none;
+          }
+        }
+      }
+
+      &.cell-actions {
+        text-align: right;
+
+        .action-buttons {
+          display: flex;
+          gap: 0.25rem;
+          justify-content: flex-end;
+          align-items: center;
+
+          .edit-btn {
+            color: var(--mat-sys-primary);
+
+            &:hover {
+              background: var(--mat-sys-primary-container);
+            }
+          }
+
+          .delete-btn {
+            color: var(--mat-sys-error);
+
+            &:hover {
+              background: var(--mat-sys-error-container);
+            }
+          }
+        }
+      }
+
+
+    }
+  }
+}
+
+// =============================================================================
+// ENHANCED GROUPED VIEW STYLES
+// =============================================================================
+
+.grouped-view {
+    display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+
+  .recipe-group-card {
+    background: var(--mat-sys-surface);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--mat-sys-level3);
+    border: 2px solid var(--mat-sys-outline-variant);
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(to bottom, var(--mat-sys-primary), var(--mat-sys-tertiary));
+    }
+
+    &.completed-group {
+      opacity: 0.8;
+      
+      &::before {
+        background: var(--mat-sys-outline);
+      }
+    }
+
+    .recipe-metadata-section {
+      background: linear-gradient(135deg, var(--mat-sys-tertiary-container), var(--mat-sys-primary-container));
+      padding: 1.5rem 2rem;
+      border-bottom: 2px solid var(--mat-sys-outline-variant);
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 10px,
+          rgba(255, 255, 255, 0.05) 10px,
+          rgba(255, 255, 255, 0.05) 20px
+        );
+        pointer-events: none;
+      }
+      
+      @include mixins.mobile-tablet {
+        padding: 1rem 1.5rem;
+      }
+
+      .recipe-title {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 0 0 1rem;
+        font: var(--mat-sys-title-large);
+        color: var(--mat-sys-on-tertiary-container);
+        font-weight: 700;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 1;
+
+        @include mixins.mobile-tablet {
+          font: var(--mat-sys-title-medium);
+          margin-bottom: 0.75rem;
+      }
+
+      mat-icon {
+          font-size: 2rem;
+          width: 2rem;
+          height: 2rem;
+          color: var(--mat-sys-primary);
+          filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+        }
+      }
+
+      .recipe-details {
+        display: flex;
+        gap: 2rem;
+        position: relative;
+        z-index: 1;
+
+        @include mixins.mobile-tablet {
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .detail-item {
+          display: flex;
+          gap: 0.5rem;
+          align-items: center;
+
+          .detail-label {
+            font: var(--mat-sys-body-small);
+            color: var(--mat-sys-on-tertiary-container);
+            opacity: 0.9;
+            font-weight: 500;
+          }
+
+          .detail-value {
+            font: var(--mat-sys-body-small);
+            color: var(--mat-sys-on-tertiary-container);
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            backdrop-filter: blur(4px);
+          }
+        }
+      }
+    }
+
+    .recipe-items-table {
+      padding: 0.5rem 0;
+
+      .shopping-table {
+        .table-row {
+          &:hover {
+            background: var(--mat-sys-tertiary-container);
+            color: var(--mat-sys-on-tertiary-container);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+          }
+
+          &:last-child td {
+            border-bottom: none;
+          }
+
+          td {
+            padding: 0.875rem 1rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+// =============================================================================
+// MOBILE RESPONSIVE TABLE ALTERNATIVE
+// =============================================================================
+
+@include mixins.mobile-tablet {
+  // Keep tables visible on mobile for now
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    
+    .shopping-table {
+      min-width: 100%;
+      font-size: 0.8rem;
+      
+      th, td {
+        padding: 0.5rem 0.25rem;
+        font-size: 0.75rem;
+      }
+      
+      .category-name {
+        display: none;
+      }
+      
+      .col-product-info {
+        min-width: 120px;
+      }
+      
+      .col-category {
+        width: 40px;
+      }
+      
+      .col-actions {
+        width: 60px;
+      }
+    }
+  }
+}
+
+// =============================================================================
+// ACTION FOOTER (Inspired by generate-review.html footer)
+// =============================================================================
+
+.action-footer {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--mat-sys-surface);
+  border-top: 1px solid var(--mat-sys-outline-variant);
+  padding: 1rem 0;
+  margin-top: 2rem;
+  box-shadow: var(--mat-sys-level3);
+
+  @include mixins.mobile-tablet {
+    padding: 0.75rem 0;
+    margin-top: 1rem;
+  }
+
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+
+    @include mixins.mobile-tablet {
+      flex-direction: column;
+      padding: 0 0.5rem;
+      gap: 0.75rem;
+    }
+
+    .add-item-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+
+    @include mixins.mobile-tablet {
         width: 100%;
         justify-content: center;
       }
     }
-  }
-}
 
-mat-list-item {
-  margin: 8px 0;
-  
-  &.checked-item {
-    background-color: rgba(0, 0, 0, 0.02);
-    color: rgba(0, 0, 0, 0.7);
-  }
-}
-
-.item-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
-  padding: 8px 0;
-  min-width: 0;
-  position: relative;
-  z-index: 0;
-  gap: 8px;
-
-  @include mixins.mobile-tablet {
-    padding: 6px 0;
-    gap: 6px;
-    align-items: center;
-  }
-
-  .item-info {
-    flex: 1 1 0;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    
-    @include mixins.mobile-tablet {
-      gap: 2px;
-      min-width: 0;
-      flex: 1 1 auto;
-    }
-    
-    mat-checkbox {
-      flex: 1;
-      min-width: 0;
-      overflow: visible;
-      pointer-events: auto;
-      z-index: 1;
+    .footer-actions {
+      display: flex;
+      gap: 0.75rem;
       
       @include mixins.mobile-tablet {
-        ::ng-deep .mdc-label {
-          max-width: calc(100vw - 160px); // Leave space for actions and chips
-          font-size: 0.9rem;
-        }
+        width: 100%;
+        justify-content: space-between;
       }
-      
-      .checkbox-content {
+
+      .secondary-action,
+      .primary-action {
         display: flex;
-        flex-direction: column;
-        gap: 4px;
-        
-        @include mixins.mobile-tablet {
-          flex-direction: row;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: 6px;
-        }
-      }
-    }
-
-    .recipe-source-chip {
-      background-color: rgba(76, 175, 80, 0.1);
-      color: #2e7d32;
-      border: 1px solid rgba(76, 175, 80, 0.3);
-      font-size: 0.75rem;
-      height: 24px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      align-self: flex-start;
-      max-width: 200px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      
-      mat-icon {
-        font-size: 14px;
-        width: 14px;
-        height: 14px;
-        flex-shrink: 0;
-      }
-
-      @include mixins.mobile-tablet {
-        font-size: 0.65rem;
-        height: 20px;
-        max-width: 120px;
-        padding: 0 6px;
-        gap: 2px;
-        
-        mat-icon {
-          font-size: 10px;
-          width: 10px;
-          height: 10px;
-        }
-      }
-      
-      &.inline-chip {
-        @include mixins.mobile-tablet {
-          margin-left: 4px;
-          flex-shrink: 0;
-          max-width: 100px;
-        }
-      }
-    }
-  }
-
-  .item-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
-    position: relative;
-    z-index: 2;
-    
-    @include mixins.mobile-tablet {
-      gap: 4px;
-      flex-shrink: 1;
-    }
-
-    app-category-icon, mat-chip, button {
-      pointer-events: auto;
-      position: relative;
-      overflow: visible;
-    }
-
-    app-category-icon {
-      color: var(--md-sys-color-tertiary);
-      font-size: 1.2rem;
-      opacity: 0.7;
-    }
-
-    button[mat-icon-button] {
-      background-color: rgba(244, 67, 54, 0.1);
-      transition: all 0.2s ease;
-      
-      @include mixins.mobile-tablet {
-        width: 32px;
-        height: 32px;
-        min-width: 32px;
-      }
-      
-      &:hover {
-        background-color: var(--md-sys-color-error);
-        color: white;
-        transform: scale(1.05);
-      }
-
-      mat-icon {
-        font-size: 1.2rem;
-        width: 1.2rem;
-        height: 1.2rem;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
 
         @include mixins.mobile-tablet {
-          font-size: 1rem;
-          width: 1rem;
-          height: 1rem;
+          flex: 1;
+          justify-content: center;
         }
-      }
-    }
-
-    mat-chip {
-      font-size: 12px;
-      height: 24px;
-      min-height: 24px;
-      padding: 0 8px;
-
-      &.source-auto {
-        background-color: #E3F2FD; // Blue 50
-        color: #1976D2; // Blue 700
-      }
-
-      &.source-manual {
-        background-color: #E8F5E9; // Green 50
-        color: #388E3C; // Green 700
-      }
-
-      &.source-modified {
-        background-color: #FFEBEE; // Red 50
-        color: #D32F2F; // Red 700
       }
     }
   }
 }
 
-.checked-items-list {
-  margin-top: 24px;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-  padding-top: 16px;
+// =============================================================================
+// ERROR STATE
+// =============================================================================
 
-  .checked-item {
-    text-decoration: line-through;
-    text-decoration-color: rgba(0, 0, 0, 0.3);
-  }
-}
-
-mat-spinner {
-  margin: 20px auto;
-}
-
-.sticky-add-button {
-  position: fixed;
-  bottom: 20px;
-  left: 0;
-  right: 0;
-  z-index: 1000;
+.error-state {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  
-  @include mixins.mobile-tablet {
-    bottom: 76px; /* Position above the bottom navigation bar (56px height + 20px padding) */
+  padding: 3rem;
+  text-align: center;
+  min-height: 300px;
+
+  mat-icon {
+    font-size: 4rem;
+    width: 4rem;
+    height: 4rem;
+    color: var(--mat-sys-error);
+    margin-bottom: 1rem;
   }
-  
-  button[mat-fab] {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-    
-    &:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    }
-    
-    mat-icon {
-      margin-right: 8px;
-    }
+
+  h2 {
+    font: var(--mat-sys-headline-medium);
+    color: var(--mat-sys-on-surface);
+    margin: 0 0 0.5rem;
+  }
+
+  p {
+    font: var(--mat-sys-body-large);
+    color: var(--mat-sys-on-surface-variant);
+    margin: 0 0 2rem;
   }
 }
 
-:host ::ng-deep {
-  .add-item-dialog {
-    .mat-mdc-dialog-container {
-      padding: 0;
-    }
-  }
+// =============================================================================
+// BOTTOM SPACER FOR MOBILE NAVIGATION
+// =============================================================================
 
-  .mat-mdc-card-content{
-    @include mixins.mobile-tablet {
-      padding: 0px 6px;
-    }
-  }
-
-  .mat-mdc-list-item {
-    height: auto;
-    padding: 8px 16px;
-    transition: all 0.3s ease;
-    border-radius: 8px;
-    position: relative;
-
-    @include mixins.mobile-tablet {
-      padding: 6px 0px;
-      margin: 4px 0;
-    }
-
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.04);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-                 0 2px 4px -1px rgba(0, 0, 0, 0.06),
-                 0 1px 8px 0 rgba(0, 0, 0, 0.04);
-      outline: none;
-    }
-    
-    .mdc-label {
-      max-width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: block;
-      pointer-events: auto;
-      
-      @include mixins.mobile-tablet {
-        max-width: 180px;
-      }
-    }
-  }
-
-  .mat-mdc-checkbox {
-    margin-right: 16px;
-  }
-
-  .mat-mdc-chip {
-    margin: 0;
-  }
-  
-  .checked-item .mat-mdc-checkbox .mdc-checkbox__native-control:checked {
-    + .mdc-checkbox__background {
-      background-color: var(--md-sys-color-primary) !important;
-      border-color: var(--md-sys-color-primary) !important;
-    }
-  }
-
-  .mat-mdc-tooltip {
-    position: fixed !important;
-    z-index: 1000 !important;
+.bottom-spacer {
+  @include mixins.tablet-desktop  {
+    height: 64px;
   }
 }
 
-.grouped-view {
-  .recipe-group-card {
-    margin-bottom: 16px;
-    border-left: 4px solid var(--mat-primary-400);
-    
-    .recipe-group-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 1.1rem;
-      color: var(--mat-primary-600);
-      
-      .item-count {
-        font-size: 0.9rem;
-        color: rgba(0, 0, 0, 0.6);
-        font-weight: normal;
-      }
+// =============================================================================
+// ANIMATIONS & TRANSITIONS
+// =============================================================================
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.detail-container {
+  animation: slideIn 0.3s ease-out;
+}
+
+// =============================================================================
+// ACCESSIBILITY IMPROVEMENTS
+// =============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .shopping-table {
+    .table-row {
+      border-bottom: 2px solid var(--mat-sys-outline);
     }
   }
-  
-  .completed-items-card {
-    margin-bottom: 16px;
-    border-left: 4px solid var(--mat-accent-400);
-    opacity: 0.8;
-    
-    .completed-items-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 1.1rem;
-      color: var(--mat-accent-600);
-      
-      .item-count {
-        font-size: 0.9rem;
-        color: rgba(0, 0, 0, 0.6);
-        font-weight: normal;
-      }
-      
-      mat-icon {
-        color: var(--mat-accent-500);
-      }
-    }
-    
-    mat-list-item {
-      opacity: 0.7;
-      
+
+  .table-section {
+    border: 2px solid var(--mat-sys-outline);
+  }
+}
+
+// =============================================================================
+// DARK THEME ADJUSTMENTS
+// =============================================================================
+
+:host-context(.dark-theme) {
+  .progress-bar-fill {
+    box-shadow: 0 0 8px rgba(var(--mat-sys-primary-rgb), 0.4);
+  }
+
+  .shopping-table {
+    .table-row {
       &:hover {
-        opacity: 1;
+        background: var(--mat-sys-surface-container);
       }
-      
-      .checked-item {
-        text-decoration: line-through;
-        text-decoration-color: rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  .recipe-group-card {
+    .recipe-metadata-section {
+      &::after {
+        background: repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 10px,
+          rgba(255, 255, 255, 0.02) 10px,
+          rgba(255, 255, 255, 0.02) 20px
+        );
       }
+    }
+  }
+}
+
+// =============================================================================
+// DIALOG SPECIFIC STYLES
+// =============================================================================
+
+// Remove scrollbars from add-item-dialog
+:host ::ng-deep .add-item-dialog {
+  .mat-mdc-dialog-surface,
+  .mdc-dialog__surface {
+    overflow: hidden !important;
+    
+    // If you need scrolling, it should be on the content area instead
+    .mat-mdc-dialog-content {
+      overflow-y: auto;
+      overflow-x: hidden;
     }
   }
 } 

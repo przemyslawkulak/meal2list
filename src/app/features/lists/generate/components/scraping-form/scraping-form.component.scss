@@ -24,7 +24,7 @@
         .mat-mdc-form-field-outline-start,
         .mat-mdc-form-field-outline-end,
         .mat-mdc-form-field-outline-gap {
-          border-color: #10b981;
+          border-color: var(--md-sys-color-primary);
           border-width: 2px;
         }
       }
@@ -56,7 +56,7 @@
     font-size: 1rem;
     font-weight: 500;
     border-radius: 8px;
-    background-color: #10b981;
+    background-color: var(--md-sys-color-primary);
     color: white;
     border: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

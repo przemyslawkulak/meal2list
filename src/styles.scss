@@ -35,6 +35,8 @@ body {
   font-weight: 600 !important;
   letter-spacing: 0.02em !important;
   text-transform: none !important;
+  color: #15803d;
+  border-color: #15803d;
   
   // Modern micro-interactions
   &:hover {
@@ -112,7 +114,7 @@ body {
 .mat-mdc-form-field {
   .mat-mdc-text-field-wrapper {
     border-radius: 12px !important;
-    background-color: var(--md-sys-color-surface-container-highest);
+    background-color: var(--md-sys-color-background);
     transition: all 0.2s ease;
   }
   
@@ -194,6 +196,8 @@ body {
   border: 1px solid var(--md-sys-color-outline-variant);
   overflow: hidden;
 }
+
+
 
 .mat-mdc-dialog-content {
   color: var(--md-sys-color-on-surface) !important;

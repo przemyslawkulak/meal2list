@@ -14,7 +14,6 @@ import { AuthService } from '@core/supabase/auth.service';
 import { NavLink } from '@types';
 import { MatTabsModule } from '@angular/material/tabs';
 import { OfflineBannerComponent } from '@app/shared/ui/offline-banner/offline-banner.component';
-import { ThemeToggleComponent } from '@app/shared/ui/theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-shell',
@@ -25,7 +24,6 @@ import { ThemeToggleComponent } from '@app/shared/ui/theme-toggle/theme-toggle.c
     MatListModule,
     MatButtonModule,
     OfflineBannerComponent,
-    ThemeToggleComponent,
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
@@ -56,12 +54,33 @@ export class ShellComponent {
       shareReplay(1)
     );
 
+  readonly isMobile$: Observable<boolean> = this._breakpointObserver
+    .observe([Breakpoints.XSmall, Breakpoints.HandsetLandscape, Breakpoints.HandsetPortrait])
+    .pipe(
+      map(result => result.matches),
+      shareReplay(1)
+    );
+
+  readonly isTabletOrDesktop$: Observable<boolean> = this._breakpointObserver
+    .observe([
+      Breakpoints.Small,
+      Breakpoints.Medium,
+      Breakpoints.Large,
+      Breakpoints.XLarge,
+      Breakpoints.TabletLandscape,
+      Breakpoints.TabletPortrait,
+    ])
+    .pipe(
+      map(result => result.matches),
+      shareReplay(1)
+    );
+
   readonly isAuthenticated$ = this._authService.isAuthenticated$;
 
   readonly navigationLinks: NavLink[] = [
     { label: 'Listy', path: '/lists', icon: 'list_alt' },
     { label: 'Generuj', path: '/generate', icon: 'add_circle' },
-    { label: 'Kategorie', path: '/categories', icon: 'category' },
+    // { label: 'Kategorie', path: '/categories', icon: 'category' },
   ];
 
   isMobileMenuOpen = false;
