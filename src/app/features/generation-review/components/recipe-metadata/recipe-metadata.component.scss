@@ -52,10 +52,11 @@
   }
 
   &.recipe-source {
+    position: relative;
+    
     @include mixins.tablet-desktop {
       flex: 1.5;
     }
-    position: relative;
 
     // Container for source value and edit button
     > :not(.metadata-label):not(.url-source-container) {
