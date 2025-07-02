@@ -1,5 +1,5 @@
 @use '@angular/material' as mat;
-@use '../../../mixins.scss' as mixins;
+@use '../../../_mixins' as mixins;
 @use 'sass:map';
 
 .container {
@@ -14,7 +14,6 @@
 
 // Main Layout
 .main-container {
-  background-color: #f8f9fc;
   flex: 1;
   display: flex;
   justify-content: center;
@@ -220,7 +219,7 @@
     font-size: 2rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: map.get(mat.$green-palette, 700);
+    color: var(--md-sys-color-primary);
 
     @media (min-width: 768px) {
       font-size: 2.5rem;
@@ -229,7 +228,7 @@
 
   p {
     font-size: 1.125rem;
-    color: map.get(mat.$spring-green-palette, 600);
+    color: var(--md-sys-color-on-surface-variant);
     max-width: 600px;
     margin: 0 auto;
   }
@@ -275,7 +274,7 @@
         font-size: 3rem;
         width: 3rem;
         height: 3rem;
-        color: map.get(mat.$spring-green-palette, 500);
+        color: var(--md-sys-color-primary);
       }
     }
 
@@ -283,11 +282,11 @@
       font-size: 1.25rem;
       font-weight: 600;
       margin-bottom: 0.75rem;
-      color: map.get(mat.$spring-green-palette, 800);
+      color: var(--md-sys-color-on-surface);
     }
 
     p {
-      color: map.get(mat.$spring-green-palette, 600);
+      color: var(--md-sys-color-on-surface-variant);
       line-height: 1.6;
     }
   }
@@ -327,8 +326,8 @@
         font-size: 3rem;
         width: 3rem;
         height: 3rem;
-        color: map.get(mat.$green-palette, 500);
-        background-color: map.get(mat.$green-palette, 50);
+        color: var(--md-sys-color-primary);
+        background-color: var(--md-sys-color-primary-container);
         border-radius: 50%;
         padding: 1rem;
         box-sizing: content-box;
@@ -338,7 +337,7 @@
         position: absolute;
         top: -8px;
         right: -8px;
-        background-color: map.get(mat.$green-palette, 500);
+        background-color: var(--md-sys-color-primary);
         color: white;
         border-radius: 50%;
         width: 1.5rem;
@@ -355,11 +354,11 @@
       font-size: 1.25rem;
       font-weight: 600;
       margin-bottom: 0.75rem;
-      color: map.get(mat.$spring-green-palette, 800);
+      color: var(--md-sys-color-on-surface);
     }
 
     p {
-      color: map.get(mat.$spring-green-palette, 600);
+      color: var(--md-sys-color-on-surface-variant);
       line-height: 1.6;
     }
   }
@@ -404,19 +403,19 @@
       font-style: italic;
       line-height: 1.6;
       margin-bottom: 1rem;
-      color: map.get(mat.$spring-green-palette, 700);
+      color: var(--md-sys-color-on-surface-variant);
     }
 
     .testimonial-author {
       strong {
         display: block;
         font-weight: 600;
-        color: map.get(mat.$spring-green-palette, 800);
+        color: var(--md-sys-color-on-surface);
       }
 
       span {
         font-size: 0.875rem;
-        color: map.get(mat.$spring-green-palette, 600);
+        color: var(--md-sys-color-on-surface-variant);
       }
     }
   }
@@ -472,7 +471,7 @@
 
 // Footer
 .footer {
-  background-color: map.get(mat.$spring-green-palette, 900);
+  background-color: var(--md-sys-color-surface-container-highest);
   color: white;
   padding: 3rem 0 1.5rem;
 
@@ -515,13 +514,13 @@
     }
 
     p {
-      color: map.get(mat.$spring-green-palette, 300);
+      color: var(--md-sys-color-on-surface-variant);
       line-height: 1.6;
     }
 
     a {
       display: block;
-      color: map.get(mat.$spring-green-palette, 300);
+      color: var(--md-sys-color-on-surface-variant);
       text-decoration: none;
       margin-bottom: 0.5rem;
       transition: color 0.2s ease-in-out;
@@ -537,7 +536,7 @@
     padding-top: 1.5rem;
 
     p {
-      color: map.get(mat.$spring-green-palette, 400);
+      color: var(--md-sys-color-on-surface-variant);
       margin: 0;
     }
   }

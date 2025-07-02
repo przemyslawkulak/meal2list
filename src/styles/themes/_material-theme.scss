@@ -1,0 +1,200 @@
+// Material Design 3 Theme Configuration for Angular Material
+// This file contains the main theme definitions and configurations
+
+@use '@angular/material' as mat;
+@use './theme-variables' as vars;
+@use 'sass:map';
+
+// =============================================================================
+// CORE MATERIAL STYLES
+// =============================================================================
+
+// Include the common styles for Angular Material
+@include mat.core();
+
+// =============================================================================
+// THEME DEFINITIONS
+// =============================================================================
+
+// Create Material palettes from our modern color system
+$mat-primary-palette: mat.m2-define-palette(vars.$primary-palette, 500, 400, 700);
+$mat-accent-palette: mat.m2-define-palette(vars.$accent-palette, 500, 400, 700);
+$mat-warn-palette: mat.m2-define-palette(vars.$green-warn-palette, 500, 400, 700);
+
+// Light Theme with vibrant colors
+$light-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $mat-primary-palette,
+    accent: $mat-accent-palette,
+    warn: $mat-warn-palette,
+  ),
+  typography: vars.$app-typography,
+  density: 0,
+));
+
+// Dark Theme with modern dark palette
+$dark-theme: mat.m2-define-dark-theme((
+  color: (
+    primary: $mat-primary-palette,
+    accent: $mat-accent-palette,
+    warn: $mat-warn-palette,
+  ),
+  typography: vars.$app-typography,
+  density: 0,
+));
+
+// =============================================================================
+// THEME CLASSES AND CSS VARIABLES
+// =============================================================================
+
+// Mixin to apply theme-specific CSS variables
+@mixin apply-md3-css-vars($theme-name) {
+  @if $theme-name == 'light' {
+    @include vars.generate-theme-css-vars('light', vars.$light-theme-colors);
+  } @else if $theme-name == 'dark' {
+    @include vars.generate-theme-css-vars('dark', vars.$dark-theme-colors);
+  }
+}
+
+// =============================================================================
+// THEME APPLICATION MIXINS
+// =============================================================================
+
+// Mixin to apply light theme colors only
+@mixin light-theme-colors {
+  @include apply-md3-css-vars('light');
+  
+  // Custom CSS variables for compatibility with existing CSS
+  --primary-color: #{vars.get-theme-color('light', 'primary')};
+  --secondary-color: #{vars.get-theme-color('light', 'surface-container-low')};
+  --accent-color: #{vars.get-theme-color('light', 'tertiary')};
+  --text-primary: #{vars.get-theme-color('light', 'on-surface')};
+  --text-secondary: #{vars.get-theme-color('light', 'on-surface-variant')};
+  --background-color: #{vars.get-theme-color('light', 'background')};
+  --border-color: #{vars.get-theme-color('light', 'outline-variant')};
+  --surface-color: #{vars.get-theme-color('light', 'surface')};
+  --on-surface-color: #{vars.get-theme-color('light', 'on-surface')};
+}
+
+// Mixin to apply dark theme colors only
+@mixin dark-theme-colors {
+  @include apply-md3-css-vars('dark');
+  
+  // Custom CSS variables for compatibility with existing CSS
+  --primary-color: #{vars.get-theme-color('dark', 'primary')};
+  --secondary-color: #{vars.get-theme-color('dark', 'surface-container-low')};
+  --accent-color: #{vars.get-theme-color('dark', 'tertiary')};  
+  --text-primary: #{vars.get-theme-color('dark', 'on-surface')};
+  --text-secondary: #{vars.get-theme-color('dark', 'on-surface-variant')};
+  --background-color: #{vars.get-theme-color('dark', 'background')};
+  --border-color: #{vars.get-theme-color('dark', 'outline-variant')};
+  --surface-color: #{vars.get-theme-color('dark', 'surface')};
+  --on-surface-color: #{vars.get-theme-color('dark', 'on-surface')};
+}
+
+// =============================================================================
+// BASE THEME APPLICATION
+// =============================================================================
+
+// Apply base theme styles (structure, typography, and base colors)
+@include mat.all-component-themes($light-theme);
+
+// =============================================================================
+// MODERN COMPONENT OVERRIDES
+// =============================================================================
+
+// Enhanced Material components for modern look
+html {
+  // Button overrides for vibrant design (using only valid tokens)
+  @include mat.button-overrides((
+    text-label-text-color: var(--md-sys-color-primary),
+    outlined-label-text-color: var(--md-sys-color-primary),
+    outlined-outline-color: var(--md-sys-color-primary),
+    filled-container-color: var(--md-sys-color-primary),
+    filled-label-text-color: var(--md-sys-color-on-primary),
+  ));
+  
+  // Card overrides for better surfaces
+  @include mat.card-overrides((
+    elevated-container-color: var(--md-sys-color-surface-container),
+    outlined-container-color: var(--md-sys-color-surface),
+    outlined-outline-color: var(--md-sys-color-outline-variant),
+  ));
+  
+  // Form field overrides for better visibility
+  @include mat.form-field-overrides((
+    outlined-label-text-color: var(--md-sys-color-on-surface-variant),
+    outlined-outline-color: var(--md-sys-color-outline),
+    outlined-focus-outline-color: var(--md-sys-color-primary),
+    filled-container-color: var(--md-sys-color-surface-container-highest),
+  ));
+  
+  // Fab overrides for prominent CTAs (using only valid tokens)
+  @include mat.fab-overrides((
+    container-color: var(--md-sys-color-primary),
+    foreground-color: var(--md-sys-color-on-primary),
+  ));
+}
+
+// Root theme application with system preference support
+html {
+  // Default light theme
+  color-scheme: light dark;
+  @include light-theme-colors;
+  
+  // Dark theme for system preference
+  @media (prefers-color-scheme: dark) {
+    @include dark-theme-colors;
+  }
+}
+
+// Manual theme classes
+.light-theme {
+  color-scheme: light;
+  @include light-theme-colors;
+}
+
+.dark-theme {
+  color-scheme: dark;
+  @include dark-theme-colors;
+}
+
+// High contrast support
+@media (prefers-contrast: more) {
+  html {
+    --md-sys-color-outline: var(--md-sys-color-on-surface);
+    --md-sys-color-outline-variant: var(--md-sys-color-on-surface);
+  }
+}
+
+// =============================================================================
+// UTILITY CLASSES
+// =============================================================================
+
+// Utility classes for applying MD3 colors directly
+.md3-primary {
+  color: var(--md-sys-color-primary) !important;
+}
+
+.md3-primary-container {
+  background-color: var(--md-sys-color-primary-container) !important;
+  color: var(--md-sys-color-on-primary-container) !important;
+}
+
+.md3-secondary {
+  color: var(--md-sys-color-secondary) !important;
+}
+
+.md3-tertiary {
+  color: var(--md-sys-color-tertiary) !important;
+}
+
+.md3-surface {
+  background-color: var(--md-sys-color-surface) !important;
+  color: var(--md-sys-color-on-surface) !important;
+}
+
+.md3-surface-variant {
+  background-color: var(--md-sys-color-surface-variant) !important;
+  color: var(--md-sys-color-on-surface-variant) !important;
+} 

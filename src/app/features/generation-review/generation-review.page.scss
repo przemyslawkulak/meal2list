@@ -1,15 +1,97 @@
-.review-container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+@use '../../../_mixins' as mixins;
+@use '../../../styles/themes/theme-variables.scss' as theme;
+
+.main-container {
+  min-height: calc(100vh - 140px);
+  padding-top: theme.get-spacing(sm);
+  padding-bottom: theme.get-spacing(md);
+  @include mixins.container(1200px);
+
+  @include mixins.tablet-desktop {
+    padding-top: theme.get-spacing(md);
+    padding-bottom: theme.get-spacing(lg);
+  }
 }
 
-@media (max-width: 768px) {
-  .review-container {
-    padding: 16px;
-    gap: 16px;
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: theme.get-spacing(md);
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+
+  @include mixins.tablet-desktop {
+    gap: theme.get-spacing(lg);
   }
-} 
+}
+
+.page-header {
+  @include mixins.flex-between;
+  padding: theme.get-spacing(md);
+  margin-bottom: 0;
+
+  @include mixins.mobile-tablet {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: theme.get-spacing(xs);
+    padding: theme.get-spacing(md) theme.get-spacing(sm);
+  }
+
+  @include mixins.tablet-desktop {
+    padding: theme.get-spacing(lg);
+    margin-bottom: theme.get-spacing(sm);
+  }
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  gap: theme.get-spacing(xs);
+}
+
+.page-title {
+  color: var(--md-sys-color-on-surface);
+  margin: 0;
+  @include mixins.heading-3;
+
+  @include mixins.mobile-tablet {
+    @include mixins.heading-4;
+  }
+
+  @include mixins.tablet-desktop {
+    @include mixins.heading-2;
+  }
+}
+
+.page-subtitle {
+  color: var(--md-sys-color-on-surface-variant);
+  margin: 0;
+  @include mixins.body-small;
+
+  @include mixins.tablet-desktop {
+    @include mixins.body-medium;
+  }
+}
+
+.footer-actions {
+  position: sticky;
+  bottom: 0;
+  background: var(--md-sys-color-surface);
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  padding: theme.get-spacing(md);
+  box-shadow: theme.get-shadow(medium);
+  z-index: 10;
+
+  @include mixins.tablet-desktop {
+    padding: theme.get-spacing(lg);
+  }
+}
+
+.actions-container {
+  display: flex;
+  justify-content: center;
+  @include mixins.container(1024px);
+}
+
+ 

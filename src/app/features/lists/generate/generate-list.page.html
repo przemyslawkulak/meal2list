@@ -1,107 +1,128 @@
 <div class="generate-list-container">
-  <h1>Generuj listę zakupów z przepisu</h1>
+  <!-- Main Content -->
+  <main class="generate-list__main">
+    <!-- Header Section -->
+    <section class="generate-list__header">
+      <h1 class="generate-list__title">Generuj listę zakupów</h1>
+      <p class="generate-list__subtitle">
+        Wygeneruj swoją listę zakupów z linków do przepisów lub wprowadzając tekst przepisu
+        bezpośrednio.
+      </p>
+    </section>
 
-  <!-- Form Type Selection -->
-  <div class="generate-list__form-selection">
-    <h2>Wybierz sposób wprowadzenia przepisu</h2>
-    <mat-radio-group
-      [value]="selectedFormType()"
-      (change)="onFormTypeChange($event.value)"
-      class="generate-list__radio-group"
-    >
-      <mat-radio-button value="scraping" class="generate-list__radio-option">
-        <div class="generate-list__radio-content">
-          <mat-icon>link</mat-icon>
-          <div class="generate-list__radio-text">
-            <span class="generate-list__radio-title">Pobierz przepis z URL</span>
-            <span class="generate-list__radio-description"
-              >Wprowadź link do przepisu z internetu</span
-            >
+    <!-- Form Type Selection Cards -->
+    <section class="generate-list__method-selection">
+      <div class="method-cards">
+        <div
+          class="method-card"
+          [class.method-card--active]="selectedFormType() === 'scraping'"
+          (click)="onFormTypeChange('scraping')"
+          (keydown.enter)="onFormTypeChange('scraping')"
+          (keydown.space)="$event.preventDefault(); onFormTypeChange('scraping')"
+          tabindex="0"
+          role="button"
+          aria-label="Wybierz metodę: Wklej linki do przepisów"
+        >
+          <div class="method-card__icon">
+            <mat-icon>link</mat-icon>
+          </div>
+          <div class="method-card__content">
+            <h3 class="method-card__title">Wklej linki do przepisów</h3>
+            <p class="method-card__description">Wprowadź linki do przepisów z internetu</p>
           </div>
         </div>
-      </mat-radio-button>
 
-      <mat-radio-button value="text" class="generate-list__radio-option">
-        <div class="generate-list__radio-content">
-          <mat-icon>edit_note</mat-icon>
-          <div class="generate-list__radio-text">
-            <span class="generate-list__radio-title">Wprowadź tekst przepisu</span>
-            <span class="generate-list__radio-description"
-              >Wklej lub wpisz przepis bezpośrednio</span
-            >
+        <div
+          class="method-card"
+          [class.method-card--active]="selectedFormType() === 'text'"
+          (click)="onFormTypeChange('text')"
+          (keydown.enter)="onFormTypeChange('text')"
+          (keydown.space)="$event.preventDefault(); onFormTypeChange('text')"
+          tabindex="0"
+          role="button"
+          aria-label="Wybierz metodę: Wprowadź tekst przepisu"
+        >
+          <div class="method-card__icon">
+            <mat-icon>article</mat-icon>
+          </div>
+          <div class="method-card__content">
+            <h3 class="method-card__title">Wprowadź tekst przepisu</h3>
+            <p class="method-card__description">Wklej lub wpisz przepis bezpośrednio</p>
           </div>
         </div>
-      </mat-radio-button>
-    </mat-radio-group>
-  </div>
+      </div>
+    </section>
 
-  <!-- Shopping List Selection -->
-  <div class="generate-list__list-selection">
-    <mat-form-field appearance="outline" class="generate-list__list-field">
-      <mat-label>Wybierz listę zakupów</mat-label>
-      <mat-select
-        [value]="selectedListId()"
-        (selectionChange)="onListSelectionChange($event.value)"
-      >
-        @for (list of shoppingLists(); track list.id) {
-        <mat-option [value]="list.id">{{ list.name }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-  </div>
+    <!-- Shopping List Name Input -->
+    <section class="generate-list__list-name">
+      <div class="form-card">
+        <mat-form-field appearance="outline" class="list-name-field">
+          <mat-label>Nazwa listy zakupów</mat-label>
+          <mat-select
+            [value]="selectedListId()"
+            (selectionChange)="onListSelectionChange($event.value)"
+          >
+            @for (list of shoppingLists(); track list.id) {
+            <mat-option [value]="list.id">{{ list.name }}</mat-option>
+            }
+          </mat-select>
+          <mat-icon matSuffix>expand_more</mat-icon>
+        </mat-form-field>
+      </div>
+    </section>
 
-  <!-- Clear All Button -->
-  @if (hasAnyContent) {
-  <div class="generate-list__actions">
-    <button mat-stroked-button (click)="clearAllForms()" class="generate-list__clear-all">
-      <mat-icon>clear_all</mat-icon>
-      <span>Wyczyść wszystko</span>
-    </button>
-  </div>
-  }
+    <!-- Selected Form Content -->
+    <section class="generate-list__form-section">
+      @if (selectedFormType() === 'scraping') {
+      <div class="form-card">
+        <div class="form-card__header">
+          <mat-icon class="form-card__icon">link</mat-icon>
+          <h2 class="form-card__title">Wklej linki do przepisów</h2>
+        </div>
+        <div class="form-card__content">
+          <app-scraping-form
+            [disabled]="isScrapingFormDisabled"
+            [scrapedContent]="scrapedContent()"
+            [scrapingStatus]="scrapingStatus()"
+            [errorMessage]="scrapingErrorMessage()"
+            (scrapingStart)="onScrapingStart()"
+            (scrapingSuccess)="onScrapingSuccess($event)"
+            (scrapingError)="onScrapingError($event)"
+            (contentChange)="onScrapingFormChange($event)"
+          ></app-scraping-form>
+        </div>
+      </div>
+      } @else if (selectedFormType() === 'text') {
+      <div class="form-card">
+        <div class="form-card__header">
+          <mat-icon class="form-card__icon">article</mat-icon>
+          <h2 class="form-card__title">Wprowadź tekst przepisu</h2>
+        </div>
+        <div class="form-card__content">
+          <app-generation-form
+            [initialRecipeText]="initialRecipeText()"
+            [disabled]="isGenerationFormDisabled"
+            (generate)="onGenerate($event)"
+            (contentChange)="onTextFormChange($event)"
+          ></app-generation-form>
+        </div>
+      </div>
+      }
+    </section>
 
-  <!-- Selected Form -->
-  <div class="generate-list__selected-form">
-    @if (selectedFormType() === 'text') {
-    <div class="generate-list__form-section">
-      <h2 class="generate-list__form-title">
-        <mat-icon>edit_note</mat-icon>
-        <span>Wprowadź tekst przepisu</span>
-        @if (activeFormType() === 'text') {
-        <mat-icon class="generate-list__active-indicator" color="primary">check_circle</mat-icon>
-        }
-      </h2>
-      <app-generation-form
-        [initialRecipeText]="initialRecipeText()"
-        [disabled]="isGenerationFormDisabled"
-        (generate)="onGenerate($event)"
-        (contentChange)="onTextFormChange($event)"
-      >
-      </app-generation-form>
-    </div>
-    } @if (selectedFormType() === 'scraping') {
-    <div class="generate-list__form-section">
-      <h2 class="generate-list__form-title">
-        <mat-icon>link</mat-icon>
-        <span>Pobierz przepis z URL</span>
-        @if (activeFormType() === 'scraping') {
-        <mat-icon class="generate-list__active-indicator" color="primary">check_circle</mat-icon>
-        }
-      </h2>
-      <app-scraping-form
-        [disabled]="isScrapingFormDisabled"
-        [scrapedContent]="scrapedContent()"
-        [scrapingStatus]="scrapingStatus()"
-        [errorMessage]="scrapingErrorMessage()"
-        (scrapingStart)="onScrapingStart()"
-        (scrapingSuccess)="onScrapingSuccess($event)"
-        (scrapingError)="onScrapingError($event)"
-        (contentChange)="onScrapingFormChange($event)"
-      >
-      </app-scraping-form>
-    </div>
+    <!-- Clear All Actions -->
+    @if (hasAnyContent) {
+    <section class="generate-list__actions">
+      <button mat-stroked-button (click)="clearAllForms()" class="clear-all-btn">
+        <mat-icon>clear_all</mat-icon>
+        <span>Wyczyść wszystko</span>
+      </button>
+    </section>
     }
-  </div>
+
+    <!-- Bottom spacing for mobile navigation -->
+    <div class="bottom-spacer"></div>
+  </main>
 
   <!-- Generation Steps Overlay -->
   <app-overlay [isVisible]="hasGenerationStarted()" [backdropClick]="false">
@@ -112,7 +133,6 @@
       [isContentReady]="isContentReady()"
       [scrapingStatus]="scrapingStatus()"
       [generationStatus]="generationStatus()"
-    >
-    </app-generation-steps>
+    ></app-generation-steps>
   </app-overlay>
 </div>

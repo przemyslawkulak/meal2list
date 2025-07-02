@@ -1,8 +1,14 @@
 <form [formGroup]="form" class="scraping-form" [class.scraping-form--disabled]="disabled()">
   <!-- URL Input Field -->
-  <mat-form-field appearance="fill" class="scraping-form__field">
+  <mat-form-field appearance="outline" class="scraping-form__field">
     <mat-label>URL przepisu</mat-label>
-    <input matInput formControlName="url" placeholder="https://example.com/przepis" type="url" />
+    <input
+      matInput
+      formControlName="url"
+      placeholder="https://przykladowastrona.com/przepis"
+      type="url"
+    />
+    <mat-icon matSuffix>link</mat-icon>
     @if (form.get('url')?.errors?.['required']) {
       <mat-error>URL jest wymagany</mat-error>
     }
@@ -11,7 +17,7 @@
     }
   </mat-form-field>
 
-  <!-- Action Buttons -->
+  <!-- Action Button -->
   <div class="scraping-form__actions">
     <button
       mat-flat-button
@@ -22,13 +28,11 @@
       class="scraping-form__scrape-btn"
     >
       @if (isLoading) {
-        <ng-container>
-          <mat-spinner diameter="20"></mat-spinner>
-          <span>Pobieranie...</span>
-        </ng-container>
+        <mat-spinner diameter="20"></mat-spinner>
+        <span>Pobieranie...</span>
       } @else {
         <ng-container>
-          <mat-icon>download</mat-icon>
+          <mat-icon>file_download</mat-icon>
           <span>Pobierz przepis</span>
         </ng-container>
       }

@@ -1,0 +1,11 @@
+// Theme System Index
+// Import this file to get access to all theme-related styles and variables
+
+// Base theme variables and functions
+@forward 'theme-variables';
+
+// Main Material theme configuration
+@forward 'material-theme';
+
+// CSS integration for theme classes
+@use 'theme-css-integration'; 

@@ -11,7 +11,6 @@ import { CategoryService } from '@core/supabase/category.service';
 import { GenerationReviewItemDto, CategoryDto } from '../../../types';
 import {
   ReviewTableComponent,
-  ReviewHeaderComponent,
   RecipeMetadataComponent,
   ReviewActionsComponent,
 } from './components';
@@ -25,7 +24,6 @@ import { LoggerService } from '@app/shared/services/logger.service';
   imports: [
     CommonModule,
     MatSnackBarModule,
-    ReviewHeaderComponent,
     RecipeMetadataComponent,
     ReviewTableComponent,
     ReviewActionsComponent,

@@ -21,7 +21,28 @@ export class ShoppingListService extends SupabaseService {
       switchMap(userId =>
         this.supabase
           .from('shopping_lists')
-          .select('id, name, recipe_id, created_at, updated_at, user_id')
+          .select(
+            `
+            id,
+            name,
+            recipe_id,
+            created_at,
+            updated_at,
+            user_id,
+            items:shopping_list_items(
+              id,
+              product_name,
+              quantity,
+              unit,
+              is_checked,
+              category_id,
+              source,
+              recipe_source,
+              created_at,
+              updated_at
+            )
+          `
+          )
           .eq('user_id', userId)
           .order('created_at', { ascending: false })
       ),

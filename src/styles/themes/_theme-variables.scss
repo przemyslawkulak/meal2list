@@ -1,0 +1,434 @@
+// Material Design 3 Theme Variables
+// This file contains SCSS variables that map to the Material Design 3 color system
+// and can be used throughout the Angular Material application
+
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+// =============================================================================
+// THEME CONFIGURATION MAPS - MODERN FRESH DESIGN
+// =============================================================================
+
+// Light Theme Colors (Fresh Green Food Tech App)
+$light-theme-colors: (
+  // Primary - Vibrant Fresh Green
+  primary: #4CAF50,              // Modern bright green
+  surface-tint: #4CAF50,
+  on-primary: #ffffff,
+  primary-container: #E8F5E8,    // Very light green container
+  on-primary-container: #1B5E20, // Dark green text
+
+  // Secondary - Complementary Fresh Colors  
+  secondary: #66BB6A,            // Lighter green accent
+  on-secondary: #ffffff,
+  secondary-container: #E8F5E8,
+  on-secondary-container: #1B5E20,
+  
+  // Tertiary - Fresh Accent Color
+  tertiary: #FF9800,             // Warm orange accent for food
+  on-tertiary: #ffffff,
+  tertiary-container: #FFF3E0,
+  on-tertiary-container: #E65100,
+  
+  // Error - Modern red
+  error: #F44336,
+  on-error: #ffffff,
+  error-container: #FFEBEE,
+  on-error-container: #B71C1C,
+  
+  // Background & Surface - Pure and clean
+  background: #FFFFFF,           // Pure white background
+  on-background: #212121,        // High contrast dark text
+  surface: #FFFFFF,              // Pure white surface
+  on-surface: #212121,           // High contrast text
+  surface-variant: #F8F9FA,      // Very subtle tint
+  on-surface-variant: #424242,   // Medium contrast text
+  
+  // Outlines - Reduced grey dominance
+  outline: #9E9E9E,              // Softer outline
+  outline-variant: #E0E0E0,      // Very light outline
+  
+  // System colors
+  shadow: #000000,
+  scrim: #000000,
+  inverse-surface: #212121,
+  inverse-on-surface: #FFFFFF,
+  inverse-primary: #81C784,
+  
+  // Container hierarchy - Less grey, more fresh tints
+  surface-dim: #F5F5F5,
+  surface-bright: #FFFFFF,
+  surface-container-lowest: #FFFFFF,
+  surface-container-low: #FAFAFA,
+  surface-container: #F8F9FA,
+  surface-container-high: #F1F8E9,    // Light green tint
+  surface-container-highest: #E8F5E8   // Fresh green tint
+);
+
+// Dark Theme Colors (Elegant dark with green accents)
+$dark-theme-colors: (
+  // Primary colors for dark theme
+  primary: #66BB6A,              // Bright green for dark theme
+  surface-tint: #66BB6A,
+  on-primary: #1B5E20,
+  primary-container: #2E7D32,
+  on-primary-container: #C8E6C9,
+  
+  // Secondary colors
+  secondary: #81C784,
+  on-secondary: #1B5E20,
+  secondary-container: #388E3C,
+  on-secondary-container: #C8E6C9,
+  
+  // Tertiary colors
+  tertiary: #FFB74D,             // Warm accent for dark theme
+  on-tertiary: #E65100,
+  tertiary-container: #F57C00,
+  on-tertiary-container: #FFE0B2,
+  
+  // Error colors
+  error: #EF5350,
+  on-error: #B71C1C,
+  error-container: #C62828,
+  on-error-container: #FFCDD2,
+  
+  // Dark backgrounds with green undertones
+  background: #121212,           // True black background
+  on-background: #FFFFFF,
+  surface: #121212,
+  on-surface: #FFFFFF,
+  surface-variant: #1A1A1A,
+  on-surface-variant: #E0E0E0,
+  
+  // Dark outlines
+  outline: #616161,
+  outline-variant: #424242,
+  
+  // System colors for dark
+  shadow: #000000,
+  scrim: #000000,
+  inverse-surface: #FFFFFF,
+  inverse-on-surface: #212121,
+  inverse-primary: #4CAF50,
+  
+  // Dark container hierarchy
+  surface-dim: #0F0F0F,
+  surface-bright: #1F1F1F,
+  surface-container-lowest: #0A0A0A,
+  surface-container-low: #161616,
+  surface-container: #1E1E1E,
+  surface-container-high: #242424,
+  surface-container-highest: #2A2A2A
+);
+
+// =============================================================================
+// TYPOGRAPHY SYSTEM - MODERN HIERARCHY
+// =============================================================================
+
+// Enhanced typography scale with better hierarchy
+$font-sizes: (
+  xs: 0.75rem,     // 12px
+  sm: 0.875rem,    // 14px  
+  base: 1rem,      // 16px - base size
+  lg: 1.125rem,    // 18px
+  xl: 1.25rem,     // 20px
+  xxl: 1.5rem,     // 24px
+  xxxl: 1.875rem,  // 30px
+  xxxxl: 2.25rem,  // 36px - main headers
+  xxxxxl: 3rem,    // 48px - hero text
+);
+
+// Font weights for better hierarchy
+$font-weights: (
+  light: 300,
+  normal: 400,
+  medium: 500,
+  semibold: 600,
+  bold: 700,
+  extrabold: 800,
+  black: 900
+);
+
+// Modern line heights
+$line-heights: (
+  tight: 1.2,
+  normal: 1.5,
+  relaxed: 1.6,
+  loose: 1.8
+);
+
+// =============================================================================
+// SPACING SYSTEM - 8PX GRID BASED
+// =============================================================================
+
+// 8px grid system for consistent spacing
+$spacing: (
+  none: 0,
+  xs: 4px,       // 0.25rem
+  sm: 8px,       // 0.5rem  
+  md: 16px,      // 1rem
+  lg: 24px,      // 1.5rem
+  xl: 32px,      // 2rem
+  xxl: 48px,     // 3rem
+  xxxl: 64px,    // 4rem
+  xxxxl: 96px,   // 6rem
+  xxxxxl: 128px, // 8rem
+);
+
+// =============================================================================
+// MODERN SHADOWS & EFFECTS
+// =============================================================================
+
+// Enhanced shadow system for depth
+$shadows: (
+  none: none,
+  subtle: 0 1px 3px rgba(0, 0, 0, 0.1),
+  soft: 0 2px 8px rgba(0, 0, 0, 0.08),
+  medium: 0 4px 16px rgba(0, 0, 0, 0.12),
+  strong: 0 8px 32px rgba(0, 0, 0, 0.16),
+  primary-glow: 0 4px 16px rgba(76, 175, 80, 0.2),
+  primary-strong: 0 8px 32px rgba(76, 175, 80, 0.3),
+);
+
+// Modern gradients
+$gradients: (
+  primary: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%),
+  primary-soft: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(102, 187, 106, 0.1) 100%),
+  surface: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%),
+  accent: linear-gradient(135deg, #FF9800 0%, #FFB74D 100%),
+);
+
+// =============================================================================
+// BORDER RADIUS SYSTEM
+// =============================================================================
+
+$radius: (
+  none: 0,
+  sm: 4px,
+  md: 8px,
+  lg: 12px,
+  xl: 16px,
+  xxl: 24px,
+  full: 50%
+);
+
+// =============================================================================
+// ANGULAR MATERIAL PALETTE GENERATION
+// =============================================================================
+
+// Modern primary palette with fresh greens
+$primary-palette: (
+  50: #E8F5E8,
+  100: #C8E6C9,
+  200: #A5D6A7,
+  300: #81C784,
+  400: #66BB6A,
+  500: #4CAF50,    // Main primary color
+  600: #43A047,
+  700: #388E3C,
+  800: #2E7D32,
+  900: #1B5E20,
+  A100: #B9F6CA,
+  A200: #69F0AE,
+  A400: #00E676,
+  A700: #00C853,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #ffffff,
+  )
+);
+
+// Accent palette with warm orange
+$accent-palette: (
+  50: #FFF3E0,
+  100: #FFE0B2,
+  200: #FFCC80,
+  300: #FFB74D,
+  400: #FFA726,
+  500: #FF9800,    // Main accent color
+  600: #FB8C00,
+  700: #F57C00,
+  800: #EF6C00,
+  900: #E65100,
+  A100: #FFD180,
+  A200: #FFAB40,
+  A400: #FF9100,
+  A700: #FF6D00,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #ffffff,
+  )
+);
+
+// Warning palette (keeping green theme)
+$green-warn-palette: (
+  50: #F1F8E9,
+  100: #DCEDC8,
+  200: #C5E1A5,
+  300: #AED581,
+  400: #9CCC65,
+  500: #8BC34A,
+  600: #7CB342,
+  700: #689F38,
+  800: #558B2F,
+  900: #33691E,
+  A100: #CCFF90,
+  A200: #B2FF59,
+  A400: #76FF03,
+  A700: #64DD17,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  )
+);
+
+// =============================================================================
+// UTILITY FUNCTIONS
+// =============================================================================
+
+// Function to get theme color value
+@function get-theme-color($theme-name, $color-key) {
+  $theme-map: null;
+  
+  @if $theme-name == 'light' {
+    $theme-map: $light-theme-colors;
+  } @else if $theme-name == 'dark' {
+    $theme-map: $dark-theme-colors;
+  } @else {
+    @error "Invalid theme name: #{$theme-name}. Use 'light' or 'dark'.";
+  }
+  
+  @if map.has-key($theme-map, $color-key) {
+    @return map.get($theme-map, $color-key);
+  } @else {
+    @error "Color key '#{$color-key}' not found in #{$theme-name} theme.";
+  }
+}
+
+// Typography helper functions
+@function get-font-size($size-key) {
+  @if map.has-key($font-sizes, $size-key) {
+    @return map.get($font-sizes, $size-key);
+  } @else {
+    @error "Font size '#{$size-key}' not found.";
+  }
+}
+
+@function get-font-weight($weight-key) {
+  @if map.has-key($font-weights, $weight-key) {
+    @return map.get($font-weights, $weight-key);
+  } @else {
+    @error "Font weight '#{$weight-key}' not found."; 
+  }
+}
+
+@function get-line-height($height-key) {
+  @if map.has-key($line-heights, $height-key) {
+    @return map.get($line-heights, $height-key);
+  } @else {
+    @error "Line height '#{$height-key}' not found.";
+  }
+}
+
+// Spacing helper function
+@function get-spacing($spacing-key) {
+  @if map.has-key($spacing, $spacing-key) {
+    @return map.get($spacing, $spacing-key);
+  } @else {
+    @error "Spacing '#{$spacing-key}' not found.";
+  }
+}
+
+// Shadow helper function
+@function get-shadow($shadow-key) {
+  @if map.has-key($shadows, $shadow-key) {
+    @return map.get($shadows, $shadow-key);
+  } @else {
+    @error "Shadow '#{$shadow-key}' not found.";
+  }
+}
+
+// Gradient helper function
+@function get-gradient($gradient-key) {
+  @if map.has-key($gradients, $gradient-key) {
+    @return map.get($gradients, $gradient-key);
+  } @else {
+    @error "Gradient '#{$gradient-key}' not found.";
+  }
+}
+
+// Radius helper function
+@function get-radius($radius-key) {
+  @if map.has-key($radius, $radius-key) {
+    @return map.get($radius, $radius-key);
+  } @else {
+    @error "Radius '#{$radius-key}' not found.";
+  }
+}
+
+// =============================================================================
+// MIXIN FOR GENERATING CSS VARIABLES
+// =============================================================================
+
+@mixin generate-theme-css-vars($theme-name, $theme-colors) {
+  @each $color-key, $color-value in $theme-colors {
+    --md-sys-color-#{$color-key}: #{$color-value};
+  }
+}
+
+// =============================================================================
+// TYPOGRAPHY CONFIGURATION FOR ANGULAR MATERIAL
+// =============================================================================
+
+$app-typography: mat.m2-define-legacy-typography-config(
+  $font-family: '"Inter", "Segoe UI", system-ui, -apple-system, sans-serif',
+  $display-4: mat.m2-define-typography-level(48px, 56px, 300, $letter-spacing: -0.02em),
+  $display-3: mat.m2-define-typography-level(36px, 44px, 400, $letter-spacing: -0.01em),
+  $display-2: mat.m2-define-typography-level(30px, 38px, 400, $letter-spacing: -0.01em),
+  $display-1: mat.m2-define-typography-level(24px, 32px, 500),
+  $headline: mat.m2-define-typography-level(20px, 28px, 600),
+  $title: mat.m2-define-typography-level(18px, 26px, 600),
+  $subheading-2: mat.m2-define-typography-level(16px, 24px, 500),
+  $subheading-1: mat.m2-define-typography-level(14px, 22px, 500),
+  $body-2: mat.m2-define-typography-level(14px, 22px, 400),
+  $body-1: mat.m2-define-typography-level(16px, 24px, 400),
+  $caption: mat.m2-define-typography-level(12px, 18px, 400),
+  $button: mat.m2-define-typography-level(14px, 20px, 600, $letter-spacing: 0.02em),
+  $input: mat.m2-define-typography-level(16px, 24px, 400)
+); 

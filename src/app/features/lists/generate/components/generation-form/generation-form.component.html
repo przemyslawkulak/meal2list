@@ -4,32 +4,33 @@
   class="generation-form"
   [class.generation-form--disabled]="disabled()"
 >
-  <mat-form-field appearance="fill" class="generation-form__field">
-    <mat-label>Tekst przepisu</mat-label>
+  <div class="generation-form__field-wrapper">
+    <label for="recipe-text" class="generation-form__label">Tekst przepisu*</label>
     <textarea
-      matInput
+      id="recipe-text"
+      class="generation-form__textarea"
       formControlName="recipeText"
       [maxLength]="maxLength"
-      rows="10"
-      placeholder="Wklej tutaj swój przepis..."
-    >
-    </textarea>
-    <app-character-counter [length]="textLength" [max]="maxLength"> </app-character-counter>
+      rows="6"
+      placeholder="Wpisz tutaj składniki i kroki przygotowania..."
+    ></textarea>
+    <app-character-counter [length]="textLength" [max]="maxLength"></app-character-counter>
     @if (form.get('recipeText')?.errors?.['required']) {
-      <mat-error>Tekst przepisu jest wymagany</mat-error>
+      <div class="generation-form__error">Tekst przepisu jest wymagany</div>
     }
     @if (form.get('recipeText')?.errors?.['maxlength']) {
-      <mat-error>Tekst przepisu nie może przekraczać {{ maxLength }} znaków</mat-error>
+      <div class="generation-form__error">
+        Tekst przepisu nie może przekraczać {{ maxLength }} znaków
+      </div>
     }
-  </mat-form-field>
+  </div>
 
   <button
-    mat-flat-button
-    color="primary"
     type="submit"
     [disabled]="!form.valid || form.pristine || disabled()"
     class="generation-form__submit"
   >
-    Generuj listę zakupów
+    <mat-icon>playlist_add_check</mat-icon>
+    <span>Generuj listę</span>
   </button>
 </form>

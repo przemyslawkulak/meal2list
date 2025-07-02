@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -9,7 +9,6 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { CategoryService } from '@core/supabase/category.service';
 import { AuthService } from '@core/supabase/auth.service';
 
 import { NavLink } from '@types';
@@ -36,9 +35,8 @@ import { OfflineBannerComponent } from '@app/shared/ui/offline-banner/offline-ba
   styleUrls: ['./shell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ShellComponent implements OnInit {
+export class ShellComponent {
   private readonly _breakpointObserver = inject(BreakpointObserver);
-  private readonly _categoryService = inject(CategoryService);
   private readonly _authService = inject(AuthService);
 
   readonly isTabletOrMobile$: Observable<boolean> = this._breakpointObserver
@@ -56,21 +54,46 @@ export class ShellComponent implements OnInit {
       shareReplay(1)
     );
 
-  readonly categories$ = this._categoryService.categories$;
-  readonly currentUser$ = this._authService.currentUser$;
+  readonly isMobile$: Observable<boolean> = this._breakpointObserver
+    .observe([Breakpoints.XSmall, Breakpoints.HandsetLandscape, Breakpoints.HandsetPortrait])
+    .pipe(
+      map(result => result.matches),
+      shareReplay(1)
+    );
+
+  readonly isTabletOrDesktop$: Observable<boolean> = this._breakpointObserver
+    .observe([
+      Breakpoints.Small,
+      Breakpoints.Medium,
+      Breakpoints.Large,
+      Breakpoints.XLarge,
+      Breakpoints.TabletLandscape,
+      Breakpoints.TabletPortrait,
+    ])
+    .pipe(
+      map(result => result.matches),
+      shareReplay(1)
+    );
+
   readonly isAuthenticated$ = this._authService.isAuthenticated$;
 
   readonly navigationLinks: NavLink[] = [
-    { label: 'Listy zakupowe', path: '/lists', icon: 'view_list' },
-    { label: 'Generuj listę', path: '/generate', icon: 'auto_fix_high' },
-    { label: 'Kategorie', path: '/categories', icon: 'widgets' },
+    { label: 'Listy', path: '/lists', icon: 'list_alt' },
+    { label: 'Generuj', path: '/generate', icon: 'add_circle' },
+    // { label: 'Kategorie', path: '/categories', icon: 'category' },
   ];
 
-  ngOnInit(): void {
-    this._categoryService.preload();
-  }
+  isMobileMenuOpen = false;
 
   onLogout(): void {
     this._authService.logout().subscribe();
+  }
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu(): void {
+    this.isMobileMenuOpen = false;
   }
 }

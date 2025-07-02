@@ -1,26 +1,152 @@
 @use '../../../../../../mixins' as mixins;
+@use '../../../../../../styles/themes/theme-variables' as theme;
+
+// =============================================================================
+// GENERATION FORM - MOBILE FIRST
+// =============================================================================
 
 .generation-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
   width: 100%;
+}
 
-  &__field {
-    width: 100%;
+.generation-form__field-wrapper {
+  margin-bottom: theme.get-spacing(lg);
+}
+
+.generation-form__label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: theme.get-spacing(xs);
+  
+  @media (min-width: 768px) {
+    font-size: 1rem;
   }
+}
 
-  &__submit {
-    align-self: flex-start;
+.generation-form__textarea {
+  width: 100%;
+  padding: theme.get-spacing(sm);
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  resize: none;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  
+  &:focus {
+    outline: none;
+    border-color: var(--md-sys-color-primary);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
   }
-
-  &--disabled {
-    opacity: 0.6;
-    pointer-events: none;
+  
+  &::placeholder {
+    color: #9ca3af;
   }
+  
+  @media (min-width: 768px) {
+    padding: theme.get-spacing(md);
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+}
 
-  textarea {
-    min-height: 200px;
-    resize: vertical;
+.generation-form__error {
+  font-size: 0.75rem;
+  color: #dc2626;
+  margin-top: theme.get-spacing(xs);
+  
+  @media (min-width: 768px) {
+    font-size: 0.875rem;
+  }
+}
+
+.generation-form__submit {
+  width: 100%;
+  background: var(--md-sys-color-primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: theme.get-spacing(md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: theme.get-spacing(sm);
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  cursor: pointer;
+  
+  &:hover:not(:disabled) {
+    background: #059669;
+    transform: translateY(-1px);
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  
+  &:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+  
+  @media (min-width: 768px) {
+    border-radius: 8px;
+    padding: theme.get-spacing(lg);
+    font-size: 1rem;
+    
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+// =============================================================================
+// DISABLED STATE
+// =============================================================================
+
+.generation-form--disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+// =============================================================================
+// DARK THEME SUPPORT
+// =============================================================================
+
+:host-context(.dark-theme) {
+  .generation-form__label {
+    color: #e5e7eb;
+  }
+  
+  .generation-form__textarea {
+    background: #1f2937;
+    border-color: #374151;
+    color: #f3f4f6;
+    
+    &:focus {
+      border-color: var(--md-sys-color-primary);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    }
+    
+    &::placeholder {
+      color: #6b7280;
+    }
+  }
+  
+  .generation-form__error {
+    color: #f87171;
   }
 } 

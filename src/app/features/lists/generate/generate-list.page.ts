@@ -90,6 +90,9 @@ export class GenerateListPageComponent implements OnInit {
   scrapingStatus = signal<'idle' | 'scraping' | 'success' | 'error'>('idle');
   scrapingErrorMessage = signal<string | null>(null);
 
+  // Add signal to store the original URL
+  originalUrl = signal<string>('');
+
   // Add content readiness tracking
   isContentReady = signal<boolean>(false);
 
@@ -121,7 +124,7 @@ export class GenerateListPageComponent implements OnInit {
     if (!listId) return;
 
     this.hasGenerationStarted.set(true);
-    this.generateFromContent(listId, recipeText, 'text');
+    this.generateFromContent(listId, recipeText, 'text', 'Przepis tekstowy');
   }
 
   // New method for radio button selection
@@ -160,8 +163,9 @@ export class GenerateListPageComponent implements OnInit {
     }
   }
 
-  onScrapingSuccess(content: string): void {
-    this.scrapedContent.set(content);
+  onScrapingSuccess(result: { url: string; content: string }): void {
+    this.scrapedContent.set(result.content);
+    this.originalUrl.set(result.url);
     this.scrapingStatus.set('success');
     this.scrapingErrorMessage.set(null);
     this.activeFormType.set('scraping');
@@ -177,6 +181,7 @@ export class GenerateListPageComponent implements OnInit {
     this.scrapingStatus.set('error');
     this.scrapingErrorMessage.set(error);
     this.scrapedContent.set('');
+    this.originalUrl.set('');
     this.isContentReady.set(false);
     this.hasGenerationStarted.set(false);
   }
@@ -195,6 +200,7 @@ export class GenerateListPageComponent implements OnInit {
 
   private clearScrapingForm(): void {
     this.scrapedContent.set('');
+    this.originalUrl.set('');
     this.scrapingStatus.set('idle');
     this.scrapingErrorMessage.set(null);
     this.isContentReady.set(false);
@@ -251,13 +257,22 @@ export class GenerateListPageComponent implements OnInit {
   onGenerateFromScraped(): void {
     const content = this.scrapedContent();
     const listId = this.selectedListId();
+    const url = this.originalUrl();
 
     if (!content || !listId) return;
 
-    this.generateFromContent(listId, content, 'url');
+    // Use the URL as the source if available, otherwise fallback to 'url'
+    const sourceLabel = url || 'Strona internetowa';
+    this.generateFromContent(listId, content, 'url', sourceLabel);
   }
 
-  private generateFromContent(listId: string, recipeText: string, source: 'text' | 'url'): void {
+  // Modified generateFromContent method to accept sourceLabel parameter
+  private generateFromContent(
+    listId: string,
+    recipeText: string,
+    source: 'text' | 'url',
+    sourceLabel: string
+  ): void {
     this.isGenerating.set(true);
     this.generationStatus.set('generating');
     this.errorMessage.set(null);
@@ -279,7 +294,7 @@ export class GenerateListPageComponent implements OnInit {
             listId: listId,
             recipeText: recipeText,
             recipeName: result.recipeName,
-            recipeSource: source, // Dynamic source based on form type
+            recipeSource: sourceLabel, // Use the sourceLabel instead of just source type
           };
 
           console.log('Navigating to review with state:', {

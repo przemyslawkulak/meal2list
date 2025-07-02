@@ -6,7 +6,7 @@ import {
   OnDestroy,
   inject,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -50,6 +50,26 @@ import { ProductService } from '@app/core/supabase/product.service';
 import { NotificationService } from '@app/shared/services/notification.service';
 import { LoggerService } from '@app/shared/services/logger.service';
 
+interface RecipeGroup {
+  recipeName: string;
+  items: ShoppingListItemResponseDto[];
+  uncheckedItems: ShoppingListItemResponseDto[];
+  checkedItems: ShoppingListItemResponseDto[];
+}
+
+interface ShoppingListState {
+  loading: boolean;
+  data: ShoppingListResponseDto | null;
+  categories: CategoryDto[];
+  sortedItems: ShoppingListItemResponseDto[];
+  uncheckedItems: ShoppingListItemResponseDto[];
+  checkedItems: ShoppingListItemResponseDto[];
+  groupByRecipe: boolean;
+  groupedByRecipeItems: RecipeGroup[];
+  allCheckedItemsInGroupedView: ShoppingListItemResponseDto[];
+  showBadges: boolean;
+}
+
 @Component({
   selector: 'app-shopping-list-detail',
   standalone: true,
@@ -66,6 +86,7 @@ import { LoggerService } from '@app/shared/services/logger.service';
     CommonModule,
     MatTooltipModule,
     CategoryIconComponent,
+    RouterModule,
   ],
   templateUrl: './shopping-list-detail.component.html',
   styleUrls: ['./shopping-list-detail.component.scss'],
@@ -96,50 +117,50 @@ export class ShoppingListDetailComponent implements OnDestroy {
   });
 
   // Computed signal for items grouped by recipe
-  groupedByRecipeItems = computed(() => {
-    const list = this.shoppingList();
-    if (!list?.items) return { recipeGroups: [], allCheckedItems: [] };
+  groupedByRecipeItems = computed(
+    (): { recipeGroups: RecipeGroup[]; allCheckedItems: ShoppingListItemResponseDto[] } => {
+      const list = this.shoppingList();
+      if (!list?.items) return { recipeGroups: [], allCheckedItems: [] };
 
-    // Split all items into checked and unchecked
-    const uncheckedItems = list.items.filter(item => !item.is_checked);
-    const checkedItems = list.items.filter(item => item.is_checked);
+      // Group ALL items by recipe_source (both checked and unchecked)
+      const grouped = new Map<string, ShoppingListItemResponseDto[]>();
 
-    // Group only unchecked items by recipe_source
-    const grouped = new Map<string, ShoppingListItemResponseDto[]>();
-
-    uncheckedItems.forEach(item => {
-      const recipeKey = item.recipe_source || 'Ręczne dodanie';
-      if (!grouped.has(recipeKey)) {
-        grouped.set(recipeKey, []);
-      }
-      grouped.get(recipeKey)!.push(item);
-    });
-
-    // Convert to array and sort each group
-    const recipeGroups = Array.from(grouped.entries())
-      .map(([recipeName, items]) => ({
-        recipeName,
-        items: this.sortItemsByCategory(items),
-        uncheckedItems: items, // All items in groups are unchecked now
-        checkedItems: [] as ShoppingListItemResponseDto[], // Empty since checked items are separate
-      }))
-      // Sort groups: recipe items first, then manual additions
-      .sort((a, b) => {
-        // If both are manual additions or both are recipes, sort alphabetically
-        if ((a.recipeName === 'Ręczne dodanie') === (b.recipeName === 'Ręczne dodanie')) {
-          return a.recipeName.localeCompare(b.recipeName);
+      list.items.forEach(item => {
+        const recipeKey = item.recipe_source || 'Ręczne dodanie';
+        if (!grouped.has(recipeKey)) {
+          grouped.set(recipeKey, []);
         }
-        // Manual additions go last
-        if (a.recipeName === 'Ręczne dodanie') return 1;
-        if (b.recipeName === 'Ręczne dodanie') return -1;
-        return 0;
+        grouped.get(recipeKey)!.push(item);
       });
 
-    return {
-      recipeGroups,
-      allCheckedItems: this.sortItemsByCategory(checkedItems),
-    };
-  });
+      // Convert to array and sort each group
+      const recipeGroups: RecipeGroup[] = Array.from(grouped.entries())
+        .map(([recipeName, allItems]): RecipeGroup => {
+          const sortedItems = this.sortItemsByCategory(allItems);
+          const uncheckedItems = sortedItems.filter(item => !item.is_checked);
+          return {
+            recipeName,
+            items: sortedItems, // All items (checked + unchecked) for correct count
+            uncheckedItems: uncheckedItems, // Only unchecked items to display in group
+            checkedItems: [], // Empty - checked items will be shown at bottom
+          };
+        })
+        .filter(group => group.uncheckedItems.length > 0) // Only show groups with unchecked items
+        // Sort groups: recipe items first, then manual additions
+        .sort((a, b) => {
+          // Manual additions go last
+          if (a.recipeName === 'Ręczne dodanie' && b.recipeName !== 'Ręczne dodanie') return 1;
+          if (a.recipeName !== 'Ręczne dodanie' && b.recipeName === 'Ręczne dodanie') return -1;
+          // Otherwise sort alphabetically
+          return a.recipeName.localeCompare(b.recipeName);
+        });
+
+      return {
+        recipeGroups,
+        allCheckedItems: this.sortItemsByCategory(list.items.filter(item => item.is_checked)),
+      };
+    }
+  );
 
   // Computed signals derived from sorted items
   uncheckedItems = computed(() => this.sortedItems().filter(item => !item.is_checked));
@@ -156,7 +177,7 @@ export class ShoppingListDetailComponent implements OnDestroy {
       uncheckedItems: this.uncheckedItems(),
       checkedItems: this.checkedItems(),
       groupByRecipe: this.groupByRecipe(),
-      groupedByRecipeItems: groupedData.recipeGroups,
+      groupedByRecipeItems: groupedData.recipeGroups as RecipeGroup[],
       allCheckedItemsInGroupedView: groupedData.allCheckedItems,
       showBadges: this.showBadges(),
     };
@@ -388,7 +409,9 @@ export class ShoppingListDetailComponent implements OnDestroy {
    * Toggles visibility of recipe and source badges
    */
   toggleShowBadges(): void {
-    this.showBadges.set(!this.showBadges());
+    const current = this.showBadges();
+    this.showBadges.set(!current);
+    this.logger.logInfo('Toggled show badges', `showBadges: ${!current}`);
   }
 
   /**
@@ -464,5 +487,118 @@ export class ShoppingListDetailComponent implements OnDestroy {
     });
 
     this.shoppingList.set({ ...currentList, items: updatedItems });
+  }
+
+  /**
+   * Get the count of completed items
+   */
+  getTotalItemsCount(state: ShoppingListState): number {
+    if (!state.data?.items) return 0;
+    return state.data.items.filter((item: ShoppingListItemResponseDto) => item.is_checked).length;
+  }
+
+  /**
+   * Get the total count of all items
+   */
+  getAllItemsCount(state: ShoppingListState): number {
+    if (!state.data?.items) return 0;
+    return state.data.items.length;
+  }
+
+  /**
+   * Get the progress percentage
+   */
+  getProgressPercentage(state: ShoppingListState): number {
+    const total = this.getAllItemsCount(state);
+    if (total === 0) return 0;
+    const completed = this.getTotalItemsCount(state);
+    return Math.round((completed / total) * 100);
+  }
+
+  /**
+   * Check if there's a partial selection in the given items
+   */
+  hasPartialSelection(items: ShoppingListItemResponseDto[]): boolean {
+    if (!items.length) return false;
+    const checkedCount = items.filter(item => item.is_checked).length;
+    return checkedCount > 0 && checkedCount < items.length;
+  }
+
+  /**
+   * Toggle all items checked state
+   */
+  toggleAllItems(items: ShoppingListItemResponseDto[], checked: boolean): void {
+    items.forEach(item => {
+      if (item.is_checked !== checked) {
+        this.toggleItemChecked(item.id, item.is_checked);
+      }
+    });
+  }
+
+  /**
+   * Update item quantity with inline editing
+   */
+  updateItemQuantity(itemId: string, event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const quantity = parseFloat(target.value);
+
+    if (!isNaN(quantity) && quantity > 0) {
+      const updateCommand: UpdateShoppingListItemCommand = { quantity };
+      this.updateLocalShoppingListItemOptimistic(itemId, updateCommand);
+
+      this.shoppingListItemsService
+        .updateShoppingListItem(itemId, updateCommand)
+        .pipe(
+          takeUntil(this.destroy$),
+          catchError(error => {
+            this.notification.showError('Błąd podczas aktualizacji ilości produktu');
+            this.logger.logError(error, 'Error updating item quantity');
+            // Revert optimistic update on error
+            const currentItem = this.shoppingList()?.items?.find(item => item.id === itemId);
+            if (currentItem) {
+              target.value = currentItem.quantity.toString();
+            }
+            return of(null);
+          })
+        )
+        .subscribe();
+    }
+  }
+
+  /**
+   * Update item unit with inline editing
+   */
+  updateItemUnit(itemId: string, event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const unit = target.value.trim();
+
+    if (unit) {
+      const updateCommand: UpdateShoppingListItemCommand = { unit };
+      this.updateLocalShoppingListItemOptimistic(itemId, updateCommand);
+
+      this.shoppingListItemsService
+        .updateShoppingListItem(itemId, updateCommand)
+        .pipe(
+          takeUntil(this.destroy$),
+          catchError(error => {
+            this.notification.showError('Błąd podczas aktualizacji jednostki produktu');
+            this.logger.logError(error, 'Error updating item unit');
+            // Revert optimistic update on error
+            const currentItem = this.shoppingList()?.items?.find(item => item.id === itemId);
+            if (currentItem && currentItem.unit !== null) {
+              target.value = currentItem.unit;
+            }
+            return of(null);
+          })
+        )
+        .subscribe();
+    }
+  }
+
+  /**
+   * Get the count of completed items in a group
+   */
+  getCompletedCount(items: ShoppingListItemResponseDto[]): number {
+    return items.filter(item => item.is_checked).length;
   }
 }
