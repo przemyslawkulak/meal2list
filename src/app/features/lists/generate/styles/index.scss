@@ -1,0 +1,13 @@
+// =============================================================================
+// GENERATE LIST STYLES - Utility Index
+// =============================================================================
+// This file exports all utility mixins and styles for the generate list feature
+
+// Core utilities
+@forward './theme-mixins';
+@forward './responsive-mixins';
+@forward './card-mixins';
+@forward './animations';
+
+// Material Design overrides (auto-imported when using this index)
+@use './material-overrides'; 

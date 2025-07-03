@@ -1,0 +1,78 @@
+// =============================================================================
+// RESPONSIVE MIXINS - Standardized Breakpoints
+// =============================================================================
+
+@mixin mobile-only {
+  @media (max-width: 767px) {
+    @content;
+  }
+}
+
+@mixin tablet-up {
+  @media (min-width: 768px) {
+    @content;
+  }
+}
+
+// Typography responsive patterns
+@mixin responsive-font-size($mobile-size, $desktop-size) {
+  & {
+    font-size: $mobile-size;
+  }
+  
+  @include tablet-up {
+    & {
+      font-size: $desktop-size;
+    }
+  }
+}
+
+@mixin responsive-spacing($mobile-spacing, $desktop-spacing) {
+  & {
+    padding: $mobile-spacing;
+  }
+  
+  @include tablet-up {
+    & {
+      padding: $desktop-spacing;
+    }
+  }
+}
+
+@mixin responsive-border-radius($mobile-radius, $desktop-radius) {
+  & {
+    border-radius: $mobile-radius;
+  }
+  
+  @include tablet-up {
+    & {
+      border-radius: $desktop-radius;
+    }
+  }
+}
+
+// Layout patterns
+@mixin mobile-first-container($mobile-padding, $desktop-padding, $max-width: 1024px) {
+  & {
+    padding: $mobile-padding;
+    max-width: none;
+    margin: 0;
+  }
+  
+  @include tablet-up {
+    & {
+      max-width: $max-width;
+      margin: 0 auto;
+      padding: $desktop-padding;
+    }
+  }
+}
+
+@mixin centered-content-block($max-width: 800px) {
+  @include tablet-up {
+    & {
+      max-width: $max-width;
+      margin: 0 auto;
+    }
+  }
+} 

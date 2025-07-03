@@ -1,0 +1,82 @@
+@use './theme-mixins' as theme;
+@use './responsive-mixins' as responsive;
+@use '../../../../../styles/themes/theme-variables' as theme-vars;
+
+// =============================================================================
+// CARD MIXINS - Reusable Card Patterns  
+// =============================================================================
+
+@mixin base-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  
+  @include theme.dark-theme-card;
+}
+
+@mixin elevated-card {
+  @include base-card;
+  @include responsive.responsive-border-radius(8px, 12px);
+  @include responsive.responsive-spacing(
+    theme-vars.get-spacing(lg), 
+    theme-vars.get-spacing(xxl)
+  );
+  
+  @include responsive.tablet-up {
+    @include responsive.centered-content-block;
+    
+    & {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+@mixin interactive-card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  @include base-card;
+  
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+  }
+  
+  @include theme.dark-theme-card-hover;
+}
+
+@mixin active-card {
+  &--active {
+    border-color: var(--md-sys-color-primary);
+    border-width: 3px;
+    background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+    box-shadow: 0 12px 32px rgba(16, 185, 129, 0.25);
+    transform: translateY(-2px);
+  }
+  
+  @include theme.dark-theme-card-active;
+}
+
+@mixin card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: theme-vars.get-spacing(lg);
+  gap: theme-vars.get-spacing(sm);
+}
+
+@mixin card-icon {
+  color: var(--md-sys-color-primary);
+  width: 1em;
+  height: 1em;
+  
+  @include responsive.responsive-font-size(1.5rem, 2rem);
+}
+
+@mixin card-title {
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+  
+  @include responsive.responsive-font-size(1.125rem, 1.5rem);
+  @include theme.dark-theme-text-primary;
+} 

@@ -1,253 +1,124 @@
-@use '../../../../_mixins' as mixins;
-@use '../../../../styles/themes/theme-variables' as theme;
+@use './styles/theme-mixins' as theme;
+@use './styles/responsive-mixins' as responsive; 
+@use './styles/card-mixins' as cards;
+@use './styles/animations' as animations;
+@use './styles/material-overrides';
+@use '../../../../styles/themes/theme-variables' as theme-vars;
 
 // =============================================================================
-// MAIN CONTAINER - MOBILE FIRST DESIGN
+// GENERATE LIST PAGE - Simplified with Utilities
+// =============================================================================
+
+// =============================================================================
+// MAIN CONTAINER
 // =============================================================================
 
 .generate-list-container {
   background: var(--md-sys-color-background); 
   font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
-
-// =============================================================================
-// MAIN CONTENT
-// =============================================================================
-
-.generate-list__main {
-  padding: theme.get-spacing(lg);
-  max-width: none;
-  margin: 0;
   
-  @media (min-width: 768px) {
-    max-width: 1024px;
-    margin: 0 auto;
-    padding: 0 theme.get-spacing(lg) theme.get-spacing(xxxl);
+  @include theme.dark-theme-container;
+  
+  @include responsive.mobile-only {
+    padding-bottom: 0;
   }
 }
 
 // =============================================================================
-// HEADER SECTION - MOBILE FIRST
+// LAYOUT STRUCTURE  
+// =============================================================================
+
+.generate-list__main {
+  @include responsive.mobile-first-container(
+    theme-vars.get-spacing(lg),
+    0 theme-vars.get-spacing(lg) theme-vars.get-spacing(xxxl)
+  );
+  
+  @include responsive.mobile-only {
+    padding-bottom: theme-vars.get-spacing(lg);
+  }
+}
+
+// =============================================================================
+// HEADER SECTION
 // =============================================================================
 
 .generate-list__header {
   text-align: center;
-  margin-bottom: theme.get-spacing(xl);
+  margin-bottom: theme-vars.get-spacing(xl);
   padding: 0;
 }
 
 .generate-list__title {
-  font-size: 1.75rem;
   font-weight: 700;
   color: #1f2937;
-  margin: 0 0 theme.get-spacing(sm) 0;
+  margin: 0 0 theme-vars.get-spacing(sm) 0;
   line-height: 1.2;
-
-  @media (min-width: 768px) {
-    font-size: 2.5rem;
-  }
+  
+  @include responsive.responsive-font-size(1.75rem, 2.5rem);
+  @include theme.dark-theme-text-primary;
 }
 
 .generate-list__subtitle {
-  font-size: 0.875rem;
   color: #6b7280;
   margin: 0;
   line-height: 1.5;
-
-  @media (min-width: 768px) {
-    font-size: 1.125rem;
+  
+  @include responsive.responsive-font-size(0.875rem, 1.125rem);
+  
+  @include responsive.tablet-up {
     line-height: 1.6;
   }
+  
+  @include theme.dark-theme-text-secondary;
 }
 
 // =============================================================================
-// METHOD SELECTION CARDS - MOBILE FIRST
+// METHOD SELECTION  
 // =============================================================================
 
 .generate-list__method-selection {
-  margin-bottom: theme.get-spacing(xl);
+  margin-bottom: theme-vars.get-spacing(xl);
 }
 
 .method-cards {
   display: grid;
   grid-template-columns: 1fr;
-  gap: theme.get-spacing(md);
+  gap: theme-vars.get-spacing(md);
   
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: theme.get-spacing(xl);
-    max-width: 800px;
-    margin: 0 auto;
-  }
-}
-
-.method-card {
-  background: white;
-  padding: theme.get-spacing(lg);
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-
-  &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transform: translateY(-1px);
-  }
-
-  &--active {
-    border-color: var(--md-sys-color-primary);
-    border-width: 3px;
-    background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
-    box-shadow: 0 12px 32px rgba(16, 185, 129, 0.25);
-    transform: translateY(-2px);
-
-    .method-card__icon {
-      background: var(--md-sys-color-primary);
-      color: white;
-      transform: scale(1.1);
-    }
-  }
+  @include animations.slide-in-animation;
   
-  @media (min-width: 768px) {
-    padding: theme.get-spacing(xxl);
-    border-radius: 12px;
-  }
-}
-
-.method-card__icon {
-  width: 40px;
-  height: 40px;
-  background: #fbbf24;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: theme.get-spacing(md);
-  transition: all 0.2s ease;
-
-  mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-    color: white;
-  }
-  
-  @media (min-width: 768px) {
-    width: 48px;
-    height: 48px;
-    
-    mat-icon {
-      font-size: 24px;
-      width: 24px;
-      height: 24px;
-    }
-  }
-}
-
-.method-card__content {
-  .method-card__title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #1f2937;
-    margin: 0 0 theme.get-spacing(xs) 0;
-    line-height: 1.3;
-    
-    @media (min-width: 768px) {
-      font-size: 1.25rem;
-      margin-bottom: theme.get-spacing(sm);
-    }
-  }
-
-  .method-card__description {
-    font-size: 0.75rem;
-    color: #6b7280;
-    margin: 0;
-    line-height: 1.4;
-    
-    @media (min-width: 768px) {
-      font-size: 0.875rem;
-      line-height: 1.5;
-    }
+  @include responsive.tablet-up {
+    grid-template-columns: repeat(3, 1fr);
+    gap: theme-vars.get-spacing(xl);
+    @include responsive.centered-content-block;
   }
 }
 
 // =============================================================================
-// FORM CARDS - MOBILE FIRST
+// FORM CARDS
 // =============================================================================
 
 .generate-list__list-name,
 .generate-list__form-section {
-  margin-bottom: theme.get-spacing(xl);
+  margin-bottom: theme-vars.get-spacing(xl);
 }
 
 .form-card {
-  background: white;
-  padding: theme.get-spacing(lg);
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
-  
-  @media (min-width: 768px) {
-    padding: theme.get-spacing(xxl);
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    margin: 0 auto;
-  }
+  @include animations.slide-in-animation;
+  @include cards.elevated-card;
 }
 
 .form-card__header {
-  display: flex;
-  align-items: center;
-  margin-bottom: theme.get-spacing(lg);
-  gap: theme.get-spacing(sm);
-
-  .form-card__icon {
-    font-size: 1.5rem;
-    width: 1.5rem;
-    height: 1.5rem;
-    color: var(--md-sys-color-primary);
-    
-    @media (min-width: 768px) {
-      font-size: 2rem;
-      width: 2rem;
-      height: 2rem;
-    }
-  }
-
-  .form-card__title {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #1f2937;
-    margin: 0;
-    
-    @media (min-width: 768px) {
-      font-size: 1.5rem;
-    }
-  }
+  @include cards.card-header;
 }
 
-// =============================================================================
-// FORM FIELD STYLING - MOBILE FIRST
-// =============================================================================
+.form-card__icon {
+  @include cards.card-icon;
+}
 
-.list-name-field {
-  width: 100%;
-  
-  ::ng-deep .mat-mdc-form-field {
-    .mat-mdc-text-field-wrapper {
-      border-radius: 6px;
-      
-      @media (min-width: 768px) {
-        border-radius: 8px;
-      }
-    }
-  }
+.form-card__title {
+  @include cards.card-title;
 }
 
 // =============================================================================
@@ -256,139 +127,24 @@
 
 .generate-list__actions {
   text-align: center;
-  margin-bottom: theme.get-spacing(xl);
+  margin-bottom: theme-vars.get-spacing(xl);
   
   .clear-all-btn {
-    font-size: 0.875rem;
-    
-    @media (min-width: 768px) {
-      font-size: 1rem;
-    }
+    @include responsive.responsive-font-size(0.875rem, 1rem);
   }
 }
 
 // =============================================================================
-// BOTTOM SPACER FOR MOBILE NAVIGATION
+// MOBILE NAVIGATION SPACER
 // =============================================================================
 
 .bottom-spacer {
   height: 80px; // Space for mobile bottom navigation
   
-  @include mixins.tablet-desktop  {
+  @include responsive.tablet-up {
     height: 0;
   }
 }
 
-// =============================================================================
-// RESPONSIVE UTILITIES
-// =============================================================================
-
-@media (max-width: 767px) {
-  .generate-list-container {
-    padding-bottom: 0;
-  }
-  
-  .generate-list__main {
-    padding-bottom: theme.get-spacing(lg);
-  }
-}
-
-// =============================================================================
-// DARK THEME SUPPORT
-// =============================================================================
-
-:host-context(.dark-theme) {
-  .generate-list-container {
-    background: #0f172a;
-  }
-  
-  .generate-list__title {
-    color: #f1f5f9;
-  }
-  
-  .generate-list__subtitle {
-    color: #94a3b8;
-  }
-  
-  .method-card {
-    background: #1e293b;
-    border-color: #334155;
-    
-    &:hover {
-      background: #334155;
-    }
-    
-    &--active {
-      background: var(--md-sys-color-primary);
-      border-color: var(--md-sys-color-primary);
-    }
-  }
-  
-  .method-card__title {
-    color: #f1f5f9;
-  }
-  
-  .method-card__description {
-    color: #94a3b8;
-  }
-  
-  .form-card {
-    background: #1e293b;
-    border-color: #334155;
-  }
-  
-  .form-card__title {
-    color: #f1f5f9;
-  }
-}
-
-// =============================================================================
-// ANIMATIONS
-// =============================================================================
-
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.method-cards,
-.form-card {
-  animation: slideInUp 0.6s ease-out;
-}
-
-// =============================================================================
-// OVERRIDE ANGULAR MATERIAL STYLES
-// =============================================================================
-
-::ng-deep {
-  // Form field styling
-  .mat-mdc-form-field {
-    .mat-mdc-form-field-subscript-wrapper {
-      margin-top: theme.get-spacing(sm);
-    }
-  }
-
-  // Button styling
-  .mat-mdc-raised-button,
-  .mat-mdc-unelevated-button {
-    &.mat-primary {
-      background-color: var(--md-sys-color-primary);
-      color: white;
-
-      &:hover {
-        background-color: #059669;
-      }
-    }
-  }
-
-  // Select styling
-  .mat-mdc-select-panel {
-    border-radius: 8px;
-  }
-} 
+// Note: Dark theme, animations, and Material overrides are now 
+// handled by imported utility files for better organization 

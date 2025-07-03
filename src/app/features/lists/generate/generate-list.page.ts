@@ -1,31 +1,18 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { signal } from '@angular/core';
-import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatRadioModule } from '@angular/material/radio';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
-import { GenerationService } from '../../../core/supabase/generation.service';
-import { ShoppingListService } from '../../../core/supabase/shopping-list.service';
-import { ShoppingListItemsService } from '../../../core/supabase/shopping-list-items.service';
 import { GenerationFormComponent } from './components/generation-form/generation-form.component';
 import { ScrapingFormComponent } from './components/scraping-form/scraping-form.component';
 import { GenerationStepsComponent } from './components/generation-steps/generation-steps.component';
+import { ImageUploadFormComponent } from './components/image-upload-form/image-upload-form.component';
+import { MethodCardComponent, MethodOption } from './components/method-card/method-card.component';
 import { OverlayComponent } from '../../../shared/ui/overlay/overlay.component';
-import { catchError, finalize, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
-import {
-  ShoppingListResponseDto,
-  CreateShoppingListItemCommand,
-  CreateRecipeCommand,
-  CategoryDto,
-} from '../../../../types';
-import { CategoryService } from '@app/core/supabase/category.service';
-import { NotificationService } from '@app/shared/services/notification.service';
-import { LoggerService } from '@app/shared/services/logger.service';
+import { FormCoordinatorService } from './services/form-coordinator.service';
+import { GenerationStateService } from './services/generation-state.service';
 
 @Component({
   selector: 'app-generate-list-page',
@@ -34,13 +21,14 @@ import { LoggerService } from '@app/shared/services/logger.service';
     CommonModule,
     MatIconModule,
     MatButtonModule,
-    MatRadioModule,
     MatFormFieldModule,
     MatSelectModule,
     FormsModule,
     GenerationFormComponent,
     ScrapingFormComponent,
     GenerationStepsComponent,
+    ImageUploadFormComponent,
+    MethodCardComponent,
     OverlayComponent,
   ],
   templateUrl: './generate-list.page.html',
@@ -48,289 +36,168 @@ import { LoggerService } from '@app/shared/services/logger.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GenerateListPageComponent implements OnInit {
-  private readonly generationService = inject(GenerationService);
-  private readonly shoppingListService = inject(ShoppingListService);
-  private readonly shoppingListItemsService = inject(ShoppingListItemsService);
-  private readonly router = inject(Router);
-  private readonly _categoryService = inject(CategoryService);
-  private readonly notification = inject(NotificationService);
-  private readonly logger = inject(LoggerService);
+  private readonly formCoordinator = inject(FormCoordinatorService);
+  private readonly generationState = inject(GenerationStateService);
 
-  constructor() {
-    // Load shopping lists on component init
-    this.loadShoppingLists();
-    // Subscribe to categories
-    this._categoryService.categories$.subscribe(categories => this.categories.set(categories));
-  }
+  // Method options configuration
+  readonly methodOptions: MethodOption[] = [
+    {
+      id: 'scraping',
+      title: 'Wklej linki do przepisów',
+      description: 'Wprowadź linki do przepisów z internetu',
+      icon: 'link',
+      ariaLabel: 'Wybierz metodę: Wklej linki do przepisów',
+    },
+    {
+      id: 'text',
+      title: 'Wprowadź tekst przepisu',
+      description: 'Wklej lub wpisz przepis bezpośrednio',
+      icon: 'article',
+      ariaLabel: 'Wybierz metodę: Wprowadź tekst przepisu',
+    },
+    {
+      id: 'image',
+      title: 'Prześlij zdjęcie przepisu',
+      description: 'Zrób lub prześlij zdjęcie przepisu do rozpoznania',
+      icon: 'photo_camera',
+      ariaLabel: 'Wybierz metodę: Prześlij zdjęcie przepisu',
+    },
+  ];
+
+  // Expose service signals to template
+  readonly selectedFormType = this.formCoordinator.selectedFormType;
+  readonly activeFormType = this.formCoordinator.activeFormType;
+  readonly isContentReady = this.formCoordinator.isContentReady;
+  readonly initialRecipeText = this.formCoordinator.initialRecipeText;
+  readonly scrapedContent = this.formCoordinator.scrapedContent;
+  readonly originalUrl = this.formCoordinator.originalUrl;
+  readonly scrapingStatus = this.formCoordinator.scrapingStatus;
+  readonly scrapingErrorMessage = this.formCoordinator.scrapingErrorMessage;
+  readonly imageProcessingStatus = this.formCoordinator.imageProcessingStatus;
+  readonly imageProcessingProgress = this.formCoordinator.imageProcessingProgress;
+  readonly hasImageUploaded = this.formCoordinator.hasImageUploaded;
+  readonly hasAnyContent = this.formCoordinator.hasAnyContent;
+  readonly hasContent = this.formCoordinator.hasContent;
+
+  readonly shoppingLists = this.generationState.shoppingLists;
+  readonly selectedListId = this.generationState.selectedListId;
+  readonly isGenerating = this.generationState.isGenerating;
+  readonly generationStatus = this.generationState.generationStatus;
+  readonly errorMessage = this.generationState.errorMessage;
+  readonly hasGenerationStarted = this.generationState.hasGenerationStarted;
 
   ngOnInit(): void {
     // Check if we're returning from review screen with recipe text
-    const navigation = this.router.getCurrentNavigation();
-    const state = navigation?.extras?.state;
-
-    if (state && state['recipeText']) {
-      this.initialRecipeText.set(state['recipeText']);
+    const recipeText = this.generationState.checkNavigationState();
+    if (recipeText) {
+      this.formCoordinator.setInitialRecipeText(recipeText);
     }
   }
 
-  // Signals for state management
-  shoppingLists = signal<ShoppingListResponseDto[]>([]);
-  selectedListId = signal<string>('');
-  isGenerating = signal<boolean>(false);
-  generationStatus = signal<'idle' | 'generating' | 'adding' | 'completed' | 'error'>('idle');
-  generatedItems = signal<CreateShoppingListItemCommand[]>([]);
-  errorMessage = signal<string | null>(null);
-  categories = signal<CategoryDto[]>([]);
-  initialRecipeText = signal<string>('');
-
-  // Updated form selection signal
-  selectedFormType = signal<'text' | 'scraping'>('scraping');
-  activeFormType = signal<'text' | 'scraping' | null>(null);
-  scrapedContent = signal<string>('');
-  scrapingStatus = signal<'idle' | 'scraping' | 'success' | 'error'>('idle');
-  scrapingErrorMessage = signal<string | null>(null);
-
-  // Add signal to store the original URL
-  originalUrl = signal<string>('');
-
-  // Add content readiness tracking
-  isContentReady = signal<boolean>(false);
-
-  // Track if generation process has started
-  hasGenerationStarted = signal<boolean>(false);
-
-  private loadShoppingLists(): void {
-    this.shoppingListService
-      .getShoppingLists()
-      .pipe(
-        tap(lists => {
-          this.shoppingLists.set(lists);
-          // Auto-select first list if available
-          if (lists.length > 0 && !this.selectedListId()) {
-            this.selectedListId.set(lists[0].id);
-          }
-        })
-      )
-      .subscribe();
+  // Method selection
+  onFormTypeChange(formType: string): void {
+    this.formCoordinator.setFormType(formType as 'text' | 'scraping' | 'image');
+    this.generationState.resetGenerationState();
   }
 
-  // New method for shopping list selection
+  // List selection
   onListSelectionChange(listId: string): void {
-    this.selectedListId.set(listId);
+    this.generationState.setSelectedListId(listId);
   }
 
+  // Text form events
   onGenerate(recipeText: string): void {
-    const listId = this.selectedListId();
-    if (!listId) return;
-
-    this.hasGenerationStarted.set(true);
-    this.generateFromContent(listId, recipeText, 'text', 'Przepis tekstowy');
+    this.generationState.startGenerationProcess();
+    this.generationState.generateFromContent(recipeText, 'text', 'Przepis tekstowy');
   }
 
-  // New method for radio button selection
-  onFormTypeChange(formType: 'text' | 'scraping'): void {
-    this.selectedFormType.set(formType);
-
-    // Clear the inactive form when switching
-    if (formType === 'text') {
-      this.clearScrapingForm();
-    } else {
-      this.clearTextForm();
-    }
-
-    // Reset active form type to allow fresh selection
-    this.activeFormType.set(null);
-    this.isContentReady.set(false);
-    this.hasGenerationStarted.set(false);
-  }
-
-  // Updated form coordination methods
   onTextFormChange(hasContent: boolean): void {
-    if (hasContent && this.selectedFormType() === 'text') {
-      this.activeFormType.set('text');
-      this.isContentReady.set(true);
-    } else if (!hasContent && this.activeFormType() === 'text') {
-      this.activeFormType.set(null);
-      this.isContentReady.set(false);
-    }
+    this.formCoordinator.onTextFormChange(hasContent);
   }
 
+  // Scraping form events
   onScrapingFormChange(hasContent: boolean): void {
-    if (hasContent && this.selectedFormType() === 'scraping') {
-      this.activeFormType.set('scraping');
-    } else if (!hasContent && this.activeFormType() === 'scraping') {
-      this.activeFormType.set(null);
-    }
+    this.formCoordinator.onScrapingFormChange(hasContent);
+  }
+
+  onScrapingStart(): void {
+    this.formCoordinator.setScrapingStart();
+    this.generationState.startGenerationProcess();
   }
 
   onScrapingSuccess(result: { url: string; content: string }): void {
-    this.scrapedContent.set(result.content);
-    this.originalUrl.set(result.url);
-    this.scrapingStatus.set('success');
-    this.scrapingErrorMessage.set(null);
-    this.activeFormType.set('scraping');
-    this.isContentReady.set(true);
+    this.formCoordinator.setScrapingSuccess(result.content, result.url);
 
-    // Small delay to show the "content ready" step before auto-generating
+    // Auto-generate after a brief delay
     setTimeout(() => {
       this.onGenerateFromScraped();
     }, 1000);
   }
 
   onScrapingError(error: string): void {
-    this.scrapingStatus.set('error');
-    this.scrapingErrorMessage.set(error);
-    this.scrapedContent.set('');
-    this.originalUrl.set('');
-    this.isContentReady.set(false);
-    this.hasGenerationStarted.set(false);
+    this.formCoordinator.setScrapingError(error);
+    this.generationState.resetGenerationState();
   }
 
-  onScrapingStart(): void {
-    this.scrapingStatus.set('scraping');
-    this.scrapingErrorMessage.set(null);
-    this.isContentReady.set(false);
-    this.hasGenerationStarted.set(true);
+  // Image form events
+  onImageFormChange(event: { hasContent: boolean }): void {
+    this.formCoordinator.onImageFormChange(event.hasContent);
+    this.formCoordinator.setImageUploaded(event.hasContent);
   }
 
-  private clearTextForm(): void {
-    this.initialRecipeText.set('');
-    this.isContentReady.set(false);
+  onImageProcessingStart(): void {
+    this.formCoordinator.setImageProcessingStart();
+    this.generationState.startGenerationProcess();
   }
 
-  private clearScrapingForm(): void {
-    this.scrapedContent.set('');
-    this.originalUrl.set('');
-    this.scrapingStatus.set('idle');
-    this.scrapingErrorMessage.set(null);
-    this.isContentReady.set(false);
+  onImageProcessed(extractedText: string): void {
+    this.formCoordinator.setImageProcessingCompleted(extractedText);
+
+    // Auto-generate after a brief delay
+    setTimeout(() => {
+      this.onGenerate(extractedText);
+    }, 1000);
   }
 
-  // Updated helper properties
-  get isGenerationFormDisabled(): boolean {
-    return this.selectedFormType() !== 'text' || this.isGenerating();
+  onImageProcessingError(): void {
+    this.formCoordinator.setImageProcessingError();
+    this.generationState.resetGenerationState();
   }
 
-  get isScrapingFormDisabled(): boolean {
-    return (
-      this.selectedFormType() !== 'scraping' ||
-      this.isGenerating() ||
-      this.scrapingStatus() === 'scraping'
-    );
-  }
+  // Generation from scraped content
+  onGenerateFromScraped(): void {
+    const content = this.scrapedContent();
+    const url = this.originalUrl();
+    const sourceLabel = url || 'Strona internetowa';
 
-  get hasAnyContent(): boolean {
-    return this.activeFormType() !== null;
-  }
-
-  get canGenerate(): boolean {
-    return (
-      ((this.activeFormType() === 'text' && !!this.initialRecipeText()) ||
-        (this.activeFormType() === 'scraping' &&
-          this.scrapingStatus() === 'success' &&
-          !!this.scrapedContent())) &&
-      !this.isGenerating()
-    );
-  }
-
-  // Utility methods for better UX
-  clearAllForms(): void {
-    this.clearTextForm();
-    this.clearScrapingForm();
-    this.activeFormType.set(null);
-    this.selectedFormType.set('scraping');
-    this.isContentReady.set(false);
-    this.hasGenerationStarted.set(false);
-    // Reset to first list if available
-    if (this.shoppingLists().length > 0) {
-      this.selectedListId.set(this.shoppingLists()[0].id);
+    if (content) {
+      this.generationState.generateFromContent(content, 'url', sourceLabel);
     }
   }
 
+  // Form utilities
+  clearAllForms(): void {
+    this.formCoordinator.clearAllForms();
+    this.generationState.resetGenerationState();
+  }
+
   resetToIdle(): void {
-    this.generationStatus.set('idle');
-    this.errorMessage.set(null);
-    this.generatedItems.set([]);
+    this.generationState.resetToIdle();
   }
 
-  // New method for generating from scraped content
-  onGenerateFromScraped(): void {
-    const content = this.scrapedContent();
-    const listId = this.selectedListId();
-    const url = this.originalUrl();
+  // Computed properties for form states
+  readonly isGenerationFormDisabled = computed(
+    () => this.selectedFormType() !== 'text' || this.isGenerating()
+  );
 
-    if (!content || !listId) return;
+  readonly isScrapingFormDisabled = computed(
+    () =>
+      this.selectedFormType() !== 'scraping' ||
+      this.isGenerating() ||
+      this.scrapingStatus() === 'scraping'
+  );
 
-    // Use the URL as the source if available, otherwise fallback to 'url'
-    const sourceLabel = url || 'Strona internetowa';
-    this.generateFromContent(listId, content, 'url', sourceLabel);
-  }
-
-  // Modified generateFromContent method to accept sourceLabel parameter
-  private generateFromContent(
-    listId: string,
-    recipeText: string,
-    source: 'text' | 'url',
-    sourceLabel: string
-  ): void {
-    this.isGenerating.set(true);
-    this.generationStatus.set('generating');
-    this.errorMessage.set(null);
-
-    const command: CreateRecipeCommand = {
-      title: 'Generated Recipe',
-      recipe_text: recipeText,
-    };
-
-    this.generationService
-      .generateForReview(command, this.categories(), 'pl')
-      .pipe(
-        tap(result => {
-          console.log('Generated items for review:', result);
-          this.generationStatus.set('completed');
-
-          const navigationState = {
-            items: result.items,
-            listId: listId,
-            recipeText: recipeText,
-            recipeName: result.recipeName,
-            recipeSource: sourceLabel, // Use the sourceLabel instead of just source type
-          };
-
-          console.log('Navigating to review with state:', {
-            itemsCount: navigationState.items.length,
-            listId: navigationState.listId,
-            hasRecipeText: !!navigationState.recipeText,
-            recipeName: navigationState.recipeName,
-            source: navigationState.recipeSource,
-          });
-
-          // Navigate to review screen with data
-          this.router.navigate(['/app/generate/review'], {
-            state: navigationState,
-          });
-        }),
-        catchError(error => {
-          this.logger.logError(error, 'Generation error');
-          const msg = error instanceof Error ? error.message : 'Generation failed';
-          this.errorMessage.set(msg);
-          this.notification.showError(msg);
-          this.generationStatus.set('error');
-          return of(null);
-        }),
-        finalize(() => {
-          this.isGenerating.set(false);
-        })
-      )
-      .subscribe();
-  }
-
-  // Helper computed properties for templates
-  get hasContent(): boolean {
-    return this.activeFormType() === 'text'
-      ? !!this.initialRecipeText()
-      : this.activeFormType() === 'scraping'
-        ? !!this.scrapedContent()
-        : false;
-  }
+  readonly isImageFormDisabled = computed(
+    () => this.selectedFormType() !== 'image' || this.isGenerating()
+  );
 }

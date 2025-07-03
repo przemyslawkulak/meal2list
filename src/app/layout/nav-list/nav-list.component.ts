@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, inject } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
@@ -16,11 +16,11 @@ import { NavLink } from '@types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavListComponent {
-  @Input({ required: true }) links!: NavLink[];
+  links = input.required<NavLink[]>();
 
   private breakpointObserver = inject(BreakpointObserver);
 
   isDesktop$: Observable<boolean> = this.breakpointObserver
-    .observe([Breakpoints.Desktop, Breakpoints.Large, Breakpoints.XLarge])
+    .observe([Breakpoints.Large, Breakpoints.XLarge])
     .pipe(map(result => result.matches));
 }

@@ -1,13 +1,9 @@
-import { ChangeDetectionStrategy, Component, input, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
-export interface GenerationStep {
-  id: string;
-  label: string;
-  status: 'pending' | 'active' | 'completed';
-}
+import { StepConfigurationService } from '../../services/step-configuration.service';
+import { FormType, StepContext } from '../../services/shared-types';
 
 @Component({
   selector: 'app-generation-steps',
@@ -18,71 +14,38 @@ export interface GenerationStep {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GenerationStepsComponent {
-  formType = input.required<'text' | 'scraping'>();
+  private readonly stepService = inject(StepConfigurationService);
+
+  // Input signals
+  formType = input.required<FormType>();
   hasContent = input.required<boolean>();
   isGenerating = input.required<boolean>();
-  isContentReady = input.required<boolean>(); // For scraped content ready
+  isContentReady = input.required<boolean>();
   scrapingStatus = input.required<'idle' | 'scraping' | 'success' | 'error'>();
   generationStatus = input.required<'idle' | 'generating' | 'adding' | 'completed' | 'error'>();
+  imageProcessingStatus = input<'idle' | 'processing' | 'completed' | 'error'>('idle');
+  processingProgress = input<number>(0);
 
-  steps = computed(() => {
-    const formType = this.formType();
-    const hasContent = this.hasContent();
-    const isGenerating = this.isGenerating();
-    const isContentReady = this.isContentReady();
-    const scrapingStatus = this.scrapingStatus();
-    const generationStatus = this.generationStatus();
+  // Context signal for the step service
+  private readonly stepContext = computed(
+    (): StepContext => ({
+      formType: this.formType(),
+      hasContent: this.hasContent(),
+      isGenerating: this.isGenerating(),
+      isContentReady: this.isContentReady(),
+      scrapingStatus: this.scrapingStatus(),
+      generationStatus: this.generationStatus(),
+      imageProcessingStatus: this.imageProcessingStatus(),
+      processingProgress: this.processingProgress(),
+    })
+  );
 
-    const allSteps: GenerationStep[] = [];
+  // Computed properties using the step service
+  steps = computed(() => this.stepService.generateSteps(this.stepContext()));
 
-    // For scraping - show scraping step first
-    if (formType === 'scraping') {
-      allSteps.push({
-        id: 'scraping',
-        label: 'Pobieranie przepisu z URL',
-        status:
-          scrapingStatus === 'scraping'
-            ? 'active'
-            : scrapingStatus === 'success'
-              ? 'completed'
-              : 'pending',
-      });
+  progress = computed(() => this.stepService.getProgress(this.stepContext()));
 
-      // Add content processing step after successful scraping
-      allSteps.push({
-        id: 'scraped',
-        label: 'Przepis został pobrany i przygotowany',
-        status:
-          scrapingStatus === 'success' && isContentReady
-            ? 'completed'
-            : scrapingStatus === 'success'
-              ? 'active'
-              : 'pending',
-      });
-    }
+  currentStep = computed(() => this.stepService.getCurrentStep(this.stepContext()));
 
-    // For text - show content input step
-    if (formType === 'text') {
-      allSteps.push({
-        id: 'content',
-        label: 'Wprowadzono tekst przepisu',
-        status: hasContent ? 'completed' : 'pending',
-      });
-    }
-
-    // Add generation step - now properly tracks completion
-    allSteps.push({
-      id: 'generating',
-      label: 'Generowanie listy zakupów',
-      status:
-        generationStatus === 'completed'
-          ? 'completed'
-          : isGenerating || generationStatus === 'generating'
-            ? 'active'
-            : 'pending',
-    });
-
-    // Return all steps - don't filter out pending ones
-    return allSteps;
-  });
+  isComplete = computed(() => this.stepService.isWorkflowComplete(this.stepContext()));
 }
