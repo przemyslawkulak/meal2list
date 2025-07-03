@@ -104,6 +104,79 @@
   margin-bottom: theme-vars.get-spacing(xl);
 }
 
+.no-lists-panel {
+  max-width: 480px;
+  margin: 0 auto;
+  box-shadow: var(--mat-sys-level2);
+  border-radius: 16px;
+  background-color: white;
+  
+  @include responsive.tablet-up {
+    max-width: 520px;
+  }
+
+  mat-card-content {
+    padding: 0 !important;
+  }
+}
+
+.no-lists-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: theme-vars.get-spacing(lg) theme-vars.get-spacing(md);
+  gap: theme-vars.get-spacing(sm);
+
+  @include responsive.tablet-up {
+    padding: theme-vars.get-spacing(xl) theme-vars.get-spacing(lg);
+    gap: theme-vars.get-spacing(md);
+  }
+}
+
+.no-lists-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: var(--mat-sys-primary);
+  margin-bottom: theme-vars.get-spacing(xs);
+
+  @include responsive.tablet-up {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.no-lists-title {
+  margin: 0;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+  @include responsive.responsive-font-size(1.25rem, 1.5rem);
+}
+
+.no-lists-description {
+  margin: 0;
+  color: var(--mat-sys-on-surface-variant);
+  line-height: 1.5;
+  max-width: 320px;
+  @include responsive.responsive-font-size(0.875rem, 1rem);
+
+  @include responsive.tablet-up {
+    max-width: 400px;
+  }
+}
+
+.create-list-button {
+  margin-top: theme-vars.get-spacing(xs);
+  min-width: 200px;
+  @include responsive.responsive-font-size(0.875rem, 1rem);
+
+  @include responsive.tablet-up {
+    margin-top: theme-vars.get-spacing(sm);
+  }
+}
+
 .form-card {
   @include animations.slide-in-animation;
   @include cards.elevated-card;

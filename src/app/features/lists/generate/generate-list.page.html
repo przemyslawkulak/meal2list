@@ -23,8 +23,9 @@
       </div>
     </section>
 
-    <!-- Shopping List Name Input -->
+    <!-- Shopping List Name Input / No Lists Panel -->
     <section class="generate-list__list-name">
+      @if (shoppingLists().length > 0) {
       <div class="form-card">
         <mat-form-field appearance="outline" class="list-name-field">
           <mat-label>Nazwa listy zakupów</mat-label>
@@ -39,6 +40,25 @@
           <mat-icon matSuffix>expand_more</mat-icon>
         </mat-form-field>
       </div>
+      } @else {
+      <mat-card class="no-lists-panel">
+        <mat-card-content>
+          <div class="no-lists-content">
+            <mat-icon class="no-lists-icon">shopping_cart</mat-icon>
+            <h3 class="no-lists-title">Brak list zakupów</h3>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="openNewListDialog()"
+              class="create-list-button"
+            >
+              <mat-icon>add</mat-icon>
+              <span>Utwórz pierwszą listę</span>
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      }
     </section>
 
     <!-- Selected Form Content -->

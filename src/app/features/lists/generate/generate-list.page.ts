@@ -4,7 +4,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { GenerationFormComponent } from './components/generation-form/generation-form.component';
 import { ScrapingFormComponent } from './components/scraping-form/scraping-form.component';
 import { GenerationStepsComponent } from './components/generation-steps/generation-steps.component';
@@ -13,6 +15,11 @@ import { MethodCardComponent, MethodOption } from './components/method-card/meth
 import { OverlayComponent } from '../../../shared/ui/overlay/overlay.component';
 import { FormCoordinatorService } from './services/form-coordinator.service';
 import { GenerationStateService } from './services/generation-state.service';
+import { NewShoppingListDialogComponent } from '../../shopping-lists/components/new-shopping-list-dialog/new-shopping-list-dialog.component';
+import { ShoppingListService } from '@app/core/supabase/shopping-list.service';
+import { NotificationService } from '@app/shared/services/notification.service';
+import { LoggerService } from '@app/shared/services/logger.service';
+import { catchError, of, tap } from 'rxjs';
 
 @Component({
   selector: 'app-generate-list-page',
@@ -23,7 +30,9 @@ import { GenerationStateService } from './services/generation-state.service';
     MatButtonModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatCardModule,
     FormsModule,
+    MatDialogModule,
     GenerationFormComponent,
     ScrapingFormComponent,
     GenerationStepsComponent,
@@ -38,6 +47,10 @@ import { GenerationStateService } from './services/generation-state.service';
 export class GenerateListPageComponent implements OnInit {
   private readonly formCoordinator = inject(FormCoordinatorService);
   private readonly generationState = inject(GenerationStateService);
+  private readonly dialog = inject(MatDialog);
+  private readonly shoppingListService = inject(ShoppingListService);
+  private readonly notification = inject(NotificationService);
+  private readonly logger = inject(LoggerService);
 
   // Method options configuration
   readonly methodOptions: MethodOption[] = [
@@ -85,6 +98,9 @@ export class GenerateListPageComponent implements OnInit {
   readonly generationStatus = this.generationState.generationStatus;
   readonly errorMessage = this.generationState.errorMessage;
   readonly hasGenerationStarted = this.generationState.hasGenerationStarted;
+
+  // Convenience computed property to determine if generation is allowed
+  readonly canGenerate = this.generationState.canGenerate;
 
   ngOnInit(): void {
     // Check if we're returning from review screen with recipe text
@@ -187,17 +203,48 @@ export class GenerateListPageComponent implements OnInit {
 
   // Computed properties for form states
   readonly isGenerationFormDisabled = computed(
-    () => this.selectedFormType() !== 'text' || this.isGenerating()
+    () => this.selectedFormType() !== 'text' || !this.canGenerate()
   );
 
   readonly isScrapingFormDisabled = computed(
     () =>
       this.selectedFormType() !== 'scraping' ||
-      this.isGenerating() ||
+      !this.canGenerate() ||
       this.scrapingStatus() === 'scraping'
   );
 
   readonly isImageFormDisabled = computed(
-    () => this.selectedFormType() !== 'image' || this.isGenerating()
+    () => this.selectedFormType() !== 'image' || !this.canGenerate()
   );
+
+  // Dialog for creating a new shopping list when none exist
+  openNewListDialog(): void {
+    const dialogRef = this.dialog.open(NewShoppingListDialogComponent, {
+      width: '400px',
+    });
+
+    dialogRef.afterClosed().subscribe((result: string | undefined) => {
+      if (result) {
+        this.shoppingListService
+          .createShoppingList({ name: result })
+          .pipe(
+            tap(newList => {
+              // Reload lists and select the newly created one automatically
+              this.generationState.loadShoppingLists();
+              // Ensure the newly created list is selected
+              if (newList) {
+                this.generationState.setSelectedListId(newList.id);
+              }
+              this.notification.showSuccess('Lista zakupowa została utworzona');
+            }),
+            catchError(error => {
+              this.logger.logError(error, 'Error creating shopping list');
+              this.notification.showError('Wystąpił błąd podczas tworzenia listy');
+              return of(null);
+            })
+          )
+          .subscribe();
+      }
+    });
+  }
 }
