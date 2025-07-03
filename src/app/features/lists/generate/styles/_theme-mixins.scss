@@ -1,0 +1,41 @@
+// =============================================================================
+// THEME MIXINS - Dark Theme Support
+// =============================================================================
+
+@mixin dark-theme-container {
+  :host-context(.dark-theme) & {
+    background: #0f172a;
+  }
+}
+
+@mixin dark-theme-text-primary {
+  :host-context(.dark-theme) & {
+    color: #f1f5f9;
+  }
+}
+
+@mixin dark-theme-text-secondary {
+  :host-context(.dark-theme) & {
+    color: #94a3b8;
+  }
+}
+
+@mixin dark-theme-card {
+  :host-context(.dark-theme) & {
+    background: #1e293b;
+    border-color: #334155;
+  }
+}
+
+@mixin dark-theme-card-hover {
+  :host-context(.dark-theme) &:hover {
+    background: #334155;
+  }
+}
+
+@mixin dark-theme-card-active {
+  :host-context(.dark-theme) &--active {
+    background: var(--md-sys-color-primary);
+    border-color: var(--md-sys-color-primary);
+  }
+} 

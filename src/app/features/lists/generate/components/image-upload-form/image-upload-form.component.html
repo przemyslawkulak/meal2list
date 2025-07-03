@@ -1,0 +1,135 @@
+<div class="image-upload-form">
+  <!-- Hidden File Input -->
+  <input
+    #fileInput
+    id="imageFileInput"
+    type="file"
+    accept="image/jpeg,image/png,image/webp"
+    (change)="onFileSelect($event)"
+    class="file-input"
+    [disabled]="isFormDisabled()"
+  />
+
+  @if (!hasSelectedFile()) {
+    <!-- File Selection Area -->
+    <div
+      class="upload-area"
+      [class.upload-area--dragover]="dragOver()"
+      [class.upload-area--disabled]="isFormDisabled()"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop($event)"
+    >
+      <!-- Upload Instructions -->
+      <div class="upload-content">
+        <mat-icon class="upload-icon">cloud_upload</mat-icon>
+        <h3 class="upload-title">Prześlij zdjęcie przepisu</h3>
+        <p class="upload-description">Przeciągnij i upuść plik tutaj</p>
+
+        <!-- Styled Upload Button -->
+        <button
+          mat-raised-button
+          color="primary"
+          type="button"
+          class="upload-button"
+          (click)="fileInput.click()"
+          [disabled]="isFormDisabled()"
+        >
+          <mat-icon>add_photo_alternate</mat-icon>
+          Wybierz plik z urządzenia
+        </button>
+
+        <div class="upload-formats">Obsługiwane formaty: JPEG, PNG, WebP (max 10MB)</div>
+      </div>
+    </div>
+  }
+
+  <!-- Image Preview -->
+  @if (hasImagePreview()) {
+    <div class="image-preview">
+      <div class="image-preview__header">
+        <h4 class="image-preview__title">Podgląd obrazu</h4>
+        <button
+          mat-icon-button
+          (click)="onClearFile()"
+          [disabled]="isFormDisabled()"
+          class="image-preview__remove"
+          aria-label="Usuń obraz"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div class="image-preview__container">
+        <img
+          [src]="imagePreviewUrl()"
+          [alt]="selectedFile()?.name || 'Podgląd obrazu'"
+          class="image-preview__image"
+          (load)="onImageLoad()"
+          (error)="onImageError()"
+        />
+        <div class="image-preview__overlay">
+          <div class="image-preview__info">
+            <div class="image-preview__filename">{{ selectedFile()?.name }}</div>
+            <div class="image-preview__size">{{ formatFileSize(selectedFile()?.size || 0) }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Processing Status -->
+  @if (isProcessing()) {
+    <div class="processing-status">
+      <mat-progress-bar
+        mode="determinate"
+        [value]="progressValue()"
+        class="progress-bar"
+      ></mat-progress-bar>
+      <div class="processing-text">Przetwarzanie obrazu... {{ progressValue() }}%</div>
+    </div>
+  }
+
+  <!-- Error Message -->
+  @if (errorMessage()) {
+    <div class="error-message">
+      <mat-icon class="error-icon">error</mat-icon>
+      <span>{{ errorMessage() }}</span>
+    </div>
+  }
+
+  <!-- Success Message -->
+  @if (isSuccess()) {
+    <div class="success-message">
+      <mat-icon class="success-icon">check_circle</mat-icon>
+      <span>Tekst przepisu został pomyślnie wyekstraktowany z obrazu</span>
+    </div>
+  }
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    @if (hasSelectedFile() && !isProcessing() && !isSuccess()) {
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onProcessImage()"
+        [disabled]="isFormDisabled()"
+        class="process-button"
+      >
+        <mat-icon>psychology</mat-icon>
+        Rozpoznaj tekst z obrazu
+      </button>
+    }
+
+    @if (hasSelectedFile()) {
+      <button
+        mat-stroked-button
+        (click)="onClearFile()"
+        [disabled]="isFormDisabled()"
+        class="clear-button-action"
+      >
+        <mat-icon>clear</mat-icon>
+        Wyczyść
+      </button>
+    }
+  </div>
+</div>

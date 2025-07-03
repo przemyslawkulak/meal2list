@@ -1,0 +1,18 @@
+<div
+  class="method-card"
+  [class.method-card--active]="isActive()"
+  (click)="onSelect()"
+  (keydown.enter)="onSelect()"
+  (keydown.space)="$event.preventDefault(); onSelect()"
+  [tabindex]="0"
+  [attr.role]="'button'"
+  [attr.aria-label]="method().ariaLabel"
+>
+  <div class="method-card__icon">
+    <mat-icon>{{ method().icon }}</mat-icon>
+  </div>
+  <div class="method-card__content">
+    <h3 class="method-card__title">{{ method().title }}</h3>
+    <p class="method-card__description">{{ method().description }}</p>
+  </div>
+</div>

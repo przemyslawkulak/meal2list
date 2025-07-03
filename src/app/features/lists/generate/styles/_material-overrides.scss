@@ -1,0 +1,44 @@
+@use './responsive-mixins' as responsive;
+@use '../../../../../styles/themes/theme-variables' as theme;
+
+// =============================================================================
+// ANGULAR MATERIAL OVERRIDES - Component Customizations
+// =============================================================================
+
+::ng-deep {
+  // Form field styling
+  .mat-mdc-form-field {
+    .mat-mdc-form-field-subscript-wrapper {
+      margin-top: theme.get-spacing(sm);
+    }
+  }
+
+  // Button styling
+  .mat-mdc-raised-button,
+  .mat-mdc-unelevated-button {
+    &.mat-primary {
+      background-color: var(--md-sys-color-primary);
+      color: white;
+
+      &:hover {
+        background-color: #059669;
+      }
+    }
+  }
+
+  // Select styling
+  .mat-mdc-select-panel {
+    border-radius: 8px;
+  }
+}
+
+// Form field responsive styling  
+.list-name-field {
+  width: 100%;
+  
+  ::ng-deep .mat-mdc-form-field {
+    .mat-mdc-text-field-wrapper {
+      @include responsive.responsive-border-radius(6px, 8px);
+    }
+  }
+} 

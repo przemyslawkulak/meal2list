@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class LoggerService {
-  logError(error: HttpErrorResponse, context?: string): void {
+  logError(error: Error | HttpErrorResponse | unknown, context?: string): void {
     if (context) {
       console.error(`[Error] ${context}`, error);
     } else {

@@ -1,0 +1,25 @@
+@use '../../../../../styles/themes/theme-variables' as theme;
+
+// =============================================================================
+// ANIMATIONS - Page Transition Effects
+// =============================================================================
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@mixin slide-in-animation($duration: 0.6s, $easing: ease-out) {
+  animation: slideInUp $duration $easing;
+}
+
+// Common animation classes
+.animate-slide-in {
+  @include slide-in-animation;
+} 

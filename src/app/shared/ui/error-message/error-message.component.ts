@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,6 +11,6 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrls: ['./error-message.component.scss'],
 })
 export class ErrorMessageComponent {
-  @Input() message = '';
-  @Output() retry = new EventEmitter<void>();
+  message = input('');
+  retry = output<void>();
 }

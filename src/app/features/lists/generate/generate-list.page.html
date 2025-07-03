@@ -13,43 +13,13 @@
     <!-- Form Type Selection Cards -->
     <section class="generate-list__method-selection">
       <div class="method-cards">
-        <div
-          class="method-card"
-          [class.method-card--active]="selectedFormType() === 'scraping'"
-          (click)="onFormTypeChange('scraping')"
-          (keydown.enter)="onFormTypeChange('scraping')"
-          (keydown.space)="$event.preventDefault(); onFormTypeChange('scraping')"
-          tabindex="0"
-          role="button"
-          aria-label="Wybierz metodę: Wklej linki do przepisów"
-        >
-          <div class="method-card__icon">
-            <mat-icon>link</mat-icon>
-          </div>
-          <div class="method-card__content">
-            <h3 class="method-card__title">Wklej linki do przepisów</h3>
-            <p class="method-card__description">Wprowadź linki do przepisów z internetu</p>
-          </div>
-        </div>
-
-        <div
-          class="method-card"
-          [class.method-card--active]="selectedFormType() === 'text'"
-          (click)="onFormTypeChange('text')"
-          (keydown.enter)="onFormTypeChange('text')"
-          (keydown.space)="$event.preventDefault(); onFormTypeChange('text')"
-          tabindex="0"
-          role="button"
-          aria-label="Wybierz metodę: Wprowadź tekst przepisu"
-        >
-          <div class="method-card__icon">
-            <mat-icon>article</mat-icon>
-          </div>
-          <div class="method-card__content">
-            <h3 class="method-card__title">Wprowadź tekst przepisu</h3>
-            <p class="method-card__description">Wklej lub wpisz przepis bezpośrednio</p>
-          </div>
-        </div>
+        @for (method of methodOptions; track method.id) {
+        <app-method-card
+          [method]="method"
+          [isActive]="selectedFormType() === method.id"
+          (selected)="onFormTypeChange($event)"
+        ></app-method-card>
+        }
       </div>
     </section>
 
@@ -81,7 +51,7 @@
         </div>
         <div class="form-card__content">
           <app-scraping-form
-            [disabled]="isScrapingFormDisabled"
+            [disabled]="isScrapingFormDisabled()"
             [scrapedContent]="scrapedContent()"
             [scrapingStatus]="scrapingStatus()"
             [errorMessage]="scrapingErrorMessage()"
@@ -101,17 +71,33 @@
         <div class="form-card__content">
           <app-generation-form
             [initialRecipeText]="initialRecipeText()"
-            [disabled]="isGenerationFormDisabled"
+            [disabled]="isGenerationFormDisabled()"
             (generate)="onGenerate($event)"
             (contentChange)="onTextFormChange($event)"
           ></app-generation-form>
+        </div>
+      </div>
+      } @else if (selectedFormType() === 'image') {
+      <div class="form-card">
+        <div class="form-card__header">
+          <mat-icon class="form-card__icon">photo_camera</mat-icon>
+          <h2 class="form-card__title">Prześlij zdjęcie przepisu</h2>
+        </div>
+        <div class="form-card__content">
+          <app-image-upload-form
+            [disabled]="isImageFormDisabled()"
+            (imageProcessed)="onImageProcessed($event)"
+            (processingError)="onImageProcessingError()"
+            (processingStart)="onImageProcessingStart()"
+            (contentChange)="onImageFormChange($event)"
+          ></app-image-upload-form>
         </div>
       </div>
       }
     </section>
 
     <!-- Clear All Actions -->
-    @if (hasAnyContent) {
+    @if (hasAnyContent()) {
     <section class="generate-list__actions">
       <button mat-stroked-button (click)="clearAllForms()" class="clear-all-btn">
         <mat-icon>clear_all</mat-icon>
@@ -128,11 +114,13 @@
   <app-overlay [isVisible]="hasGenerationStarted()" [backdropClick]="false">
     <app-generation-steps
       [formType]="selectedFormType()"
-      [hasContent]="hasContent"
+      [hasContent]="hasContent()"
       [isGenerating]="isGenerating()"
       [isContentReady]="isContentReady()"
       [scrapingStatus]="scrapingStatus()"
       [generationStatus]="generationStatus()"
+      [imageProcessingStatus]="imageProcessingStatus()"
+      [processingProgress]="imageProcessingProgress()"
     ></app-generation-steps>
   </app-overlay>
 </div>

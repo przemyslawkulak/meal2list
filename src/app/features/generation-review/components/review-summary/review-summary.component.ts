@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,11 +21,11 @@ import { GenerationReviewItemDto } from '../../../../../types';
             <span>{{ excludedCount }} produktów wykluczonych</span>
           </div>
         </div>
-        @if (errors.length > 0) {
+        @if (errors().length > 0) {
           <div class="errors">
             <mat-icon color="warn">error</mat-icon>
             <ul>
-              @for (error of errors; track error) {
+              @for (error of errors(); track error) {
                 <li>{{ error }}</li>
               }
             </ul>
@@ -67,14 +67,14 @@ import { GenerationReviewItemDto } from '../../../../../types';
   ],
 })
 export class ReviewSummaryComponent {
-  @Input() items: GenerationReviewItemDto[] = [];
-  @Input() errors: string[] = [];
+  items = input<GenerationReviewItemDto[]>([]);
+  errors = input<string[]>([]);
 
   get includedCount(): number {
-    return this.items.filter(item => !item.excluded).length;
+    return this.items().filter(item => !item.excluded).length;
   }
 
   get excludedCount(): number {
-    return this.items.filter(item => item.excluded).length;
+    return this.items().filter(item => item.excluded).length;
   }
 }
