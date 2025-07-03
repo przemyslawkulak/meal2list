@@ -87,7 +87,7 @@
           <app-image-upload-form
             [disabled]="isImageFormDisabled()"
             (imageProcessed)="onImageProcessed($event)"
-            (processingError)="onImageProcessingError($event)"
+            (processingError)="onImageProcessingError()"
             (processingStart)="onImageProcessingStart()"
             (contentChange)="onImageFormChange($event)"
           ></app-image-upload-form>
