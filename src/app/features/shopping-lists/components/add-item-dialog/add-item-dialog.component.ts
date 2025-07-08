@@ -25,6 +25,7 @@ import { NotificationService } from '@app/shared/services/notification.service';
 import { LoggerService } from '@app/shared/services/logger.service';
 import { ProductsStore } from '@app/core/stores/products/products.store';
 import { UserProductService } from '@app/core/supabase/user-product.service';
+import { CategoryOrderService } from '@app/core/services/category-order.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 export interface AddItemDialogData {
@@ -65,6 +66,7 @@ export class AddItemDialogComponent {
   private readonly logger = inject(LoggerService);
   private readonly productsStore = inject(ProductsStore);
   private readonly userProductService = inject(UserProductService);
+  private readonly categoryOrderService = inject(CategoryOrderService);
   private readonly destroy$ = inject(DestroyRef);
 
   protected readonly TABS = TABS;
@@ -117,13 +119,33 @@ export class AddItemDialogComponent {
       });
   }
 
-  // Computed signal for filtered items based on search term and active tab
+  // Computed signal for filtered and sorted items based on search term, active tab, and category hierarchy
   readonly filteredItems = computed(() => {
     const term = this.searchTerm().toLowerCase().trim();
     const items = this.activeTab() === TABS.POPULAR ? this.popularItems() : this.mostUsedItems();
 
-    if (!term) return items;
-    return items.filter(item => item.name.toLowerCase().includes(term));
+    // Filter by search term
+    const filteredItems = term
+      ? items.filter(item => item.name.toLowerCase().includes(term))
+      : items;
+
+    // Sort by category using food-first hierarchy
+    return filteredItems.sort((a, b) => {
+      const categoryA = this.getCategoryName(this.getProductCategoryId(a));
+      const categoryB = this.getCategoryName(this.getProductCategoryId(b));
+
+      // First sort by category hierarchy
+      const categoryComparison = this.categoryOrderService.compareCategoryNames(
+        categoryA,
+        categoryB
+      );
+      if (categoryComparison !== 0) {
+        return categoryComparison;
+      }
+
+      // Within same category, sort alphabetically by product name
+      return a.name.localeCompare(b.name);
+    });
   });
 
   get listId(): string {

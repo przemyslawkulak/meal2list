@@ -812,7 +812,7 @@
 // =============================================================================
 
 .bottom-spacer {
-  @include mixins.tablet-desktop  {
+  @include mixins.mobile-only  {
     height: 64px;
   }
 }

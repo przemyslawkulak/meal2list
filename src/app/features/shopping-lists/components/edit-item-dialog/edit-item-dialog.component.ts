@@ -1,4 +1,11 @@
-import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  Inject,
+  OnInit,
+  ChangeDetectionStrategy,
+  computed,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -14,6 +21,7 @@ import type {
   UpdateShoppingListItemCommand,
 } from '../../../../../types';
 import { CategoryIconComponent } from '@app/shared/category-icon/category-icon.component';
+import { CategoryOrderService } from '@app/core/services/category-order.service';
 
 export interface EditItemDialogData {
   item: ShoppingListItemResponseDto;
@@ -51,6 +59,15 @@ export interface UpdatedShoppingListItem {
 })
 export class EditItemDialogComponent implements OnInit {
   editForm: FormGroup;
+
+  private readonly categoryOrderService = inject(CategoryOrderService);
+
+  // Computed signal for sorted categories using food-first hierarchy
+  readonly sortedCategories = computed(() => {
+    return [...this.data.categories].sort((a, b) =>
+      this.categoryOrderService.compareCategoryNames(a.name, b.name)
+    );
+  });
 
   readonly units = [
     'szt',

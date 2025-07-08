@@ -73,7 +73,7 @@
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Kategoria</mat-label>
         <mat-select formControlName="category_id" aria-label="Kategoria">
-          <mat-option *ngFor="let category of data.categories" [value]="category.id">
+          <mat-option *ngFor="let category of sortedCategories()" [value]="category.id">
             <span class="category-option">
               <app-category-icon class="category-icon" [categoryName]="category.name">
               </app-category-icon>

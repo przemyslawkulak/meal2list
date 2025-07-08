@@ -33,6 +33,7 @@ import {
 import { ShoppingListService } from '@app/core/supabase/shopping-list.service';
 import { ShoppingListItemsService } from '@app/core/supabase/shopping-list-items.service';
 import { CategoryService } from '@app/core/supabase/category.service';
+import { CategoryOrderService } from '@app/core/services/category-order.service';
 import {
   ShoppingListResponseDto,
   CategoryDto,
@@ -96,6 +97,7 @@ export class ShoppingListDetailComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
   private readonly notification = inject(NotificationService);
   private readonly logger = inject(LoggerService);
+  private readonly categoryOrderService = inject(CategoryOrderService);
 
   loading = signal<boolean>(true);
   shoppingList = signal<ShoppingListResponseDto | null>(null);
@@ -306,7 +308,7 @@ export class ShoppingListDetailComponent implements OnDestroy {
   }
 
   /**
-   * Sorts items by category with 'Others' always at the end
+   * Sorts items by category using food-first hierarchy
    */
   private sortItemsByCategory(items: ShoppingListItemResponseDto[]): ShoppingListItemResponseDto[] {
     const categories = this.categories();
@@ -314,11 +316,7 @@ export class ShoppingListDetailComponent implements OnDestroy {
       const categoryA = this.getCategoryName(a.category_id, categories);
       const categoryB = this.getCategoryName(b.category_id, categories);
 
-      // Handle 'Others' case to sort it last
-      if (categoryA === 'Others' && categoryB !== 'Others') return 1;
-      if (categoryA !== 'Others' && categoryB === 'Others') return -1;
-
-      return categoryA.localeCompare(categoryB);
+      return this.categoryOrderService.compareCategoryNames(categoryA, categoryB);
     });
   }
 

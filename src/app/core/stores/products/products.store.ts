@@ -4,6 +4,7 @@ import { tap, catchError, of } from 'rxjs';
 import type { ProductDto, CreateProductCommand, UpdateProductCommand, CategoryDto } from '@types';
 import { CategoriesStore } from '../categories/categories.store';
 import { ProductService } from '@core/supabase/product.service';
+import { CategoryOrderService } from '@core/services/category-order.service';
 import { DEFAULT_CATEGORY_NAMES } from '@app/shared/mocks/defaults.mock';
 import { LoggerService } from '@app/shared/services/logger.service';
 import { NotificationService } from '@app/shared/services/notification.service';
@@ -23,11 +24,12 @@ export interface ProductsState {
   retrying: boolean;
 }
 
-// Helper function for sorting products by category
+// Helper function for sorting products by category using food-first hierarchy
 function sortProductsByCategory<T extends ProductDto>(
   a: T,
   b: T,
-  categories: CategoryDto[]
+  categories: CategoryDto[],
+  categoryOrderService: CategoryOrderService
 ): number {
   const getCategoryName = (categoryId: string) =>
     categories.find(category => category.id === categoryId)?.name ||
@@ -36,20 +38,7 @@ function sortProductsByCategory<T extends ProductDto>(
   const categoryA = getCategoryName(a.default_category_id);
   const categoryB = getCategoryName(b.default_category_id);
 
-  // Handle 'Others' case to sort it last
-  if (
-    categoryA === DEFAULT_CATEGORY_NAMES.DEFAULT_CATEGORY &&
-    categoryB !== DEFAULT_CATEGORY_NAMES.DEFAULT_CATEGORY
-  )
-    return 1;
-
-  if (
-    categoryA !== DEFAULT_CATEGORY_NAMES.DEFAULT_CATEGORY &&
-    categoryB === DEFAULT_CATEGORY_NAMES.DEFAULT_CATEGORY
-  )
-    return -1;
-
-  return categoryA.localeCompare(categoryB);
+  return categoryOrderService.compareCategoryNames(categoryA, categoryB);
 }
 
 export const ProductsStore = signalStore(
@@ -66,57 +55,63 @@ export const ProductsStore = signalStore(
     lastUpdated: null,
     retrying: false,
   }),
-  withComputed(({ products, filters }, categoriesStore = inject(CategoriesStore)) => ({
-    filteredProducts: computed(() => {
-      let filtered = products();
+  withComputed(
+    (
+      { products, filters },
+      categoriesStore = inject(CategoriesStore),
+      categoryOrderService = inject(CategoryOrderService)
+    ) => ({
+      filteredProducts: computed(() => {
+        let filtered = products();
 
-      if (filters().categoryId) {
-        filtered = filtered.filter(p => p.default_category_id === filters().categoryId);
-      }
-
-      if (filters().searchTerm) {
-        const term = filters().searchTerm.toLowerCase();
-        filtered = filtered.filter(p => p.name.toLowerCase().includes(term));
-      }
-
-      // Sort products
-      const categories = categoriesStore.categories();
-      return filtered.sort((a, b) => {
-        switch (filters().sortBy) {
-          case 'category':
-            return sortProductsByCategory(a, b, categories);
-          case 'recent':
-            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-          default:
-            return a.name.localeCompare(b.name);
+        if (filters().categoryId) {
+          filtered = filtered.filter(p => p.default_category_id === filters().categoryId);
         }
-      });
-    }),
 
-    productsByCategory: computed(() => {
-      const categoryMap = new Map<string, ProductDto[]>();
-
-      products().forEach(product => {
-        const categoryId = product.default_category_id;
-        if (!categoryMap.has(categoryId)) {
-          categoryMap.set(categoryId, []);
+        if (filters().searchTerm) {
+          const term = filters().searchTerm.toLowerCase();
+          filtered = filtered.filter(p => p.name.toLowerCase().includes(term));
         }
-        categoryMap.get(categoryId)!.push(product);
-      });
 
-      return categoryMap;
-    }),
+        // Sort products
+        const categories = categoriesStore.categories();
+        return filtered.sort((a, b) => {
+          switch (filters().sortBy) {
+            case 'category':
+              return sortProductsByCategory(a, b, categories, categoryOrderService);
+            case 'recent':
+              return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+            default:
+              return a.name.localeCompare(b.name);
+          }
+        });
+      }),
 
-    popularProducts: computed(
-      () => products().filter(p => p.is_common) // Common products are typically more popular
-    ),
+      productsByCategory: computed(() => {
+        const categoryMap = new Map<string, ProductDto[]>();
 
-    productCount: computed(() => products().length),
+        products().forEach(product => {
+          const categoryId = product.default_category_id;
+          if (!categoryMap.has(categoryId)) {
+            categoryMap.set(categoryId, []);
+          }
+          categoryMap.get(categoryId)!.push(product);
+        });
 
-    commonProducts: computed(() => products().filter(p => p.is_common)),
+        return categoryMap;
+      }),
 
-    userProducts: computed(() => products().filter(p => !p.is_common)),
-  })),
+      popularProducts: computed(
+        () => products().filter(p => p.is_common) // Common products are typically more popular
+      ),
+
+      productCount: computed(() => products().length),
+
+      commonProducts: computed(() => products().filter(p => p.is_common)),
+
+      userProducts: computed(() => products().filter(p => !p.is_common)),
+    })
+  ),
   withMethods((store, productService = inject(ProductService)) => {
     const logger = inject(LoggerService);
     const notification = inject(NotificationService);
