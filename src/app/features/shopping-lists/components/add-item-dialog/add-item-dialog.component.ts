@@ -11,16 +11,17 @@ import {
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CategoryDto, ProductWithPreferencesDto, ProductDto } from '@types';
+
+// Product enriched with a hybridScore
+type ScoredProduct = ProductWithPreferencesDto & { hybridScore: number };
 import { CategoryIconComponent } from '@app/shared/category-icon/category-icon.component';
 import { DEFAULT_ITEM_VALUES, DEFAULT_CATEGORY_NAMES } from '@app/shared/mocks/defaults.mock';
-import { TABS, TabValue } from '@app/shared/mocks/constants.mock';
 import { NotificationService } from '@app/shared/services/notification.service';
 import { LoggerService } from '@app/shared/services/logger.service';
 import { ProductsStore } from '@app/core/stores/products/products.store';
@@ -48,7 +49,6 @@ export interface NewShoppingListItem {
     MatDialogModule,
     MatInputModule,
     MatButtonModule,
-    MatTabsModule,
     MatIconModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
@@ -69,83 +69,63 @@ export class AddItemDialogComponent {
   private readonly categoryOrderService = inject(CategoryOrderService);
   private readonly destroy$ = inject(DestroyRef);
 
-  protected readonly TABS = TABS;
-
   @Output() itemAdded = new EventEmitter<NewShoppingListItem>();
 
   // Signals
   readonly searchTerm = signal('');
-  readonly activeTab = signal<TabValue>(TABS.POPULAR);
   readonly selectedItems = signal<NewShoppingListItem[]>([]);
-  readonly mostUsedItems = signal<ProductWithPreferencesDto[]>([]);
-  readonly loadingHistory = signal(false);
+  readonly allProducts = signal<ProductWithPreferencesDto[]>([]);
   readonly error = signal<string | null>(null);
 
-  // Computed signals from store
-  readonly popularItems = computed(() => this.productsStore.popularProducts());
+  // Computed signals
   readonly loading = computed(() => this.productsStore.loading());
-  readonly storeError = computed(() => this.productsStore.error());
 
   constructor() {
     this.initializeProducts();
   }
 
   private initializeProducts(): void {
-    // Check if we have an error from the store
-    if (this.storeError()) {
-      this.error.set('Nie udało się załadować popularnych produktów');
-      this.notification.showError('Nie udało się załadować popularnych produktów');
-    }
+    this.loadAllProducts();
   }
 
-  private loadMostUsedProducts(): void {
-    if (this.mostUsedItems().length > 0) return; // Already loaded
-
-    this.loadingHistory.set(true);
+  private loadAllProducts(): void {
     this.userProductService
-      .getMostUsedProducts(20)
+      .getProductsWithHybridScoring()
       .pipe(takeUntilDestroyed(this.destroy$))
       .subscribe({
         next: (products: ProductWithPreferencesDto[]) => {
-          this.mostUsedItems.set(products);
-          this.loadingHistory.set(false);
+          this.allProducts.set(products);
         },
         error: (error: HttpErrorResponse) => {
-          this.error.set('Nie udało się załadować historii produktów');
-          this.logger.logError(error, 'Failed to load history items');
-          this.notification.showError('Nie udało się załadować historii produktów');
-          this.loadingHistory.set(false);
+          this.error.set('Nie udało się załadować produktów');
+          this.logger.logError(error, 'Failed to load products');
+          this.notification.showError('Nie udało się załadować produktów');
         },
       });
   }
 
-  // Computed signal for filtered and sorted items based on search term, active tab, and category hierarchy
-  readonly filteredItems = computed(() => {
+  // Computed signal for filtered items (sorted by hybrid score)
+  readonly filteredItems = computed<ScoredProduct[]>(() => {
     const term = this.searchTerm().toLowerCase().trim();
-    const items = this.activeTab() === TABS.POPULAR ? this.popularItems() : this.mostUsedItems();
+    const items = this.allProducts() as ScoredProduct[];
 
-    // Filter by search term
-    const filteredItems = term
-      ? items.filter(item => item.name.toLowerCase().includes(term))
-      : items;
+    if (!term) {
+      return items; // Already sorted by hybrid score
+    }
 
-    // Sort by category using food-first hierarchy
-    return filteredItems.sort((a, b) => {
-      const categoryA = this.getCategoryName(this.getProductCategoryId(a));
-      const categoryB = this.getCategoryName(this.getProductCategoryId(b));
-
-      // First sort by category hierarchy
-      const categoryComparison = this.categoryOrderService.compareCategoryNames(
-        categoryA,
-        categoryB
-      );
-      if (categoryComparison !== 0) {
-        return categoryComparison;
-      }
-
-      // Within same category, sort alphabetically by product name
-      return a.name.localeCompare(b.name);
-    });
+    // Filter by search term and maintain hybrid score sorting
+    return items
+      .filter((item): item is ScoredProduct => item.name.toLowerCase().includes(term))
+      .sort((a: ScoredProduct, b: ScoredProduct) => {
+        // Primary sort: hybrid score (descending)
+        const scoreA = a.hybridScore;
+        const scoreB = b.hybridScore;
+        if (scoreB !== scoreA) {
+          return scoreB - scoreA;
+        }
+        // Secondary sort: alphabetical
+        return a.name.localeCompare(b.name);
+      });
   });
 
   get listId(): string {
@@ -161,21 +141,9 @@ export class AddItemDialogComponent {
     this.searchTerm.set(value);
   }
 
-  selectTab(tab: TabValue): void {
-    this.activeTab.set(tab);
-
-    // Reset search when switching tabs
-    this.searchTerm.set('');
-
-    // Load most used products when History tab is selected
-    if (tab === TABS.HISTORY) {
-      this.loadMostUsedProducts();
-    }
-  }
-
   itemExists(name: string): boolean {
     if (!name || !name.trim()) return false;
-    return this.popularItems().some(item => item.name.toLowerCase() === name.toLowerCase().trim());
+    return this.allProducts().some(item => item.name.toLowerCase() === name.toLowerCase().trim());
   }
 
   getDefaultCategoryName(): string {

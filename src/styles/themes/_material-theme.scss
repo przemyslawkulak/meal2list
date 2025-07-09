@@ -19,7 +19,8 @@
 // Create Material palettes from our modern color system
 $mat-primary-palette: mat.m2-define-palette(vars.$primary-palette, 500, 400, 700);
 $mat-accent-palette: mat.m2-define-palette(vars.$accent-palette, 500, 400, 700);
-$mat-warn-palette: mat.m2-define-palette(vars.$green-warn-palette, 500, 400, 700);
+// Use proper red palette for errors/warnings instead of green
+$mat-warn-palette: mat.m2-define-palette(vars.$red-warn-palette, 500, 400, 700);
 
 // Light Theme with vibrant colors
 $light-theme: mat.m2-define-light-theme((

@@ -3,6 +3,7 @@ import { Observable, from, map, catchError, switchMap, shareReplay } from 'rxjs'
 import { SupabaseService } from '@core/supabase/supabase.service';
 import type { UserProductDto, ProductWithPreferencesDto, ProductDto } from '@types';
 import { AppEnvironment } from '@app/app.config';
+import { isUniversalBasic } from '../../features/shopping-lists/components/add-item-dialog/constants/universal-basics.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -154,6 +155,79 @@ export class UserProductService extends SupabaseService {
         }));
       }),
       catchError(error => this.handleServiceError(error, 'Failed to fetch most used products'))
+    );
+  }
+
+  /**
+   * Get all products (popular + user-specific) enriched with usage data
+   * Ordered by usage count first, then by category
+   */
+  getAllProductsWithUsageData(): Observable<ProductWithPreferencesDto[]> {
+    return this.getUserId().pipe(
+      switchMap(userId =>
+        from(
+          this.supabase
+            .from('products')
+            .select(
+              `
+              id,
+              name,
+              default_category_id,
+              is_common,
+              created_by,
+              created_at,
+              user_products (
+                preferred_category_id,
+                last_used_at,
+                use_count
+              )
+            `
+            )
+            .or(`is_common.eq.true,created_by.eq.${userId}`)
+            .eq('user_products.user_id', userId)
+        )
+      ),
+      map(result => {
+        if (result.error) throw result.error;
+
+        // Transform the data to include usage information
+        return result.data.map(row => ({
+          ...row,
+          preferred_category_id: row.user_products[0]?.preferred_category_id || null,
+          last_used_at: row.user_products[0]?.last_used_at || null,
+          use_count: row.user_products[0]?.use_count || 0,
+        }));
+      }),
+      catchError(error =>
+        this.handleServiceError(error, 'Failed to fetch products with usage data')
+      )
+    );
+  }
+
+  /**
+   * Get products sorted by effective usage count.
+   * Universal basics: minimum virtual use_count of 5 on the frontend.
+   */
+  getProductsWithHybridScoring(): Observable<ProductWithPreferencesDto[]> {
+    return this.getAllProductsWithUsageData().pipe(
+      map(products => {
+        const productsWithScore = products.map(product => {
+          const realCount = product.use_count || 0;
+          const effectiveCount = isUniversalBasic(product.name)
+            ? Math.max(realCount, 5)
+            : realCount;
+          return {
+            ...product,
+            hybridScore: effectiveCount,
+          };
+        });
+        return productsWithScore.sort((a, b) => {
+          if (b.hybridScore !== a.hybridScore) {
+            return b.hybridScore - a.hybridScore;
+          }
+          return a.name.localeCompare(b.name);
+        });
+      })
     );
   }
 }
