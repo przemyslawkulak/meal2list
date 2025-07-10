@@ -1,48 +1,25 @@
 import { Component, computed, input } from '@angular/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { CATEGORY_EMOJIS } from '@app/shared/constants/category.constants';
+import { CATEGORY_LABELS_PL } from '@app/shared/constants/category-labels.constants';
 
 @Component({
   selector: 'app-category-icon',
   standalone: true,
-  imports: [],
+  imports: [MatTooltipModule],
   templateUrl: './category-icon.component.html',
   styleUrl: './category-icon.component.scss',
 })
 export class CategoryIconComponent {
   categoryName = input.required<string>();
+  showLabel = input<boolean>();
 
   private getEmojiForCategory(categoryName: string): string {
-    const emojiMap: Record<string, string> = {
-      Alcohol: '🍷',
-      'Ready Meals': '🍽️',
-      'Canned Food': '🥫',
-      Frozen: '❄️',
-      'Dairy & Eggs': '🥛',
-      Meat: '🥩',
-      'Fish & Seafood': '🐟',
-      Bread: '🥖',
-      Baking: '🧁',
-      'Spices & Oils': '🧂',
-      'Snacks & Sweets': '🍭',
-      'Dry Goods': '🍚',
-      'Fruits & Vegetables': '🍎',
-      Vegan: '🌱',
-      Cleaning: '🧽',
-      Hygiene: '🧼',
-      'First Aid': '🏥',
-      'Home & Garden': '🏠',
-      Electronics: '📱',
-      Clothing: '👕',
-      Stationery: '📎',
-      Child: '🍼',
-      'For Pets': '🐕',
-      Other: '❓',
-      'Water & Beverages': '💧',
-      'Coffee & Tea': '☕',
-    };
-    return emojiMap[categoryName] || '📦';
+    return CATEGORY_EMOJIS[categoryName] || '📦';
   }
 
   readonly emoji = computed(() => {
     return this.getEmojiForCategory(this.categoryName());
   });
+  readonly label = computed(() => CATEGORY_LABELS_PL[this.categoryName()] ?? this.categoryName());
 }

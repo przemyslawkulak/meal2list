@@ -53,7 +53,7 @@
             @if (!isLoading) {
               <span>Zaloguj się</span>
             } @else {
-              <mat-spinner diameter="20"></mat-spinner>
+              <mat-spinner [diameter]="spinnerDiameter"></mat-spinner>
             }
           </button>
         </div>
@@ -67,7 +67,7 @@
 
     @if (isLoading) {
       <div class="loading-overlay">
-        <mat-spinner diameter="50"></mat-spinner>
+        <mat-spinner [diameter]="spinnerDiameter"></mat-spinner>
       </div>
     }
   </mat-card-content>

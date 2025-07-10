@@ -15,8 +15,8 @@
                 <app-category-icon
                   matListItemIcon
                   [categoryName]="category.name"
+                  [showLabel]="true"
                 ></app-category-icon>
-                <span matListItemTitle>{{ category.name }}</span>
               </mat-list-item>
               @if (!$last) {
                 <mat-divider></mat-divider>

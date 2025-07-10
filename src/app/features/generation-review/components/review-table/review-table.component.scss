@@ -28,26 +28,26 @@
 .table-wrapper {
   overflow-x: auto;
   border-radius: theme.get-radius(lg);
-  border: 1px solid var(--md-sys-color-outline-variant);
-  background: var(--md-sys-color-surface);
+  border: 1px solid theme.get-theme-color(light, outline-variant);
+  background: theme.get-theme-color(light, surface);
   box-shadow: theme.get-shadow(soft);
 }
 
 .review-table {
   width: 100%;
   border-collapse: collapse;
-  background: var(--md-sys-color-surface);
+  background: theme.get-theme-color(light, surface);
 }
 
 .table-header {
   @include mixins.label-medium;
-  color: var(--md-sys-color-on-surface);
+  color: theme.get-theme-color(light, on-surface);
   padding: theme.get-spacing(sm) theme.get-spacing(md);
   text-align: left;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  background: var(--md-sys-color-surface-container-low);
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  background: theme.get-theme-color(light, surface-container-low);
+  border-bottom: 1px solid theme.get-theme-color(light, outline-variant);
   font-weight: theme.get-font-weight(semibold);
 
   &.checkbox-header {
@@ -64,19 +64,19 @@
 
 .table-row {
   transition: background-color 0.2s ease;
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid theme.get-theme-color(light, outline-variant);
 
   &.included {
-    background-color: white;
+    background-color: theme.get-theme-color(light, surface);
   }
 
   &.excluded {
     opacity: 0.7;
-    background-color: var(--md-sys-color-surface-container-low);
+    background-color: theme.get-theme-color(light, surface-container-low);
   }
 
   &:hover {
-    background-color: var(--md-sys-color-surface-container-high);
+    background-color: theme.get-theme-color(light, surface-container-high);
   }
 
   &:last-child {
@@ -86,7 +86,7 @@
 
 .table-cell {
   @include mixins.body-medium;
-  color: var(--md-sys-color-on-surface);
+  color: theme.get-theme-color(light, on-surface);
   padding: theme.get-spacing(sm) theme.get-spacing(md);
   vertical-align: middle;
 
@@ -120,11 +120,11 @@
 }
 
 .separator-row {
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid theme.get-theme-color(light, outline-variant);
   
   .separator-cell {
     padding: theme.get-spacing(md);
-    background-color: var(--md-sys-color-surface-container-low);
+    background-color: theme.get-theme-color(light, surface-container-low);
   }
   
   .separator-content {
@@ -140,7 +140,7 @@
       right: 0;
       top: 50%;
       height: 1px;
-      background-color: var(--md-sys-color-outline-variant);
+      background-color: theme.get-theme-color(light, outline-variant);
       z-index: 1;
     }
   }
@@ -148,8 +148,8 @@
   .separator-text {
     @include mixins.body-medium;
     font-weight: theme.get-font-weight(semibold);
-    color: var(--md-sys-color-on-surface);
-    background-color: var(--md-sys-color-surface-container-low);
+    color: theme.get-theme-color(light, on-surface);
+    background-color: theme.get-theme-color(light, surface-container-low);
     padding: theme.get-spacing(xs) theme.get-spacing(md);
     border-radius: theme.get-radius(md);
     position: relative;
@@ -170,7 +170,7 @@
 
   .header-text {
     @include mixins.body-medium;
-    color: var(--md-sys-color-on-surface);
+    color: theme.get-theme-color(light, on-surface);
     font-weight: theme.get-font-weight(medium);
   }
 }
@@ -189,18 +189,18 @@
   align-items: center;
   gap: theme.get-spacing(md);
   padding: theme.get-spacing(md) theme.get-spacing(sm);
-  background: white;
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  background: theme.get-theme-color(light, surface);
+  border-bottom: 1px solid theme.get-theme-color(light, outline-variant);
   transition: all 0.2s ease;
   cursor: pointer;
   min-height: 64px;
 
   &:first-child {
-    border-top: 1px solid var(--md-sys-color-outline-variant);
+    border-top: 1px solid theme.get-theme-color(light, outline-variant);
   }
 
   &:last-child {
-    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    border-bottom: 1px solid theme.get-theme-color(light, outline-variant);
   }
 
   &.excluded {
@@ -228,7 +228,7 @@
   .item-name {
     @include mixins.body-large;
     font-weight: theme.get-font-weight(medium);
-    color: var(--md-sys-color-on-surface);
+    color: theme.get-theme-color(light, on-surface);
     margin: 0;
     overflow: hidden;
     text-overflow: ellipsis;

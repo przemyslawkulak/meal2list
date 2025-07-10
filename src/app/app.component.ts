@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { APP_TITLE } from '@app/shared/constants/app.constants';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +10,5 @@ import { RouterOutlet } from '@angular/router';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'meal2list';
+  title = APP_TITLE;
 }

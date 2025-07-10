@@ -1,3 +1,6 @@
-<span class="category-icon-emoji" [attr.aria-label]="categoryName()" [title]="categoryName()">{{
+<span class="category-icon-emoji" [attr.aria-label]="label()" [matTooltip]="label()">{{
   emoji()
 }}</span>
+@if (showLabel()) {
+  <span class="category-icon-label">{{ label() }}</span>
+}

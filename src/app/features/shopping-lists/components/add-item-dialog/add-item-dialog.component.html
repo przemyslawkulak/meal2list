@@ -43,10 +43,7 @@
         <div class="custom-item-row">
           <div class="item-info">
             <span>{{ searchTerm() }}</span>
-            <app-category-icon
-              [categoryName]="getDefaultCategoryName()"
-              [matTooltip]="getDefaultCategoryName()"
-            />
+            <app-category-icon [categoryName]="getDefaultCategoryName()" />
           </div>
           <div class="item-actions">
             <button
@@ -69,7 +66,6 @@
                 <span class="product-name">{{ product.name }}</span>
                 <app-category-icon
                   [categoryName]="getCategoryName(getProductCategoryId(product))"
-                  [matTooltip]="getCategoryName(getProductCategoryId(product))"
                 />
               </div>
               <div class="product-actions">

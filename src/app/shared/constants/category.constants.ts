@@ -1,0 +1,31 @@
+/**
+ * Mapping of category names to emojis.
+ */
+export const CATEGORY_EMOJIS: Record<string, string> = {
+  Alcohol: '🍷',
+  'Ready Meals': '🍽️',
+  'Canned Food': '🥫',
+  Frozen: '❄️',
+  'Dairy & Eggs': '🥛',
+  Meat: '🥩',
+  'Fish & Seafood': '🐟',
+  Bread: '🥖',
+  Baking: '🧁',
+  'Spices & Oils': '🧂',
+  'Snacks & Sweets': '🍭',
+  'Dry Goods': '🍚',
+  'Fruits & Vegetables': '🍎',
+  Vegan: '🌱',
+  Cleaning: '🧽',
+  Hygiene: '🧼',
+  'First Aid': '🏥',
+  'Home & Garden': '🏠',
+  Electronics: '📱',
+  Clothing: '👕',
+  Stationery: '📎',
+  Child: '🍼',
+  'For Pets': '🐕',
+  Other: '❓',
+  'Water & Beverages': '💧',
+  'Coffee & Tea': '☕',
+};

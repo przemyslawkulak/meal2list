@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { from } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { SupabaseService } from './supabase.service';
+import { CATEGORY_LABELS_PL } from '@app/shared/constants/category-labels.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,10 @@ export class CategoryService extends SupabaseService {
   ).pipe(
     map(response => {
       if (response.error) throw response.error;
-      return response.data;
+      return response.data.map(category => ({
+        ...category,
+        label: CATEGORY_LABELS_PL[category.name] ?? category.name,
+      }));
     }),
     shareReplay({ bufferSize: 1, refCount: true })
   );

@@ -208,7 +208,7 @@ export type CreateBatchShoppingListItemsCommand = CreateShoppingListItemCommand[
 export type CategoryDto = Pick<
   Database['public']['Tables']['categories']['Row'],
   'id' | 'name' | 'created_at' | 'updated_at'
->;
+> & { label?: string };
 
 export interface CreateCategoryCommand {
   name: string;

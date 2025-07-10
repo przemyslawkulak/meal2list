@@ -18,6 +18,10 @@ import { RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AuthService } from '../../../../core/supabase/auth.service';
+import {
+  PASSWORD_PATTERN,
+  SPINNER_DIAMETER,
+} from '@app/shared/constants/form-validation.constants';
 import { User } from '@supabase/supabase-js';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationService } from '@app/shared/services/notification.service';
@@ -40,6 +44,7 @@ import { LoggerService } from '@app/shared/services/logger.service';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
+  readonly spinnerDiameter = SPINNER_DIAMETER;
   registerForm: FormGroup;
   loading = false;
   private readonly notification = inject(NotificationService);
@@ -53,7 +58,10 @@ export class RegisterComponent {
     this.registerForm = this.fb.group(
       {
         email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required, Validators.minLength(8)]],
+        password: [
+          '',
+          [Validators.required, Validators.minLength(8), Validators.pattern(PASSWORD_PATTERN)],
+        ],
         confirmPassword: ['', [Validators.required]],
       },
       { validators: this.passwordMatchValidator }

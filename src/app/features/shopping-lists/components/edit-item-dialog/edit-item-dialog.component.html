@@ -75,9 +75,12 @@
         <mat-select formControlName="category_id" aria-label="Kategoria">
           <mat-option *ngFor="let category of sortedCategories()" [value]="category.id">
             <span class="category-option">
-              <app-category-icon class="category-icon" [categoryName]="category.name">
+              <app-category-icon
+                class="category-icon"
+                [categoryName]="category.name"
+                [showLabel]="true"
+              >
               </app-category-icon>
-              {{ category.name }}
             </span>
           </mat-option>
         </mat-select>

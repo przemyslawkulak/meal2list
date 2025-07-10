@@ -308,65 +308,6 @@
 }
 
 // =============================================================================
-// THEME TOGGLE INTEGRATION
-// =============================================================================
-
-.theme-toggle {
-  margin-left: theme.get-spacing(md);
-  
-  .theme-toggle-button {
-    width: 48px;
-    height: 48px;
-    border-radius: theme.get-radius(full);
-    background: linear-gradient(135deg, var(--md-sys-color-surface-container-high) 0%, var(--md-sys-color-surface-container) 100%);
-    border: 1px solid var(--md-sys-color-outline-variant);
-    color: var(--md-sys-color-on-surface);
-    transition: all 0.2s ease;
-    
-    &:hover {
-      background: theme.get-gradient(primary-soft);
-      color: var(--md-sys-color-primary);
-      transform: scale(1.05);
-      box-shadow: theme.get-shadow(soft);
-    }
-    
-    mat-icon {
-      font-size: theme.get-font-size(lg);
-    }
-  }
-}
-
-// =============================================================================
-// MOBILE MENU TOGGLE
-// =============================================================================
-
-.mobile-menu-toggle {
-  @media (min-width: 769px) {
-    display: none;
-  }
-  
-  .mobile-toggle-button {
-    width: 48px;
-    height: 48px;
-    border-radius: theme.get-radius(lg);
-    background: var(--md-sys-color-surface-container-high);
-    border: 1px solid var(--md-sys-color-outline-variant);
-    color: var(--md-sys-color-on-surface);
-    transition: all 0.2s ease;
-    
-    &:hover {
-      background: var(--md-sys-color-primary-container);
-      color: var(--md-sys-color-on-primary-container);
-      transform: scale(1.05);
-    }
-    
-    mat-icon {
-      font-size: theme.get-font-size(xl);
-    }
-  }
-}
-
-// =============================================================================
 // ACCESSIBILITY & FOCUS STATES
 // =============================================================================
 
@@ -558,12 +499,7 @@
   }
 }
 
-// Ensure main content has bottom padding on mobile
-@media (max-width: 767px) {
-  .main-content {
-    padding-bottom: 64px;
-  }
-}
+
 
 // =============================================================================
 // HIGH CONTRAST MODE

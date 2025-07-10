@@ -10,7 +10,7 @@ import {
   inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -23,8 +23,6 @@ import { MatChipsModule } from '@angular/material/chips';
 import { GenerationReviewItemDto, CategoryDto } from '../../../../../types';
 import { ReviewSelectionService, EditableItem } from './services/review-selection.service';
 import { ReviewDataService, SortField, SortDirection } from './services/review-data.service';
-import { ViewMode } from './components/review-toolbar/review-toolbar.component';
-import { EditFieldEvent } from './components/editable-item-row/editable-item-row.component';
 import {
   EditItemModalComponent,
   EditItemDialogData,
@@ -65,7 +63,6 @@ export class ReviewTableComponent {
   displayedColumns = ['exclude', 'product_name', 'quantity', 'unit', 'category'];
 
   // View and sorting state
-  viewMode = signal<ViewMode>('table');
   sortField = signal<SortField>('product_name');
   sortDirection = signal<SortDirection>('asc');
 
@@ -146,11 +143,6 @@ export class ReviewTableComponent {
     this.emitChanges();
   }
 
-  // View mode and sorting handlers
-  onViewModeChange(mode: ViewMode): void {
-    this.viewMode.set(mode);
-  }
-
   onSortFieldChange(field: SortField): void {
     if (this.sortField() === field) {
       // Toggle direction if same field
@@ -173,46 +165,6 @@ export class ReviewTableComponent {
     const updatedItems = this.selectionService.toggleItemSelection(item);
     this.editableItems.set(updatedItems);
     this.emitChanges();
-  }
-
-  // Edit handlers
-  onEditStart(event: EditFieldEvent): void {
-    const { item, field } = event;
-
-    const updatedItems = this.editableItems().map(i =>
-      i.id === item.id
-        ? {
-            ...i,
-            isEditing: true,
-            editForm: {
-              product_name: new FormControl(i.product_name, {
-                nonNullable: true,
-                validators: [Validators.required, Validators.minLength(1)],
-              }),
-              quantity: new FormControl(i.quantity, {
-                nonNullable: true,
-                validators: [Validators.required, Validators.min(0.01)],
-              }),
-              unit: new FormControl(i.unit, {
-                nonNullable: true,
-                validators: [Validators.required],
-              }),
-              category_id: new FormControl(i.category_id, {
-                nonNullable: true,
-                validators: [Validators.required],
-              }),
-            },
-          }
-        : i
-    );
-    this.editableItems.set(updatedItems);
-
-    // Focus the specific field after starting edit mode
-    if (field) {
-      setTimeout(() => {
-        this.focusField(item.id, field);
-      }, 100);
-    }
   }
 
   onEditSave(item: EditableItem): void {

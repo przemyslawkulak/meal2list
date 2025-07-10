@@ -74,7 +74,7 @@
                 >
                   @for (category of categories(); track category.id) {
                     <option [value]="category.id" [selected]="category.id === item.category_id">
-                      {{ category.name }}
+                      {{ category.label }}
                     </option>
                   }
                 </select>
@@ -147,7 +147,7 @@
                   >
                     @for (category of categories(); track category.id) {
                       <option [value]="category.id" [selected]="category.id === item.category_id">
-                        {{ category.name }}
+                        {{ category.label }}
                       </option>
                     }
                   </select>

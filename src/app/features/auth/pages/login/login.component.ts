@@ -8,6 +8,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { AuthService } from '@app/core/supabase/auth.service';
+import {
+  PASSWORD_PATTERN,
+  SPINNER_DIAMETER,
+} from '@app/shared/constants/form-validation.constants';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +30,7 @@ import { AuthService } from '@app/core/supabase/auth.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  readonly spinnerDiameter = SPINNER_DIAMETER;
   loginForm: FormGroup;
   isLoading = false;
   private returnUrl: string | null = null;
@@ -37,7 +42,10 @@ export class LoginComponent implements OnInit {
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: [
+        '',
+        [Validators.required, Validators.minLength(8), Validators.pattern(PASSWORD_PATTERN)],
+      ],
     });
   }
 

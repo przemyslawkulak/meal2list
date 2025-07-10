@@ -1,6 +1,9 @@
 @use '@angular/material' as mat;
 @use '../../../../../_mixins' as mixins;
 
+@use '../../../../../styles/themes/theme-variables' as theme;
+
+
 // =============================================================================
 // MODERN SHOPPING LIST DETAIL STYLES
 // =============================================================================
@@ -31,10 +34,10 @@
 .detail-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem 5rem;
+  padding: 0 1rem 1rem;
 
   @include mixins.mobile-tablet {
-    padding: 0 0.5rem 6rem;
+    padding: 0 0.5rem 1rem;
   }
 }
 
@@ -341,7 +344,7 @@
 
   .table-row {
     transition: all 0.2s ease;
-    border-bottom: 1px solid var(--mat-sys-outline-variant);
+    border-bottom: 1px solid theme.get-theme-color(light, outline-variant);
 
     &:nth-child(even) {
       background: var(--mat-sys-surface-container-lowest);

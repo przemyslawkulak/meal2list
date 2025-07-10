@@ -1,0 +1,31 @@
+/**
+ * English-to-Polish category name translations.
+ */
+export const CATEGORY_LABELS_PL: Record<string, string> = {
+  Alcohol: 'Alkohol',
+  'Ready Meals': 'Dania gotowe',
+  'Canned Food': 'Konserwy',
+  Frozen: 'Mrożonki',
+  'Dairy & Eggs': 'Nabiał i jaja',
+  Meat: 'Mięso',
+  'Fish & Seafood': 'Ryby i owoce morza',
+  Bread: 'Pieczywo',
+  Baking: 'Wypieki',
+  'Spices & Oils': 'Przyprawy i oleje',
+  'Snacks & Sweets': 'Przekąski i słodycze',
+  'Dry Goods': 'Produkty suche',
+  'Fruits & Vegetables': 'Owoce i warzywa',
+  Vegan: 'Wegańskie',
+  Cleaning: 'Środki czystości',
+  Hygiene: 'Higiena',
+  'First Aid': 'Pierwsza pomoc',
+  'Home & Garden': 'Dom i ogród',
+  Electronics: 'Elektronika',
+  Clothing: 'Odzież',
+  Stationery: 'Artykuły papiernicze',
+  Child: 'Produkty dziecięce',
+  'For Pets': 'Dla zwierząt',
+  Other: 'Inne',
+  'Water & Beverages': 'Woda i napoje',
+  'Coffee & Tea': 'Kawa i herbata',
+};
