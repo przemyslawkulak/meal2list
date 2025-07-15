@@ -258,4 +258,28 @@ export class ShoppingListItemsService extends SupabaseService {
       catchError(error => this.handleServiceError(error, 'Failed to delete shopping list item'))
     );
   }
+  /**
+   * Deletes multiple checked items from a shopping list
+   */
+  deleteChecked(listId: string, itemIds: string[]): Observable<void> {
+    if (!itemIds.length) {
+      return of(undefined);
+    }
+    return this.verifyListOwnership(listId).pipe(
+      switchMap(() =>
+        from(
+          this.supabase
+            .from('shopping_list_items')
+            .delete()
+            .eq('shopping_list_id', listId)
+            .in('id', itemIds)
+        )
+      ),
+      map(result => {
+        if (result.error) throw result.error;
+        return;
+      }),
+      catchError(error => this.handleServiceError(error, 'Failed to delete checked items'))
+    );
+  }
 }

@@ -1,5 +1,6 @@
 @use '@angular/material' as mat;
 @use '../../../../../_mixins' as mixins;
+@use 'sass:map';
 
 @use '../../../../../styles/themes/theme-variables' as theme;
 
@@ -731,6 +732,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
+    position: relative;
 
     @include mixins.mobile-tablet {
       flex-direction: column;
@@ -743,10 +745,65 @@
       align-items: center;
       gap: 0.5rem;
       font-weight: 500;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
 
     @include mixins.mobile-tablet {
+        position: static;
+        transform: none;
         width: 100%;
         justify-content: center;
+      }
+    }
+
+    .delete-checked-btn {
+      display: flex;
+      min-width: 84px;
+      max-width: 480px;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 8px;
+      height: 40px;
+      padding: 0 16px;
+      background-color: theme.get-theme-color(light, error-container);
+      color: theme.get-theme-color(light, on-error-container);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: normal;
+      border: none;
+      transition: background-color 0.2s ease;
+      margin-left: auto;
+
+      &:hover:not(:disabled) {
+        background-color: theme.get-theme-color(light, error);
+        color: theme.get-theme-color(light, on-error);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .delete-icon {
+        margin-right: 4px;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+
+      .delete-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      @include mixins.mobile-tablet {
+        width: 100%;
+        justify-content: center;
+        margin-left: 0;
       }
     }
 
@@ -911,4 +968,9 @@
       overflow-x: hidden;
     }
   }
+} 
+
+// Add empty-list-spacer style for empty list spacing
+.empty-list-spacer {
+  height: map.get(theme.$spacing, xxxl);
 } 

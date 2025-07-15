@@ -104,6 +104,7 @@ export class ShoppingListDetailComponent implements OnDestroy {
   categories = signal<CategoryDto[]>([]);
   groupByRecipe = signal<boolean>(false);
   showBadges = signal<boolean>(true);
+  readonly deleteAllCheckedLabel = 'Usuń zaznaczone produkty';
 
   // Computed signal for sorted items - unchecked at top, checked at bottom (sorted by category)
   sortedItems = computed(() => {
@@ -304,7 +305,7 @@ export class ShoppingListDetailComponent implements OnDestroy {
       });
 
     // Also handle items from dialog close
-    dialogRef.afterClosed().subscribe();
+    dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe();
   }
 
   /**
@@ -363,6 +364,29 @@ export class ShoppingListDetailComponent implements OnDestroy {
       )
       .subscribe(() => {
         this.removeItemFromLocalShoppingList(itemId);
+      });
+  }
+
+  /**
+   * Deletes all checked items after confirmation and updates local state
+   */
+  onDeleteAllChecked(): void {
+    const currentList = this.shoppingList();
+    if (!currentList?.items) return;
+    const checkedIds = this.checkedItems().map(item => item.id);
+    if (!checkedIds.length) return;
+    this.shoppingListItemsService
+      .deleteChecked(currentList.id, checkedIds)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(error => this.handleError('Error deleting checked items:', error))
+      )
+      .subscribe(() => {
+        const updatedItems = (this.shoppingList()?.items || []).filter(
+          item => !checkedIds.includes(item.id)
+        );
+        this.shoppingList.set({ ...currentList, items: updatedItems });
+        this.notification.showSuccess('Deleted checked items successfully');
       });
   }
 

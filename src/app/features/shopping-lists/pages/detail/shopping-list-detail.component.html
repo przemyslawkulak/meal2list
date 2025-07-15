@@ -217,6 +217,9 @@
                 </div>
               </div>
             }
+            @if (!state.uncheckedItems.length && !state.checkedItems.length) {
+              <div class="empty-list-spacer"></div>
+            }
           </div>
         } @else {
           <!-- Grouped by Recipe View -->
@@ -397,6 +400,16 @@
         >
           <mat-icon>add</mat-icon>
           Dodaj produkt
+        </button>
+        <button
+          class="delete-checked-btn"
+          [disabled]="!state.checkedItems.length"
+          (click)="onDeleteAllChecked()"
+          [attr.aria-label]="deleteAllCheckedLabel"
+          data-testid="delete-checked-button"
+        >
+          <mat-icon class="delete-icon">delete_sweep</mat-icon>
+          <span class="delete-text">Usuń zaznaczone</span>
         </button>
       </div>
     </footer>
