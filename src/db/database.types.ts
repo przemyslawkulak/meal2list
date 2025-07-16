@@ -49,6 +49,79 @@ export type Database = {
         };
         Relationships: [];
       };
+      usage_history: {
+        Row: {
+          created_at: string;
+          generation_count: number;
+          id: string;
+          period_end: string;
+          period_start: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          generation_count: number;
+          id?: string;
+          period_end: string;
+          period_start: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          generation_count?: number;
+          id?: string;
+          period_end?: string;
+          period_start?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'usage_history_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      user_limits: {
+        Row: {
+          created_at: string;
+          current_usage: number;
+          id: string;
+          monthly_limit: number;
+          reset_date: string;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          current_usage?: number;
+          id?: string;
+          monthly_limit?: number;
+          reset_date?: string;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          current_usage?: number;
+          id?: string;
+          monthly_limit?: number;
+          reset_date?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'user_limits_user_id_fkey';
+            columns: ['user_id'];
+            isOneToOne: true;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       generation: {
         Row: {
           created_at: string;
@@ -471,6 +544,19 @@ export type Database = {
       unaccent_init: {
         Args: { '': unknown };
         Returns: unknown;
+      };
+      increment_user_usage: {
+        Args: { user_uuid: string };
+        Returns: {
+          new_usage: number;
+          monthly_limit: number;
+          limit_reached: boolean;
+          reset_date: string;
+        }[];
+      };
+      reset_monthly_limits: {
+        Args: Record<PropertyKey, never>;
+        Returns: undefined;
       };
     };
     Enums: {

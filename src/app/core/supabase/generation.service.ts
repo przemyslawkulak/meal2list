@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Observable, from, map, catchError, throwError } from 'rxjs';
+import { Observable, from, map, catchError, throwError, switchMap } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { generateSchema } from '@schemas/generation.schema';
 import {
@@ -14,6 +14,7 @@ import {
 import { AppEnvironment } from '@app/app.config';
 import { SupabaseService } from '@core/supabase/supabase.service';
 import { OpenrouterService } from '@core/openai/openai.service';
+import { UserLimitService } from '@core/services/user-limit/user-limit.service';
 
 const SYSTEM_MESSAGE = (
   categoryList: CategoryDto[],
@@ -195,7 +196,8 @@ Now, please analyze the given recipe text and provide the structured JSON output
 export class GenerationService extends SupabaseService {
   constructor(
     @Inject('APP_ENVIRONMENT') environment: AppEnvironment,
-    private openrouterService: OpenrouterService
+    private openrouterService: OpenrouterService,
+    private userLimitService: UserLimitService
   ) {
     super(environment);
     this.setupOpenRouter();
@@ -256,14 +258,41 @@ export class GenerationService extends SupabaseService {
         errors: validationResult.error.format(),
       }));
     }
-    this.openrouterService.setSystemMessage(SYSTEM_MESSAGE(category_list, language, currentItems));
 
-    return this.processRecipeText(command.recipe_text).pipe(
-      map(items => ({
-        id: `temp-${uuidv4()}`,
-        recipe_id: `temp-recipe-${uuidv4()}`,
-        items,
-      })),
+    // Check user limit before processing
+    return this.getUserId().pipe(
+      switchMap(userId =>
+        this.userLimitService.checkUserLimit(userId).pipe(
+          switchMap(limitStatus => {
+            if (!limitStatus.canProcess) {
+              return throwError(() => ({
+                message: `Monthly generation limit of ${limitStatus.monthlyLimit} exceeded. Limit will reset on ${limitStatus.resetDate.toLocaleDateString()}.`,
+                statusCode: 429,
+                resetDate: limitStatus.resetDate,
+                currentUsage: limitStatus.currentUsage,
+                monthlyLimit: limitStatus.monthlyLimit,
+              }));
+            }
+
+            this.openrouterService.setSystemMessage(
+              SYSTEM_MESSAGE(category_list, language, currentItems)
+            );
+
+            return this.processRecipeText(command.recipe_text).pipe(
+              switchMap(items =>
+                // Increment usage after successful generation
+                this.userLimitService.incrementUsage(userId).pipe(
+                  map(() => ({
+                    id: `temp-${uuidv4()}`,
+                    recipe_id: `temp-recipe-${uuidv4()}`,
+                    items,
+                  }))
+                )
+              )
+            );
+          })
+        )
+      ),
       catchError((error: HttpErrorResponse) => {
         const errorResponse = this.handleHttpError(error);
         return this.logGenerationError(error).pipe(
@@ -342,37 +371,59 @@ export class GenerationService extends SupabaseService {
       }));
     }
 
-    this.openrouterService.setSystemMessage(SYSTEM_MESSAGE(categories, language));
+    // Check user limit before processing
+    return this.getUserId().pipe(
+      switchMap(userId =>
+        this.userLimitService.checkUserLimit(userId).pipe(
+          switchMap(limitStatus => {
+            if (!limitStatus.canProcess) {
+              return throwError(() => ({
+                message: `Monthly generation limit of ${limitStatus.monthlyLimit} exceeded. Limit will reset on ${limitStatus.resetDate.toLocaleDateString()}.`,
+                statusCode: 429,
+                resetDate: limitStatus.resetDate,
+                currentUsage: limitStatus.currentUsage,
+                monthlyLimit: limitStatus.monthlyLimit,
+              }));
+            }
 
-    return this.openrouterService.sendChatMessage(command.recipe_text).pipe(
-      map(response => {
-        const responseData = JSON.parse(response.data as string) as {
-          recipe_name: string;
-          items: Array<{
-            product_name: string;
-            quantity: number;
-            unit: string;
-            category_id: string;
-            excluded: boolean;
-          }>;
-        };
+            this.openrouterService.setSystemMessage(SYSTEM_MESSAGE(categories, language));
 
-        const items = responseData.items.map(item => ({
-          id: uuidv4(),
-          product_name: item.product_name,
-          quantity: item.quantity,
-          unit: item.unit || 'szt',
-          category_id: item.category_id,
-          excluded: item.excluded,
-          source: 'auto' as const,
-          isModified: false,
-        }));
+            return this.openrouterService.sendChatMessage(command.recipe_text).pipe(
+              switchMap(response => {
+                const responseData = JSON.parse(response.data as string) as {
+                  recipe_name: string;
+                  items: Array<{
+                    product_name: string;
+                    quantity: number;
+                    unit: string;
+                    category_id: string;
+                    excluded: boolean;
+                  }>;
+                };
 
-        return {
-          recipeName: responseData.recipe_name,
-          items,
-        };
-      }),
+                const items = responseData.items.map(item => ({
+                  id: uuidv4(),
+                  product_name: item.product_name,
+                  quantity: item.quantity,
+                  unit: item.unit || 'szt',
+                  category_id: item.category_id,
+                  excluded: item.excluded,
+                  source: 'auto' as const,
+                  isModified: false,
+                }));
+
+                // Increment usage after successful generation
+                return this.userLimitService.incrementUsage(userId).pipe(
+                  map(() => ({
+                    recipeName: responseData.recipe_name,
+                    items,
+                  }))
+                );
+              })
+            );
+          })
+        )
+      ),
       catchError((error: HttpErrorResponse) => {
         const errorResponse = this.handleHttpError(error);
         return this.logGenerationError(error).pipe(

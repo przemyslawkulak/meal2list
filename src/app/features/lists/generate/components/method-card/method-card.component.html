@@ -1,12 +1,14 @@
 <div
   class="method-card"
   [class.method-card--active]="isActive()"
+  [class.method-card--disabled]="disabled()"
   (click)="onSelect()"
   (keydown.enter)="onSelect()"
   (keydown.space)="$event.preventDefault(); onSelect()"
-  [tabindex]="0"
+  [tabindex]="disabled() ? -1 : 0"
   [attr.role]="'button'"
   [attr.aria-label]="method().ariaLabel"
+  [attr.aria-disabled]="disabled()"
 >
   <div class="method-card__icon">
     <mat-icon>{{ method().icon }}</mat-icon>

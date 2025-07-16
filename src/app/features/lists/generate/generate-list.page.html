@@ -10,6 +10,19 @@
       </p>
     </section>
 
+    <!-- Limit Status Section -->
+    <section class="generate-list__limit-status">
+      <app-limit-status [compact]="true"></app-limit-status>
+      @if (isLimitExceeded()) {
+      <div class="limit-exceeded-message">
+        <mat-icon>block</mat-icon>
+        <span
+          >Osiągnięto miesięczny limit generacji. Wszystkie funkcje generowania są wyłączone.</span
+        >
+      </div>
+      }
+    </section>
+
     <!-- Form Type Selection Cards -->
     <section class="generate-list__method-selection">
       <div class="method-cards">
@@ -17,6 +30,7 @@
         <app-method-card
           [method]="method"
           [isActive]="selectedFormType() === method.id"
+          [disabled]="isLimitExceeded()"
           (selected)="onFormTypeChange($event)"
         ></app-method-card>
         }
@@ -49,6 +63,7 @@
             <button
               mat-raised-button
               color="primary"
+              [disabled]="isLimitExceeded()"
               (click)="openNewListDialog()"
               class="create-list-button"
             >

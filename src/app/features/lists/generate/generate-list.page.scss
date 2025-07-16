@@ -49,25 +49,85 @@
   padding: 0;
 }
 
-.generate-list__title {
-  font-weight: 700;
-  color: #1f2937;
-  margin: 0 0 theme-vars.get-spacing(sm) 0;
-  line-height: 1.2;
+// =============================================================================
+// LIMIT STATUS SECTION
+// =============================================================================
+
+.generate-list__limit-status {
+  margin-bottom: theme-vars.get-spacing(lg);
+}
+
+.limit-exceeded-message {
+  display: flex;
+  align-items: center;
+  gap: theme-vars.get-spacing(sm);
+  padding: theme-vars.get-spacing(md);
+  margin-top: theme-vars.get-spacing(sm);
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+  border-radius: theme-vars.get-radius(md);
+  border: 1px solid var(--md-sys-color-error);
+  box-shadow: theme-vars.get-shadow(soft);
   
-  @include responsive.responsive-font-size(1.75rem, 2.5rem);
+  mat-icon {
+    color: var(--md-sys-color-error);
+    font-size: theme-vars.get-font-size(lg);
+    width: theme-vars.get-font-size(lg);
+    height: theme-vars.get-font-size(lg);
+  }
+  
+  span {
+    font-size: theme-vars.get-font-size(sm);
+    font-weight: theme-vars.get-font-weight(medium);
+    line-height: theme-vars.get-line-height(normal);
+  }
+  
+  @include responsive.mobile-only {
+    font-size: theme-vars.get-font-size(xs);
+    padding: theme-vars.get-spacing(sm);
+  }
+}
+
+// =============================================================================
+// LIMIT STATUS SECTION
+// =============================================================================
+
+.generate-list__limit-status {
+  margin: 0 auto theme-vars.get-spacing(lg);
+  width:80%;
+  
+  @include responsive.mobile-only {
+    margin-bottom: theme-vars.get-spacing(md);
+  }
+}
+
+.generate-list__limit-warning {
+  margin-bottom: theme-vars.get-spacing(lg);
+  
+  @include responsive.mobile-only {
+    margin-bottom: theme-vars.get-spacing(md);
+  }
+}
+
+.generate-list__title {
+  font-weight: theme-vars.get-font-weight(bold);
+  color: var(--md-sys-color-on-surface);
+  margin: 0 0 theme-vars.get-spacing(sm) 0;
+  line-height: theme-vars.get-line-height(tight);
+  
+  @include responsive.responsive-font-size(theme-vars.get-font-size(xxxl), theme-vars.get-font-size(xxxxl));
   @include theme.dark-theme-text-primary;
 }
 
 .generate-list__subtitle {
-  color: #6b7280;
+  color: var(--md-sys-color-on-surface-variant);
   margin: 0;
-  line-height: 1.5;
+  line-height: theme-vars.get-line-height(normal);
   
-  @include responsive.responsive-font-size(0.875rem, 1.125rem);
+  @include responsive.responsive-font-size(theme-vars.get-font-size(sm), theme-vars.get-font-size(lg));
   
   @include responsive.tablet-up {
-    line-height: 1.6;
+    line-height: theme-vars.get-line-height(relaxed);
   }
   
   @include theme.dark-theme-text-secondary;
@@ -107,9 +167,10 @@
 .no-lists-panel {
   max-width: 480px;
   margin: 0 auto;
-  box-shadow: var(--mat-sys-level2);
-  border-radius: 16px;
-  background-color: white;
+  box-shadow: theme-vars.get-shadow(medium);
+  border-radius: theme-vars.get-radius(xl);
+  background-color: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
   
   @include responsive.tablet-up {
     max-width: 520px;
@@ -135,32 +196,32 @@
 }
 
 .no-lists-icon {
-  font-size: 32px;
-  width: 32px;
-  height: 32px;
-  color: var(--mat-sys-primary);
+  font-size: theme-vars.get-font-size(xxxl);
+  width: theme-vars.get-font-size(xxxl);
+  height: theme-vars.get-font-size(xxxl);
+  color: var(--md-sys-color-primary);
   margin-bottom: theme-vars.get-spacing(xs);
 
   @include responsive.tablet-up {
-    font-size: 40px;
-    width: 40px;
-    height: 40px;
+    font-size: theme-vars.get-font-size(xxxxl);
+    width: theme-vars.get-font-size(xxxxl);
+    height: theme-vars.get-font-size(xxxxl);
   }
 }
 
 .no-lists-title {
   margin: 0;
-  font-weight: 600;
-  color: var(--mat-sys-on-surface);
-  @include responsive.responsive-font-size(1.25rem, 1.5rem);
+  font-weight: theme-vars.get-font-weight(semibold);
+  color: var(--md-sys-color-on-surface);
+  @include responsive.responsive-font-size(theme-vars.get-font-size(xl), theme-vars.get-font-size(xxl));
 }
 
 .no-lists-description {
   margin: 0;
-  color: var(--mat-sys-on-surface-variant);
-  line-height: 1.5;
+  color: var(--md-sys-color-on-surface-variant);
+  line-height: theme-vars.get-line-height(normal);
   max-width: 320px;
-  @include responsive.responsive-font-size(0.875rem, 1rem);
+  @include responsive.responsive-font-size(theme-vars.get-font-size(sm), theme-vars.get-font-size(base));
 
   @include responsive.tablet-up {
     max-width: 400px;
@@ -170,7 +231,7 @@
 .create-list-button {
   margin-top: theme-vars.get-spacing(xs);
   min-width: 200px;
-  @include responsive.responsive-font-size(0.875rem, 1rem);
+  @include responsive.responsive-font-size(theme-vars.get-font-size(sm), theme-vars.get-font-size(base));
 
   @include responsive.tablet-up {
     margin-top: theme-vars.get-spacing(sm);
@@ -203,7 +264,7 @@
   margin-bottom: theme-vars.get-spacing(xl);
   
   .clear-all-btn {
-    @include responsive.responsive-font-size(0.875rem, 1rem);
+    @include responsive.responsive-font-size(theme-vars.get-font-size(sm), theme-vars.get-font-size(base));
   }
 }
 
@@ -212,7 +273,7 @@
 // =============================================================================
 
 .bottom-spacer {
-  height: 80px; // Space for mobile bottom navigation
+  height: theme-vars.get-spacing(xxxxl); // Space for mobile bottom navigation
   
   @include responsive.tablet-up {
     height: 0;

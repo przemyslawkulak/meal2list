@@ -1,0 +1,144 @@
+@use '../../../../styles/themes/theme-variables' as theme-vars;
+
+.limit-status-container {
+  padding: theme-vars.get-spacing(md);
+  border-radius: theme-vars.get-radius(md);
+  background-color: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline);
+  margin-bottom: theme-vars.get-spacing(md);
+
+  .limit-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: theme-vars.get-spacing(sm);
+
+    .limit-icon {
+      margin-right: theme-vars.get-spacing(sm);
+      font-size: theme-vars.get-font-size(lg);
+      width: theme-vars.get-font-size(lg);
+      height: theme-vars.get-font-size(lg);
+    }
+
+    .limit-title {
+      font-weight: theme-vars.get-font-weight(medium);
+      font-size: theme-vars.get-font-size(sm);
+      color: var(--md-sys-color-on-surface);
+    }
+  }
+
+  .limit-progress {
+    margin-bottom: theme-vars.get-spacing(sm);
+
+    mat-progress-bar {
+      height: theme-vars.get-spacing(sm);
+      border-radius: theme-vars.get-radius(sm);
+      margin-bottom: theme-vars.get-spacing(sm);
+    }
+
+    .limit-text {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: theme-vars.get-font-size(xs);
+
+      .usage-text {
+        color: var(--md-sys-color-on-surface);
+        font-weight: theme-vars.get-font-weight(medium);
+      }
+
+      .remaining-text {
+        color: var(--md-sys-color-on-surface-variant);
+
+        &.warning {
+          color: var(--md-sys-color-error);
+          font-weight: theme-vars.get-font-weight(medium);
+        }
+      }
+    }
+  }
+
+  .reset-info {
+    .reset-text {
+      display: flex;
+      align-items: center;
+      color: var(--md-sys-color-on-surface-variant);
+      font-size: theme-vars.get-font-size(xs);
+
+      .reset-icon {
+        margin-right: theme-vars.get-spacing(xs);
+        font-size: theme-vars.get-font-size(sm);
+        width: theme-vars.get-font-size(sm);
+        height: theme-vars.get-font-size(sm);
+      }
+    }
+  }
+
+  // Compact variant
+  &.compact {
+    padding: theme-vars.get-spacing(sm) theme-vars.get-spacing(sm);
+    margin-bottom: theme-vars.get-spacing(sm);
+
+    .limit-header {
+      margin-bottom: theme-vars.get-spacing(sm);
+
+      .limit-title {
+        font-size: theme-vars.get-font-size(xs);
+      }
+    }
+
+    .limit-progress {
+      margin-bottom: theme-vars.get-spacing(xs);
+
+      mat-progress-bar {
+        height: theme-vars.get-spacing(xs);
+        margin-bottom: theme-vars.get-spacing(xs);
+      }
+
+      .limit-text {
+        font-size: theme-vars.get-font-size(xs);
+      }
+    }
+
+    .reset-info .reset-text {
+      font-size: theme-vars.get-font-size(xs);
+    }
+  }
+
+  // Loading state
+  &.loading {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  // Error state
+  &.error {
+    border-color: var(--md-sys-color-error);
+    background-color: var(--md-sys-color-error-container);
+
+    .limit-title {
+      color: var(--md-sys-color-on-error-container);
+    }
+  }
+}
+
+// Dark theme adjustments
+@media (prefers-color-scheme: dark) {
+  .limit-status-container {
+    background-color: var(--md-sys-color-surface-variant);
+    border-color: var(--md-sys-color-outline-variant);
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .limit-status-container {
+    padding: theme-vars.get-spacing(sm);
+    margin-bottom: theme-vars.get-spacing(sm);
+
+    .limit-text {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: theme-vars.get-spacing(xs);
+    }
+  }
+} 

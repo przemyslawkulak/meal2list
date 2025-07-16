@@ -1,6 +1,7 @@
 @use '../../styles/theme-mixins' as theme;
 @use '../../styles/responsive-mixins' as responsive;
 @use '../../styles/card-mixins' as cards;
+@use '../../../../../../styles/themes/theme-variables' as theme-vars;
 
 .method-card {
   display: flex;
@@ -10,14 +11,37 @@
   
   @include cards.interactive-card;
   @include cards.active-card;
-  @include responsive.responsive-spacing(1rem, 2rem);
-  @include responsive.responsive-border-radius(8px, 12px);
+  @include responsive.responsive-spacing(theme-vars.get-spacing(md), theme-vars.get-spacing(xl));
+  @include responsive.responsive-border-radius(theme-vars.get-radius(md), theme-vars.get-radius(lg));
   
   // Active state icon styling
   &--active .method-card__icon {
     background: var(--md-sys-color-primary);
     color: white;
     transform: scale(1.1);
+  }
+  
+  // Disabled state styling
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    
+    .method-card__icon {
+      background: var(--md-sys-color-surface-variant);
+      
+      mat-icon {
+        color: var(--md-sys-color-on-surface-variant);
+      }
+    }
+    
+    .method-card__title {
+      color: var(--md-sys-color-on-surface-variant);
+    }
+    
+    .method-card__description {
+      color: var(--md-sys-color-outline);
+    }
   }
 }
 
@@ -28,13 +52,14 @@
 .method-card__icon {
   width: 40px;
   height: 40px;
-  background: #fbbf24;
-  border-radius: 50%;
+  background: var(--md-sys-color-tertiary);
+  border-radius: theme-vars.get-radius(full);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1rem;
+  margin-bottom: theme-vars.get-spacing(md);
   transition: all 0.2s ease;
+  box-shadow: theme-vars.get-shadow(soft);
 
   @include responsive.tablet-up {
     width: 48px;
@@ -42,43 +67,43 @@
   }
 
   mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-    color: white;
+    font-size: theme-vars.get-font-size(lg);
+    width: theme-vars.get-font-size(lg);
+    height: theme-vars.get-font-size(lg);
+    color: var(--md-sys-color-on-tertiary);
     
     @include responsive.tablet-up {
-      font-size: 24px;
-      width: 24px;
-      height: 24px;
+      font-size: theme-vars.get-font-size(xl);
+      width: theme-vars.get-font-size(xl);
+      height: theme-vars.get-font-size(xl);
     }
   }
 }
 
 .method-card__title {
-  font-weight: 600;
-  color: #1f2937;
-  margin: 0 0 0.5rem 0;
-  line-height: 1.3;
+  font-weight: theme-vars.get-font-weight(semibold);
+  color: var(--md-sys-color-on-surface);
+  margin: 0 0 theme-vars.get-spacing(sm) 0;
+  line-height: theme-vars.get-line-height(tight);
   
-  @include responsive.responsive-font-size(1rem, 1.25rem);
+  @include responsive.responsive-font-size(theme-vars.get-font-size(base), theme-vars.get-font-size(xl));
   
   @include responsive.tablet-up {
-    margin-bottom: 0.75rem;
+    margin-bottom: theme-vars.get-spacing(sm);
   }
   
   @include theme.dark-theme-text-primary;
 }
 
 .method-card__description {
-  color: #6b7280;
+  color: var(--md-sys-color-on-surface-variant);
   margin: 0;
-  line-height: 1.4;
+  line-height: theme-vars.get-line-height(normal);
   
-  @include responsive.responsive-font-size(0.75rem, 0.875rem);
+  @include responsive.responsive-font-size(theme-vars.get-font-size(xs), theme-vars.get-font-size(sm));
   
   @include responsive.tablet-up {
-    line-height: 1.5;
+    line-height: theme-vars.get-line-height(normal);
   }
   
   @include theme.dark-theme-text-secondary;

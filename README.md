@@ -123,12 +123,12 @@ The following outlines the planned development phases and key features for Meal2
 ### Phase 2: Further UX Enhancements & Operational Needs
 
 - ✅ **Receipt Image Processing:** Implement OCR functionality to extract shopping list items directly from receipt images, allowing users to quickly recreate past shopping lists or track spending patterns.
+- ✅ **User-Specific Generation Limits:** Introduce a system to manage API usage, such as a monthly limit on the number of recipes a user can process for ingredient extraction (e.g., 50 recipes per month).
 - [ ] **Recipe Saving & Quick-Add:** Enhance the recipe saving feature to allow users to easily select a saved recipe to automatically generate a shopping list, streamlining the process.
 - [ ] **Vector Database Integration (Qdrant):** Implement Qdrant vector database for semantic product matching and improved AI-driven ingredient recognition, enabling better fuzzy matching and product suggestions.
 - [ ] **AI Product Matching Integration:** Integrate product matching into AI workflow to automatically connect AI-generated product names to existing database products, improving data consistency and reducing duplicate entries.
 - [ ] **AI Caching System:** Implement intelligent caching for AI-generated responses to reduce API costs and improve response times, including cache warming for common operations and smart invalidation strategies.
 - [ ] **Performance Caching Implementation:** Implement comprehensive performance caching strategies to optimize application response times and reduce server load.
-- [ ] **User-Specific Generation Limits:** Introduce a system to manage API usage, such as a weekly limit on the number of recipes a user can process for ingredient extraction (e.g., 10 recipes per week).
 
 ### Phase 3: Expanding Scope (Post-MVP Features)
 

@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, computed } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  computed,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,13 +20,16 @@ import { GenerationStepsComponent } from './components/generation-steps/generati
 import { ImageUploadFormComponent } from './components/image-upload-form/image-upload-form.component';
 import { MethodCardComponent, MethodOption } from './components/method-card/method-card.component';
 import { OverlayComponent } from '../../../shared/ui/overlay/overlay.component';
+import { LimitStatusComponent } from '../../../shared/ui/limit-status/limit-status.component';
 import { FormCoordinatorService } from './services/form-coordinator.service';
 import { GenerationStateService } from './services/generation-state.service';
 import { NewShoppingListDialogComponent } from '../../shopping-lists/components/new-shopping-list-dialog/new-shopping-list-dialog.component';
 import { ShoppingListService } from '@app/core/supabase/shopping-list.service';
+import { UserLimitService, LimitStatus } from '@app/core/services/user-limit';
 import { NotificationService } from '@app/shared/services/notification.service';
 import { LoggerService } from '@app/shared/services/logger.service';
-import { catchError, of, tap } from 'rxjs';
+import { SupabaseService } from '@app/core/supabase/supabase.service';
+import { catchError, of, tap, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-generate-list-page',
@@ -39,6 +49,7 @@ import { catchError, of, tap } from 'rxjs';
     ImageUploadFormComponent,
     MethodCardComponent,
     OverlayComponent,
+    LimitStatusComponent,
   ],
   templateUrl: './generate-list.page.html',
   styleUrls: ['./generate-list.page.scss'],
@@ -47,6 +58,8 @@ import { catchError, of, tap } from 'rxjs';
 export class GenerateListPageComponent implements OnInit {
   private readonly formCoordinator = inject(FormCoordinatorService);
   private readonly generationState = inject(GenerationStateService);
+  private readonly userLimitService = inject(UserLimitService);
+  private readonly supabaseService = inject(SupabaseService);
   private readonly dialog = inject(MatDialog);
   private readonly shoppingListService = inject(ShoppingListService);
   private readonly notification = inject(NotificationService);
@@ -92,6 +105,15 @@ export class GenerateListPageComponent implements OnInit {
   readonly hasAnyContent = this.formCoordinator.hasAnyContent;
   readonly hasContent = this.formCoordinator.hasContent;
 
+  // Limit status signals
+  private readonly _limitStatus = signal<LimitStatus | null>(null);
+  readonly limitStatus = this._limitStatus.asReadonly();
+
+  readonly isLimitExceeded = computed(() => {
+    const status = this._limitStatus();
+    return status ? !status.canProcess : false;
+  });
+
   readonly shoppingLists = this.generationState.shoppingLists;
   readonly selectedListId = this.generationState.selectedListId;
   readonly isGenerating = this.generationState.isGenerating;
@@ -103,6 +125,12 @@ export class GenerateListPageComponent implements OnInit {
   readonly canGenerate = this.generationState.canGenerate;
 
   ngOnInit(): void {
+    // Reset generation state when navigating to generate page
+    this.generationState.resetGenerationState();
+
+    // Load user limit status
+    this.loadLimitStatus();
+
     // Check if we're returning from review screen with recipe text
     const recipeText = this.generationState.checkNavigationState();
     if (recipeText) {
@@ -110,8 +138,34 @@ export class GenerateListPageComponent implements OnInit {
     }
   }
 
+  private loadLimitStatus(): void {
+    this.supabaseService
+      .getUserId()
+      .pipe(
+        switchMap(userId => {
+          if (!userId) {
+            return of(null);
+          }
+          return this.userLimitService.checkUserLimit(userId);
+        }),
+        catchError(error => {
+          this.logger.logError(error, 'Failed to load limit status');
+          return of(null);
+        })
+      )
+      .subscribe(status => {
+        this._limitStatus.set(status);
+      });
+  }
+
   // Method selection
   onFormTypeChange(formType: string): void {
+    // Prevent method change if limit is exceeded
+    if (this.isLimitExceeded()) {
+      this.notification.showError('Osiągnięto miesięczny limit generacji');
+      return;
+    }
+
     this.formCoordinator.setFormType(formType as 'text' | 'scraping' | 'image');
     this.generationState.resetGenerationState();
   }
@@ -123,6 +177,11 @@ export class GenerateListPageComponent implements OnInit {
 
   // Text form events
   onGenerate(recipeText: string): void {
+    if (this.isLimitExceeded()) {
+      this.notification.showError('Osiągnięto miesięczny limit generacji');
+      return;
+    }
+
     this.generationState.startGenerationProcess();
     this.generationState.generateFromContent(recipeText, 'text', 'Przepis tekstowy');
   }
@@ -137,6 +196,11 @@ export class GenerateListPageComponent implements OnInit {
   }
 
   onScrapingStart(): void {
+    if (this.isLimitExceeded()) {
+      this.notification.showError('Osiągnięto miesięczny limit generacji');
+      return;
+    }
+
     this.formCoordinator.setScrapingStart();
     this.generationState.startGenerationProcess();
   }
@@ -162,6 +226,11 @@ export class GenerateListPageComponent implements OnInit {
   }
 
   onImageProcessingStart(): void {
+    if (this.isLimitExceeded()) {
+      this.notification.showError('Osiągnięto miesięczny limit generacji');
+      return;
+    }
+
     this.formCoordinator.setImageProcessingStart();
     this.generationState.startGenerationProcess();
   }
@@ -182,6 +251,11 @@ export class GenerateListPageComponent implements OnInit {
 
   // Generation from scraped content
   onGenerateFromScraped(): void {
+    if (this.isLimitExceeded()) {
+      this.notification.showError('Osiągnięto miesięczny limit generacji');
+      return;
+    }
+
     const content = this.scrapedContent();
     const url = this.originalUrl();
     const sourceLabel = url || 'Strona internetowa';
@@ -203,22 +277,28 @@ export class GenerateListPageComponent implements OnInit {
 
   // Computed properties for form states
   readonly isGenerationFormDisabled = computed(
-    () => this.selectedFormType() !== 'text' || !this.canGenerate()
+    () => this.selectedFormType() !== 'text' || !this.canGenerate() || this.isLimitExceeded()
   );
 
   readonly isScrapingFormDisabled = computed(
     () =>
       this.selectedFormType() !== 'scraping' ||
       !this.canGenerate() ||
-      this.scrapingStatus() === 'scraping'
+      this.scrapingStatus() === 'scraping' ||
+      this.isLimitExceeded()
   );
 
   readonly isImageFormDisabled = computed(
-    () => this.selectedFormType() !== 'image' || !this.canGenerate()
+    () => this.selectedFormType() !== 'image' || !this.canGenerate() || this.isLimitExceeded()
   );
 
   // Dialog for creating a new shopping list when none exist
   openNewListDialog(): void {
+    if (this.isLimitExceeded()) {
+      this.notification.showError('Osiągnięto miesięczny limit generacji');
+      return;
+    }
+
     const dialogRef = this.dialog.open(NewShoppingListDialogComponent, {
       width: '400px',
     });

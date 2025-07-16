@@ -93,6 +93,7 @@ export class GenerationStateService {
     const listId = this._selectedListId();
     if (!listId || !recipeText.trim()) {
       this.notification.showError('Brak wybranej listy lub treści przepisu');
+      this._hasGenerationStarted.set(false); // Hide overlay on validation failure
       return;
     }
 
@@ -163,6 +164,7 @@ export class GenerationStateService {
       error instanceof Error ? error.message : 'Nie udało się wygenerować listy zakupów';
     this._errorMessage.set(message);
     this._generationStatus.set('error');
+    this._hasGenerationStarted.set(false);
     this.notification.showError(message);
   }
 

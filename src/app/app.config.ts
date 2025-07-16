@@ -4,7 +4,9 @@ import {
   provideAppInitializer,
   inject,
   ErrorHandler,
+  LOCALE_ID,
 } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withFetch, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -15,6 +17,10 @@ import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { CategoriesStore, ProductsStore, AppInitializationService } from '@app/core/stores';
 import { ErrorInterceptor, RetryInterceptor } from '@app/core/interceptors';
 import { GlobalErrorHandler } from '@app/core/errors/global-error.handler';
+import localePl from '@angular/common/locales/pl';
+
+// Register Polish locale
+registerLocaleData(localePl);
 
 export interface AppEnvironment {
   production: boolean;
@@ -32,6 +38,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: 'APP_ENVIRONMENT',
       useValue: environment as AppEnvironment,
+    },
+    {
+      provide: LOCALE_ID,
+      useValue: 'pl-PL',
     },
     // HTTP Interceptors for Authentication & Authorization Flow
     {

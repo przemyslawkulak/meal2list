@@ -50,7 +50,7 @@ export class FormCoordinatorService {
       case 'scraping':
         return !!this._scrapedContent();
       case 'image':
-        return this._hasImageUploaded();
+        return this._hasImageUploaded() || !!this._initialRecipeText();
       default:
         return false;
     }
@@ -123,9 +123,8 @@ export class FormCoordinatorService {
     this._imageProcessingProgress.set(100);
     this._initialRecipeText.set(extractedText);
 
-    // Switch to text form with extracted content
-    this._selectedFormType.set('text');
-    this._updateActiveFormAndContentReady('text', true);
+    // Keep image form type but mark content as ready
+    this._updateActiveFormAndContentReady('image', true);
   }
 
   setImageProcessingError(): void {

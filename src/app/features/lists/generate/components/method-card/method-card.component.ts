@@ -21,10 +21,14 @@ export interface MethodOption {
 export class MethodCardComponent {
   method = input.required<MethodOption>();
   isActive = input<boolean>(false);
+  disabled = input<boolean>(false);
 
   selected = output<string>();
 
   onSelect(): void {
+    if (this.disabled()) {
+      return;
+    }
     this.selected.emit(this.method().id);
   }
 }
