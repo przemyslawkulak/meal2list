@@ -974,3 +974,9 @@
 .empty-list-spacer {
   height: map.get(theme.$spacing, xxxl);
 } 
+
+.recipe-icon--desktop-only {
+  @include mixins.mobile-tablet {
+    display: none !important;
+  }
+} 

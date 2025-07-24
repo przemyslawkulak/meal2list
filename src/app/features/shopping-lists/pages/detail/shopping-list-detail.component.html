@@ -89,8 +89,12 @@
                           class="table-row"
                           [attr.data-testid]="'list-item-' + item.id"
                           [class.checked-item]="item.is_checked"
+                          (click)="toggleItemChecked(item.id, item.is_checked)"
+                          tabindex="0"
+                          (keydown.enter)="toggleItemChecked(item.id, item.is_checked)"
+                          (keydown.space)="toggleItemChecked(item.id, item.is_checked)"
                         >
-                          <td class="cell-checkbox">
+                          <td class="cell-checkbox" (click)="$event.stopPropagation()">
                             <mat-checkbox
                               [checked]="item.is_checked"
                               (change)="toggleItemChecked(item.id, item.is_checked)"
@@ -102,7 +106,7 @@
                                 <span class="product-name">{{ item.product_name }}</span>
                                 @if (item.recipe_source && state.showBadges) {
                                   <mat-icon
-                                    class="recipe-icon"
+                                    class="recipe-icon recipe-icon--desktop-only"
                                     [attr.data-testid]="'recipe-source-icon-' + item.id"
                                     [matTooltip]="'Z recepty: ' + item.recipe_source"
                                     >restaurant_menu</mat-icon
@@ -125,7 +129,7 @@
                               ></app-category-icon>
                               <button
                                 mat-icon-button
-                                (click)="openEditItemDialog(item)"
+                                (click)="openEditItemDialog(item); $event.stopPropagation()"
                                 [attr.data-testid]="'edit-item-' + item.id"
                                 matTooltip="Edytuj produkt"
                                 class="edit-btn"
@@ -133,16 +137,16 @@
                               >
                                 <mat-icon style="color: green">edit</mat-icon>
                               </button>
-                              <button
+                              <!-- <button
                                 mat-icon-button
-                                (click)="deleteItem(item.id)"
+                                (click)="deleteItem(item.id); $event.stopPropagation()"
                                 [attr.data-testid]="'delete-item-' + item.id"
                                 matTooltip="Usuń produkt"
                                 class="delete-btn"
                                 color="warn"
                               >
                                 <mat-icon style="color: red">delete</mat-icon>
-                              </button>
+                              </button> -->
                             </div>
                           </td>
                         </tr>
