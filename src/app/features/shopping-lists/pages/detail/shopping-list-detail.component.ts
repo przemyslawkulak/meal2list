@@ -50,6 +50,7 @@ import {
 import { ProductService } from '@app/core/supabase/product.service';
 import { NotificationService } from '@app/shared/services/notification.service';
 import { LoggerService } from '@app/shared/services/logger.service';
+import { LongPressTooltipDirective } from '@app/shared/long-press-tooltip.directive';
 
 interface RecipeGroup {
   recipeName: string;
@@ -88,6 +89,7 @@ interface ShoppingListState {
     MatTooltipModule,
     CategoryIconComponent,
     RouterModule,
+    LongPressTooltipDirective,
   ],
   templateUrl: './shopping-list-detail.component.html',
   styleUrls: ['./shopping-list-detail.component.scss'],

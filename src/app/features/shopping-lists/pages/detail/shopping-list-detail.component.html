@@ -89,8 +89,12 @@
                           class="table-row"
                           [attr.data-testid]="'list-item-' + item.id"
                           [class.checked-item]="item.is_checked"
+                          (click)="toggleItemChecked(item.id, item.is_checked)"
+                          tabindex="0"
+                          (keydown.enter)="toggleItemChecked(item.id, item.is_checked)"
+                          (keydown.space)="toggleItemChecked(item.id, item.is_checked)"
                         >
-                          <td class="cell-checkbox">
+                          <td class="cell-checkbox" (click)="$event.stopPropagation()">
                             <mat-checkbox
                               [checked]="item.is_checked"
                               (change)="toggleItemChecked(item.id, item.is_checked)"
@@ -105,6 +109,8 @@
                                     class="recipe-icon"
                                     [attr.data-testid]="'recipe-source-icon-' + item.id"
                                     [matTooltip]="'Z recepty: ' + item.recipe_source"
+                                    [appLongPressTooltip]="matTooltip"
+                                    #matTooltip="matTooltip"
                                     >restaurant_menu</mat-icon
                                   >
                                 }
@@ -117,7 +123,7 @@
                             </div>
                           </td>
                           <td class="cell-category"></td>
-                          <td class="cell-actions">
+                          <td class="cell-actions" (click)="$event.stopPropagation()">
                             <div class="action-buttons">
                               <app-category-icon
                                 [categoryName]="getCategoryName(item.category_id, state.categories)"
