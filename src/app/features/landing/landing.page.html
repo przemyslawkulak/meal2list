@@ -2,10 +2,13 @@
 <section class="hero-section" role="banner">
   <div class="hero-background">
     <div class="hero-content">
-      <h1 class="hero-title">Uprość Robienie Zakupów dzięki Inteligentnym Listom</h1>
+      <h1 class="hero-title">Koniec z Ręcznym Spisywaniem Składników!</h1>
       <h2 class="hero-subtitle">
         Bez wysiłku twórz listy zakupów ze swoich ulubionych przepisów. Wystarczy wkleić tekst
-        przepisu lub zaimportować z URL, a wygenerujemy dla Ciebie listę składników.
+        przepisu lub zaimportować z URL, a wygenerujemy dla Ciebie listę składników. @if
+        ((isAuthenticated$ | async) === false) {
+        <div class="hero-subtitle-trial">Darmowy okres próbny aż do 31 października 2025.</div>
+        }
       </h2>
       <div class="hero-actions">
         @if (isAuthenticated$ | async) {
@@ -42,7 +45,7 @@
 </div>
 
 <!-- Features Section -->
-@if ((isAuthenticated$ | async) === false) {
+<!-- @if ((isAuthenticated$ | async) === false) { -->
 <section class="features-section">
   <div class="container">
     <div class="section-header">
@@ -69,10 +72,10 @@
     </div>
   </div>
 </section>
-}
+<!-- } -->
 
 <!-- How It Works Section -->
-@if ((isAuthenticated$ | async) === false) {
+<!-- @if ((isAuthenticated$ | async) === false) { -->
 <section class="how-it-works">
   <div class="container">
     <div class="section-header">
@@ -112,7 +115,7 @@
     </div>
   </div>
 </section>
-}
+<!-- } -->
 
 <!-- Testimonials Section -->
 <!-- <section class="testimonials-section">
@@ -150,7 +153,7 @@
       <p>Dołącz do tysięcy rodzin, które już uczyniły swoje zakupy spożywcze inteligentniejszymi</p>
       <div class="cta-actions">
         <a mat-raised-button color="primary" class="cta-button" routerLink="/auth/register">
-          Rozpocznij Darmowy Okres Próbny
+          Rozpocznij Darmowy Okres Próbny aż do 31 października 2025
         </a>
         <p class="cta-note">Karta kredytowa nie jest wymagana • Anuluj w każdej chwili</p>
       </div>

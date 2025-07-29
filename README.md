@@ -124,6 +124,7 @@ The following outlines the planned development phases and key features for Meal2
 
 - ✅ **Receipt Image Processing:** Implement OCR functionality to extract shopping list items directly from receipt images, allowing users to quickly recreate past shopping lists or track spending patterns.
 - ✅ **User-Specific Generation Limits:** Introduce a system to manage API usage, such as a monthly limit on the number of recipes a user can process for ingredient extraction (e.g., 50 recipes per month).
+- [ ] **Sharing Shopping Lists:** Enable users to share their shopping lists with others, supporting both view-only and collaborative editing modes.
 - [ ] **Recipe Saving & Quick-Add:** Enhance the recipe saving feature to allow users to easily select a saved recipe to automatically generate a shopping list, streamlining the process.
 - [ ] **Vector Database Integration (Qdrant):** Implement Qdrant vector database for semantic product matching and improved AI-driven ingredient recognition, enabling better fuzzy matching and product suggestions.
 - [ ] **AI Product Matching Integration:** Integrate product matching into AI workflow to automatically connect AI-generated product names to existing database products, improving data consistency and reducing duplicate entries.
@@ -135,6 +136,7 @@ The following outlines the planned development phases and key features for Meal2
 - [ ] **Product Combination:** Implement logic to combine identical products on the shopping list, even if added from different sources or with different initial units (e.g., "2 tomatoes" manually added + "500g tomatoes" from a recipe should intelligently merge).
 - [ ] **Recipe Cataloging & Tagging:** Allow users to organize their saved recipes with categories or tags for easier browsing and retrieval.
 - [ ] **Social Features:** Implement social functionalities such as sharing recipes and shopping lists, potentially with collaborative features and notifications.
+
 - [ ] **Recipe Calendar/Meal Planning:** Introduce a calendar feature to help users plan their meals by assigning recipes to specific dates.
 - [ ] **Rich Multimedia Support:** Integrate support for images or other multimedia content related to recipes (e.g., dish photos, user uploads).
 - [ ] **Gamification:** Introduce gamification elements (e.g., points, badges, challenges) to enhance user engagement and motivation.
